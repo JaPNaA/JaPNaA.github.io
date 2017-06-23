@@ -19,3 +19,8 @@ addEventListener('keydown', function(e) {
             "px";
     }
 }, false);
+
+setInterval(()=>{
+    $('#dots').innerHTML+=".";
+    $("#dotSc").scrollIntoViewIfNeeded();
+},45);
