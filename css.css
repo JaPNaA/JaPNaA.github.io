@@ -1,3 +1,65 @@
+@keyframes rainbow {
+    0%,100%{
+        background: #850000;
+    }
+    12.5%{
+        background: #9a6a00;
+    }
+    25%{
+        background: #708200;
+    }
+    37.5%{
+        background: #008742;
+    }
+    50%{
+        background: #004b99;
+    }
+    62.5%{
+        background: #000a95;
+    }
+    75%{
+        background: #960090;
+    }
+    87.5%{
+        background: #8a0070;
+    }
+}
 #testCSS::after{
     content: "loaded.";
+}
+body.bda{
+    animation: rainbow 60s normal infinite linear;
+    color: white;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 72px;
+}
+fsd{
+    animation: rainbow 60s normal infinite linear;
+    color: white;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 72px;
+}
+body.bda div{
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+    line-height: normal;
+    font-size: 24px;
+}
+*{
+    user-select: none;
 }
