@@ -1,65 +1,62 @@
-@keyframes rainbow {
-    0%,100%{
-        background: #850000;
+@keyframes blink{
+    0%,50%,100%{
+        opacity: 0;
     }
-    12.5%{
-        background: #9a6a00;
-    }
-    25%{
-        background: #708200;
-    }
-    37.5%{
-        background: #008742;
-    }
-    50%{
-        background: #004b99;
-    }
-    62.5%{
-        background: #000a95;
-    }
-    75%{
-        background: #960090;
-    }
-    87.5%{
-        background: #8a0070;
+    55%,95%{
+        opacity: 1;
     }
 }
-#testCSS::after{
-    content: "loaded.";
-}
-body.bda{
-    animation: rainbow 60s normal infinite linear;
-    color: white;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
+body{
     width: 100%;
-    font-weight: bold;
-    font-family: monospace;
-    font-size: 72px;
-}
-fsd{
-    animation: rainbow 60s normal infinite linear;
-    color: white;
-    text-align: center;
-    position: fixed;
-    top: 0;
-    left: 0;
     height: 100%;
-    width: 100%;
-    font-weight: bold;
-    font-family: monospace;
-    font-size: 72px;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
-body.bda div{
+#head{
     position: fixed;
-    bottom: 8px;
-    right: 8px;
-    line-height: normal;
-    font-size: 24px;
+    top:0;
+    width: 100%;
+    left: 0;
+    height: 64px;
+    background: #80ffc3;
+    box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, 0.4);
+    will-change: top;
+    transition: 0.25s;
 }
-*{
-    user-select: none;
+#foot{
+    bottom: 0;
+    left: 0;
+    background: #161616;
+    padding: 8px;
+    color: #eee;
+    margin: 0;
+}
+#content{
+    position: relative;
+    margin-top: 64px;
+    padding: 16px;
+    min-height: 100vh;
+}
+body{
+    background: #fff0f7;
+}
+#copyright{
+    color: lightgrey;
+    font-family: arial;
+    font-size: 11px;
+    text-align: right;
+}
+.JaPNaAT{
+    font-family: courier;
+    font-size: 42px;
+    line-height: 64px;
+    transform: scaleX(0.9);
+    display: inline-block;
+}
+a{
+    color: #0012ff;
+}
+.JaPNaATU{
+    animation: blink 1.4s linear infinite;
 }

@@ -1,32 +1,16 @@
-document.getElementById("testJS").innerHTML = "JS is loaded.";
-(function() { //Remove this later on.
-    var f = '__';
-    addEventListener('keydown', function(e) {
-        f += e.key;
-        f = f.substr(1, 2);
-        if (f.toLowerCase() == "bd" && new Date().toLocaleDateString() ==
-            "6/23/2017") {
-            alert(
-                "And Happy Birthday, Aryan.\nDouble-click to go fullscreen"
-            );
-            document.body.innerHTML =
-                "<fsd>HOOPY BARTHDEE, Aryan!<div>--from Leone</div></fsd>";
-            document.body.classList.add('bda');
-            addEventListener('resize', function() {
-                document.body.style.lineHeight = document.body
-                    .clientHeight +
-                    "px";
-            }, false);
-            addEventListener('dblclick', function() {
-                $("body").webkitRequestFullscreen();
-            }, false);
-            document.body.style.lineHeight = document.body.clientHeight +
-                "px";
+(function() {
+    addEventListener('scroll', function(e) {
+        if ($("body").scrollTop < 1) {
+            $("#head").style.position = "absolute";
+            $("#head").style.top = "";
         }
     }, false);
+    addEventListener('wheel', function(e) {
+        if (e.deltaY < 0) {
+            $("#head").style.top = "0px";
+        } else {
+            $("#head").style.top = "-64px";
+        }
+        $("#head").style.position = "fixed";
+    }, {passive: true, capture:false});
 }());
-
-setInterval(() => {
-    $('#dots').innerHTML += ".";
-    $("#dotSc").scrollIntoViewIfNeeded();
-}, 45);
