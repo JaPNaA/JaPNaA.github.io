@@ -13,4 +13,14 @@
         }
         $("#head").style.position = "fixed";
     }, {passive: true, capture:false});
+    $('.JaPNaAT').addEventListener('auxclick', function(){
+        this.setAttribute('contentEditable',!0);
+        this.focus();
+    }, true);
+    $('.JaPNaAT').addEventListener('contextmenu', function(e){
+        e.preventDefault();
+    }, true);
+    $('.JaPNaAT').addEventListener('blur', function() {
+        this.removeAttribute('contentEditable');
+    }, false);
 }());
