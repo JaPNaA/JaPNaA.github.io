@@ -54,7 +54,7 @@ function compile(e,t) {
 (function() {
     $("#content").innerHTML = "Loading content..."
     $("#content").classList.add('loading');
-    getFile('https://raw.githubusercontent.com/JaPNaA/JaPNaA.github.io/beta/content.txt', function(e) {
+    getFile('https://raw.githubusercontent.com/JaPNaA/JaPNaA.github.io/beta/content.txt?d='+new Date().toString(), function(e) {
         $("#content").innerHTML=compile(e,"cxt");
         $("#content").classList.remove("loading");
     });
