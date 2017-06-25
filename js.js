@@ -39,7 +39,23 @@ function getFile(e, c) {
     xhttp.send();
 }
 
+function compile(e,t) {
+    var f="";
+    switch (t) {
+        case "cxt": //complie to f;
+            f=e;
+            break;
+        default:
+            console.warn(t, "is not a valid file type. @function compile.");
+    }
+    return f;
+}
+
 (function() {
     $("#content").innerHTML = "Loading content..."
     $("#content").classList.add('loading');
+    getFile('https://raw.githubusercontent.com/JaPNaA/JaPNaA.github.io/beta/content.txt', function(e) {
+        $("#content").innerHTML=compile(e,"cxt");
+        $("#content").classList.remove("loading");
+    });
 }());
