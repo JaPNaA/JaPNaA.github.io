@@ -35,15 +35,22 @@ function compile(e, t) {
         case "cxt": //complie to f;
             if (e.substr(0, 2) == "~#") {
                 console.log(e.substr(2, Infinity));
-                f =
-                    "[Something went wrong, check console for more details]<br>Reloading in... <span id=errorReloadCount></span>";
+                prompta(
+                    f =
+                    "[Something went wrong, check console for more details]<br>Reloading in... <span id=errorReloadCount></span>"
+                );
                 setTimeout(function() {
                     if (fdt.reloadAttempts < 3) {
-                        errorReloadCountdown(3, $('#errorReloadCount'));
+                        errorReloadCountdown(3, $('#errorReloadCount',
+                            "last"));
                     } else {
-                        $('#errorReloadCount').innerHTML =
+                        $('#errorReloadCount', 1).innerHTML =
                             "Too many <a href=# class=reload>reload</a> attempts";
-                        $('a.reload').addEventListener('click', () =>
+                        $('#errorReloadCount', "last").innerHTML =
+                            "Too many <a href=# class=reload>reload</a> attempts";
+                        $('a.reload', 1).addEventListener('click', () =>
+                            location.reload());
+                        $('a.reload', "last").addEventListener('click', () =>
                             location.reload());
                     }
                 });
@@ -59,32 +66,81 @@ function compile(e, t) {
     return f;
 }
 
-function prompta(e){
-    var a=$("<div>");
-    a.innerHTML=e;
-    a.style="position: fixed; top:0; left:0; background:white;";
-    document.body.appendChild(a);
+function prompta(e, f) {
+    if (!f) {
+        var a = $("<div>"),
+            v = ++dt.prompta.now,
+            t = !!$("[promptav]") && !!dt.prompta.list.length,
+            l = $("<div>");
+        dt.prompta.list.push(v);
+        a.innerHTML = e;
+        a.classList.add('prompta');
+        a.setAttribute('promptav', v);
+        l.classList.add("promptaLO");
+        l.setAttribute('promptalov', v);
+        l.addEventListener('click', function() {
+            prompta(this.getAttribute('promptalov') - 1 + 1, 1);
+        }, true);
+        document.body.appendChild(l);
+        document.body.appendChild(a);
+        a.style.top = innerHeight / 2 - a.clientHeight / 2 + "px";
+        a.style.left = innerWidth / 2 - a.clientWidth / 2 + "px";
+        $("ev").classList.add('prompta');
+        return v;
+    } else {
+        var a = dt.prompta.list.indexOf(e),
+            b;
+        if (a || a === 0) {
+            if (a > -1) {
+                dt.prompta.list.splice(a, 1);
+            }
+            b = $("[promptav='" + e + "']");
+            b.style.transform = "scale(0.5)";
+            b.style.opacity = 0;
+            setTimeout(function() {
+                $('body').removeChild(b);
+            }, 200);
+            document.body.removeChild($("[promptalov='" + e + "']"));
+        }
+        if (!dt.prompta.list.length) {
+            $('ev').classList.remove('prompta')
+        }
+    }
 }
 
 (function() {
     var dt = {
-        version: "0.1.3"
+        version: "0.1.3", //VERSION AREA
+        prompta: {
+            list: [],
+            now: 0
+        }
     }
+    window.dt = dt;
     var fdt = Object.assign({
         reloadAttempts: 0
-    }, JSON.parse(localStorage.JaPNaASDT));
-    if (fdt.fdtV != "0.1.3") {
-        prompta(
-            "Welcome back! An update has occurred since you last visited.<br>Last visit: " +
-            fdt.fdtV + "<br> Current Version: " + dt.version +
-            "<br> Changelog: <pre class=changelog>Loading...</pre>");
-        getFile('https://raw.githubusercontent.com/JaPNaA/JaPNaA.github.io/beta/changelog.txt?d=' + // NOTE: CHANGE ADRESS BEFORE RELASE
-        new Date().getTime() + Math.random(), function(e){
-            if($(".changelog"))$(".changelog").innerHTML=e;
-        });
-    }
+    }, JSON.parse(localStorage.JaPNaASDT || "{}"));
     window.fdt = fdt;
-    window.dt = dt;
+    if (fdt.fdtV != dt.version) {
+        if (fdt.fdtV) {
+            prompta(
+                "Welcome back! An update has occurred since you last visited.<br>Last visit: " +
+                fdt.fdtV + "<br> Current Version: " + dt.version +
+                "<br> Changelog: <pre class=changelog>Loading...</pre>"
+            );
+            getFile(
+                'https://raw.githubusercontent.com/JaPNaA/JaPNaA.github.io/beta/changelog.txt?d=' + // NOTE: CHANGE ADRESS BEFORE RELASE
+                new Date().getTime() + Math.random(),
+                function(e) {
+                    if ($(".changelog")) $(".changelog").innerHTML = e;
+                });
+        } else {
+            prompta(
+                "Hello! It looks like it's your first time here! <br> Or you cleared your cookies..."
+            );
+        }
+        fdt.fdtV = dt.version;
+    }
 }());
 (function() {
     addEventListener('scroll', function(e) {
