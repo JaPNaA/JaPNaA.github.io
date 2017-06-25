@@ -1,2 +1,2 @@
 Alrighty, this is another test to see if this works.
-<br><b>This is the &gt;b&lt; tag </b>
+<br><b>This is the &lt;b&gt; tag </b>
