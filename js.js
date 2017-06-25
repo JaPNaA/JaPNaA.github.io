@@ -110,7 +110,7 @@ function prompta(e, f) {
 
 (function() {
     var dt = {
-        version: "0.1.3", //VERSION AREA
+        version: "0.1.4", //VERSION
         prompta: {
             list: [],
             now: 0
@@ -129,8 +129,7 @@ function prompta(e, f) {
                 "<br> Changelog: <pre class=changelog>Loading...</pre>"
             );
             getFile(
-                'https://raw.githubusercontent.com/JaPNaA/JaPNaA.github.io/beta/changelog.txt?d=' + // NOTE: CHANGE ADRESS BEFORE RELASE
-                new Date().getTime() + Math.random(),
+                'changelog.txt?d=' + new Date().getTime() + Math.random(),
                 function(e) {
                     if ($(".changelog")) $(".changelog").innerHTML = e;
                 });
@@ -179,8 +178,7 @@ function prompta(e, f) {
     $("#content").innerHTML = "Loading content..."
     $("#content").classList.add('loading');
     getFile(
-        'https://raw.githubusercontent.com/JaPNaA/JaPNaA.github.io/beta/content.txt?d=' + // NOTE: CHANGE ADRESS BEFORE RELASE
-        new Date().getTime() + Math.random(),
+        'content.txt?d=' + new Date().getTime() + Math.random(),
         function(e) {
             $("#content").innerHTML = compile(e, "cxt");
             $("#content").classList.remove("loading");
