@@ -6,6 +6,42 @@
         opacity: 1;
     }
 }
+@keyframes rainbowText {
+    0%, 100%{
+        color: #800000;
+    }
+    12.5%{
+        color: #855000;
+    }
+    25%{
+        color: #828200;
+    }
+    37.5%{
+        color: #008f00;
+    }
+    50%{
+        color: #008b7a;
+    }
+    62.5%{
+        color: #000e8e;
+    }
+    75%{
+        color: #45008a;
+    }
+    87.5%{
+        color: #6e0080;
+    }
+}
+@keyframes unblur {
+    0%{
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    100%{
+        transform: scale(1);
+        opacity: 1;
+    }
+}
 body{
     width: 100%;
     height: 100%;
@@ -32,6 +68,8 @@ body{
     padding: 8px;
     color: #eee;
     margin: 0;
+    font-family: arial;
+    font-size: 12px;
 }
 #content{
     position: relative;
@@ -45,6 +83,16 @@ body{
 body{
     cursor: default;
     background: #fff0f7;
+}
+#feedback{
+    color: #eee;
+    text-decoration: none;
+    transition: 0.15s;
+    margin-left: 0px;
+}
+#feedback:hover{
+    color: #fff;
+    margin-left: 8px;
 }
 #copyright{
     color: lightgrey;
@@ -71,4 +119,34 @@ a{
 .JaPNaATL{
     color: inherit;
     text-decoration: inherit;
+}
+#content.loading{
+    animation: rainbowText 3.5s infinite linear;
+}
+div.prompta{
+    position: fixed;
+    background: white;
+    padding: 16px 18px 16px 18px;
+    border: 1.5px solid #00ffab;
+    border-radius: 2px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+    animation: unblur 0.2s 1 cubic-bezier(0.64, 0.32, 0.55, 1.35);
+    transition: 0.2s cubic-bezier(0.64, 0.32, 0.55, 1.35);
+    transform: scale(1);
+    opacity: 1;
+}
+ev.prompta #head, ev.prompta #content, ev.prompta #foot{
+    transition: 0.2s;
+    filter: blur(2px);
+}
+.promptaLO{
+    position: fixed;
+    background: transparent;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
 }

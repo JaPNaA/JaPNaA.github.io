@@ -1,0 +1,2 @@
+This site is still under constuction. <br>
+If you would like to see some style changes, <a href="https://github.com/JaPNaA/JaPNaA.github.io/issues/new" target="_blank">tell me</a>!
