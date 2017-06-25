@@ -1,2 +1,2 @@
-Alrighty, this is another test to see if this works.
-<br><b>This is the &lt;b&gt; tag </b>
+This site is still under constuction. <br>
+If you would like to see some style changes, <a href="https://github.com/JaPNaA/JaPNaA.github.io/issues/new" target="_blank">tell me</a>!
