@@ -1,3 +1,6 @@
+Version 0.1.5:
+  - You can now drag dialog boxes... like this one!
+
 Version 0.1.4:
   - Added prompta()
   - Added autoreload

@@ -137,6 +137,11 @@ div.prompta{
     transition: 0.2s cubic-bezier(0.64, 0.32, 0.55, 1.35);
     transform: scale(1);
     opacity: 1;
+    user-select: none;
+    z-index: 9;
+}
+.prompta[dragging]{
+    transition: 0s;
 }
 ev.prompta #head, ev.prompta #content, ev.prompta #foot{
     transition: 0.2s;
