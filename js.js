@@ -82,10 +82,12 @@ function prompta(e, f) {
         a.addEventListener('mouseup', function() {
             this.removeAttribute('dragging');
         }, true);
-        addEventListener('mousemove', function(e){
-            if(a&&a.getAttribute('dragging')){
-                a.style.top=a.style.top.replace('px',"")-1+1+e.movementY+"px";
-                a.style.left=a.style.left.replace('px',"")-1+1+e.movementX+"px";
+        addEventListener('mousemove', function(e) {
+            if (a && a.getAttribute('dragging')) {
+                a.style.top = a.style.top.replace('px', "") - 1 + 1 + e
+                    .movementY + "px";
+                a.style.left = a.style.left.replace('px', "") - 1 + 1 +
+                    e.movementX + "px";
             }
         }, false);
         l.classList.add("promptaLO");
@@ -122,7 +124,7 @@ function prompta(e, f) {
 
 (function() {
     var dt = {
-        version: "0.1.5", //VERSION
+        version: "0.1.6", //VERSION
         prompta: {
             list: [],
             now: 0
@@ -183,6 +185,12 @@ function prompta(e, f) {
     }, true);
     $('.JaPNaAT').addEventListener('blur', function() {
         this.removeAttribute('contentEditable');
+    }, false);
+    $('.JaPNaAT').addEventListener('keydown', function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            this.blur();
+        }
     }, false);
 }());
 
