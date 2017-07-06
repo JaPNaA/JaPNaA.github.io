@@ -22,7 +22,7 @@ function fRead(e) {
 }
 
 function iCard(e) {
-    var f = $("<div class='item card displayOpen'>");
+    var f = $("<div class='item card"+((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))?:"":" displayOpen").toString()+"'>");
     f.innerHTML = "<b class=title>" + e.name + "</b><div class='cardTag'>" + e.tags
         .join(", ") +
         "</div>" + (function() {
