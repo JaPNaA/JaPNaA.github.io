@@ -55,8 +55,8 @@ function compile(e, t) {
             } else {
                 fdt.reloadAttempts = 0;
                 f = fRead(e.toString());
-                f.forEach(function(o,i) {
-                    fAnimate(o,i*100);
+                f.forEach(function(o, i) {
+                    fAnimate(o, i * 100);
                 });
             }
             break;
@@ -90,6 +90,25 @@ function prompta(e, f) {
                     e.movementX + "px";
             }
         }, false);
+        a.addEventListener("touchmove", function(e) {
+            this.style.position = "fixed";
+            var t = e.targetTouches[0];
+            e.target.style.left = t.pageX - this.clientWidth / 2 + 'px';
+            e.target.style.top = t.pageY - this.clientHeight / 2 + 'px';
+            e.preventDefault();
+        }, true);
+        a.addEventListener("touchstart", function(e) {
+            this.setAttribute('dragging', !0);
+        }, {
+            capture: false,
+            passive: true
+        });
+        a.addEventListener("touchend", function() {
+            this.removeAttribute('dragging');
+        }, {
+            capture: false,
+            passive: true
+        });
         l.classList.add("promptaLO");
         l.setAttribute('promptalov', v);
         l.addEventListener('click', function() {
@@ -124,10 +143,14 @@ function prompta(e, f) {
 
 (function() {
     var dt = {
-        version: "0.1.7", //VERSION
+        version: "0.1.8", //VERSION
         prompta: {
             list: [],
             now: 0
+        },
+        touchmove:{
+            lY: undefined,
+            sI: 0
         }
     }
     window.dt = dt;
@@ -147,15 +170,13 @@ function prompta(e, f) {
                 function(e) {
                     if ($(".changelog")) $(".changelog").innerHTML = e;
                 });
-        } else {
-            prompta(
-                "Hello! It looks like it's your first time here! <br> Or you cleared your cookies..."
-            );
         }
         fdt.fdtV = dt.version;
     }
-    if(innerWidth<380){
-        prompta("Your device's screen may be too small to display this webpage correctly...");
+    if (innerWidth < 280) {
+        prompta(
+            "Your device's screen may be too small to display this webpage correctly..."
+        );
     }
 }());
 (function() {
@@ -171,9 +192,25 @@ function prompta(e, f) {
         if (e.deltaY < 0) {
             $("#head").style.top = "0px";
         } else {
-            $("#head").style.top = "-64px";
+            $("#head").style.top = "-68px";
         }
         $("#head").style.position = "fixed";
+    }, {
+        passive: true,
+        capture: false
+    });
+    addEventListener("touchmove", function(e) {
+        var cY = e.touches[0].clientY, d=dt.touchmove;
+        clearInterval(d.sI);
+        if(cY > d.lY){
+            d.sI=setTimeout(function() {
+                $("#head").style.top = "0px";
+            },10);
+        }else if(cY <= d.lY){
+            $("#head").style.top = "-68px";
+        }
+        $("#head").style.position = "fixed";
+        d.lY = cY;
     }, {
         passive: true,
         capture: false
@@ -205,7 +242,7 @@ function prompta(e, f) {
     getFile(
         'content.json?d=' + new Date().getTime() + Math.random(),
         function(e) {
-            $("#content").innerHTML ="";
+            $("#content").innerHTML = "";
             compile(e, "cxt");
             $("#content").classList.remove("loading");
         });

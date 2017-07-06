@@ -1,3 +1,9 @@
+Version 0.1.8:
+  - Added more mobile support
+  - Responsive Design! (kinda)
+  - Finished outline of cards
+  - Added more styling properties
+
 Version 0.1.7:
   - Content can now be added
   - Material design! (kinda)
