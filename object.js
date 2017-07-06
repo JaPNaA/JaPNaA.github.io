@@ -15,7 +15,6 @@ function obj(e) {
 function fRead(e) {
     var a = JSON.parse(e),
         f = [];
-    console.log(a);
     a.data.forEach(function(o) {
         f.push(obj(o));
     });
