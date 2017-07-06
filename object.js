@@ -1,5 +1,6 @@
 // "Compile" function will send data here.
 function obj(e) {
+    var displayOpenD=((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))?"":" displayOpen");
     switch (e.type) {
         case "card":
             return iCard(e);
@@ -22,7 +23,7 @@ function fRead(e) {
 }
 
 function iCard(e) {
-    var f = $("<div class='item card"+((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))?"":" displayOpen").toString()+"'>");
+    var f = $("<div class='item card"+displayOpenD+"'>");
     f.innerHTML = "<b class=title>" + e.name + "</b><div class='cardTag'>" + e.tags
         .join(", ") +
         "</div>" + (function() {
@@ -55,7 +56,7 @@ function iCard(e) {
 }
 
 function iText(e) {
-    var f = $("<div class='item text displayOpen'>");
+    var f = $("<div class='item text "+displayOpenD+"'>");
     f.innerHTML = "<b class=title>"+(e.title||"")+"</b>"+(e.content||"");
     fScript(f, e);
     return f;
