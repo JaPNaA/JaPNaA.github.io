@@ -1,3 +1,8 @@
+Version 0.1.7:
+  - Content can now be added
+  - Material design! (kinda)
+  - Small UI improvements
+
 Version 0.1.6:
   - Just a little style change
 
