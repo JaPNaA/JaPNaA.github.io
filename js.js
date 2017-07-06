@@ -1,5 +1,6 @@
 function getFile(e, c) {
     var xhttp = new XMLHttpRequest();
+    xhttp.overrideMimeType("text/plain")
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             c(this.responseText);
@@ -46,24 +47,23 @@ function compile(e, t) {
                     } else {
                         $('#errorReloadCount', 1).innerHTML =
                             "Too many <a href=# class=reload>reload</a> attempts";
-                        $('#errorReloadCount', "last").innerHTML =
-                            "Too many <a href=# class=reload>reload</a> attempts";
                         $('a.reload', 1).addEventListener('click', () =>
-                            location.reload());
-                        $('a.reload', "last").addEventListener('click', () =>
                             location.reload());
                     }
                 });
                 document.title = "JaPNaA - Error Occurred"
             } else {
                 fdt.reloadAttempts = 0;
-                f = e;
+                f = fRead(e.toString());
+                f.forEach(function(o,i) {
+                    fAnimate(o,i*100);
+                });
             }
             break;
         default:
             console.warn(t, "is not a valid file type. @function compile.");
     }
-    return f;
+    if (typeof f == "string") return f;
 }
 
 function prompta(e, f) {
@@ -154,14 +154,19 @@ function prompta(e, f) {
         }
         fdt.fdtV = dt.version;
     }
+    if(innerWidth<380){
+        prompta("Your device's screen may be too small to display this webpage correctly...");
+    }
 }());
 (function() {
-    addEventListener('scroll', function(e) {
-        if ($("body").scrollTop < 1) {
-            $("#head").style.position = "absolute";
-            $("#head").style.top = "";
-        }
-    }, false);
+    if (!navigator.userAgent.includes('Firefox')) { //Buggy if Firefox
+        addEventListener('scroll', function(e) {
+            if ($("body").scrollTop < 1) {
+                $("#head").style.position = "absolute";
+                $("#head").style.top = "";
+            }
+        }, false);
+    }
     addEventListener('wheel', function(e) {
         if (e.deltaY < 0) {
             $("#head").style.top = "0px";
@@ -198,9 +203,10 @@ function prompta(e, f) {
     $("#content").innerHTML = "Loading content..."
     $("#content").classList.add('loading');
     getFile(
-        'content.txt?d=' + new Date().getTime() + Math.random(),
+        'content.json?d=' + new Date().getTime() + Math.random(),
         function(e) {
-            $("#content").innerHTML = compile(e, "cxt");
+            $("#content").innerHTML ="";
+            compile(e, "cxt");
             $("#content").classList.remove("loading");
         });
 }());
