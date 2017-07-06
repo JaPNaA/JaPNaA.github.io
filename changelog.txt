@@ -4,7 +4,7 @@ Version 0.1.7:
   - Small UI improvements
 
 Version 0.1.6:
-  - What? Huh. I forgot to add a changelog log for 0.1.6...
+  - Just a little style change
 
 Version 0.1.5:
   - You can now drag dialog boxes... like this one!
