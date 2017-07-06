@@ -57,7 +57,7 @@ body{
     left: 0;
     height: 64px;
     background: #80ffc3;
-    box-shadow: 0 2px 5px rgba(0,0,0,.26);
+    box-shadow: 0 0 8px rgba(0,0,0,0.12), 0 8px 8px rgba(0,0,0,0.24);
     will-change: top;
     transition: 0.3s;
     z-index: 10;
@@ -83,7 +83,7 @@ body{
 #content{
     position: relative;
     display: inline-block;
-    margin-top: 64px;
+    margin-top: 48px;
     padding: 16px;
     min-height: 100vh;
     font-size: 16px;
@@ -99,7 +99,7 @@ body{
 }
 body{
     cursor: default;
-    background: #fff0f7;
+    background: #fff7fb;
 }
 #feedback{
     color: #eee;
@@ -133,6 +133,9 @@ body{
 a{
     color: #0012ff;
 }
+img{
+    width: 100%;
+}
 .JaPNaATL{
     color: inherit;
     text-decoration: inherit;
@@ -154,7 +157,7 @@ div.prompta{
     transition: 0.2s cubic-bezier(0.64, 0.32, 0.55, 1.35);
     transform: scale(1);
     opacity: 1;
-    z-index: 9;
+    z-index: 99;
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 }
 .prompta[dragging]{
@@ -177,9 +180,9 @@ ev.prompta #head, ev.prompta #content, ev.prompta #foot{
     display: block;
     text-align: left;
     max-width: 564px;
-    min-width: 236px;
+    min-width: 180px;
     padding: 16px 24px;
-    margin: 24px 32px;
+    margin: 24px 1vw;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     transition: 0.2s;
     background: white;
@@ -187,7 +190,7 @@ ev.prompta #head, ev.prompta #content, ev.prompta #foot{
     overflow-x: hidden;
 }
 .item:hover{
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     z-index: 2;
 }
 .displayOpen{
@@ -213,6 +216,26 @@ ev.prompta #head, ev.prompta #content, ev.prompta #foot{
 .card>.cardTag::before{
     content: "[";
 }
-.card:hover .cardTag{
+.card:hover .cardTag, .item:hover>.author, .item:hover>.timestamp{
     opacity: 0.5;
+}
+.card>.desc{
+    opacity: 0.9;
+    margin-top: 4px;
+}
+.item>.title{
+    font-size: 18px;
+    display: block;
+}
+.item>.timestamp{
+    opacity: 0.3;
+    position: absolute;
+    width: 100%;
+    text-align: right;
+    left: -16px;
+    font-size: 11px;
+}
+.item>.author{
+    opacity: 0.3;
+    font-size: 11px;
 }

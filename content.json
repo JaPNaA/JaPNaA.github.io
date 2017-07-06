@@ -2,23 +2,37 @@
     "data": [
         {
             "type": "text",
+            "title": "Work In Progess",
             "content": "This site is still work in progess, and we would love some feedback from you.<br><a target=_blank href='https://github.com/JaPNaA/JaPNaA.github.io/issues/new'>Send feedback</a>",
-            "timestamp": "07/06/2017"
+            "timestamp": "Jul 6 2017",
+            "events":[
+                ["click", "function(e){e.preventDefault(); open('https://github.com/JaPNaA/JaPNaA.github.io/issues/new');}"]
+            ],
+            "style": "background: #c4d3ff;"
         },
         {
             "type": "card",
-            "tags": ["WIP", "Test"],
+            "tags": ["WIP", "Game", "AI"],
             "author": ["JaPNaA"],
-            "name": "Test Card",
-            "tamestamp": "07/03/2017",
+            "name": "Minesweeper AI",
+            "timestamp": "Jul 3 2017",
+            "no": 1,
             "content": {
                 "link": "https://rawgit.com/JaPNaA/kKJFDKJHhAIULFyOWYR-YQ-eyouHSDUIiuamsd/master/9/index.html",
                 "description": "This is a replica of Minesweeper, which I'm going to also make an AI script to solve it on it's own.",
-                "display": {
-                    "caption": "What it looks like",
-                    "img": "https://github.com/JaPNaA/kKJFDKJHhAIULFyOWYR-YQ-eyouHSDUIiuamsd/blob/master/9/Untitled.png?raw=true"
-                }
+                "display":[
+                    {
+                        "type": "img",
+                        "caption": "What it looks like",
+                        "src": "https://github.com/JaPNaA/kKJFDKJHhAIULFyOWYR-YQ-eyouHSDUIiuamsd/blob/master/9/Untitled.png?raw=true"
+                    }
+                ]
             }
+        },
+        {
+            "type": "text",
+            "title": "Animation Test",
+            "content": "This is just a card so that I can test the animations on this site."
         }
     ],
     "meta":{
