@@ -124,7 +124,7 @@ function prompta(e, f) {
 
 (function() {
     var dt = {
-        version: "0.1.6", //VERSION
+        version: "0.1.7", //VERSION
         prompta: {
             list: [],
             now: 0

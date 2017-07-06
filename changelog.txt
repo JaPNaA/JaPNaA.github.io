@@ -1,3 +1,11 @@
+Version 0.1.7:
+  - Content can now be added
+  - Material design! (kinda)
+  - Small UI improvements
+
+Version 0.1.6:
+  - What? Huh. I forgot to add a changelog log for 0.1.6...
+
 Version 0.1.5:
   - You can now drag dialog boxes... like this one!
 
