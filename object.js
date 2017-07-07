@@ -55,7 +55,7 @@ function iCard(e) {
 }
 
 function iText(e) {
-    var f = $("<div class='item text "+((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))?"":" displayOpen").toString()"+'>");
+    var f = $("<div class='item text "+((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))?"":" displayOpen").toString()+"'>");
     f.innerHTML = "<b class=title>"+(e.title||"")+"</b>"+(e.content||"");
     fScript(f, e);
     return f;
