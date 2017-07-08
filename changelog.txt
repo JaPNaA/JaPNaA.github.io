@@ -1,3 +1,8 @@
+Version 0.2.0:
+  - Beta!
+  - Not sure if your in Fallback mode? Check the title.
+  - MOAR SUPPORT
+
 Version 0.1.9:
   - Added fallback.js, for older browsers
   - Compatibility changes

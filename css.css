@@ -104,13 +104,14 @@ body{
     cursor: default;
     background: #fff7fb;
 }
-#feedback{
+.footlink{
     color: #eee;
     text-decoration: none;
     transition: 0.15s;
     margin-left: 0px;
+    font-size: 14px;
 }
-#feedback:hover{
+.footlink:hover{
     color: #fff;
     margin-left: 8px;
 }

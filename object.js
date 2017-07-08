@@ -94,20 +94,24 @@ try {
 
     function fAnimate(e, f) {
         $("#content").appendChild(e);
-        setTimeout(() => {
-            e.animate([{
-                opacity: 0,
-                top: "64px"
-            }, {
-                opacity: 1,
-                top: 0
-            }], {
-                duration: 750,
-                iterations: 1,
-                easing: "ease"
-            });
+        if (e.animate) {
+            setTimeout(() => {
+                e.animate([{
+                    opacity: 0,
+                    top: "64px"
+                }, {
+                    opacity: 1,
+                    top: 0
+                }], {
+                    duration: 750,
+                    iterations: 1,
+                    easing: "ease"
+                });
+                e.classList.remove("displayOpen");
+            }, f);
+        } else {
             e.classList.remove("displayOpen");
-        }, f);
+        }
     }
 } catch (e) {
     console.error(e);

@@ -187,7 +187,16 @@ try {
             );
         }
     }());
+} catch (e) {
+    console.error(e);
+    try {
+        prompta(e);
+    } catch (e) {}
+    dt.fallback.push(!1);
+} finally {
+    dt.fallback.push(!0);
     window.onerror=function(m,u,l){
+        alert([m,u,l].join('\n'));
         if(dt.fallback.length){
             dt.fallback.push(!1);
             prompta("Error:<br>"+[m,u,l].join("<br>"));
@@ -199,12 +208,4 @@ try {
             initFallback();
         }
     }
-} catch (e) {
-    console.error(e);
-    try {
-        prompta(e);
-    } catch (e) {}
-    dt.fallback.push(!1);
-} finally {
-    dt.fallback.push(!0);
 }

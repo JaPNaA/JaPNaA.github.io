@@ -2,13 +2,32 @@
     "data": [
         {
             "type": "text",
-            "title": "Work In Progess",
-            "content": "This site is still work in progess, and we would love some feedback from you.<br><a target=_blank href='https://github.com/JaPNaA/JaPNaA.github.io/issues/new'>Send feedback</a>",
+            "title": "Beta",
+            "content": "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='https://github.com/JaPNaA/JaPNaA.github.io/issues/new'>Send feedback</a>",
             "timestamp": "Jul 6 2017",
             "events":[
                 ["click", "function(e){e.preventDefault(); open('https://github.com/JaPNaA/JaPNaA.github.io/issues/new');}"]
             ],
             "style": "background-color: #c4d3ff;"
+        },
+        {
+            "type": "card",
+            "tags": ["Site", "Beta", "JaPNaA"],
+            "author": ["JaPNaA"],
+            "name": "JaPNaA Site",
+            "timestamp": "Jul 8 2017",
+            "no": 2,
+            "content": {
+                "link": "https://japnaa.github.io/",
+                "description": "This is a site for my projects and things. And this site that your seeing this project on is a project... INCEPTION",
+                "display":[
+                    {
+                        "type": "img",
+                        "caption": "INCEPTION",
+                        "src": "https://raw.githubusercontent.com/JaPNaA/kKJFDKJHhAIULFyOWYR-YQ-eyouHSDUIiuamsd/master/P/Untitled.png"
+                    }
+                ]
+            }
         },
         {
             "type": "card",
@@ -28,11 +47,6 @@
                     }
                 ]
             }
-        },
-        {
-            "type": "text",
-            "title": "Animation Test",
-            "content": "This is just a card so that I can test the animations on this site."
         }
     ],
     "meta":{
