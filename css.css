@@ -109,6 +109,7 @@ body{
     text-decoration: none;
     transition: 0.15s;
     margin-left: 0px;
+    font-size: 14px;
 }
 .footlink:hover{
     color: #fff;

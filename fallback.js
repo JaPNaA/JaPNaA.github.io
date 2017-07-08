@@ -1,4 +1,5 @@
 var initFallback=function(){
+    document.title="JaPNaA - Fallback"
 var $ = {
     "id": function(e){
         return document.getElementById(e);
