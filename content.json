@@ -8,7 +8,7 @@
             "events":[
                 ["click", "function(e){e.preventDefault(); open('https://github.com/JaPNaA/JaPNaA.github.io/issues/new');}"]
             ],
-            "style": "background: #c4d3ff;"
+            "style": "background-color: #c4d3ff;"
         },
         {
             "type": "card",
