@@ -104,13 +104,13 @@ body{
     cursor: default;
     background: #fff7fb;
 }
-#feedback{
+.footlink{
     color: #eee;
     text-decoration: none;
     transition: 0.15s;
     margin-left: 0px;
 }
-#feedback:hover{
+.footlink:hover{
     color: #fff;
     margin-left: 8px;
 }

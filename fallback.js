@@ -1,9 +1,9 @@
 var initFallback=function(){
 var $ = {
-    id: function(e){
+    "id": function(e){
         return document.getElementById(e);
     },
-    class: function(e){
+    "cls": function(e){
         if(document.getElementsByClassName){
             return document.getElementsByClassName(e);
         } else if(document.querySelectorAll){
@@ -14,7 +14,7 @@ var $ = {
             return;
         }
     },
-    tag: function(e){
+    "tag": function(e){
         if(document.getElementsByTagName){
             return document.getElementsByTagName(e);
         } else if(document.querySelectorAll){
@@ -26,19 +26,19 @@ var $ = {
         }
     }
 }
+Array.prototype.forEach=function(f){
+    for(var i=0; i<this.length; i++){
+        f(this[i],i);
+    }
+}
 function fAnimate(e, f) {
     $.id("content").appendChild(e);
-    e.classList.remove("displayOpen");
 }
 function getFile(e, c) {
     var xhttp = new XMLHttpRequest();
-    xhttp.overrideMimeType("text/plain")
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             c(this.responseText);
-        }
-        if (this.status > 499) {
-            c("~#Failed to load content");
         }
     };
     xhttp.onerror = function() {
@@ -77,7 +77,7 @@ function compile(e, t) {
                 } else {
                     $.id('errorReloadCount')[0].innerHTML =
                         "Too many <a href=# class=reload>reload</a> attempts";
-                    $.class('reload')[0].addEventListener('click', function(){
+                    $.cls('reload')[0].addEventListener('click', function(){
                         location.reload();
                     },true);
                 }
@@ -176,8 +176,7 @@ function fRead(e) {
 function iCard(e) {
     var f = (function(){
         var a=document.createElement("div");
-        a.classList.add("item");
-        a.classList.add("card");
+        a.setAttribute("class", "item card");
         return a;
     }());
     f.innerHTML = "<b class=title>" + e.name + "</b><div class='cardTag'>" +
@@ -207,8 +206,8 @@ function iCard(e) {
                 "</div> <div class=author>" + e.author.join(", ") +
                 "</div>";
         }());
-    f.style = e.style || "";
-    if(e.content.link){
+    try{f.style = e.style || "";}catch(e){}
+    if(e.content&&e.content.link){
         (f.onclick = function() {
             open(e.content.link);
         });
@@ -220,8 +219,7 @@ function iCard(e) {
 function iText(e) {
     var f = (function(){
         var a=document.createElement("div");
-        a.classList.add("item");
-        a.classList.add("card");
+        a.setAttribute("class", "item card");
         return a;
     }());
     f.innerHTML = "<b class=title>" + (e.title || "") + "</b>" + (e.content ||
@@ -233,20 +231,20 @@ function iText(e) {
 function fScript(e, g) {
     var f = g.events;
     if (!f) return;
-    f.forEach(function(o) {
+    for (var i=0; i<f.length; i++){
         var a;
-        eval("a=" + o[1]);
-        e.addEventListener(o[0], a);
-    });
+        eval("a="+f[i][1]);
+        e["on"+f[i]]=[0],a;
+    }
     g.script && eval(g.script);
     (function() {
         var a = g.style.split(";");
-        a.forEach(function(o) {
-            if (o) {
-                var b = o.split(":");
+        for (var i=0; i<a.length; i++){
+            if(a[i]){
+                var b = a[i].split(":");
                 e.style[b[0]] = b[1];
             }
-        });
+        }
     }());
 }
 
@@ -256,8 +254,7 @@ window.onbeforeunload=function() {
     }
 };
 (function() {
-    $.id("content").innerHTML = "Loading content..."
-    $.id("content").classList.add('loading');
+    $.id("content").innerHTML = "Loading content...";
     getFile(
         'content.json' + (function(){
             if(Date&&Math){
@@ -278,7 +275,6 @@ window.onbeforeunload=function() {
         function(e) {
             $.id("content").innerHTML = "";
             compile(e, "cxt");
-            $.id("content").classList.remove("loading");
         });
 }());
 }
