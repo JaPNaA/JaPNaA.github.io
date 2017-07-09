@@ -31,14 +31,14 @@
         },
         {
             "type": "card",
-            "tags": ["WIP", "Game", "AI"],
+            "tags": ["Game", "AI"],
             "author": ["JaPNaA"],
             "name": "Minesweeper AI",
             "timestamp": "Jul 3 2017",
             "no": 1,
             "content": {
                 "link": "https://rawgit.com/JaPNaA/kKJFDKJHhAIULFyOWYR-YQ-eyouHSDUIiuamsd/master/9/index.html",
-                "description": "This is a replica of Minesweeper, which I'm going to also make an AI script to solve it on it's own.",
+                "description": "This is a replica of Minesweeper, but an AI script has been injected into it, so it'll solve its self!",
                 "display":[
                     {
                         "type": "img",
