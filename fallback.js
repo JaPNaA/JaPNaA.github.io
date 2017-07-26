@@ -143,7 +143,7 @@ function prompta(e, f) {
         }
     }
     window.dt = dt;
-    if(JSON&&JSON.parse){
+    if(window.JSON&&JSON.parse){
         var fdt=JSON.parse((localStorage&&localStorage.JaPNaASDT)||"{}")
     } else {
         eval("var fdt = "+ (localStorage.JaPNaASDT || "{}"));
@@ -163,7 +163,7 @@ function obj(e) {
 
 function fRead(e) {
     var a, f = [];
-    if(JSON&&JSON.parse){
+    if(window.JSON&&JSON.parse){
         a=JSON.parse(e);
     } else {
         eval("a="+e);
@@ -241,16 +241,16 @@ function fScript(e, g) {
     (function() {
         var a = g.style.split(";");
         for (var i=0; i<a.length; i++){
-            if(a[i]){
+            if(a[i]&&e.style){
                 var b = a[i].split(":");
-                e.style[b[0]] = b[1];
+                if(e.style[b[0]]) e.style[b[0]] = b[1];
             }
         }
     }());
 }
 
 window.onbeforeunload=function() {
-    if(localStorage&&JSON){
+    if(localStorage&&window.JSON){
         localStorage.JaPNaASDT = JSON.stringify(fdt);
     }
 };

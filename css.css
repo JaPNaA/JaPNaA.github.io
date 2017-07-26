@@ -178,6 +178,7 @@ ev.prompta #head, ev.prompta #content, ev.prompta #foot{
     left:0;
     width:100%;
     height: 100%;
+    z-index: 6;
 }
 .item{
     position: relative;

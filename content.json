@@ -11,6 +11,18 @@
             "style": "background-color: #c4d3ff;"
         },
         {
+                "type": "card",
+                "tags": "Code, JaPCode",
+                "author": ["JaPNaA"],
+                "name": "JaPCode",
+                "timestamp": "Jul 26 2017",
+                "no": 3,
+                "content":{
+                    "link": null,
+                    "description": "An old unfinished project brought back to life. JaPCode is a simple encoding thingy."
+                }
+        },
+        {
             "type": "card",
             "tags": ["Site", "Beta", "JaPNaA"],
             "author": ["JaPNaA"],
