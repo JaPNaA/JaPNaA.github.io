@@ -20,7 +20,8 @@
                 "content":{
                     "link": null,
                     "description": "An old unfinished project brought back to life. JaPCode is a simple encoding thingy."
-                }
+                },
+                "display":[]
         },
         {
             "type": "card",
