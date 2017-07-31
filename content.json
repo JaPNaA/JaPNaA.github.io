@@ -12,14 +12,19 @@
         },
         {
                 "type": "card",
-                "tags": "Code, JaPCode",
+                "tags": ["Code", "JaPCode"],
                 "author": ["JaPNaA"],
                 "name": "JaPCode",
                 "timestamp": "Jul 26 2017",
                 "no": 3,
                 "content":{
-                    "link": null,
-                    "description": "An old unfinished project brought back to life. JaPCode is a simple encoding thingy."
+                    "link": "https://rawgit.com/JaPNaA/kKJFDKJHhAIULFyOWYR-YQ-eyouHSDUIiuamsd/master/11/index.html",
+                    "description": "An old unfinished project brought back to life. JaPCode is a simple encoding thingy.",
+                    "display":[{
+                        "type": "img",
+                        "caption": "JaPCode",
+                        "src":"https://github.com/JaPNaA/kKJFDKJHhAIULFyOWYR-YQ-eyouHSDUIiuamsd/blob/master/11/Untitled1.png?raw=true"
+                        }]
                 }
         },
         {
