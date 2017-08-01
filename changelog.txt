@@ -1,3 +1,13 @@
+My to-do list:
+  - Changelog is getting big, allow scrolling in prompta
+  - Optimize mobile touch scrolling
+  - Optimize mobile prompta dragging
+
+Version 0.2.1:
+  - Changed some styles
+  - Added things to make the site a better experience
+  - Added a malformed card system, in case I fail to make proper cards
+
 Version 0.2.0:
   - Beta!
   - Not sure if your in Fallback mode? Check the title.

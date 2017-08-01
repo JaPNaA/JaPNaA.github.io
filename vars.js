@@ -147,9 +147,32 @@ try {
         }
     }
 
+    function shortPrompta(e){
+        switch (e) {
+            case "feedback":
+                open("https://github.com/JaPNaA/JaPNaA.github.io/issues/new","feedbackPop","width=1080, height=600, left="+((screen.width-1080)/2)+", top="+((screen.height-600)/2));
+                break;
+            case "changelog":
+                prompta(
+                    "Welcome back! An update has occurred since you last visited.<br>Last visit: " +
+                    fdt.fdtV + "<br> Current Version: " + dt.version +
+                    "<br> Changelog: <pre class=changelog>Loading...</pre>"
+                );
+                getFile(
+                    'changelog.txt?d=' + new Date().getTime() + Math.random(),
+                    function(e) {
+                        if ($(".changelog")) $(".changelog").innerHTML =
+                            e;
+                    });
+                break;
+            default:
+                prompta(e);
+        }
+    }
+
     (function() {
         var dt = {
-            version: "0.2.0", //VERSION
+            version: "0.2.1", //VERSION
             prompta: {
                 list: [],
                 now: 0
@@ -167,17 +190,7 @@ try {
         window.fdt = fdt;
         if (fdt.fdtV != dt.version) {
             if (fdt.fdtV) {
-                prompta(
-                    "Welcome back! An update has occurred since you last visited.<br>Last visit: " +
-                    fdt.fdtV + "<br> Current Version: " + dt.version +
-                    "<br> Changelog: <pre class=changelog>Loading...</pre>"
-                );
-                getFile(
-                    'changelog.txt?d=' + new Date().getTime() + Math.random(),
-                    function(e) {
-                        if ($(".changelog")) $(".changelog").innerHTML =
-                            e;
-                    });
+                shortPrompta('changelog');
             }
             fdt.fdtV = dt.version;
         }
