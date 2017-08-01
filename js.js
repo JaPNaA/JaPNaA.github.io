@@ -19,7 +19,7 @@ try {
             passive: true,
             capture: false
         });
-        addEventListener("touchmove", function(e) {
+        addEventListener("touchmove", function(e) { //optimize with smothing
             if (!dt.prompta.list.length) {
                 var cY = e.touches[0].clientY,
                     d = dt.touchmove;

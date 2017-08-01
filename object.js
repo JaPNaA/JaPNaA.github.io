@@ -28,48 +28,66 @@ try {
     }
 
     function iCard(e) {
-        var f = $("<div class='item card" + displayOpenD + "'>");
-        f.innerHTML = "<b class=title>" + e.name + "</b><div class='cardTag'>" +
-            e.tags
-            .join(", ") +
-            "</div>" + (function() {
-                return "<div class=desc>" + e.content.description +
-                    "</div><div class=display>" + (function() {
-                        var f = "";
-                        e.content.display.forEach(function(o) {
-                            switch (o.type) {
-                                case "img":
-                                    f += '<img src=' + o.src +
-                                        ' title="' + o.caption +
-                                        '" style="' + o.style +
-                                        '">';
-                                    break;
-                                default:
-                                    console.warn(e, o,
-                                        "unkown item. @function iCard 'display'"
-                                    )
-                            }
-                        });
-                        return f;
-                    }()) + "</div>" + "<div class=timestamp>" + (e.timestamp ?
-                        new Date(e.timestamp).toLocaleDateString() : "") +
-                    "</div> <div class=author>" + e.author.join(", ") +
-                    "</div>";
-            }());
-        f.style = e.style || "";
-        e.content.link && (f.onclick = function() {
-            open(e.content.link);
-        });
-        fScript(f, e);
-        return f;
+        try{
+            var f = $("<div class='item card" + displayOpenD + "'>");
+            f.innerHTML = "<b class=title>" + e.name + "</b><div class='cardTag'>" +
+                e.tags
+                .join(", ") +
+                "</div>" + (function() {
+                    return "<div class=desc>" + e.content.description +
+                        "</div><div class=display>" + (function() {
+                            var f = "";
+                            e.content.display.forEach(function(o) {
+                                switch (o.type) {
+                                    case "img":
+                                        f += '<img src=' + o.src +
+                                            ' title="' + o.caption +
+                                            '" style="' + o.style +
+                                            '">';
+                                        break;
+                                    default:
+                                        console.warn(e, o,
+                                            "unkown item. @function iCard 'display'"
+                                        )
+                                }
+                            });
+                            return f;
+                        }()) + "</div>" + "<div class=timestamp>" + (e.timestamp ?
+                            new Date(e.timestamp).toLocaleDateString() : "") +
+                        "</div> <div class=author>" + e.author.join(", ") +
+                        "</div>";
+                }());
+            f.style = e.style || "";
+            e.content.link && (f.onclick = function() {
+                open(e.content.link);
+            });
+            fScript(f, e);
+            return f;
+        } catch(er) {
+            var f = $("<div class='item card ierror " + displayOpenD + "'>");
+            f.innerHTML="<b> An error occurred while trying the parse the card.<br> </b><code>"+er.toString()+"<br>"+JSON.stringify(e)+"</code>";
+            f.onclick=function() {
+                shortPrompta('feedback');
+            };
+            return f;
+        }
     }
 
     function iText(e) {
-        var f = $("<div class='item text " + displayOpenD + "'>");
-        f.innerHTML = "<b class=title>" + (e.title || "") + "</b>" + (e.content ||
-            "");
-        fScript(f, e);
-        return f;
+        try{
+            var f = $("<div class='item text " + displayOpenD + "'>");
+            f.innerHTML = "<b class=title>" + (e.title || "") + "</b>" + (e.content ||
+                "");
+            fScript(f, e);
+            return f;
+        } catch(er) {
+            var f = $("<div class='item card ierror " + displayOpenD + "'>");
+            f.innerHTML="<b> An error occurred while trying the parse the card.<br> </b><code>"+e.toString()+"<br>"+JSON.stringify(e)+"</code>";
+            f.onclick=function() {
+                shortPrompta('feedback');
+            };
+            return f;
+        }
     }
 
     function fScript(e, g) {
