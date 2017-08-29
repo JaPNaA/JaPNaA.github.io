@@ -1,14 +1,33 @@
 {
     "data": [
         {
+            "type": "card",
+            "tags": ["game", "clone", "flappy bird"],
+            "author": ["JaPNaA"],
+            "name": "FlappyBird clone",
+            "timestamp": "Aug 28 2017",
+            "no": 6,
+            "content":{
+                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/FlappyBird%20but%20not/index.html",
+                "description": "I saw a YouTube video about creating a FlappyBird clone... Didn't watch it, but I did make a clone.",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "Death screenshot on a 1:1 aspect ratio screen",
+                        "src": "https://github.com/JaPNaA/Thingy/blob/master/2017/FlappyBird%20but%20not/Untitled.png?raw=true"
+                    }
+                ]
+            }
+        },
+        {
             "type": "text",
             "title": "Beta",
-            "content": "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='https://github.com/JaPNaA/JaPNaA.github.io/issues/new'>Send feedback</a>",
+            "content": "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='https://github.com/JaPNaA/JaPNaA.github.io/issues/new'>Send feedback</a><br><b>No longer in beta, but we would still appreciate your feedback!",
             "timestamp": "Jul 6 2017",
             "events":[
                 ["click", "function(e){e.preventDefault(); open('https://github.com/JaPNaA/JaPNaA.github.io/issues/new');}"]
             ],
-            "style": "background-color: #c4d3ff;"
+            "style": "background-color: #e3eaff;"
         },
         {
             "type": "card",
