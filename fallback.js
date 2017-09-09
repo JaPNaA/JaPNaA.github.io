@@ -196,6 +196,9 @@ function iCard(e) {
                                         '" style="' + o.style +
                                         '">';
                                     break;
+                                case "iframe":
+                                    f += "<div>[iframes are disabled in fallback mode]</div>";
+                                    break;
                                 default:
                                     console.warn(e, o,
                                         "unkown item. @function iCard 'display'"

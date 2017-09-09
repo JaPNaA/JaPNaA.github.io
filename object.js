@@ -46,8 +46,15 @@ try {
                                             '">';
                                         break;
                                     case "iframe":
-                                        f += '<iframe src="' + o.src +
-                                            '" style="' + o.style + '">';
+                                        if(displayOpenD){
+                                            f += '<iframe src="' + o.src +
+                                                '" style="' + o.style + '">';
+                                        } else {
+                                            f += '<img src="' + o.alt.src +
+                                                 '" title="' + o.alt.caption+
+                                                 '" style="' + o.alt.style+
+                                                 '">';
+                                        }
                                         break;
                                     default:
                                         console.warn(e, o,

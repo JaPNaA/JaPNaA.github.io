@@ -209,7 +209,6 @@ try {
 } finally {
     dt.fallback.push(!0);
     window.onerror=function(m,u,l){
-        alert([m,u,l].join('\n'));
         if(dt.fallback.length){
             dt.fallback.push(!1);
             prompta("Error:<br>"+[m,u,l].join("<br>"));

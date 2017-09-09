@@ -13,7 +13,12 @@
                 "display": [
                     {
                         "type": "iframe",
-                        "src": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/"
+                        "src": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/",
+                        "alt": {
+                            "type": "img",
+                            "caption": "Title screen of game",
+                            "src": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/title.png"
+                        }
                     }
                 ]
             },
