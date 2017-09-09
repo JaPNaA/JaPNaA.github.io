@@ -2,6 +2,25 @@
     "data": [
         {
             "type": "card",
+            "tags": ["game", "original", "gameThing", "simple"],
+            "author": ["JaPNaA"],
+            "name": "gameThing",
+            "timestamp": "Sept 8 2017",
+            "no": 7,
+            "content": {
+                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/",
+                "description": "I made a flappy bird clone, then I made this mess.",
+                "display": [
+                    {
+                        "type": "iframe",
+                        "src": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/"
+                    }
+                ]
+            },
+            "style": "background-color: #555555; color: #00fff3;"
+        },
+        {
+            "type": "card",
             "tags": ["game", "clone", "flappy bird"],
             "author": ["JaPNaA"],
             "name": "FlappyBird clone",

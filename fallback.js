@@ -300,7 +300,7 @@ window.onbeforeunload=function() {
 }());
 }
 try { //Fallback
-    if (!(dt.fallback && (function() {
+    /*if (!(dt.fallback && (function() {
             var f = !0;
             if(dt.fallback.length){
                 dt.fallback.forEach(function(o) {
@@ -317,7 +317,7 @@ try { //Fallback
         prompta(a);
         initFallback();
     }
-    dt.fallback=[];
+    dt.fallback=[];*/
 }catch(e){
     initFallback();
 }

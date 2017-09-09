@@ -40,10 +40,14 @@ try {
                             e.content.display.forEach(function(o) {
                                 switch (o.type) {
                                     case "img":
-                                        f += '<img src=' + o.src +
-                                            ' title="' + o.caption +
+                                        f += '<img src="' + o.src +
+                                            '" title="' + o.caption +
                                             '" style="' + o.style +
                                             '">';
+                                        break;
+                                    case "iframe":
+                                        f += '<iframe src="' + o.src +
+                                            '" style="' + o.style + '">';
                                         break;
                                     default:
                                         console.warn(e, o,

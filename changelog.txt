@@ -3,6 +3,10 @@ My to-do list:
   - Optimize mobile touch scrolling
   - Optimize mobile prompta dragging
 
+Version 0.2.2:
+  - Changed some CSS looks
+  - Added iframe as a possibility for visuals
+
 Version 0.2.1:
   - Changed some styles
   - Added things to make the site a better experience
