@@ -48,7 +48,7 @@ try {
                                     case "iframe":
                                         if(displayOpenD){
                                             f += '<iframe src="' + o.src +
-                                                '" style="' + o.style + '">';
+                                                '" style="' + o.style + '"></iframe>';
                                         } else {
                                             f += '<img src="' + o.alt.src +
                                                  '" title="' + o.alt.caption+
