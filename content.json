@@ -2,6 +2,45 @@
     "data": [
         {
             "type": "card",
+            "tags": ["AHSS", "game", "clone", "asteroids"],
+            "author": ["JaPNaA"],
+            "name": "Asteroids",
+            "timestamp": "Nov 2 2017",
+            "no": 9,
+            "content": {
+                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/Asteroids/",
+                "description": "Kinda-clone of the asteroids game",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "Screenshot of la gam",
+                        "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/Asteroids.png?raw=true"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "card",
+            "tags": ["AHSS", "physics", "computer club"],
+            "author": ["JaPNaA"],
+            "name": "Ball Physics",
+            "timestamp": "Nov 2 2017",
+            "no": 8,
+            "content": {
+                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/ballPhysics/",
+                "description": "Not accurate... at all. Spawning more than 20 balls causes infinite energy",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "Screenie...",
+                        "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/ballPhysics.png?raw=true"
+                    }
+                ]
+            },
+            "style": "background-color: black; color: white;"
+        },
+        {
+            "type": "card",
             "tags": ["game", "original", "gameThing", "simple"],
             "author": ["JaPNaA"],
             "name": "gameThing",
