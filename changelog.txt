@@ -2,6 +2,11 @@ My to-do list:
   - Changelog is getting big, allow scrolling in prompta
   - Optimize mobile touch scrolling
   - Optimize mobile prompta dragging
+  - Fix scrolling
+
+Version 0.2.3:
+  - Added about page
+  - Card elements now have timestamp
 
 Version 0.2.2:
   - Changed some CSS looks
