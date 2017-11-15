@@ -32,7 +32,7 @@ try {
 
     function iCard(e) {
         try {
-            var f = $("<div class='item card" + displayOpenD + "'>");
+            var f = $("<a target='_blank' class='item card" + displayOpenD + "'>");
             f.innerHTML =
                 "<b class=title>" +
                 e.name +
@@ -98,10 +98,7 @@ try {
                     );
                 })();
             f.style = e.style || "";
-            e.content.link &&
-                (f.onclick = function() {
-                    open(e.content.link);
-                });
+            e.content.link && (f.href = e.content.link);
             fScript(f, e);
             return f;
         } catch (er) {
@@ -128,7 +125,9 @@ try {
                 "</b>" +
                 (e.content || "") +
                 "<div class=timestamp>" +
-                (e.timestamp ? new Date(e.timestamp).toLocaleDateString() : "") +
+                (e.timestamp
+                    ? new Date(e.timestamp).toLocaleDateString()
+                    : "") +
                 "</div>";
             fScript(f, e);
             return f;

@@ -2,22 +2,46 @@
     "data": [
         {
             "type": "card",
+            "tags": ["Machine Learning", "ML", "tictactoe"],
+            "author": ["JaPNaA"],
+            "name": "TicTacToe ML",
+            "timestamp": "Nov 15 2017",
+            "no": 10,
+            "content": {
+                "link":
+                    "https://rawgit.com/JaPNaA/Thingy/master/2017/ticTacToeMachineLearning/",
+                "description":
+                    "I taught a computer to learn. Progress. This project was inspired by <a href='https://boingboing.net/2009/11/02/mechanical-computer.html'>MENACE.</a>",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "A game in-progress",
+                        "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/tictactoeML.png?raw=true"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "card",
             "tags": ["AHSS", "game", "clone", "asteroids"],
             "author": ["JaPNaA"],
             "name": "Asteroids",
             "timestamp": "Nov 2 2017",
             "no": 9,
             "content": {
-                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/Asteroids/",
+                "link":
+                    "https://rawgit.com/JaPNaA/Thingy/master/2017/Asteroids/",
                 "description": "Kinda-clone of the asteroids game",
                 "display": [
                     {
                         "type": "img",
                         "caption": "Screenshot of la gam",
-                        "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/Asteroids.png?raw=true"
+                        "src":
+                            "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/Asteroids.png?raw=true"
                     }
                 ]
-            }
+            },
+            "style": "background-color: black; color: white;"
         },
         {
             "type": "card",
@@ -27,13 +51,16 @@
             "timestamp": "Nov 2 2017",
             "no": 8,
             "content": {
-                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/ballPhysics/",
-                "description": "Not accurate... at all. Spawning more than 20 balls causes infinite energy",
+                "link":
+                    "https://rawgit.com/JaPNaA/Thingy/master/2017/ballPhysics/",
+                "description":
+                    "Not accurate... at all. Spawning more than 20 balls causes infinite energy",
                 "display": [
                     {
                         "type": "img",
                         "caption": "Screenie...",
-                        "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/ballPhysics.png?raw=true"
+                        "src":
+                            "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/ballPhysics.png?raw=true"
                     }
                 ]
             },
@@ -47,16 +74,20 @@
             "timestamp": "Sept 8 2017",
             "no": 7,
             "content": {
-                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/",
-                "description": "I made a flappy bird clone, then I made this mess.",
+                "link":
+                    "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/",
+                "description":
+                    "I made a flappy bird clone, then I made this mess.",
                 "display": [
                     {
                         "type": "iframe",
-                        "src": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/",
+                        "src":
+                            "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/",
                         "alt": {
                             "type": "img",
                             "caption": "Title screen of game",
-                            "src": "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/title.png"
+                            "src":
+                                "https://rawgit.com/JaPNaA/Thingy/master/2017/gameThing/title.png"
                         }
                     }
                 ]
@@ -70,14 +101,18 @@
             "name": "FlappyBird clone",
             "timestamp": "Aug 28 2017",
             "no": 6,
-            "content":{
-                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/FlappyBird%20but%20not/index.html",
-                "description": "I saw a YouTube video about creating a FlappyBird clone... Didn't watch it, but I did make a clone.",
+            "content": {
+                "link":
+                    "https://rawgit.com/JaPNaA/Thingy/master/2017/FlappyBird%20but%20not/",
+                "description":
+                    "I saw a YouTube video about creating a FlappyBird clone... Didn't watch it, but I did make a clone.",
                 "display": [
                     {
                         "type": "img",
-                        "caption": "Death screenshot on a 1:1 aspect ratio screen",
-                        "src": "https://github.com/JaPNaA/Thingy/blob/master/2017/FlappyBird%20but%20not/Untitled.png?raw=true"
+                        "caption":
+                            "Death screenshot on a 1:1 aspect ratio screen",
+                        "src":
+                            "https://github.com/JaPNaA/Thingy/blob/master/2017/FlappyBird%20but%20not/Untitled.png?raw=true"
                     }
                 ]
             }
@@ -85,10 +120,14 @@
         {
             "type": "text",
             "title": "Beta",
-            "content": "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='https://github.com/JaPNaA/JaPNaA.github.io/issues/new'>Send feedback</a><br><b>No longer in beta, but we would still appreciate your feedback!",
+            "content":
+                "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='https://github.com/JaPNaA/JaPNaA.github.io/issues/new'>Send feedback</a><br><b>No longer in beta, but we would still appreciate your feedback!",
             "timestamp": "Jul 6 2017",
-            "events":[
-                ["click", "function(e){e.preventDefault(); open('https://github.com/JaPNaA/JaPNaA.github.io/issues/new');}"]
+            "events": [
+                [
+                    "click",
+                    "function(e){e.preventDefault(); open('https://github.com/JaPNaA/JaPNaA.github.io/issues/new');}"
+                ]
             ],
             "style": "background-color: #e3eaff;"
         },
@@ -99,31 +138,48 @@
             "name": "Eval vs No Eval",
             "timestamp": "Aug 17 2017",
             "no": 5,
-            "content":{
-                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/eval%20vs%20not%20eval/index.html",
-                "description": "I was looking around the web when I stumbled across the statement \"eval() is evil!\" So I decided to do some research on the topic, and I made my own performance test.",
-                "display":[{
-                    "type": "img",
-                    "caption": "A result from the test",
-                    "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/EvalVSNotEval.png?raw=true"
-                }]
+            "content": {
+                "link":
+                    "https://rawgit.com/JaPNaA/Thingy/master/2017/eval%20vs%20not%20eval/",
+                "description":
+                    "I was looking around the web when I stumbled across the statement \"eval() is evil!\" So I decided to do some research on the topic, and I made my own performance test.",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "A result from the test",
+                        "src":
+                            "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/EvalVSNotEval.png?raw=true"
+                    }
+                ]
             }
         },
         {
             "type": "card",
-            "tags": ["Game", "Test", "Canvas", "Collision", "Node", "Mutiplayer", "heroku"],
+            "tags": [
+                "Game",
+                "Test",
+                "Canvas",
+                "Collision",
+                "Node",
+                "Mutiplayer",
+                "heroku"
+            ],
             "author": ["JaPNaA"],
             "name": "Collision",
             "timestamp": "Aug 15 2017",
             "no": 4,
-            "content":{
+            "content": {
                 "link": "http://fierce-scrubland-53475.herokuapp.com/",
-                "description": "A test for Heroku, Node Websocket, AND collision! Three tests in one :O. You can bump into things and push other players on this HTML5 Websocket test.",
-                "display":[{
-                    "type": "img",
-                    "caption": "Yea, it's a boring game.",
-                    "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/Collision.png?raw=true"
-                }]
+                "description":
+                    "A test for Heroku, Node Websocket, AND collision! Three tests in one :O. You can bump into things and push other players on this HTML5 Websocket test.",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "Yea, it's a boring game.",
+                        "src":
+                            "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/Collision.png?raw=true"
+                    }
+                ]
             },
             "style": "background-color: black; color:white;"
         },
@@ -134,14 +190,18 @@
             "name": "JaPCode",
             "timestamp": "Jul 26 2017",
             "no": 3,
-            "content":{
-                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/JaPCode/index.html",
-                "description": "An old unfinished project brought back to life. JaPCode is a simple encoding thingy.",
-                "display":[{
-                    "type": "img",
-                    "caption": "JaPCode",
-                    "src":"https://github.com/JaPNaA/Thingy/blob/master/2017/JaPCode/Untitled1.png?raw=true"
-                }]
+            "content": {
+                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/JaPCode/",
+                "description":
+                    "An old unfinished project brought back to life. JaPCode is a simple encoding thingy.",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "JaPCode",
+                        "src":
+                            "https://github.com/JaPNaA/Thingy/blob/master/2017/JaPCode/Untitled1.png?raw=true"
+                    }
+                ]
             }
         },
         {
@@ -153,16 +213,18 @@
             "no": 2,
             "content": {
                 "link": "https://japnaa.github.io/",
-                "description": "This is a site for my projects and things. And this site that your seeing this project on is a project... INCEPTION",
-                "display":[
+                "description":
+                    "This is a site for my projects and things. And this site that your seeing this project on is a project... INCEPTION",
+                "display": [
                     {
                         "type": "img",
                         "caption": "INCEPTION",
-                        "src": "https://raw.githubusercontent.com/JaPNaA/Thingy/master/Photos/2017/JaPNaASite.png"
+                        "src":
+                            "https://raw.githubusercontent.com/JaPNaA/Thingy/master/Photos/2017/JaPNaASite.png"
                     }
                 ]
             },
-            "style":"background-color: #7efec3;"
+            "style": "background-color: #7efec3;"
         },
         {
             "type": "card",
@@ -172,19 +234,22 @@
             "timestamp": "Jul 3 2017",
             "no": 1,
             "content": {
-                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/minesweeperAI/index.html",
-                "description": "This is a replica of Minesweeper, but an AI script has been injected into it, so it'll solve its self!",
-                "display":[
+                "link":
+                    "https://rawgit.com/JaPNaA/Thingy/master/2017/minesweeperAI/",
+                "description":
+                    "This is a replica of Minesweeper, but an AI script has been injected into it, so it'll solve its self!",
+                "display": [
                     {
                         "type": "img",
                         "caption": "What it looks like",
-                        "src": "https://github.com/JaPNaA/Thingy/blob/master/2017/minesweeperAI/Untitled.png?raw=true"
+                        "src":
+                            "https://github.com/JaPNaA/Thingy/blob/master/2017/minesweeperAI/Untitled.png?raw=true"
                     }
                 ]
             }
         }
     ],
-    "meta":{
+    "meta": {
         "previous": null,
         "after": null,
         "index": 0

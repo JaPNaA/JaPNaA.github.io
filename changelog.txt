@@ -4,9 +4,12 @@ My to-do list:
   - Optimize mobile prompta dragging
   - Fix scrolling
 
+Version 0.2.4:
+  - Switched to using <a href>s instead of relying on onclick
+
 Version 0.2.3:
   - Added about page
-  - Card elements now have timestamp
+  - Text elements now have timestamp
 
 Version 0.2.2:
   - Changed some CSS looks
