@@ -5,7 +5,7 @@ My to-do list:
   - Fix scrolling
 
 Version 0.2.4:
-  - Switched to using <a href>s instead of relying on onclick
+  - Switched to using link elements instead of relying on onclick
 
 Version 0.2.3:
   - Added about page
