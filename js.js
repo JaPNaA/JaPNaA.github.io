@@ -3,19 +3,17 @@ try {
         addEventListener(
             "scroll",
             function(e) {
-                var st = document.body.scrollTop || document.documentElement.scrollTop, f = $("#foot");
+                var st =
+                        document.body.scrollTop ||
+                        document.documentElement.scrollTop,
+                    f = $("#foot");
                 if (dt.scroll < st && st > 64) {
                     $("#head").style.top = "-68px";
                 } else {
                     $("#head").style.top = "0px";
                 }
                 dt.scroll = st;
-                if (
-                    document.body.scrollHeight -
-                        document.documentElement.scrollTop -
-                        window.innerHeight <
-                    64
-                ) {
+                if (document.body.scrollHeight - st - window.innerHeight < 64) {
                     f.style.bottom = 0;
                 } else {
                     f.style.bottom = -f.clientHeight + "px";
@@ -26,15 +24,15 @@ try {
         addEventListener(
             "mousemove",
             function(e) {
-                if(!e) return;
-                var f = $("#foot");
+                if (!(e && e.path)) return;
+                var f = $("#foot"),
+                    st =
+                        document.body.scrollTop ||
+                        document.documentElement.scrollTop;
                 if (
                     innerHeight - e.y < 8 ||
                     e.path.indexOf(f) > 0 ||
-                    document.body.scrollHeight -
-                        document.documentElement.scrollTop -
-                        window.innerHeight <
-                        64
+                    document.body.scrollHeight - st - window.innerHeight < 64
                 ) {
                     f.style.bottom = 0;
                 } else {
@@ -46,12 +44,13 @@ try {
         addEventListener(
             "deviceorientation",
             function(e) {
-                var n = Date.now(), f = $("#foot");
+                var n = Date.now(),
+                    f = $("#foot");
                 if (
                     Math.abs(e.alpha - dt.orient.alpha) +
                         Math.abs(e.beta - dt.orient.beta) +
                         Math.abs(e.gamma - dt.orient.gamma) >
-                    (n - dt.orient.t) * 0.8
+                    n - dt.orient.t
                 ) {
                     f.style.bottom = 0;
                 }
