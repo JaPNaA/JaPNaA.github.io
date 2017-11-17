@@ -26,6 +26,7 @@ try {
         addEventListener(
             "mousemove",
             function(e) {
+                if(!e) return;
                 var f = $("#foot");
                 if (
                     innerHeight - e.y < 8 ||
