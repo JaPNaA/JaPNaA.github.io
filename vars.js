@@ -1,7 +1,7 @@
 try {
     function getFile(e, c) {
         var xhttp = new XMLHttpRequest();
-        xhttp.overrideMimeType("text/plain")
+        xhttp.overrideMimeType("text/plain");
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 c(this.responseText);
@@ -177,10 +177,15 @@ try {
                 list: [],
                 now: 0
             },
-            touchmove: {
-                lY: undefined,
-                sI: 0
+            scroll: document.documentElement.scrollTop,
+            orient: {
+                alpha: 0,
+                beta: 0,
+                gamma: 0,
+                t: 0
             },
+            searchV: "",
+            content: {},
             fallback: []
         }
         window.dt = dt;

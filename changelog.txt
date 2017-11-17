@@ -1,8 +1,10 @@
 My to-do list:
-  - Changelog is getting big, allow scrolling in prompta
-  - Optimize mobile touch scrolling
-  - Optimize mobile prompta dragging
-  - Fix scrolling
+  - Make search.js not terrible. (read source code for search.js if you want to see what's so bad)
+
+Version 0.2.5:
+  - Fixed scrolling things
+  - You can shake your device or put cursor at the bottom of the window to view footer
+  - Added terrible -- but working (WILL FIX) search functionality. Start typing to search through my projects.
 
 Version 0.2.4:
   - Switched to using link elements instead of relying on onclick

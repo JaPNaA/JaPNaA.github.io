@@ -84,12 +84,18 @@ div.prompta {
 #foot {
     bottom: 0;
     left: 0;
-    background: #161616;
+    width: 100%;
+    position: fixed;
+    transition: 0.15s;
+    will-change: top;
+    background: rgba(0, 0, 0, 0.96);
     padding: 8px;
+    padding-right: 40px;
     color: #eee;
     margin: 0;
     font-family: arial;
     font-size: 12px;
+    z-index: 2;
 }
 #content {
     position: relative;
@@ -127,6 +133,7 @@ body {
     color: lightgrey;
     font-family: arial;
     font-size: 11px;
+    padding-right: 16px;
     text-align: right;
 }
 .JaPNaAT {

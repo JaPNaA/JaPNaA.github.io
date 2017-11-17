@@ -1,75 +1,117 @@
 try {
     (function() {
-        if (!navigator.userAgent.includes('Firefox')) { //Buggy if Firefox
-            addEventListener('scroll', function(e) {
-                if ($("body").scrollTop < 1) {
-                    $("#head").style.position = "absolute";
-                    $("#head").style.top = "";
-                }
-            }, false);
-        }
-        addEventListener('wheel', function(e) {
-            if (e.deltaY < 0) {
-                $("#head").style.top = "0px";
-            } else {
-                $("#head").style.top = "-68px";
-            }
-            $("#head").style.position = "fixed";
-        }, {
-            passive: true,
-            capture: false
-        });
-        addEventListener("touchmove", function(e) { //optimize with smothing
-            if (!dt.prompta.list.length) {
-                var cY = e.touches[0].clientY,
-                    d = dt.touchmove;
-                if (cY > d.lY) {
-                    d.sI = setTimeout(function() {
-                        $("#head").style.top = "0px";
-                    }, 5);
-                } else if (cY <= d.lY) {
+        addEventListener(
+            "scroll",
+            function(e) {
+                var st = document.body.scrollTop || document.documentElement.scrollTop, f = $("#foot");
+                if (dt.scroll < st && st > 64) {
                     $("#head").style.top = "-68px";
-                    clearTimeout(d.sI);
+                } else {
+                    $("#head").style.top = "0px";
                 }
-                $("#head").style.position = "fixed";
-                d.lY = cY;
-            }
-        }, {
-            passive: true,
-            capture: false
-        });
-        addEventListener('beforeunload', function() {
+                dt.scroll = st;
+                if (
+                    document.body.scrollHeight -
+                        document.documentElement.scrollTop -
+                        window.innerHeight <
+                    64
+                ) {
+                    f.style.bottom = 0;
+                } else {
+                    f.style.bottom = -f.clientHeight + "px";
+                }
+            },
+            false
+        );
+        addEventListener(
+            "mousemove",
+            function(e) {
+                var f = $("#foot");
+                if (
+                    innerHeight - e.y < 8 ||
+                    e.path.indexOf(f) > 0 ||
+                    document.body.scrollHeight -
+                        document.documentElement.scrollTop -
+                        window.innerHeight <
+                        64
+                ) {
+                    f.style.bottom = 0;
+                } else {
+                    f.style.bottom = -f.clientHeight + "px";
+                }
+            },
+            false
+        );
+        addEventListener(
+            "deviceorientation",
+            function(e) {
+                var n = Date.now(), f = $("#foot");
+                if (
+                    Math.abs(e.alpha - dt.orient.alpha) +
+                        Math.abs(e.beta - dt.orient.beta) +
+                        Math.abs(e.gamma - dt.orient.gamma) >
+                    (n - dt.orient.t) * 0.8
+                ) {
+                    f.style.bottom = 0;
+                }
+                dt.orient.alpha = e.alpha;
+                dt.orient.beta = e.beta;
+                dt.orient.gamma = e.gamma;
+                dt.orient.t = n;
+            },
+            false
+        );
+
+        addEventListener("beforeunload", function() {
             localStorage.JaPNaASDT = JSON.stringify(fdt);
         });
-        $('.JaPNaAT').addEventListener('auxclick', function() {
-            this.setAttribute('contentEditable', !0);
-            this.focus();
-        }, true);
-        $('.JaPNaAT').addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        }, true);
-        $('.JaPNaAT').addEventListener('blur', function() {
-            this.removeAttribute('contentEditable');
-        }, false);
-        $('.JaPNaAT').addEventListener('keydown', function(e) {
-            if (e.keyCode == 13) {
+        $(".JaPNaAT").addEventListener(
+            "auxclick",
+            function() {
+                this.setAttribute("contentEditable", !0);
+                this.focus();
+            },
+            true
+        );
+        $(".JaPNaAT").addEventListener(
+            "contextmenu",
+            function(e) {
                 e.preventDefault();
-                this.blur();
-            }
-        }, false);
-    }());
+            },
+            true
+        );
+        $(".JaPNaAT").addEventListener(
+            "blur",
+            function() {
+                this.removeAttribute("contentEditable");
+            },
+            false
+        );
+        $(".JaPNaAT").addEventListener(
+            "keydown",
+            function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    this.blur();
+                }
+            },
+            false
+        );
+    })();
 
     (function() {
-        $("#content").innerHTML = "Loading content..."
-        $("#content").classList.add('loading');
+        $("#content").innerHTML = "Loading content...";
+        $("#content").classList.add("loading");
         getFile(
-            'content.json?d=' + new Date().getTime() + Math.random(),
+            "content.json?d=" + new Date().getTime() + Math.random(),
             function(e) {
+                dt.content = JSON.parse(e);
                 $("#content").innerHTML = "";
                 compile(e, "cxt");
                 $("#content").classList.remove("loading");
-            });
-    }());
+            }
+        );
+    })();
 } catch (e) {
     console.error(e);
     try {

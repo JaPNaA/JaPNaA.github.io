@@ -140,7 +140,8 @@ function prompta(e, f) {
         prompta: {
             list: [],
             now: 0
-        }
+        },
+        fallback: []
     }
     window.dt = dt;
     if(window.JSON&&JSON.parse){
