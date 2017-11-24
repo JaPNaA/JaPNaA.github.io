@@ -1,6 +1,13 @@
 {
     "data": [
         {
+            "type": "text",
+            "title": "Net Neutrality",
+            "content":
+                "<img src='https://lh3.googleusercontent.com/kppmyp-5OEgfee0R9yc9acGo2wqc-tZd32XZtQF6Td7hTgEuIsRJEsgbxkdgPx3Az3-yP6DG-YEJkmjITYvaXbS-EIym3iVEyMiEtYxxXTsPc5HlB7wTj-yl_JAuf5_Yio8SojFJYxRPkBAkheEjOWGp8Vjv284N2TlQAWIMLRFuQuX4ELL_JeChZMlGTTlxeg2CsZe9uVE0ZRTbNcmR-y1tmvwynJjSgDclJ3TJlnIGbB7aIMZdht9GpaFt2FUckMPHPVXilMIMgxTZsW2SY3su46PLQceap7mWQJO48FzCAWVOhNWzDkM4-jt7dipNWfrJcl9XfOfhzLihsplYPHGuvu12o3QqxvwRbYkCOArDowv35bPup4VhkoShpcykujNi_bvFqZcG17ngqfamiOZ7MEJJ2iGI8_dZ0_s6b65vEa4x8H4W0OwznYd0UIXDn3bNs4_hAN_G_uvHNgk1C4qGGl3pVY3G57vI2LGBA_E02KjuR6VmARYq91KYBalvIpmewNTnrVyQxpTAjicfJNdj4GeWyqvLxtiF2E_neizezayYk0a0J9v4jfc=w1328-h767'><br><a href='https://www.google.com/search?q=net+neutrality'>Google it.</a><br>I'm a little late posting this...",
+            "timestamp": "Nov 23 2017"
+        },
+        {
             "type": "card",
             "tags": ["Machine Learning", "ML", "tictactoe"],
             "author": ["JaPNaA"],
