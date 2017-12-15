@@ -1,6 +1,3 @@
-My to-do list:
-  - Make search.js not terrible. (read source code for search.js if you want to see what's so bad)
-
 Version 0.2.6:
   - Proper search functionality
   - Added search button (mobile compatibility)
