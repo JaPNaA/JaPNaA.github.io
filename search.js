@@ -1,23 +1,71 @@
-// MANY THINGS WRONG FIX PLZ
-// FIXME: THIS IS TERRIBLE AND SHOULD REALLY BE FIXED PLZ FIX PLZ REMEMBER TO FIX OR ELSE THIS IS GOING TO END IN A DISASTER AND THE WORLD EXPLODES AND STUFF AND AN INVISIBLE ASTEROID WILL HIT EARTH AND WIPE OUT THE HUMAN POPULATION WHILE ROBOTS START TO REBEL AGIANST HUMANS AND EVERYTHING BAD WILL HAPPEN TO THE HUMAN POPULATION.
 try {
-    function search(e) {
-        var f = dt.content.data.filter(function(f) {
-            return JSON.stringify(f)
-                .toLowerCase()
-                .match(e.toLowerCase());
-        }).sort(function(f){
-            return JSON.stringify(f)
-                .toLowerCase()
-                .match(e.toLowerCase()).length;
-        });
-        $("#content").innerHTML = "";
-        compile(JSON.stringify({ data: f, meta: e.meta }), "cxt");
+    function resetPosts() {
+        var ct = $("#content");
+        for (let i of dt.content.data) {
+            i.element.classList.remove("hidden");
+            ct.appendChild(i.element);
+        }
     }
-    addEventListener("keydown", function(e){
-        if(e.ctrlKey) return;
+    function filterPosts(e) {
+        var ct = $("#content");
+        e.sort((e, f) => f.searchMatches - e.searchMatches);
+        for (let i of dt.content.data) {
+            if (e.includes(i)) {
+                i.element.classList.remove("hidden");
+            } else {
+                i.element.classList.add("hidden");
+            }
+        }
+        for (let i of e) {
+            ct.appendChild(i.element);
+        }
+    }
+    function search(e, f) {
+        if (e.length == 0 && !f) {
+            resetPosts();
+            $(".JaPNaATL").classList.remove("search");
+            return;
+        } else if (f) {
+            $(".JaPNaATL").classList.add("search");
+            $(".JaPNaAT").innerHTML = e || dt.searchV;
+            return;
+        }
+        var mx = 0,
+            f = dt.content.data.filter(function(f) {
+                var s = [],
+                    q = [],
+                    m;
+                for (let i in f) {
+                    if (i == "element") continue;
+                    if (typeof f[i] == "object") {
+                        q.push(f[i]);
+                    } else {
+                        s.push(f[i]);
+                    }
+                }
+                for (let i of q) {
+                    if (typeof i == "object") {
+                        for (let j in i) {
+                            q.push(i[j]);
+                        }
+                    } else {
+                        s.push(i);
+                    }
+                }
+                m = s
+                    .join(" ")
+                    .toLowerCase()
+                    .match(new RegExp(e, "ig"));
+                f.searchMatches = (m && m.length) || 0;
+                return m;
+            });
+        $(".JaPNaATL").classList.add("search");
+        filterPosts(f);
+    }
+    addEventListener("keydown", function(e) {
+        if (e.ctrlKey) return;
         e.preventDefault();
-        if(e.key.length == 1){
+        if (e.key.length == 1) {
             dt.searchV += e.key;
         } else {
             switch (e.key) {
@@ -27,12 +75,19 @@ try {
             }
         }
         $(".JaPNaAT").innerHTML = dt.searchV || "JaPNaA";
-        if(dt.searchV){
-            search(dt.searchV);
-        } else {
-            $("#content").innerHTML = "";
-            compile(JSON.stringify(dt.content), "cxt");
-        }
+        search(dt.searchV);
+    });
+    $("#search").addEventListener("click", function() {
+        var e = document.createElement("input");
+        document.body.appendChild(e);
+        e.style.position = "fixed";
+        e.style.top = "-128px";
+        e.style.opacity = 0;
+        e.focus();
+        e.addEventListener("blur", function(){
+            this.parentElement.removeChild(this);
+        });
+        search("", 1);
     });
 } catch (e) {
     console.error(e);

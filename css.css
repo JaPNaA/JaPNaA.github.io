@@ -136,7 +136,13 @@ body {
     padding-right: 16px;
     text-align: right;
 }
+.JaPNaATL {
+    color: inherit;
+    text-decoration: inherit;
+    vertical-align: center;
+}
 .JaPNaAT {
+    position: relative;
     font-family: "Share Tech Mono", courier, monospace;
     color: #000;
     font-size: 42px;
@@ -145,6 +151,25 @@ body {
     display: inline-block;
     outline: none;
     cursor: pointer;
+    left: -36px;
+    transition: 0.15s;
+}
+.JaPNaATL.search .JaPNaAT {
+    color: #002;
+    left: 0px;
+}
+.JaPNaATL img {
+    position: relative;
+    left: -4px;
+    top: 4px;
+    height: 36px;
+    width: 36px;
+    opacity: 0;
+    transition: 0.15s;
+}
+.JaPNaATL.search img {
+    left: 8px;
+    opacity: 1;
 }
 .JaPNaAT::after {
     content: "_";
@@ -165,10 +190,6 @@ iframe {
     min-height: 25vh;
     height: 40vh;
     max-height: 80vh;
-}
-.JaPNaATL {
-    color: inherit;
-    text-decoration: inherit;
 }
 #content.loading {
     animation: rainbowText 3.5s infinite linear;
@@ -220,7 +241,7 @@ ev.prompta #foot {
     transition: 0.2s;
     background: white;
     cursor: pointer;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 .item:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
@@ -289,6 +310,14 @@ pre {
     color: white;
     opacity: 0.8;
 }
+.item.hidden {
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    opacity: 0;
+}
 .headMore {
     top: 0;
     right: 2%;
@@ -298,7 +327,7 @@ pre {
     display: flex;
 }
 .headMore a {
-    margin-left: 1vw;
+    margin-left: 2vw;
     transition: 0.15s;
     opacity: 0.7;
     line-height: 64px;

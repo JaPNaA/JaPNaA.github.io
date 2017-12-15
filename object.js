@@ -22,17 +22,20 @@ try {
     }
 
     function fRead(e) {
-        var a = JSON.parse(e),
-            f = [];
-        a.data.forEach(function(o) {
-            f.push(obj(o));
+        var f = [];
+        e.data.forEach(function(o, i, a) {
+            var j = obj(o);
+            a[i].element = j;
+            f.push(j);
         });
         return f;
     }
 
     function iCard(e) {
         try {
-            var f = $("<a target='_blank' class='item card" + displayOpenD + "'>");
+            var f = $(
+                "<a target='_blank' class='item card" + displayOpenD + "'>"
+            );
             f.innerHTML =
                 "<b class=title>" +
                 e.name +
@@ -59,23 +62,14 @@ try {
                                             '">';
                                         break;
                                     case "iframe":
-                                        if (displayOpenD) {
-                                            f +=
-                                                '<iframe src="' +
-                                                o.src +
-                                                '" style="' +
-                                                o.style +
-                                                '"></iframe>';
-                                        } else {
-                                            f +=
-                                                '<img src="' +
-                                                o.alt.src +
-                                                '" title="' +
-                                                o.alt.caption +
-                                                '" style="' +
-                                                o.alt.style +
-                                                '">';
-                                        }
+                                        f +=
+                                            '<img src="' +
+                                            o.alt.src +
+                                            '" title="' +
+                                            o.alt.caption +
+                                            '" style="' +
+                                            o.alt.style +
+                                            '">';
                                         break;
                                     default:
                                         console.warn(

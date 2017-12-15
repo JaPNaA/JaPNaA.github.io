@@ -107,7 +107,7 @@ try {
             function(e) {
                 dt.content = JSON.parse(e);
                 $("#content").innerHTML = "";
-                compile(e, "cxt");
+                compile(dt.content, "cxt");
                 $("#content").classList.remove("loading");
             }
         );

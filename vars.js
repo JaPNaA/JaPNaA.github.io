@@ -35,8 +35,8 @@ try {
         var f = "";
         switch (t) {
             case "cxt": //complie to f;
-                if (e.substr(0, 2) == "~#") {
-                    console.log(e.substr(2, Infinity));
+                if (typeof e == "string") {
+                    console.log(e.substring(2, e.length));
                     prompta(
                         f =
                         "[Something went wrong, check console for more details]<br>Reloading in... <span id=errorReloadCount></span>"
@@ -56,7 +56,7 @@ try {
                     document.title = "JaPNaA - Error Occurred"
                 } else {
                     fdt.reloadAttempts = 0;
-                    f = fRead(e.toString());
+                    f = fRead(e);
                     f.forEach(function(o, i) {
                         fAnimate(o, i * 100);
                     });
