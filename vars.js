@@ -172,7 +172,7 @@ try {
 
     (function() {
         var dt = {
-            version: "0.2.5", //VERSION
+            version: "0.2.6", //VERSION
             prompta: {
                 list: [],
                 now: 0

@@ -1,6 +1,10 @@
 My to-do list:
   - Make search.js not terrible. (read source code for search.js if you want to see what's so bad)
 
+Version 0.2.6:
+  - Proper search functionality
+  - Added search button (mobile compatibility)
+
 Version 0.2.5:
   - Fixed scrolling things
   - You can shake your device or put cursor at the bottom of the window to view footer
