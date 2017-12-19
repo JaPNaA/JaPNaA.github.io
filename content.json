@@ -9,6 +9,26 @@
         },
         {
             "type": "card",
+            "tags": ["WebGL", "threejs", "test", "3d", "shadows"],
+            "author": ["JaPNaA"],
+            "name": "Threejs test",
+            "timestamp": "Dec 18 2017",
+            "no": 11,
+            "content": {
+                "link": "https://rawgit.com/JaPNaA/Thingy/master/2017/threejsTests/",
+                "description": "Three-DEEEE!! This took way to long to make",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "Screenshot of moving things make it look less gooder",
+                        "src": "https://github.com/JaPNaA/Thingy/blob/master/Photos/2017/ThreeDee.png?raw=true"
+                    }
+                ]
+            },
+            "style": "background-color: #000; color: #FFF;"
+        },
+        {
+            "type": "card",
             "tags": ["Machine Learning", "ML", "tictactoe"],
             "author": ["JaPNaA"],
             "name": "TicTacToe ML",
@@ -48,7 +68,7 @@
                     }
                 ]
             },
-            "style": "background-color: black; color: white;"
+            "style": "background-color: #000; color: #FFF;"
         },
         {
             "type": "card",
@@ -71,7 +91,7 @@
                     }
                 ]
             },
-            "style": "background-color: black; color: white;"
+            "style": "background-color: #000; color: #FFF;"
         },
         {
             "type": "card",
@@ -99,7 +119,7 @@
                     }
                 ]
             },
-            "style": "background-color: #555555; color: #00fff3;"
+            "style": "background-color: #555; color: #00fff3;"
         },
         {
             "type": "card",
@@ -188,7 +208,7 @@
                     }
                 ]
             },
-            "style": "background-color: black; color:white;"
+            "style": "background-color: #000; color: #FFF;"
         },
         {
             "type": "card",
