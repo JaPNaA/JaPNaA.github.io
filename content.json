@@ -15,7 +15,7 @@
             "timestamp": "Dec 18 2017",
             "no": 11,
             "content": {
-                "link": "/Thingy/master/2017/threejsTests/",
+                "link": "/Thingy/2017/threejsTests/",
                 "description": "Three-DEEEE!! This took way to long to make",
                 "display": [
                     {
@@ -36,7 +36,7 @@
             "no": 10,
             "content": {
                 "link":
-                    "/Thingy/master/2017/ticTacToeMachineLearning/",
+                    "/Thingy/2017/ticTacToeMachineLearning/",
                 "description":
                     "I taught a computer to learn. Progress. This project was inspired by <a target='_blank' href='https://boingboing.net/2009/11/02/mechanical-computer.html'>MENACE.</a>",
                 "display": [
@@ -57,7 +57,7 @@
             "no": 9,
             "content": {
                 "link":
-                    "/Thingy/master/2017/Asteroids/",
+                    "/Thingy/2017/Asteroids/",
                 "description": "Kinda-clone of the asteroids game",
                 "display": [
                     {
@@ -79,7 +79,7 @@
             "no": 8,
             "content": {
                 "link":
-                    "/Thingy/master/2017/ballPhysics/",
+                    "/Thingy/2017/ballPhysics/",
                 "description":
                     "Not accurate... at all. Spawning more than 20 balls causes infinite energy",
                 "display": [
@@ -102,19 +102,19 @@
             "no": 7,
             "content": {
                 "link":
-                    "/Thingy/master/2017/gameThing/",
+                    "/Thingy/2017/gameThing/",
                 "description":
                     "I made a flappy bird clone, then I made this mess.",
                 "display": [
                     {
                         "type": "iframe",
                         "src":
-                            "/Thingy/master/2017/gameThing/",
+                            "/Thingy/2017/gameThing/",
                         "alt": {
                             "type": "img",
                             "caption": "Title screen of game",
                             "src":
-                                "/Thingy/master/2017/gameThing/title.png"
+                                "/Thingy/2017/gameThing/title.png"
                         }
                     }
                 ]
@@ -130,7 +130,7 @@
             "no": 6,
             "content": {
                 "link":
-                    "/Thingy/master/2017/FlappyBird%20but%20not/",
+                    "/Thingy/2017/FlappyBird%20but%20not/",
                 "description":
                     "I saw a YouTube video about creating a FlappyBird clone... Didn't watch it, but I did make a clone.",
                 "display": [
@@ -167,7 +167,7 @@
             "no": 5,
             "content": {
                 "link":
-                    "/Thingy/master/2017/eval%20vs%20not%20eval/",
+                    "/Thingy/2017/eval%20vs%20not%20eval/",
                 "description":
                     "I was looking around the web when I stumbled across the statement \"eval() is evil!\" So I decided to do some research on the topic, and I made my own performance test.",
                 "display": [
@@ -218,7 +218,7 @@
             "timestamp": "Jul 26 2017",
             "no": 3,
             "content": {
-                "link": "/Thingy/master/2017/JaPCode/",
+                "link": "/Thingy/2017/JaPCode/",
                 "description":
                     "An old unfinished project brought back to life. JaPCode is a simple encoding thingy.",
                 "display": [
@@ -262,7 +262,7 @@
             "no": 1,
             "content": {
                 "link":
-                    "/Thingy/master/2017/minesweeperAI/",
+                    "/Thingy/2017/minesweeperAI/",
                 "description":
                     "This is a replica of Minesweeper, but an AI script has been injected into it, so it'll solve its self!",
                 "display": [
