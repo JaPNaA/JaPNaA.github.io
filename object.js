@@ -22,13 +22,19 @@ try {
     }
 
     function fRead(e) {
-        var f = [];
+        var f = [], h = [];
         e.data.forEach(function(o, i, a) {
-            if(o.hidden) return;
+            if(o.hidden) {
+                h.push(o);
+                return;
+            }
             var j = obj(o);
             a[i].element = j;
             f.push(j);
         });
+        for(let i of h){
+            e.data.splice(e.data.indexOf(i), 1);
+        }
         return f;
     }
 
