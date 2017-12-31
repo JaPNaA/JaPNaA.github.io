@@ -24,6 +24,7 @@ try {
     function fRead(e) {
         var f = [];
         e.data.forEach(function(o, i, a) {
+            if(o.hidden) return;
             var j = obj(o);
             a[i].element = j;
             f.push(j);
