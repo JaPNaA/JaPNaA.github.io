@@ -2,10 +2,30 @@
     "data": [
         {
             "type": "card",
+            "tags": ["visualizer", "sound", "music", "graphics"],
+            "author": ["JaPNaA"],
+            "name": "Sound Visualizer", 
+            "timestamp": "Jan 3 2018",
+            "no": 13,
+            "content": {
+                "link": "/Thingy/2018/soundVisualizer/",
+                "description": "SEE your SOUNDS.... yea... First project of 2018!",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "Dots and circles",
+                        "src": "/Thingy/Photos/2018/soundVisualizer.png"
+                    }
+                ]
+            },
+            "style": "background-color: #000; color: #FFF;"
+        },
+        {
+            "type": "card",
             "tags": ["3d", "WebGL", "threejs", "game", "pong"],
             "author": ["JaPNaA"],
             "name": "3d Pong",
-            "timestamp": "Dec 30",
+            "timestamp": "Dec 30 2017",
             "no": 12,
             "content": {
                 "link": "/Thingy/2017/3dPong/",
