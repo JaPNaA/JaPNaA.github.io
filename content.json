@@ -2,6 +2,19 @@
     "data": [
         {
             "type": "card",
+            "tags": ["Cpp", "C++", "binary", "exe", "first", "Minesweeper"],
+            "author": ["JaPNaA"],
+            "name": "C++Sweeper",
+            "timestamp": "Jan 9 2018",
+            "no": 14,
+            "content": {
+                "link": "/Thingy/2018/CppSweeper",
+                "description": "My first C++ project that has exceeded 400 lines of code... But I don't know how to post my project on here, so... this might be the last C++ project you'll see on this site for a while.",
+                "display": []
+            }
+        },
+        {
+            "type": "card",
             "tags": ["visualizer", "sound", "music", "graphics"],
             "author": ["JaPNaA"],
             "name": "Sound Visualizer", 
