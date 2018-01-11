@@ -1,3 +1,7 @@
+Version 0.2.7:
+  - SEO improvements
+  - Prevent webcrawlers from getting "JaPNaA - Fallback" title
+
 Version 0.2.6:
   - Proper search functionality
   - Added search button (mobile compatibility)

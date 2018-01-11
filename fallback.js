@@ -1,5 +1,8 @@
 var initFallback = function () {
-    document.title = "JaPNaA - Fallback"
+    if (window.crawlerMode) {
+        return;
+    }
+    document.title = "JaPNaA - Fallback";
     var $ = {
         "id": function (e) {
             return document.getElementById(e);

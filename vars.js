@@ -2,7 +2,7 @@ try {
     function getFile(e, c) {
         var xhttp = new XMLHttpRequest();
         xhttp.overrideMimeType("text/plain");
-        xhttp.onreadystatechange = function() {
+        xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 c(this.responseText);
             }
@@ -10,7 +10,7 @@ try {
                 c("~#Failed to load content");
             }
         };
-        xhttp.onerror = function() {
+        xhttp.onerror = function () {
             c("~#Failed to load content");
         };
         xhttp.open("GET", e, true);
@@ -19,8 +19,8 @@ try {
 
     function errorReloadCountdown(t, e) {
         var g = new Date().getTime() + (t * 1e3);
-        setInterval(function() {
-            if (e) e.innerHTML = (function() {
+        setInterval(function () {
+            if (e) e.innerHTML = (function () {
                 var a = g - new Date().getTime();
                 if (a < 0) {
                     location.reload();
@@ -41,7 +41,7 @@ try {
                         f =
                         "[Something went wrong, check console for more details]<br>Reloading in... <span id=errorReloadCount></span>"
                     );
-                    setTimeout(function() {
+                    setTimeout(function () {
                         if (fdt.reloadAttempts < 3) {
                             errorReloadCountdown(3, $(
                                 '#errorReloadCount',
@@ -57,7 +57,7 @@ try {
                 } else {
                     fdt.reloadAttempts = 0;
                     f = fRead(e);
-                    f.forEach(function(o, i) {
+                    f.forEach(function (o, i) {
                         fAnimate(o, i * 100);
                     });
                 }
@@ -78,13 +78,13 @@ try {
             a.innerHTML = e;
             a.classList.add('prompta');
             a.setAttribute('promptav', v);
-            a.addEventListener('mousedown', function() {
+            a.addEventListener('mousedown', function () {
                 this.setAttribute('dragging', !0);
             }, true);
-            a.addEventListener('mouseup', function() {
+            a.addEventListener('mouseup', function () {
                 this.removeAttribute('dragging');
             }, true);
-            addEventListener('mousemove', function(e) {
+            addEventListener('mousemove', function (e) {
                 if (a && a.getAttribute('dragging')) {
                     a.style.top = a.style.top.replace('px', "") - 1 + 1 +
                         e
@@ -94,7 +94,7 @@ try {
                         e.movementX + "px";
                 }
             }, false);
-            a.addEventListener("touchmove", function(e) {
+            a.addEventListener("touchmove", function (e) {
                 this.style.position = "fixed";
                 var t = e.targetTouches[0];
                 e.target.style.left = t.clientX - this.clientWidth / 2 +
@@ -103,13 +103,13 @@ try {
                     'px';
                 e.preventDefault();
             }, true);
-            a.addEventListener("touchstart", function(e) {
+            a.addEventListener("touchstart", function (e) {
                 this.setAttribute('dragging', !0);
             }, {
                 capture: false,
                 passive: true
             });
-            a.addEventListener("touchend", function() {
+            a.addEventListener("touchend", function () {
                 this.removeAttribute('dragging');
             }, {
                 capture: false,
@@ -117,7 +117,7 @@ try {
             });
             l.classList.add("promptaLO");
             l.setAttribute('promptalov', v);
-            l.addEventListener('click', function() {
+            l.addEventListener('click', function () {
                 prompta(this.getAttribute('promptalov') - 1 + 1, 1);
             }, true);
             document.body.appendChild(l);
@@ -136,7 +136,7 @@ try {
                 b = $("[promptav='" + e + "']");
                 b.style.transform = "scale(0.5)";
                 b.style.opacity = 0;
-                setTimeout(function() {
+                setTimeout(function () {
                     $('body').removeChild(b);
                 }, 200);
                 document.body.removeChild($("[promptalov='" + e + "']"));
@@ -147,10 +147,10 @@ try {
         }
     }
 
-    function shortPrompta(e){
+    function shortPrompta(e) {
         switch (e) {
             case "feedback":
-                open("https://github.com/JaPNaA/JaPNaA.github.io/issues/new","feedbackPop","width=1080, height=600, left="+((screen.width-1080)/2)+", top="+((screen.height-600)/2));
+                open("https://github.com/JaPNaA/JaPNaA.github.io/issues/new", "feedbackPop", "width=1080, height=600, left=" + ((screen.width - 1080) / 2) + ", top=" + ((screen.height - 600) / 2));
                 break;
             case "changelog":
                 prompta(
@@ -160,7 +160,7 @@ try {
                 );
                 getFile(
                     'changelog.txt?d=' + new Date().getTime() + Math.random(),
-                    function(e) {
+                    function (e) {
                         if ($(".changelog")) $(".changelog").innerHTML =
                             e;
                     });
@@ -170,9 +170,9 @@ try {
         }
     }
 
-    (function() {
+    (function () {
         var dt = {
-            version: "0.2.6", //VERSION
+            version: "0.2.7", //VERSION
             prompta: {
                 list: [],
                 now: 0
@@ -213,14 +213,15 @@ try {
     dt.fallback.push(!1);
 } finally {
     dt.fallback.push(!0);
-    window.onerror=function(m,u,l){
-        if(dt.fallback.length){
+    window.onerror = function (m, u, l) {
+        if (window.crawlerMode) return;
+        if (dt.fallback.length) {
             dt.fallback.push(!1);
-            prompta("Error:<br>"+[m,u,l].join("<br>"));
+            prompta("Error:<br>" + [m, u, l].join("<br>"));
         } else {
-            window.onerror=function(){
+            window.onerror = function () {
                 dt.fallback.push(!1);
-                prompta([m,u,l].join("<br>"));
+                prompta([m, u, l].join("<br>"));
             };
             initFallback();
         }
