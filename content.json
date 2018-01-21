@@ -6,7 +6,18 @@
             "author": ["JaPNaA"],
             "name": "Typeracer Clone",
             "timestamp": 1516558652603,
-            "no": 
+            "no": 15,
+            "content": {
+                "link": "/Thingy/2018/typeracerClone",
+                "description": "Measure how fast you can type, with some random texts I wrote",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "staged typing on typeracer clone",
+                        "src": "/Thingy/Photos/Photos/typeracer/png"
+                    }
+                ]
+            }
         },
         {
             "type": "card",
