@@ -2,10 +2,18 @@
     "data": [
         {
             "type": "card",
+            "tags": ["typeracer", "clone", "typing", "speed"],
+            "author": ["JaPNaA"],
+            "name": "Typeracer Clone",
+            "timestamp": 1516558652603,
+            "no": 
+        },
+        {
+            "type": "card",
             "tags": ["Cpp", "C++", "binary", "exe", "first", "Minesweeper"],
             "author": ["JaPNaA"],
             "name": "C++Sweeper",
-            "timestamp": "Jan 9 2018",
+            "timestamp": 1515474000000,
             "no": 14,
             "content": {
                 "link": "/Thingy/2018/CppSweeper",
@@ -18,7 +26,7 @@
             "tags": ["visualizer", "sound", "music", "graphics"],
             "author": ["JaPNaA"],
             "name": "Sound Visualizer", 
-            "timestamp": "Jan 3 2018",
+            "timestamp": 1514955600000,
             "no": 13,
             "content": {
                 "link": "/Thingy/2018/soundVisualizer/",
@@ -38,7 +46,7 @@
             "tags": ["3d", "WebGL", "threejs", "game", "pong"],
             "author": ["JaPNaA"],
             "name": "3d Pong",
-            "timestamp": "Dec 30 2017",
+            "timestamp": 1514610000000,
             "no": 12,
             "content": {
                 "link": "/Thingy/2017/3dPong/",
@@ -58,7 +66,7 @@
             "title": "Net Neutrality",
             "content":
                 "<img src='https://lh3.googleusercontent.com/kppmyp-5OEgfee0R9yc9acGo2wqc-tZd32XZtQF6Td7hTgEuIsRJEsgbxkdgPx3Az3-yP6DG-YEJkmjITYvaXbS-EIym3iVEyMiEtYxxXTsPc5HlB7wTj-yl_JAuf5_Yio8SojFJYxRPkBAkheEjOWGp8Vjv284N2TlQAWIMLRFuQuX4ELL_JeChZMlGTTlxeg2CsZe9uVE0ZRTbNcmR-y1tmvwynJjSgDclJ3TJlnIGbB7aIMZdht9GpaFt2FUckMPHPVXilMIMgxTZsW2SY3su46PLQceap7mWQJO48FzCAWVOhNWzDkM4-jt7dipNWfrJcl9XfOfhzLihsplYPHGuvu12o3QqxvwRbYkCOArDowv35bPup4VhkoShpcykujNi_bvFqZcG17ngqfamiOZ7MEJJ2iGI8_dZ0_s6b65vEa4x8H4W0OwznYd0UIXDn3bNs4_hAN_G_uvHNgk1C4qGGl3pVY3G57vI2LGBA_E02KjuR6VmARYq91KYBalvIpmewNTnrVyQxpTAjicfJNdj4GeWyqvLxtiF2E_neizezayYk0a0J9v4jfc=w1328-h767'><br><a href='https://www.google.com/search?q=net+neutrality'>Google it.</a><br>I'm a little late posting this...",
-            "timestamp": "Nov 23 2017",
+            "timestamp": 1511413200000,
             "hidden": true
         },
         {
@@ -66,7 +74,7 @@
             "tags": ["WebGL", "threejs", "test", "3d", "shadows"],
             "author": ["JaPNaA"],
             "name": "Threejs test",
-            "timestamp": "Dec 18 2017",
+            "timestamp": 1513573200000,
             "no": 11,
             "content": {
                 "link": "/Thingy/2017/threejsTests/",
@@ -86,7 +94,7 @@
             "tags": ["Machine Learning", "ML", "tictactoe"],
             "author": ["JaPNaA"],
             "name": "TicTacToe ML",
-            "timestamp": "Nov 15 2017",
+            "timestamp": 1510722000000,
             "no": 10,
             "content": {
                 "link":
@@ -107,7 +115,7 @@
             "tags": ["AHSS", "game", "clone", "asteroids"],
             "author": ["JaPNaA"],
             "name": "Asteroids",
-            "timestamp": "Nov 2 2017",
+            "timestamp": 1509595200000,
             "no": 9,
             "content": {
                 "link":
@@ -129,7 +137,7 @@
             "tags": ["AHSS", "physics", "computer club"],
             "author": ["JaPNaA"],
             "name": "Ball Physics",
-            "timestamp": "Nov 2 2017",
+            "timestamp": 1509595200000,
             "no": 8,
             "content": {
                 "link":
@@ -152,7 +160,7 @@
             "tags": ["game", "original", "gameThing", "simple"],
             "author": ["JaPNaA"],
             "name": "gameThing",
-            "timestamp": "Sept 8 2017",
+            "timestamp": 1504843200000,
             "no": 7,
             "content": {
                 "link":
@@ -180,7 +188,7 @@
             "tags": ["game", "clone", "flappy bird"],
             "author": ["JaPNaA"],
             "name": "FlappyBird clone",
-            "timestamp": "Aug 28 2017",
+            "timestamp": 1503892800000,
             "no": 6,
             "content": {
                 "link":
@@ -203,7 +211,7 @@
             "title": "Beta",
             "content":
                 "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='/JaPNaA.github.io/issues/new'>Send feedback</a><br><b>No longer in beta, but we would still appreciate your feedback!",
-            "timestamp": "Jul 6 2017",
+            "timestamp": 1499313600000,
             "events": [
                 [
                     "click",
@@ -217,7 +225,7 @@
             "tags": ["Performance test", "eval", "eval is evil"],
             "author": ["JaPNaA"],
             "name": "Eval vs No Eval",
-            "timestamp": "Aug 17 2017",
+            "timestamp": 1502942400000,
             "no": 5,
             "content": {
                 "link":
@@ -247,7 +255,7 @@
             ],
             "author": ["JaPNaA"],
             "name": "Collision",
-            "timestamp": "Aug 15 2017",
+            "timestamp": 1502769600000,
             "no": 4,
             "content": {
                 "link": "http://fierce-scrubland-53475.herokuapp.com/",
@@ -269,7 +277,7 @@
             "tags": ["Code", "JaPCode"],
             "author": ["JaPNaA"],
             "name": "JaPCode",
-            "timestamp": "Jul 26 2017",
+            "timestamp": 1501041600000,
             "no": 3,
             "content": {
                 "link": "/Thingy/2017/JaPCode/",
@@ -290,7 +298,7 @@
             "tags": ["Site", "Beta", "JaPNaA"],
             "author": ["JaPNaA"],
             "name": "JaPNaA Site",
-            "timestamp": "Jul 8 2017",
+            "timestamp": 1499486400000,
             "no": 2,
             "content": {
                 "link": "https://japnaa.github.io/",
@@ -312,7 +320,7 @@
             "tags": ["Game", "AI"],
             "author": ["JaPNaA"],
             "name": "Minesweeper AI",
-            "timestamp": "Jul 3 2017",
+            "timestamp": 1499054400000,
             "no": 1,
             "content": {
                 "link":
