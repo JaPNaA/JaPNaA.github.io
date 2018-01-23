@@ -20,23 +20,22 @@ function redirectUrlHash() {
             } catch (e) {
                 break;
             }
-            if (!window.dt) {
-                addEventListener("load", function () {
-                    var a = dt.content.data.find(function (e) {
-                        return e.no == mlhi;
-                    });
-
-                    if (a) {
-                        location.replace(a.content.link);
-                    } else {
-                        reqShortUrlNX(lh);
-                    }
+            var f = function() {
+                var a = dt.content.data.find(function (e) {
+                    return e.no == mlhi;
                 });
+
+                if (a) {
+                    location.replace(a.content.link);
+                } else {
+                    reqShortUrlNX(lh);
+                }
+            };
+            if (!window.dt) {
+                addEventListener("load", f);
                 return;
             } else {
-                re = dt.content.data.find(function (e) {
-                    return e.no == mlhi;
-                }).content.link;
+                f();
             }
             break;
         case "_":
