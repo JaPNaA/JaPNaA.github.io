@@ -99,6 +99,4 @@ redirectUrlHash();
         prompta(e);
     } catch (e) {}
     dt.fallback.push(!1);
-} finally {
-    dt.fallback.push(!0);
 }
