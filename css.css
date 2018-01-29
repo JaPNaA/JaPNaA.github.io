@@ -57,6 +57,12 @@ body {
     border: 0;
     overflow-x: hidden;
 }
+
+*::selection {
+    background: #4000ffd0;
+    color: #FFFFFF;
+}
+
 #head {
     position: fixed;
     top: 0;
