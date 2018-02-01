@@ -1,3 +1,6 @@
+Version 0.2.8.1:
+  - Get rid of 'do you kno de wey' before it's dead
+
 Version 0.2.8:
   - shortUrl.js, so I can give shorter URLs to people
   - About page gets SEO improvements :D
