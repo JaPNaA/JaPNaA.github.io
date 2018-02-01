@@ -2,6 +2,26 @@
     "data": [
         {
             "type": "card",
+            "tags": ["3d", "threejs", "WebGL", "open"],
+            "author": ["JaPNaA"],
+            "name": "Open3dThing",
+            "timestamp": 1517451840996,
+            "no": 16,
+            "content": {
+                "link": "/Thingy/2018/Open3dThing",
+                "description": "The collision is broken, but is functioning enough for it to be playable. Hopefully I learn how to collision detect gooder in the future.",
+                "display": [
+                    {
+                        "type": "img",
+                        "caption": "i'm terrible at captioning",
+                        "src": "/Thingy/Photos/2017/open3dThing.png"
+                    }
+                ]
+            },
+            "style": "background-color: #000; color: #FFF;"
+        },
+        {
+            "type": "card",
             "tags": ["typeracer", "clone", "typing", "speed"],
             "author": ["JaPNaA"],
             "name": "Typeracer Clone",
