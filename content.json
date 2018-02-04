@@ -247,7 +247,7 @@
             "events": [
                 [
                     "click",
-                    "function(e){e.preventDefault(); open('/JaPNaA.github.io/issues/new');}"
+                    "function(e){shortPrompta('feedback')}"
                 ]
             ],
             "style": "background-color: #e3eaff;"
