@@ -5,4 +5,4 @@ google, http://gewgle.com/
 long, https://japnaa.github.io/a4fLs13NAnsGwDpoZ4/
 changelog, /changelog.txt
 feedback, https://github.com/JaPNaA/JaPNaA.github.io/issues/new
-contact, mailto:japnaabot@gmail.com
+contact, mailto:japnaabot@gmail.com, forget

@@ -9,6 +9,9 @@ function redirectUrlHash() {
     if (!location.hash) return;
 
     var re = null,
+        args = {
+            forget: false
+        },
         lh = location.hash.replace(/^#/, ""),
         flh = lh[0],
         mlh = lh.slice(1);
@@ -60,6 +63,12 @@ function redirectUrlHash() {
                 for (var i = 0; i < rl; i++) {
                     var ri = r[i].split(/\s*,\s*/g);
                     if (ri[0] == lh) {
+                        let ar = ri.slice(2);
+
+                        if(ar.includes("forget")) {
+                            args.forget = true;
+                        }
+
                         re = ri[1];
                         break;
                     }
@@ -67,6 +76,9 @@ function redirectUrlHash() {
 
                 if (re) {
                     location.replace(re);
+                    if (args.forget) {
+                        location.hash = "";
+                    }
                 } else {
                     reqShortUrlNX(lh);
                 }
@@ -79,6 +91,9 @@ function redirectUrlHash() {
 
     if (re) {
         location.replace(re);
+        if (args.forget) {
+            location.hash = "";
+        }
     } else {
         if (window.prompta) {
             reqShortUrlNX(lh);
