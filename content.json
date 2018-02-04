@@ -8,13 +8,13 @@
             "timestamp": 1517451840996,
             "no": 16,
             "content": {
-                "link": "/Thingy/2018/Open3dThing",
+                "link": "/Thingy_2018/Open3dThing",
                 "description": "The collision is broken, but is functioning enough for it to be playable. Hopefully I learn how to collision detect gooder in the future.",
                 "display": [
                     {
                         "type": "img",
                         "caption": "i'm terrible at captioning",
-                        "src": "/Thingy/Photos/2018/open3dThing.png"
+                        "src": "/Thingy_2018/.p/open3dThing.png"
                     }
                 ]
             },
@@ -28,13 +28,13 @@
             "timestamp": 1516558652603,
             "no": 15,
             "content": {
-                "link": "/Thingy/2018/typeracerClone",
+                "link": "/Thingy_2018/typeracerClone",
                 "description": "Measure how fast you can type, with some random texts I wrote",
                 "display": [
                     {
                         "type": "img",
                         "caption": "staged typing on typeracer clone",
-                        "src": "/Thingy/Photos/2018/typeracer.png"
+                        "src": "/Thingy_2018/.p/typeracer.png"
                     }
                 ]
             }
@@ -47,7 +47,7 @@
             "timestamp": 1515474000000,
             "no": 14,
             "content": {
-                "link": "/Thingy/2018/CppSweeper",
+                "link": "/Thingy_2018/CppSweeper",
                 "description": "My first C++ project that has exceeded 400 lines of code... But I don't know how to post my project on here, so... this might be the last C++ project you'll see on this site for a while.",
                 "display": []
             }
@@ -60,13 +60,13 @@
             "timestamp": 1514955600000,
             "no": 13,
             "content": {
-                "link": "/Thingy/2018/soundVisualizer/",
+                "link": "/Thingy_2018/soundVisualizer/",
                 "description": "SEE your SOUNDS.... yea... First project of 2018!",
                 "display": [
                     {
                         "type": "img",
                         "caption": "Dots and circles",
-                        "src": "/Thingy/Photos/2018/soundVisualizer.png"
+                        "src": "/Thingy_2018/.p/soundVisualizer.png"
                     }
                 ]
             },
@@ -80,13 +80,13 @@
             "timestamp": 1514610000000,
             "no": 12,
             "content": {
-                "link": "/Thingy/2017/3dPong/",
+                "link": "/Thingy_2017/3dPong/",
                 "description": "Mah first 3d game!1!!",
                 "display": [
                     {
                         "type": "img",
                         "caption": "screenshott",
-                        "src": "/Thingy/Photos/2017/3dPong.png"
+                        "src": "/Thingy_2017/.p/3dPong.png"
                     }
                 ]
             },
@@ -108,13 +108,13 @@
             "timestamp": 1513573200000,
             "no": 11,
             "content": {
-                "link": "/Thingy/2017/threejsTests/",
+                "link": "/Thingy_2017/threejsTests/",
                 "description": "Three-DEEEE!! This took way to long to make",
                 "display": [
                     {
                         "type": "img",
                         "caption": "Screenshot of moving things make it look less gooder",
-                        "src": "/Thingy/Photos/2017/ThreeDee.png"
+                        "src": "/Thingy_2017/.p/ThreeDee.png"
                     }
                 ]
             },
@@ -129,14 +129,14 @@
             "no": 10,
             "content": {
                 "link":
-                    "/Thingy/2017/ticTacToeMachineLearning/",
+                    "/Thingy_2017/ticTacToeMachineLearning/",
                 "description":
                     "I taught a computer to learn. Progress. This project was inspired by <a target='_blank' href='https://boingboing.net/2009/11/02/mechanical-computer.html'>MENACE.</a>",
                 "display": [
                     {
                         "type": "img",
                         "caption": "A game in-progress",
-                        "src": "/Thingy/Photos/2017/tictactoeML.png"
+                        "src": "/Thingy_2017/.p/tictactoeML.png"
                     }
                 ]
             }
@@ -151,14 +151,14 @@
             "no": 9,
             "content": {
                 "link":
-                    "/Thingy/2017/Asteroids/",
+                    "/Thingy_2017/Asteroids/",
                 "description": "Kinda-clone of the asteroids game",
                 "display": [
                     {
                         "type": "img",
                         "caption": "Screenshot of la gam",
                         "src":
-                            "/Thingy/Photos/2017/Asteroids.png"
+                            "/Thingy_2017/.p/Asteroids.png"
                     }
                 ]
             },
@@ -173,7 +173,7 @@
             "no": 8,
             "content": {
                 "link":
-                    "/Thingy/2017/ballPhysics/",
+                    "/Thingy_2017/ballPhysics/",
                 "description":
                     "Not accurate... at all. Spawning more than 20 balls causes infinite energy",
                 "display": [
@@ -181,7 +181,7 @@
                         "type": "img",
                         "caption": "Screenie...",
                         "src":
-                            "/Thingy/Photos/2017/ballPhysics.png"
+                            "/Thingy_2017/.p/ballPhysics.png"
                     }
                 ]
             },
@@ -196,19 +196,19 @@
             "no": 7,
             "content": {
                 "link":
-                    "/Thingy/2017/gameThing/",
+                    "/Thingy_2017/gameThing/",
                 "description":
                     "I made a flappy bird clone, then I made this mess.",
                 "display": [
                     {
                         "type": "iframe",
                         "src":
-                            "/Thingy/2017/gameThing/",
+                            "/Thingy_2017/gameThing/",
                         "alt": {
                             "type": "img",
                             "caption": "Title screen of game",
                             "src":
-                                "/Thingy/2017/gameThing/title.png"
+                                "/Thingy_2017/gameThing/title.png"
                         }
                     }
                 ]
@@ -224,7 +224,7 @@
             "no": 6,
             "content": {
                 "link":
-                    "/Thingy/2017/FlappyBird%20but%20not/",
+                    "/Thingy_2017/FlappyBird%20but%20not/",
                 "description":
                     "I saw a YouTube video about creating a FlappyBird clone... Didn't watch it, but I did make a clone.",
                 "display": [
@@ -233,7 +233,7 @@
                         "caption":
                             "Death screenshot on a 1:1 aspect ratio screen",
                         "src":
-                            "/Thingy/2017/FlappyBird%20but%20not/Untitled.png"
+                            "/Thingy_2017/FlappyBird%20but%20not/Untitled.png"
                     }
                 ]
             }
@@ -261,7 +261,7 @@
             "no": 5,
             "content": {
                 "link":
-                    "/Thingy/2017/eval%20vs%20not%20eval/",
+                    "/Thingy_2017/eval%20vs%20not%20eval/",
                 "description":
                     "I was looking around the web when I stumbled across the statement \"eval() is evil!\" So I decided to do some research on the topic, and I made my own performance test.",
                 "display": [
@@ -269,7 +269,7 @@
                         "type": "img",
                         "caption": "A result from the test",
                         "src":
-                            "/Thingy/Photos/2017/EvalVSNotEval.png"
+                            "/Thingy_2017/.p/EvalVSNotEval.png"
                     }
                 ]
             }
@@ -298,7 +298,7 @@
                         "type": "img",
                         "caption": "Yea, it's a boring game.",
                         "src":
-                            "/Thingy/Photos/2017/Collision.png"
+                            "/Thingy_2017/.p/Collision.png"
                     }
                 ]
             },
@@ -312,7 +312,7 @@
             "timestamp": 1501041600000,
             "no": 3,
             "content": {
-                "link": "/Thingy/2017/JaPCode/",
+                "link": "/Thingy_2017/JaPCode/",
                 "description":
                     "An old unfinished project brought back to life. JaPCode is a simple encoding thingy.",
                 "display": [
@@ -320,7 +320,7 @@
                         "type": "img",
                         "caption": "JaPCode",
                         "src":
-                            "/Thingy/2017/JaPCode/Untitled1.png"
+                            "/Thingy_2017/JaPCode/Untitled1.png"
                     }
                 ]
             }
@@ -341,7 +341,7 @@
                         "type": "img",
                         "caption": "INCEPTION",
                         "src":
-                            "/Thingy/Photos/2017/JaPNaASite.png"
+                            "/Thingy_2017/.p/JaPNaASite.png"
                     }
                 ]
             },
@@ -356,7 +356,7 @@
             "no": 1,
             "content": {
                 "link":
-                    "/Thingy/2017/minesweeperAI/",
+                    "/Thingy_2017/minesweeperAI/",
                 "description":
                     "This is a replica of Minesweeper, but an AI script has been injected into it, so it'll solve its self!",
                 "display": [
@@ -364,7 +364,7 @@
                         "type": "img",
                         "caption": "What it looks like",
                         "src":
-                            "/Thingy/2017/minesweeperAI/Untitled.png"
+                            "/Thingy_2017/minesweeperAI/Untitled.png"
                     }
                 ]
             }
