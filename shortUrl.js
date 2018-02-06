@@ -46,7 +46,7 @@ function redirectUrlHash() {
                 yn = parseInt(y) || 0,
                 n = mlh.slice(y.length);
             debugger;
-            re = "Thingy/" + (yn + 2016) + "/" + n;
+            re = "Thingy_" + (yn + 2016) + "/" + n;
             break;
 
         default: // from redirects list
