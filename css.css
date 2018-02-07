@@ -9,6 +9,7 @@
         opacity: 1;
     }
 }
+
 @keyframes rainbowText {
     0%,
     100% {
@@ -36,6 +37,7 @@
         color: #6e0080;
     }
 }
+
 @keyframes unblur {
     0% {
         transform: scale(0.6);
@@ -46,9 +48,11 @@
         opacity: 1;
     }
 }
+
 html {
     touch-action: manipulation;
 }
+
 body {
     width: 100%;
     height: 100%;
@@ -75,6 +79,7 @@ body {
     transition: 0.3s;
     z-index: 10;
 }
+
 #head,
 ev.prompta #head,
 ev.prompta #content,
@@ -87,6 +92,7 @@ div.prompta {
     -ms-user-select: none;
     user-select: none;
 }
+
 #foot {
     bottom: 0;
     left: 0;
@@ -103,6 +109,7 @@ div.prompta {
     font-size: 12px;
     z-index: 2;
 }
+
 #content {
     position: relative;
     display: inline-block;
@@ -116,14 +123,17 @@ div.prompta {
     max-width: 1280px;
     margin-bottom: 64px;
 }
+
 #contentC {
     text-align: center;
     width: 100vw;
 }
+
 body {
     cursor: default;
     background: #fff7fb;
 }
+
 .footlink {
     color: #eee !important;
     text-decoration: none;
@@ -131,10 +141,12 @@ body {
     margin-left: 0px;
     font-size: 14px;
 }
+
 .footlink:hover {
     color: #fff;
     margin-left: 8px;
 }
+
 #copyright {
     color: lightgrey;
     font-family: arial;
@@ -142,11 +154,13 @@ body {
     padding-right: 16px;
     text-align: right;
 }
+
 .JaPNaATL {
     color: inherit;
     text-decoration: inherit;
     vertical-align: center;
 }
+
 .JaPNaAT {
     position: relative;
     font-family: "Share Tech Mono", courier, monospace;
@@ -160,10 +174,12 @@ body {
     left: -36px;
     transition: 0.15s;
 }
+
 .JaPNaATL.search .JaPNaAT {
     color: #002;
     left: 0px;
 }
+
 .JaPNaATL img {
     position: relative;
     left: -4px;
@@ -173,33 +189,40 @@ body {
     opacity: 0;
     transition: 0.15s;
 }
+
 .JaPNaATL.search img {
     left: 8px;
     opacity: 1;
 }
+
 .JaPNaAT::after {
     content: "_";
     animation: blink 1.4s linear infinite;
 }
+
 a[href],
 a[onclick] {
     color: #0012ff;
     cursor: pointer;
 }
+
 img,
 iframe {
     width: 100%;
     margin-top: 8px;
 }
+
 iframe {
     border: 0;
     min-height: 25vh;
     height: 40vh;
     max-height: 80vh;
 }
+
 #content.loading {
     animation: rainbowText 3.5s infinite linear;
 }
+
 div.prompta {
     position: fixed;
     background: white;
@@ -217,15 +240,18 @@ div.prompta {
     z-index: 99;
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
+
 .prompta[dragging] {
     transition: 0s;
 }
+
 ev.prompta #head,
 ev.prompta #content,
 ev.prompta #foot {
     transition: 0.2s;
     filter: blur(2px);
 }
+
 .promptaLO {
     position: fixed;
     background: transparent;
@@ -235,6 +261,7 @@ ev.prompta #foot {
     height: 100%;
     z-index: 6;
 }
+
 .item {
     position: relative;
     display: block;
@@ -249,25 +276,31 @@ ev.prompta #foot {
     cursor: pointer;
     overflow: hidden;
 }
+
 .item:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     z-index: 2;
     transform: scale(1.0075);
 }
+
 .displayOpen {
     opacity: 0;
 }
+
 .card {
     border-radius: 2px;
 }
+
 a.card {
     color: inherit;
     text-decoration: none;
 }
+
 .text {
     border-radius: 2px;
 }
-.card > .cardTag {
+
+.card>.cardTag {
     position: absolute;
     top: 16px;
     left: -16px;
@@ -276,26 +309,32 @@ a.card {
     opacity: 0.3;
     transition: 0.15s;
 }
-.card > .cardTag::after {
+
+.card>.cardTag::after {
     content: "]";
 }
-.card > .cardTag::before {
+
+.card>.cardTag::before {
     content: "[";
 }
+
 .card:hover .cardTag,
-.item:hover > .author,
-.item:hover > .timestamp {
+.item:hover>.author,
+.item:hover>.timestamp {
     opacity: 0.5;
 }
-.card > .desc {
+
+.card>.desc {
     opacity: 0.9;
     margin-top: 4px;
 }
-.item > .title {
+
+.item>.title {
     font-size: 18px;
     display: block;
 }
-.item > .timestamp {
+
+.item>.timestamp {
     opacity: 0.3;
     position: absolute;
     width: 100%;
@@ -303,19 +342,23 @@ a.card {
     left: -16px;
     font-size: 11px;
 }
-.item > .author {
+
+.item>.author {
     opacity: 0.3;
     font-size: 11px;
 }
+
 code,
 pre {
     font-size: 13px;
 }
+
 .item.ierror {
     background: #f00;
     color: white;
     opacity: 0.8;
 }
+
 .item.hidden {
     height: 0;
     padding-top: 0;
@@ -324,6 +367,7 @@ pre {
     margin-bottom: 0;
     opacity: 0;
 }
+
 .headMore {
     top: 0;
     right: 2%;
@@ -332,6 +376,7 @@ pre {
     text-align: right;
     display: flex;
 }
+
 .headMore a {
     margin-left: 2vw;
     transition: 0.15s;
@@ -347,4 +392,22 @@ pre {
 .headMore a:hover {
     border-bottom: 4px solid black;
     opacity: 1;
+}
+
+body::-webkit-scrollbar {
+    background-color: #ebe4e7;
+    width: 12px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #ccc5c9;
+    border-radius: 2px;
+}
+
+html:hover body:not(:hover)::-webkit-scrollbar {
+    background-color: #e0d9dd;
+}
+
+html:hover body:not(:hover)::-webkit-scrollbar-thumb {
+    background-color: #b0abad;
 }
