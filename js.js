@@ -65,38 +65,6 @@ try {
         addEventListener("beforeunload", function() {
             localStorage.JaPNaASDT = JSON.stringify(fdt);
         });
-        $(".JaPNaAT").addEventListener(
-            "auxclick",
-            function() {
-                this.setAttribute("contentEditable", !0);
-                this.focus();
-            },
-            true
-        );
-        $(".JaPNaAT").addEventListener(
-            "contextmenu",
-            function(e) {
-                e.preventDefault();
-            },
-            true
-        );
-        $(".JaPNaAT").addEventListener(
-            "blur",
-            function() {
-                this.removeAttribute("contentEditable");
-            },
-            false
-        );
-        $(".JaPNaAT").addEventListener(
-            "keydown",
-            function(e) {
-                if (e.keyCode == 13) {
-                    e.preventDefault();
-                    this.blur();
-                }
-            },
-            false
-        );
     })();
 
     (function() {
