@@ -76,6 +76,7 @@ try {
                                 if (i.style) {
                                     b.style = i.style;
                                 }
+                                a.appendChild(b);
                                 break;
                             }
                         case "iframe":
