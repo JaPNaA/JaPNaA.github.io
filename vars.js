@@ -172,7 +172,7 @@ try {
 
     (function () {
         var dt = {
-            version: "0.2.8", //VERSION
+            version: "0.2.9", //VERSION
             prompta: {
                 list: [],
                 now: 0
@@ -198,6 +198,9 @@ try {
                 shortPrompta('changelog');
             }
             fdt.fdtV = dt.version;
+        }
+        if (!fdt.alertNotMobileCompatible) {
+            fdt.alertNotMobileCompatible = false;
         }
         if (innerWidth < 280) {
             prompta(

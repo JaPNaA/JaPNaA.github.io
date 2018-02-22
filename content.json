@@ -10,6 +10,7 @@
             "content": {
                 "link": "/Thingy_2018/Open3dThing",
                 "description": "The collision is broken, but is functioning enough for it to be playable. Hopefully I learn how to collision detect gooder in the future.",
+                "notMobileCompatible": true,
                 "display": [
                     {
                         "type": "img",
@@ -48,6 +49,7 @@
             "no": 14,
             "content": {
                 "link": "/Thingy_2018/CppSweeper",
+                "notMobileCompatible": true,
                 "description": "My first C++ project that has exceeded 400 lines of code... But I don't know how to post my project on here, so... this might be the last C++ project you'll see on this site for a while.",
                 "display": []
             }
@@ -153,6 +155,7 @@
                 "link":
                     "/Thingy_2017/Asteroids/",
                 "description": "Kinda-clone of the asteroids game",
+                "notMobileCompatible": true,
                 "display": [
                     {
                         "type": "img",

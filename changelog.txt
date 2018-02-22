@@ -1,3 +1,8 @@
+Version 0.2.9:
+  - Hide tags if width of device is too small
+  - Add not mobile compatible indicator
+  - Add updated date
+
 Version 0.2.8.1:
   - Get rid of 'do you kno de wey' before it's dead
 

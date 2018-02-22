@@ -277,7 +277,7 @@ ev.prompta #foot {
     overflow: hidden;
 }
 
-.item:hover {
+.item:hover:not(.notMobileCompatible) {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     z-index: 2;
     transform: scale(1.0075);
@@ -310,6 +310,10 @@ a.card {
     transition: 0.15s;
 }
 
+.hideTags .card>.cardTag {
+    display: none;
+}
+
 .card>.cardTag::after {
     content: "]";
 }
@@ -318,9 +322,9 @@ a.card {
     content: "[";
 }
 
-.card:hover .cardTag,
-.item:hover>.author,
-.item:hover>.timestamp {
+.card:hover:not(.notMobileCompatible) .cardTag,
+.item:hover:not(.notMobileCompatible)>.author,
+.item:hover:not(.notMobileCompatible)>.timestamp {
     opacity: 0.5;
 }
 
@@ -346,6 +350,16 @@ a.card {
 .item>.author {
     opacity: 0.3;
     font-size: 11px;
+}
+
+.item.notMobileCompatible {
+    opacity: 0.7;
+}
+
+.item.notMobileCompatible > .title::after {
+    content: " (not mobile compatible)";
+    opacity: 0.6;
+    font-weight: normal;
 }
 
 code,
@@ -403,6 +417,7 @@ body::-webkit-scrollbar-thumb {
     background-color: #ccc5c9;
     border-radius: 2px;
 }
+
 body::-webkit-scrollbar-track {
     background-color: #ebe4e7;
 }
@@ -414,6 +429,7 @@ html:hover body:not(:hover)::-webkit-scrollbar {
 html:hover body:not(:hover)::-webkit-scrollbar-thumb {
     background-color: #b0abad;
 }
+
 html:hover body:not(:hover)::-webkit-scrollbar-track {
     background-color: #e0d9dd;
 }

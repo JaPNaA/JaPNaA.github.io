@@ -1,10 +1,8 @@
 try {
     // "Compile" function will send data here.
-    var displayOpenD = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-    )
-        ? ""
-        : " displayOpen";
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+        );
 
     function obj(e) {
         switch (e.type) {
@@ -22,9 +20,10 @@ try {
     }
 
     function fRead(e) {
-        var f = [], h = [];
-        e.data.forEach(function(o, i, a) {
-            if(o.hidden) {
+        var f = [],
+            h = [];
+        e.data.forEach(function (o, i, a) {
+            if (o.hidden) {
                 h.push(o);
                 return;
             }
@@ -32,7 +31,7 @@ try {
             a[i].element = j;
             f.push(j);
         });
-        for(let i of h){
+        for (let i of h) {
             e.data.splice(e.data.indexOf(i), 1);
         }
         return f;
@@ -40,125 +39,172 @@ try {
 
     function iCard(e) {
         try {
-            var f = $(
-                "<a target='_blank' class='item card" + displayOpenD + "'>"
-            );
-            f.innerHTML =
-                "<b class=title>" +
-                e.name +
-                "</b><div class='cardTag'>" +
-                e.tags.join(", ") +
-                "</div>" +
-                (function() {
-                    return (
-                        "<div class=desc>" +
-                        e.content.description +
-                        "</div><div class=display>" +
-                        (function() {
-                            var f = "";
-                            e.content.display.forEach(function(o) {
-                                switch (o.type) {
-                                    case "img":
-                                        f +=
-                                            '<img src="' +
-                                            o.src +
-                                            '" title="' +
-                                            o.caption +
-                                            '" style="' +
-                                            o.style +
-                                            '">';
-                                        break;
-                                    case "iframe":
-                                        f +=
-                                            '<img src="' +
-                                            o.alt.src +
-                                            '" title="' +
-                                            o.alt.caption +
-                                            '" style="' +
-                                            o.alt.style +
-                                            '">';
-                                        break;
-                                    default:
-                                        console.warn(
-                                            e,
-                                            o,
-                                            "unkown item. @function iCard 'display'"
-                                        );
+            var f = document.createElement("a");
+            f.target = "_blank";
+            f.classList.add("item", "card");
+            isMobile || f.classList.add("displayOpen");
+            if (e.content.notMobileCompatible && isMobile) {
+                f.classList.add("notMobileCompatible");
+            }
+
+            {
+                let a = document.createElement("b");
+                a.classList.add("title");
+                a.innerHTML = e.name;
+                f.appendChild(a);
+            } {
+                let a = document.createElement("div");
+                a.classList.add("cardTag");
+                a.innerHTML = e.tags.join(", ");
+                f.appendChild(a);
+            } {
+                let a = document.createElement("div");
+                a.classList.add("desc");
+                a.innerHTML = e.content.description;
+                f.appendChild(a);
+            } {
+                let a = document.createElement("div");
+                a.classList.add("display");
+
+                for (let i of e.content.display) {
+                    switch (i.type) {
+                        case "img":
+                            {
+                                let b = document.createElement("img");
+                                b.src = i.src;
+                                b.title = i.caption;
+                                if (i.style) {
+                                    b.style = i.style;
                                 }
-                            });
-                            return f;
-                        })() +
-                        "</div>" +
-                        "<div class=timestamp>" +
-                        (e.timestamp
-                            ? new Date(e.timestamp).toLocaleDateString()
-                            : "") +
-                        "</div> <div class=author>" +
-                        e.author.join(", ") +
-                        "</div>"
-                    );
-                })();
-            f.style = e.style || "";
-            e.content.link && (f.href = e.content.link);
+                                break;
+                            }
+                        case "iframe":
+                            {
+                                let b = document.createElement("img");
+                                b.src = i.alt.src;
+                                b.title = i.alt.caption;
+                                if (i.style) {
+                                    b.style = i.alt.style;
+                                }
+                                a.appendChild(b);
+                                break;
+                            }
+                        default:
+                            console.warn(
+                                e,
+                                o,
+                                "unkown item. @function iCard 'display'"
+                            );
+                    }
+                }
+
+                f.appendChild(a);
+            } {
+                let a = document.createElement("div"),
+                    m = "";
+                a.classList.add("timestamp");
+
+                if (e.timestamp) {
+                    m += new Date(e.timestamp).toLocaleDateString();
+                    if (e.updated) {
+                        m += " - " + new Date(e.updated).toLocaleDateString();
+                    }
+                }
+
+                a.innerHTML = m;
+                f.appendChild(a);
+            } {
+                let a = document.createElement("div");
+                a.classList.add("author");
+                a.innerHTML = e.author.join(", ");
+                f.appendChild(a);
+            }
+            if (e.style) {
+                f.style = e.style;
+            }
+            if (e.content.link) {
+                f.href = e.content.link;
+            }
+
             fScript(f, e);
             return f;
         } catch (er) {
-            var f = $("<div class='item card ierror " + displayOpenD + "'>");
-            f.innerHTML =
+            var g = $("<div class='item card ierror " + (isMobile ? "" : "displayOpen")  + "'>");
+            g.innerHTML =
                 "<b> An error occurred while trying the parse the card.<br> </b><code>" +
                 er.toString() +
                 "<br>" +
                 JSON.stringify(e) +
                 "</code>";
-            f.onclick = function() {
+            g.onclick = function () {
                 shortPrompta("feedback");
             };
-            return f;
+            console.error(er);
+            return g;
         }
     }
 
     function iText(e) {
         try {
-            var f = $("<div class='item text " + displayOpenD + "'>");
-            f.innerHTML =
-                "<b class=title>" +
-                (e.title || "") +
-                "</b>" +
-                (e.content || "") +
-                "<div class=timestamp>" +
-                (e.timestamp
-                    ? new Date(e.timestamp).toLocaleDateString()
-                    : "") +
-                "</div>";
+            var f = document.createElement("div");
+            f.classList.add("text", "item");
+            isMobile || f.classList.add("displayOpen");
+
+            {
+                let a = document.createElement("b");
+                a.classList.add("title");
+                if (e.title) {
+                    a.innerHTML = e.title;
+                }
+                f.appendChild(a);
+            } {
+                let a = document.createElement("div");
+                a.innerHTML = e.content;
+                f.appendChild(a);
+            } {
+                let a = document.createElement("div"),
+                    m = "";
+                a.classList.add("timestamp");
+
+                if (e.timestamp) {
+                    m += new Date(e.timestamp).toLocaleDateString();
+                    if (e.updated) {
+                        m += " - " + new Date(e.updated).toLocaleDateString();
+                    }
+                }
+
+                a.innerHTML = m;
+                f.appendChild(a);
+            }
             fScript(f, e);
             return f;
         } catch (er) {
-            var f = $("<div class='item card ierror " + displayOpenD + "'>");
-            f.innerHTML =
+            var g = $("<div class='item card ierror " + (isMobile ? "" : "displayOpen") + "'>");
+            g.innerHTML =
                 "<b> An error occurred while trying the parse the card.<br> </b><code>" +
                 e.toString() +
                 "<br>" +
                 JSON.stringify(e) +
                 "</code>";
-            f.onclick = function() {
+            g.onclick = function () {
                 shortPrompta("feedback");
             };
-            return f;
+            return g;
         }
     }
 
     function fScript(e, g) {
         var f = g.events;
         if (!f) return;
-        f.forEach(function(o) {
+        f.forEach(function (o) {
             var a;
             eval("a=" + o[1]);
             e.addEventListener(o[0], a);
         });
         g.script && eval(g.script);
-        (function() {
+        (function () {
             var a = g.style.split(";");
-            a.forEach(function(o) {
+            a.forEach(function (o) {
                 if (o) {
                     var b = o.split(":");
                     e.style[b[0]] = b[1];
@@ -172,8 +218,7 @@ try {
         if (e.animate) {
             setTimeout(() => {
                 e.animate(
-                    [
-                        {
+                    [{
                             opacity: 0,
                             top: "64px"
                         },
@@ -181,8 +226,7 @@ try {
                             opacity: 1,
                             top: 0
                         }
-                    ],
-                    {
+                    ], {
                         duration: 750,
                         iterations: 1,
                         easing: "ease"
