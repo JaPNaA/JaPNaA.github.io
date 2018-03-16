@@ -354,6 +354,7 @@ a.card {
 
 .item.notMobileCompatible {
     opacity: 0.7;
+    filter: grayscale();
 }
 
 .item.notMobileCompatible > .title::after {
