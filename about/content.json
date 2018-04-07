@@ -4,13 +4,13 @@
             "type": "text",
             "title": "About",
             "content": "JaP is kewl.<br>I'm 14.076 years old (as of writing), currently attending Applewood Heights Secondary school. I consider myself an okay programmer; I'm great at JavaScript and Python, okay at Java, learning C# and C++. <br> On this site, you can find some of my projects which that have exceeded 400 lines of code, or marks a benchmark.",
-            "timestamp": "Dec 12 2017"
+            "timestamp": 1513054800000
         },
         {
             "type": "text",
             "title": "Older",
             "content": "JaP is kewl.<br>I'm 13.985 years old (as of writing), currently attending Applewood Heights Secondary school. I consider myself an okay programmer; I'm great at JavaScript and Python, and learning C++. <br> You probubly heard of this website from my friends because they're offering free advertising.<br>On this site, you can find some of my projects which that have exceeded 400 lines of code.",
-            "timestamp": "Nov 8 2017"
+            "timestamp": 1510117200000
         }
     ],
     "meta":{

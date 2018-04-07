@@ -1,5 +1,21 @@
 {
-    "data": [
+    "data": [{
+            "type": "card",
+            "tags": ["game", "block", "invasion", "ball", "ballz"],
+            "author": ["JaPNaA"],
+            "name": "BlockInvasion",
+            "timestamp": 1523062868844,
+            "no": 18,
+            "content": {
+                "link": "/Thingy_2018/blockInvasion/",
+                "description": "Shoot balls at squares a number of times.",
+                "display": [{
+                    "type": "img",
+                    "caption": "i took this screenshot on my ipad",
+                    "src": "/Thingy_2018/0p/blockInvasion.png"
+                }]
+            }
+        },
         {
             "type": "card",
             "tags": ["translator", "1337", "speak"],
@@ -10,14 +26,13 @@
             "content": {
                 "link": "/Thingy_2018/1337Speak/",
                 "description": "Have you ever wanted to speak in 1337? Probably not. BUT NOW YOU CAN!... This project didn't get 400 lines, but I haven't posted in a while...",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "I bet you can't read that",
-                        "src": "/Thingy_2018/0p/1337Speak.png"
-                    }
-                ]
-            }
+                "display": [{
+                    "type": "img",
+                    "caption": "I bet you can't read that",
+                    "src": "/Thingy_2018/0p/1337Speak.png"
+                }]
+            },
+            "style": "background-color: #000; color: #FFF;"
         },
         {
             "type": "card",
@@ -30,13 +45,11 @@
                 "link": "/Thingy_2018/Open3dThing/",
                 "description": "The collision is broken, but is functioning enough for it to be playable. Hopefully I learn how to collision detect gooder in the future.",
                 "notMobileCompatible": true,
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "i'm terrible at captioning",
-                        "src": "/Thingy_2018/0p/open3dThing.png"
-                    }
-                ]
+                "display": [{
+                    "type": "img",
+                    "caption": "i'm terrible at captioning",
+                    "src": "/Thingy_2018/0p/open3dThing.png"
+                }]
             },
             "style": "background-color: #000; color: #FFF;"
         },
@@ -50,13 +63,11 @@
             "content": {
                 "link": "/Thingy_2018/typeracerClone/",
                 "description": "Measure how fast you can type, with some random texts I wrote",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "staged typing on typeracer clone",
-                        "src": "/Thingy_2018/0p/typeracer.png"
-                    }
-                ]
+                "display": [{
+                    "type": "img",
+                    "caption": "staged typing on typeracer clone",
+                    "src": "/Thingy_2018/0p/typeracer.png"
+                }]
             }
         },
         {
@@ -77,19 +88,17 @@
             "type": "card",
             "tags": ["visualizer", "sound", "music", "graphics"],
             "author": ["JaPNaA"],
-            "name": "Sound Visualizer", 
+            "name": "Sound Visualizer",
             "timestamp": 1514955600000,
             "no": 13,
             "content": {
                 "link": "/Thingy_2018/soundVisualizer/",
                 "description": "SEE your SOUNDS.... yea... First project of 2018!",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "Dots and circles",
-                        "src": "/Thingy_2018/0p/soundVisualizer.png"
-                    }
-                ]
+                "display": [{
+                    "type": "img",
+                    "caption": "Dots and circles",
+                    "src": "/Thingy_2018/0p/soundVisualizer.png"
+                }]
             },
             "style": "background-color: #000; color: #FFF;"
         },
@@ -103,21 +112,18 @@
             "content": {
                 "link": "/Thingy_2017/3dPong/",
                 "description": "Mah first 3d game!1!!",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "screenshott",
-                        "src": "/Thingy_2017/0p/3dPong.png"
-                    }
-                ]
+                "display": [{
+                    "type": "img",
+                    "caption": "screenshott",
+                    "src": "/Thingy_2017/0p/3dPong.png"
+                }]
             },
             "style": "background-color: #000; color: #FFF;"
         },
         {
             "type": "text",
             "title": "Net Neutrality",
-            "content":
-                "<img src='https://lh3.googleusercontent.com/kppmyp-5OEgfee0R9yc9acGo2wqc-tZd32XZtQF6Td7hTgEuIsRJEsgbxkdgPx3Az3-yP6DG-YEJkmjITYvaXbS-EIym3iVEyMiEtYxxXTsPc5HlB7wTj-yl_JAuf5_Yio8SojFJYxRPkBAkheEjOWGp8Vjv284N2TlQAWIMLRFuQuX4ELL_JeChZMlGTTlxeg2CsZe9uVE0ZRTbNcmR-y1tmvwynJjSgDclJ3TJlnIGbB7aIMZdht9GpaFt2FUckMPHPVXilMIMgxTZsW2SY3su46PLQceap7mWQJO48FzCAWVOhNWzDkM4-jt7dipNWfrJcl9XfOfhzLihsplYPHGuvu12o3QqxvwRbYkCOArDowv35bPup4VhkoShpcykujNi_bvFqZcG17ngqfamiOZ7MEJJ2iGI8_dZ0_s6b65vEa4x8H4W0OwznYd0UIXDn3bNs4_hAN_G_uvHNgk1C4qGGl3pVY3G57vI2LGBA_E02KjuR6VmARYq91KYBalvIpmewNTnrVyQxpTAjicfJNdj4GeWyqvLxtiF2E_neizezayYk0a0J9v4jfc=w1328-h767'><br><a href='https://www.google.com/search?q=net+neutrality'>Google it.</a><br>I'm a little late posting this...",
+            "content": "<img src='https://lh3.googleusercontent.com/kppmyp-5OEgfee0R9yc9acGo2wqc-tZd32XZtQF6Td7hTgEuIsRJEsgbxkdgPx3Az3-yP6DG-YEJkmjITYvaXbS-EIym3iVEyMiEtYxxXTsPc5HlB7wTj-yl_JAuf5_Yio8SojFJYxRPkBAkheEjOWGp8Vjv284N2TlQAWIMLRFuQuX4ELL_JeChZMlGTTlxeg2CsZe9uVE0ZRTbNcmR-y1tmvwynJjSgDclJ3TJlnIGbB7aIMZdht9GpaFt2FUckMPHPVXilMIMgxTZsW2SY3su46PLQceap7mWQJO48FzCAWVOhNWzDkM4-jt7dipNWfrJcl9XfOfhzLihsplYPHGuvu12o3QqxvwRbYkCOArDowv35bPup4VhkoShpcykujNi_bvFqZcG17ngqfamiOZ7MEJJ2iGI8_dZ0_s6b65vEa4x8H4W0OwznYd0UIXDn3bNs4_hAN_G_uvHNgk1C4qGGl3pVY3G57vI2LGBA_E02KjuR6VmARYq91KYBalvIpmewNTnrVyQxpTAjicfJNdj4GeWyqvLxtiF2E_neizezayYk0a0J9v4jfc=w1328-h767'><br><a href='https://www.google.com/search?q=net+neutrality'>Google it.</a><br>I'm a little late posting this...",
             "timestamp": 1511413200000,
             "hidden": true
         },
@@ -131,13 +137,11 @@
             "content": {
                 "link": "/Thingy_2017/threejsTests/",
                 "description": "Three-DEEEE!! This took way to long to make",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "Screenshot of moving things make it look less gooder",
-                        "src": "/Thingy_2017/0p/ThreeDee.png"
-                    }
-                ]
+                "display": [{
+                    "type": "img",
+                    "caption": "Screenshot of moving things make it look less gooder",
+                    "src": "/Thingy_2017/0p/ThreeDee.png"
+                }]
             },
             "style": "background-color: #000; color: #FFF;"
         },
@@ -149,17 +153,13 @@
             "timestamp": 1510722000000,
             "no": 10,
             "content": {
-                "link":
-                    "/Thingy_2017/ticTacToeMachineLearning/",
-                "description":
-                    "I taught a computer to learn. Progress. This project was inspired by <a target='_blank' href='https://boingboing.net/2009/11/02/mechanical-computer.html'>MENACE.</a>",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "A game in-progress",
-                        "src": "/Thingy_2017/0p/tictactoeML.png"
-                    }
-                ]
+                "link": "/Thingy_2017/ticTacToeMachineLearning/",
+                "description": "I taught a computer to learn. Progress. This project was inspired by <a target='_blank' href='https://boingboing.net/2009/11/02/mechanical-computer.html'>MENACE.</a>",
+                "display": [{
+                    "type": "img",
+                    "caption": "A game in-progress",
+                    "src": "/Thingy_2017/0p/tictactoeML.png"
+                }]
             }
         },
         {
@@ -171,18 +171,14 @@
             "updated": 1517703669319,
             "no": 9,
             "content": {
-                "link":
-                    "/Thingy_2017/Asteroids/",
+                "link": "/Thingy_2017/Asteroids/",
                 "description": "Kinda-clone of the asteroids game",
                 "notMobileCompatible": true,
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "Screenshot of la gam",
-                        "src":
-                            "/Thingy_2017/0p/Asteroids.png"
-                    }
-                ]
+                "display": [{
+                    "type": "img",
+                    "caption": "Screenshot of la gam",
+                    "src": "/Thingy_2017/0p/Asteroids.png"
+                }]
             },
             "style": "background-color: #000; color: #FFF;"
         },
@@ -194,18 +190,13 @@
             "timestamp": 1509595200000,
             "no": 8,
             "content": {
-                "link":
-                    "/Thingy_2017/ballPhysics/",
-                "description":
-                    "Not accurate... at all. Spawning more than 20 balls causes infinite energy",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "Screenie...",
-                        "src":
-                            "/Thingy_2017/0p/ballPhysics.png"
-                    }
-                ]
+                "link": "/Thingy_2017/ballPhysics/",
+                "description": "Not accurate... at all. Spawning more than 20 balls causes infinite energy",
+                "display": [{
+                    "type": "img",
+                    "caption": "Screenie...",
+                    "src": "/Thingy_2017/0p/ballPhysics.png"
+                }]
             },
             "style": "background-color: #000; color: #FFF;"
         },
@@ -217,23 +208,17 @@
             "timestamp": 1504843200000,
             "no": 7,
             "content": {
-                "link":
-                    "/Thingy_2017/gameThing/",
-                "description":
-                    "I made a flappy bird clone, then I made this mess.",
-                "display": [
-                    {
-                        "type": "iframe",
-                        "src":
-                            "/Thingy_2017/gameThing/",
-                        "alt": {
-                            "type": "img",
-                            "caption": "Title screen of game",
-                            "src":
-                                "/Thingy_2017/gameThing/title.png"
-                        }
+                "link": "/Thingy_2017/gameThing/",
+                "description": "I made a flappy bird clone, then I made this mess.",
+                "display": [{
+                    "type": "iframe",
+                    "src": "/Thingy_2017/gameThing/",
+                    "alt": {
+                        "type": "img",
+                        "caption": "Title screen of game",
+                        "src": "/Thingy_2017/gameThing/title.png"
                     }
-                ]
+                }]
             },
             "style": "background-color: #555; color: #00fff3;"
         },
@@ -245,26 +230,19 @@
             "timestamp": 1503892800000,
             "no": 6,
             "content": {
-                "link":
-                    "/Thingy_2017/FlappyBird%20but%20not/",
-                "description":
-                    "I saw a YouTube video about creating a FlappyBird clone... Didn't watch it, but I did make a clone.",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption":
-                            "Death screenshot on a 1:1 aspect ratio screen",
-                        "src":
-                            "/Thingy_2017/FlappyBird%20but%20not/Untitled.png"
-                    }
-                ]
+                "link": "/Thingy_2017/FlappyBird%20but%20not/",
+                "description": "I saw a YouTube video about creating a FlappyBird clone... Didn't watch it, but I did make a clone.",
+                "display": [{
+                    "type": "img",
+                    "caption": "Death screenshot on a 1:1 aspect ratio screen",
+                    "src": "/Thingy_2017/FlappyBird%20but%20not/Untitled.png"
+                }]
             }
         },
         {
             "type": "text",
             "title": "Beta",
-            "content":
-                "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='/JaPNaA.github.io/issues/new'>Send feedback</a><br><b>No longer in beta, but we would still appreciate your feedback!",
+            "content": "This site is in beta. That means this site could change dramatically in a few hours, and we would also like some feedback on our site.<br><a target=_blank href='/JaPNaA.github.io/issues/new'>Send feedback</a><br><b>No longer in beta, but we would still appreciate your feedback!",
             "timestamp": 1499313600000,
             "events": [
                 [
@@ -282,18 +260,13 @@
             "timestamp": 1502942400000,
             "no": 5,
             "content": {
-                "link":
-                    "/Thingy_2017/eval%20vs%20not%20eval/",
-                "description":
-                    "I was looking around the web when I stumbled across the statement \"eval() is evil!\" So I decided to do some research on the topic, and I made my own performance test.",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "A result from the test",
-                        "src":
-                            "/Thingy_2017/0p/EvalVSNotEval.png"
-                    }
-                ]
+                "link": "/Thingy_2017/eval%20vs%20not%20eval/",
+                "description": "I was looking around the web when I stumbled across the statement \"eval() is evil!\" So I decided to do some research on the topic, and I made my own performance test.",
+                "display": [{
+                    "type": "img",
+                    "caption": "A result from the test",
+                    "src": "/Thingy_2017/0p/EvalVSNotEval.png"
+                }]
             }
         },
         {
@@ -313,16 +286,12 @@
             "no": 4,
             "content": {
                 "link": "http://fierce-scrubland-53475.herokuapp.com/",
-                "description":
-                    "A test for Heroku, Node Websocket, AND collision! Three tests in one :O. You can bump into things and push other players on this HTML5 Websocket test.",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "Yea, it's a boring game.",
-                        "src":
-                            "/Thingy_2017/0p/Collision.png"
-                    }
-                ]
+                "description": "A test for Heroku, Node Websocket, AND collision! Three tests in one :O. You can bump into things and push other players on this HTML5 Websocket test.",
+                "display": [{
+                    "type": "img",
+                    "caption": "Yea, it's a boring game.",
+                    "src": "/Thingy_2017/0p/Collision.png"
+                }]
             },
             "style": "background-color: #000; color: #FFF;"
         },
@@ -335,16 +304,12 @@
             "no": 3,
             "content": {
                 "link": "/Thingy_2017/JaPCode/",
-                "description":
-                    "An old unfinished project brought back to life. JaPCode is a simple encoding thingy.",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "JaPCode",
-                        "src":
-                            "/Thingy_2017/JaPCode/Untitled1.png"
-                    }
-                ]
+                "description": "An old unfinished project brought back to life. JaPCode is a simple encoding thingy.",
+                "display": [{
+                    "type": "img",
+                    "caption": "JaPCode",
+                    "src": "/Thingy_2017/JaPCode/Untitled1.png"
+                }]
             }
         },
         {
@@ -356,16 +321,12 @@
             "no": 2,
             "content": {
                 "link": "https://japnaa.github.io/",
-                "description":
-                    "This is a site for my projects and things. And this site that your seeing this project on is a project... INCEPTION",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "INCEPTION",
-                        "src":
-                            "/Thingy_2017/0p/JaPNaASite.png"
-                    }
-                ]
+                "description": "This is a site for my projects and things. And this site that your seeing this project on is a project... INCEPTION",
+                "display": [{
+                    "type": "img",
+                    "caption": "INCEPTION",
+                    "src": "/Thingy_2017/0p/JaPNaASite.png"
+                }]
             },
             "style": "background-color: #7efec3;"
         },
@@ -377,18 +338,13 @@
             "timestamp": 1499054400000,
             "no": 1,
             "content": {
-                "link":
-                    "/Thingy_2017/minesweeperAI/",
-                "description":
-                    "This is a replica of Minesweeper, but an AI script has been injected into it, so it'll solve its self!",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "What it looks like",
-                        "src":
-                            "/Thingy_2017/minesweeperAI/Untitled.png"
-                    }
-                ]
+                "link": "/Thingy_2017/minesweeperAI/",
+                "description": "This is a replica of Minesweeper, but an AI script has been injected into it, so it'll solve its self!",
+                "display": [{
+                    "type": "img",
+                    "caption": "What it looks like",
+                    "src": "/Thingy_2017/minesweeperAI/Untitled.png"
+                }]
             }
         }
     ],
