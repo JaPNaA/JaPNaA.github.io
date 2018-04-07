@@ -14,7 +14,8 @@
                     "caption": "i took this screenshot on my ipad",
                     "src": "/Thingy_2018/0p/blockInvasion.png"
                 }]
-            }
+            },
+            "style": "background-color: #000; color: #FFF;"
         },
         {
             "type": "card",
@@ -31,8 +32,7 @@
                     "caption": "I bet you can't read that",
                     "src": "/Thingy_2018/0p/1337Speak.png"
                 }]
-            },
-            "style": "background-color: #000; color: #FFF;"
+            }
         },
         {
             "type": "card",
