@@ -1,117 +1,126 @@
-try {
+function ShortUrl(DT) {
+    var D = {};
+    DT.ShortUrl = D;
 
-function reqShortUrlNX(e) {
-    prompta("Requested short URL hash <b>" + e + "</b> doesn't exist");
-    location.hash = "";
-}
+    function alertHashDoesntExist(e) {
+        DT.Utils.prompta("Requested short URL hash <b>" + e + "</b> doesn't exist");
+        clearHash();
+    }
 
-function redirectUrlHash() {
-    if (!location.hash) return;
+    function setLocation(e) {
+        location.assign(e);
+    }
 
-    var re = null,
-        args = {
-            forget: false
-        },
-        lh = location.hash.replace(/^#/, ""),
-        flh = lh[0],
-        mlh = lh.slice(1);
+    function clearHash() {
+        history.replaceState(null, null, location.origin);
+    }
 
-    switch (flh) {
-        case "#": // number on site
-            try {
-                var mlhi = parseInt(mlh);
-            } catch (e) {
+    function redirectUrlHash() { //* Fix this function
+        if (!location.hash) return;
+
+        var newHref = null,
+            args = {
+                forget: false
+            },
+            hash = location.hash.replace(/^#/, ""),
+            firshCharHash = hash[0],
+            hashContent = hash.slice(1);
+
+        clearHash();
+
+        if (!hash) return;
+
+        switch (firshCharHash) {
+            case "#": // number on site
+                try {
+                    var mlhi = parseInt(hashContent);
+                } catch (e) {
+                    break;
+                }
+                var f = function () {
+                    var a = dt.content.data.find(function (e) {
+                        return e.no == mlhi;
+                    });
+
+                    if (a) {
+                        setLocation(a.content.link);
+                    } else {
+                        alertHashDoesntExist(hash);
+                    }
+                };
+                if (!window.dt) {
+                    addEventListener("load", f);
+                    return;
+                } else {
+                    f();
+                }
                 break;
-            }
-            var f = function() {
-                var a = dt.content.data.find(function (e) {
-                    return e.no == mlhi;
-                });
+            case "_":
+                var y = hashContent.match(/^\d*/)[0],
+                    yn = parseInt(y) || 0,
+                    n = hashContent.slice(y.length);
+                debugger;
+                newHref = "Thingy_" + (yn + 2016) + "/" + n;
+                break;
 
-                if (a) {
-                    location.replace(a.content.link);
-                } else {
-                    reqShortUrlNX(lh);
-                }
-            };
-            if (!window.dt) {
-                addEventListener("load", f);
-                return;
-            } else {
-                f();
-            }
-            break;
-        case "_":
-            var y = mlh.match(/^\d*/)[0],
-                yn = parseInt(y) || 0,
-                n = mlh.slice(y.length);
-            debugger;
-            re = "Thingy_" + (yn + 2016) + "/" + n;
-            break;
+            default: // from redirects list
+                var a = new XMLHttpRequest();
+                a.responseType = "text";
+                a.open("GET", "content/redirects.txt?d=" + new Date().getTime() + Math.random());
 
-        default: // from redirects list
-            var a = new XMLHttpRequest();
-            a.responseType = "text";
-            a.open("GET", "redirects.txt?d=" + new Date().getTime() + Math.random());
+                a.addEventListener("load", function () {
+                    var r = a.response.split("\n"),
+                        l = [],
+                        rl = r.length,
+                        re = null;
 
-            a.addEventListener("load", function () {
-                var r = a.response.split("\n"),
-                    l = [],
-                    rl = r.length,
-                    re = null;
+                    for (var i = 0; i < rl; i++) {
+                        var ri = r[i].split(/\s*,\s*/g);
+                        if (ri[0] == hash) {
+                            let ar = ri.slice(2);
 
-                for (var i = 0; i < rl; i++) {
-                    var ri = r[i].split(/\s*,\s*/g);
-                    if (ri[0] == lh) {
-                        let ar = ri.slice(2);
+                            if (ar.includes("forget")) {
+                                args.forget = true;
+                            }
 
-                        if(ar.includes("forget")) {
-                            args.forget = true;
+                            re = ri[1];
+                            break;
                         }
-
-                        re = ri[1];
-                        break;
                     }
-                }
 
-                if (re) {
-                    location.replace(re);
-                    if (args.forget) {
-                        location.hash = "";
+                    if (re) {
+                        setLocation(re);
+                        if (args.forget) {
+                            clearHash();
+                        }
+                    } else {
+                        alertHashDoesntExist(hash);
                     }
-                } else {
-                    reqShortUrlNX(lh);
-                }
-            });
-            a.addEventListener("error", e => prompta(e));
-            a.send();
-            return;
-            break;
-    }
-
-    if (re) {
-        location.replace(re);
-        if (args.forget) {
-            location.hash = "";
+                });
+                a.addEventListener("error", e => prompta(e));
+                a.send();
+                return;
+                break;
         }
-    } else {
-        if (window.prompta) {
-            reqShortUrlNX(lh);
+
+        if (newHref) {
+            setLocation(newHref);
+            if (args.forget) {
+                clearHash();
+            }
         } else {
-            addEventListener("load", function () {
-                reqShortUrlNX(lh);
-            });
+            if (window.prompta) {
+                alertHashDoesntExist(hash);
+            } else {
+                addEventListener("load", function () {
+                    alertHashDoesntExist(hash);
+                });
+            }
         }
     }
-}
 
-addEventListener("hashchange", redirectUrlHash);
-redirectUrlHash();
-
-} catch (e) {
-    console.error(e);
-    try {
-        prompta(e);
-    } catch (e) {}
-    dt.fallback.push(!1);
+    D.setup = function() {
+        addEventListener("hashchange", redirectUrlHash);
+        redirectUrlHash();
+    };
 }

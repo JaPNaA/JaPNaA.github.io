@@ -1,3 +1,4 @@
+/*
 @keyframes blink {
     0%,
     50%,
@@ -434,3 +435,4 @@ html:hover body:not(:hover)::-webkit-scrollbar-thumb {
 html:hover body:not(:hover)::-webkit-scrollbar-track {
     background-color: #e0d9dd;
 }
+*/
