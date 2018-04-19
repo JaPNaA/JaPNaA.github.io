@@ -5,6 +5,7 @@ function Site(DT) {
             maxItemWidth: 524,
             minItemWidth: 480,
             menuWidth: 256,
+            itemPop: false,
             children: [],
             bodyFrag: []
         },
@@ -135,10 +136,18 @@ function Site(DT) {
         buildBodyFrags();
     }
 
+    function mousemove() {
+        if (!D.itemPop) {
+            D.itemPop = true;
+            body.classList.add('itemPop');
+        }
+    }
+
     D.setup = function () {
         makeDocFrag();
 
         addEventListener("resize", resize);
+        addEventListener("mousemove", mousemove);
         requestAnimationFrame(DT.SplashScreen.closeSplashScreen);
 
         document.body.appendChild(docFrag);
