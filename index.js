@@ -1,7 +1,13 @@
 (function() {
-
     var DT = {},
-        L = [Utils, ShortUrl];
+        L = null;
+
+    try {
+        L = [SplashScreen, Utils, ShortUrl, SiteObjects, Site];
+    } catch(err) {
+        location.reload(true); // add something to prevent from looping forever
+        return;
+    }
     
     for(let i of L) {
         i(DT);
@@ -12,4 +18,6 @@
             j.setup();
         }
     }
+
+    window.DT = DT; //* for debugging
 }());
