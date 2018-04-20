@@ -34,6 +34,16 @@ function Utils(DT) {
         }
     };
 
+    D.getFile = function(e, c) {
+        var x = new XMLHttpRequest();
+        x.open("GET", e);
+        x.responseType = "text";
+        x.addEventListener("load", function() {
+            c(x.response);
+        });
+        x.send();
+    };
+
     D.setup = function() {
         document.head.appendChild(stylesheet);
     };

@@ -6,6 +6,7 @@ function Site(DT) {
             minItemWidth: 480,
             menuWidth: 256,
             itemPop: false,
+            allowedDeviation: 128,
             children: [],
             bodyFrag: []
         },
@@ -39,12 +40,22 @@ function Site(DT) {
         body.id = "body";
 
         // place holder
-        for (let i = 0; i < 25; i++) {
-            let item = new DT.SiteObjects.Text("JaPNaA. This is the content. ".repeat(Math.round(Math.random() * 10 + 1) ** 2));
-            D.children.push(item);
-        }
+        // for (let i = 0; i < 25; i++) {
+        //     let item = new DT.SiteObjects.Text("Look at my very nice title " + i, "JaPNaA. This is the content. ".repeat(Math.round(Math.random() * 10 + 1) ** 2));
+        //     D.children.push(item);
+        // }
 
-        buildBodyFrags();
+        DT.ContentGetter.add("content", "content/0.json", true, function (e) {
+            var d = JSON.parse(e).data;
+            for (let i of d) {
+                let item = DT.SiteObjects.parse(i);
+                if (!item) continue;
+                D.children.push(item);
+            }
+            buildBodyFrags();
+        });
+
+        // buildBodyFrags();
 
         return body;
     }
@@ -89,7 +100,7 @@ function Site(DT) {
 
             for (let i = 1; i < bodyFragCount; i++) {
                 let cfrag = bodyFrag[i];
-                if (cfrag.clientHeight < smallest.clientHeight) {
+                if (cfrag.clientHeight < smallest.clientHeight - D.allowedDeviation) {
                     smallest = cfrag;
                 }
             }
