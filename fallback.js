@@ -7,7 +7,6 @@ window.onerror = function (e) {
         if (console.group) {
             console.group("Error @" + this.performance.now());
             console.error(e);
-            console.trace();
             console.groupEnd();
         } else {
             console.log(e);

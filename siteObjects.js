@@ -4,8 +4,7 @@ function SiteObjects(DT) {
 
     D.Card = class {
         constructor(title, content, timestamp, tags, author, style) {
-            this.elm = document.createElement("div");
-            {
+            this.elm = document.createElement("div"); {
                 this.titleElm = document.createElement("div");
                 this.titleElm.classList.add("title");
                 this.elm.appendChild(this.titleElm);
@@ -32,7 +31,7 @@ function SiteObjects(DT) {
             return this.titleElm.innerHTML;
         }
         set title(e) {
-            
+
             if (e) {
                 this.titleElm.innerHTML = e;
             } else {
@@ -56,8 +55,7 @@ function SiteObjects(DT) {
 
     D.Text = class {
         constructor(title, content, timestamp, style) {
-            this.elm = document.createElement("div");
-            {
+            this.elm = document.createElement("div"); {
                 this.titleElm = document.createElement("div");
                 this.titleElm.classList.add("title");
                 this.elm.appendChild(this.titleElm);
@@ -107,8 +105,7 @@ function SiteObjects(DT) {
     };
     D.ErrorCard = class {
         constructor(msg) {
-            this.elm = document.createElement("div");
-            {
+            this.elm = document.createElement("div"); {
                 this.titleElm = document.createElement("div");
                 this.titleElm.classList.add("title");
                 this.elm.appendChild(this.titleElm);
@@ -135,7 +132,6 @@ function SiteObjects(DT) {
             return this.titleElm.innerHTML;
         }
         set title(e) {
-
             if (e) {
                 this.titleElm.innerHTML = e;
             } else {
@@ -157,20 +153,64 @@ function SiteObjects(DT) {
         }
     };
 
-    D.parseCardContent = function(dt) {
+    D.separator = function () {
+        return document.createElement("hr");
+    };
+    D.searchButton = function () {
+        var e = document.createElement("div"); {
+            let a = document.createElement("div");
+            a.classList.add("searchButton");
+
+            {
+                let b = document.createElement("div");
+                b.innerHTML = "Search";
+                b.classList.add("text");
+
+                a.appendChild(b);
+            } {
+                let b = document.createElement("div");
+                b.classList.add("img");
+
+                {
+                    let c = document.createElement("img");
+                    c.src = "img/searchIcon.png";
+                    b.appendChild(c);
+                }
+
+                a.appendChild(b);
+            }
+
+            e.appendChild(a);
+        }
+
+        return e;
+    };
+    D.yearList = function () {
+        var e = document.createDocumentFragment();
+        
+        for (let i = 2016; i <= 2018; i++) {
+            let a = document.createElement("div");
+            a.innerHTML = i;
+            e.appendChild(a);
+        }
+
+        return e;
+    };
+
+    D.parseCardContent = function (dt) {
         return JSON.stringify(dt);
     };
 
-    D.parseText = function(dt) {
+    D.parseText = function (dt) {
         return new D.Text(dt.title, dt.content, dt.timestamp, dt.style);
     };
-    D.parseCard = function(dt) {
+    D.parseCard = function (dt) {
         return new D.Card(dt.name, dt.content, dt.timestamp, dt.tags, dt.author, dt.style);
     };
 
-    D.parse = function(dt) {
+    D.parse = function (dt) {
         if (dt.hidden) return null;
-        switch(dt.type) {
+        switch (dt.type) {
             case "text":
                 return D.parseText(dt);
             case "card":

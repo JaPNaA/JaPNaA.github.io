@@ -2,9 +2,12 @@ function Site(DT) {
     var D = {
             bodyFragCount: null,
             body: null,
+            menu: null,
             maxItemWidth: 524,
             minItemWidth: 480,
-            menuWidth: 256,
+            menuWidth: 224,
+            collapsedMenuWidth: 64,
+            lastMenuCollapsed: false,
             itemPop: false,
             allowedDeviation: 128,
             children: [],
@@ -15,7 +18,26 @@ function Site(DT) {
 
     function createMenu() {
         var menu = document.createElement("div");
+        D.menu = menu;
         menu.id = "menu";
+
+        {
+            let a = document.createElement("div");
+            a.innerHTML = "About";
+            menu.appendChild(a);
+        } {
+            let s = DT.SiteObjects.separator();
+            menu.appendChild(s);
+        } {
+            let a = DT.SiteObjects.searchButton();
+            menu.appendChild(a);
+        } {
+            let s = DT.SiteObjects.separator();
+            menu.appendChild(s);
+        } {
+            let a = DT.SiteObjects.yearList();
+            menu.appendChild(a);
+        }
 
         return menu;
     }
@@ -61,7 +83,35 @@ function Site(DT) {
     }
 
     function buildBodyFrags() {
-        var e = Math.floor((innerWidth - D.menuWidth) / D.maxItemWidth);
+        var menuCollapsed = innerWidth - D.menuWidth < D.minItemWidth,
+            e;
+
+        if (menuCollapsed) {
+            D.menu.classList.add("collapse");
+            e = Math.floor((innerWidth - D.collapsedMenuWidth) / D.maxItemWidth);
+        } else {
+            D.menu.classList.remove("collapse");
+            e = Math.floor((innerWidth - D.menuWidth) / D.maxItemWidth);
+        }
+
+        if (D.lastMenuCollapsed != menuCollapsed) {
+            let a, b;
+            if (menuCollapsed) {
+                a = D.collapsedMenuWidth + "px";
+                b = "calc(100% - " + D.collapsedMenuWidth + "px)";
+            } else {
+                a = D.menuWidth + "px";
+                b = "calc(100% - " + D.menuWidth + "px)";
+            }
+
+            DT.Utils.setCssRule("#body", "left", a);
+            DT.Utils.setCssRule("#body", "width", b);
+            DT.Utils.setCssRule("#head", "left", a);
+            DT.Utils.setCssRule("#head", "width", b);
+            DT.Utils.reloadCss();
+
+            D.lastMenuCollapsed = menuCollapsed;
+        }
 
         if (D.bodyFragCount == e) return;
         if (e == 0) e = 1;

@@ -1,3 +1,7 @@
+body {
+    background-color: #fffafd;
+}
+
 img {
     width: 100%;
 }
@@ -41,16 +45,82 @@ img {
     top: 0;
     left: 0;
     height: 100%;
-    width: 256px;
+    width: 224px;
     background-color: #131313;
+    background-image: linear-gradient(339deg, #131313, #191919);
+    color: #f5f5f5;
+    font-family: 'Share Tech Mono';
+    padding-top: 16px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 3px 0px 8px rgba(0, 0, 0, 0.24);
     z-index: 5;
+    overflow: hidden;
+}
+
+#menu.collapse {
+    transform: translateX(calc(64px - 224px));
+}
+
+#menu>div {
+    font-size: 28px;
+    padding: 8px;
+    text-align: center;
+    background-color: transparent;
+    will-change: background-color;
+    transition: 0.15s;
+    cursor: pointer;
+}
+
+#menu.collapse>div {
+    text-align: right;
+}
+
+#menu hr {
+    border-color: #adadad;
+    border-width: 1px;
+    border-top-width: 0.5px;
+    border-bottom-width: 0.5px;
+    border-left-width: 0;
+    border-right-width: 0;
+    width: 30%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#menu .searchButton {
+    display: flex;
+    transform: translateX(25%);
+}
+
+#menu .searchButton .text {
+    margin-right: 16px;
+}
+
+#menu .searchButton .img {
+    line-height: 0px;
+    transform: translateY(3%);
+    opacity: 0.85;
+}
+
+#menu .searchButton img {
+    height: 1em;
+    width: auto;
+}
+
+#menu>div:hover {
+    background-color: #ffffff14;
 }
 
 #head {
     position: fixed;
     top: 0;
-    left: 256px;
-    width: calc(100% - 256px);
+    left: 224px;
+    width: calc(100% - 224px);
     height: 64px;
     background-color: #80ffc4;
     background-image: linear-gradient(45deg, #80ffc4, #2effa8);
@@ -88,8 +158,8 @@ img {
 #body {
     position: fixed;
     top: 64px;
-    left: 256px;
-    width: calc(100% - 256px);
+    left: 224px;
+    width: calc(100% - 224px);
     height: calc(100% - 64px);
     padding: 8px;
     overflow-x: hidden;
@@ -159,10 +229,12 @@ img {
     background-color: #f10606;
     color: #ffffff;
 }
+
 .item.error .body {
     font-family: 'Open Sans', sans-serif;
     color: #f5f5f5;
 }
+
 .item.error .title {
     font-family: 'Roboto', sans-serif;
     font-size: 1.5em;
@@ -176,6 +248,7 @@ img {
     margin-bottom: 4px;
     color: #000000;
 }
+
 .item .body {
     font-family: 'Open Sans', sans-serif;
     color: #212121;

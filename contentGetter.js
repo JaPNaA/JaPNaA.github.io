@@ -8,9 +8,9 @@ function ContentGetter(DT) {
         constructor(url, preventCache) {
             this.url = url;
             this.preventCache = preventCache;
+            this.alertError = false;
 
             this.requestObj = null;
-            this.response = null;
 
             this.events = {
                 load: []
@@ -19,10 +19,17 @@ function ContentGetter(DT) {
             this.request();
         }
 
+        get response() {
+            return this.requestObj.response;
+        }
+        get status() {
+            return this.requestObj.status;
+        }
+
         request() {
             var x = new XMLHttpRequest();
             if (this.preventCache) {
-                x.open("GET", this.url + 
+                x.open("GET", this.url +
                     ("?nocache=" + Date.now() + Math.random())
                 );
             } else {
@@ -30,6 +37,7 @@ function ContentGetter(DT) {
             }
             x.responseType = "text";
             x.addEventListener("load", () => this.load(x.response));
+            x.addEventListener("error", e => this.error(e));
             x.send();
 
             this.requestObj = x;
@@ -41,9 +49,17 @@ function ContentGetter(DT) {
         }
 
         load(e) {
-            this.response = e;
             for (let i of this.events.load) {
                 i(e);
+            }
+        }
+        error(e) {
+            console.log('err');
+            if (this.alertError) {
+                DT.Utils.prompta("Failed to load resource: " + this.url);
+                console.error("Failed to load resource: " + this.url, e);
+            } else {
+                console.warn("Failed to load resource: " + this.url, e);
             }
         }
 
@@ -53,10 +69,25 @@ function ContentGetter(DT) {
     }
 
     D.add = function (id, url, preventCache, loadHandler) {
-        D.toGet[id] = new Request(url, preventCache);
+        if (D.toGet[id]) {
+            let req = D.toGet[id];
+            if (req.status == 200 && !preventCache) {
+                if (loadHandler) {
+                    loadHandler(D.toGet[id].response);
+                }
+            } else {
+                req.request();
+            }
 
-        if (loadHandler) {
-            D.toGet[id].addEventListener("load", loadHandler);
+            return D.toGet[id];
+        } else {
+            D.toGet[id] = new Request(url, preventCache);
+
+            if (loadHandler) {
+                D.toGet[id].addEventListener("load", loadHandler);
+            }
         }
+
+        return D.toGet[id];
     };
 }
