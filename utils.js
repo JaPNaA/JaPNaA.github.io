@@ -12,6 +12,7 @@ function Utils(DT) {
 
             for (let rule in rules) {
                 let ruleParam = rules[rule];
+                if (!ruleParam) continue;
                 s += rule + ":" + ruleParam + ";";
             }
 

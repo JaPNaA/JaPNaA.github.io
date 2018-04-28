@@ -3,13 +3,13 @@ function Site(DT) {
             bodyFragCount: null,
             body: null,
             menu: null,
-            maxItemWidth: 524,
+            maxItemWidth: 624,
             minItemWidth: 480,
             menuWidth: 224,
             collapsedMenuWidth: 64,
             lastMenuCollapsed: false,
             itemPop: false,
-            allowedDeviation: 128,
+            allowedDeviation: 64,
             children: [],
             bodyFrag: []
         },
@@ -128,8 +128,15 @@ function Site(DT) {
         }
         D.bodyFrag.length = 0;
 
+        D.bodyFrag = bodyFrag;
+
         // set css
         DT.Utils.setCssRule(".bodyFrag", "width", (100 / bodyFragCount) + "%");
+        if (bodyFragCount == 1) {
+            DT.Utils.setCssRule(".itemP", "max-width", null);
+        } else {
+            DT.Utils.setCssRule(".itemP", "max-width", "none");
+        }
         DT.Utils.reloadCss();
 
         // build
@@ -142,23 +149,9 @@ function Site(DT) {
         }
 
         for (let item of D.children) {
-            let smallest = bodyFrag[0],
-                parent = document.createElement("div");
-
-            parent.classList.add("itemP");
-            item.appendTo(parent);
-
-            for (let i = 1; i < bodyFragCount; i++) {
-                let cfrag = bodyFrag[i];
-                if (cfrag.clientHeight < smallest.clientHeight - D.allowedDeviation) {
-                    smallest = cfrag;
-                }
-            }
-
-            smallest.appendChild(parent);
+            D.addItem(item);
         }
 
-        D.bodyFrag = bodyFrag;
         for (let i of bodyFrag) {
             body.appendChild(i);
         }
@@ -204,6 +197,23 @@ function Site(DT) {
         }
     }
 
+    D.addItem = function(item) {
+        let smallest = D.bodyFrag[0],
+            parent = document.createElement("div");
+
+        parent.classList.add("itemP");
+        item.appendTo(parent);
+
+        for (let i = 1; i < D.bodyFrag.length; i++) {
+            let cfrag = D.bodyFrag[i];
+            if (cfrag.clientHeight < smallest.clientHeight - D.allowedDeviation) {
+                smallest = cfrag;
+            }
+        }
+
+        smallest.appendChild(parent);
+    };
+    
     D.setup = function () {
         makeDocFrag();
 
