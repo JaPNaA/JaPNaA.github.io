@@ -6,11 +6,13 @@ function Site(DT) {
             maxItemWidth: 624,
             minItemWidth: 480,
             menuWidth: 224,
-            collapsedMenuWidth: 64,
+            collapsedMenuWidth: 48,
             lastMenuCollapsed: false,
             itemPop: false,
             allowedDeviation: 64,
+            scrollHeight: 0,
             children: [],
+            lastAddedChildrenIx: 0,
             bodyFrag: []
         },
         docFrag = document.createDocumentFragment();
@@ -149,11 +151,20 @@ function Site(DT) {
         }
 
         for (let item of D.children) {
-            D.addItem(item);
+            if (item.added) {
+                D.addItem(item);
+            }
         }
 
         for (let i of bodyFrag) {
             body.appendChild(i);
+        }
+
+        // load visible
+        while (true) {
+            if (!scroll()) {
+                break;
+            }
         }
     }
 
@@ -197,8 +208,34 @@ function Site(DT) {
         }
     }
 
-    D.addItem = function(item) {
+    // lazy loading
+    function scroll() {
+        var ih = innerHeight,
+            imgs = document.querySelectorAll(".display img:not(.load)"),
+            childrenl = D.children.length,
+            hm = false;
+
+        if (
+            D.body.scrollTop + D.body.clientHeight >= 
+            D.body.scrollHeight - D.children[D.lastAddedChildrenIx].elmP.clientHeight
+        ) {
+            for (let i = 0; i < childrenl; i++) {
+                let j = D.children[i];
+                if (!j.added) {
+                    j.prepAdd();
+                    D.addItem(j);
+                    D.lastAddedChildrenIx = i;
+                    hm = true;
+                    break;
+                }
+            }
+        }
+        return hm;
+    }
+
+    D.addItem = function (item) {
         let smallest = D.bodyFrag[0],
+            sch = smallest.clientHeight,
             parent = document.createElement("div");
 
         parent.classList.add("itemP");
@@ -206,19 +243,25 @@ function Site(DT) {
 
         for (let i = 1; i < D.bodyFrag.length; i++) {
             let cfrag = D.bodyFrag[i];
-            if (cfrag.clientHeight < smallest.clientHeight - D.allowedDeviation) {
+            if (cfrag.clientHeight < sch - D.allowedDeviation) {
                 smallest = cfrag;
+                sch = cfrag.clientHeight;
             }
         }
 
+        D.scrollHeight = sch;
         smallest.appendChild(parent);
     };
-    
+
     D.setup = function () {
         makeDocFrag();
 
         addEventListener("resize", resize);
         addEventListener("mousemove", mousemove);
+        D.body.addEventListener("scroll", scroll, {
+            passive: true
+        });
+
         requestAnimationFrame(DT.SplashScreen.closeSplashScreen);
 
         document.body.appendChild(docFrag);

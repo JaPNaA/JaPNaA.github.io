@@ -28,7 +28,7 @@ img {
     left: 0;
     width: 100%;
     height: 112%;
-    background-color: #DDDDDD;
+    background-color: #fffafd;
     z-index: 10;
     opacity: 1;
     transition: 0.35s cubic-bezier(0.55, 0.09, 0.68, 0.53);
@@ -61,7 +61,7 @@ img {
 }
 
 #menu.collapse {
-    transform: translateX(calc(64px - 224px));
+    transform: translateX(calc(48px - 224px));
 }
 
 #menu>div {
@@ -94,11 +94,11 @@ img {
 
 #menu .searchButton {
     display: flex;
-    transform: translateX(25%);
+    transform: translateX(28%);
 }
 
 #menu .searchButton .text {
-    margin-right: 16px;
+    margin-right: 24px;
 }
 
 #menu .searchButton .img {
@@ -171,17 +171,7 @@ img {
 
 #body::-webkit-scrollbar {
     background-color: #ebe4e7;
-    width: 12px;
-}
-
-#body::-webkit-scrollbar-thumb {
-    background-color: #ccc5c9;
-    border-radius: 2px;
-    box-shadow: 0 0.5px 1.5px rgba(0, 0, 0, 0.08), 0 0.5px 1.5px rgba(0, 0, 0, 0.16);
-}
-
-#body::-webkit-scrollbar-track {
-    background-color: #ebe4e7;
+    width: 0px !important;
 }
 
 #bodyP,

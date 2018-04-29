@@ -2,10 +2,10 @@ function SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
-    D.path = "http://localhost:8081";
+    D.path = "http://10.194.22.107:8081"; // set to location.origin when in production
 
-    D.Card = class {
-        constructor(title, link, content, timestamp, tags, author, style) {
+    class Item {
+        constructor(title, timestamp, style) {
             this.elmP = document.createElement("a");
             this.elm = document.createElement("div");
 
@@ -23,14 +23,13 @@ function SiteObjects(DT) {
                 this.elm.appendChild(this.displayElm);
             }
 
-            this.elmP.classList.add("item", "card");
-            this._parent = null;
+            this.added = false;
+
+            this.imgs = [];
 
             this.title = title;
-            this.link = link;
             this.elmP.style = style;
             this.elmP.appendChild(this.elm);
-            D.parseCardContent(content, this);
         }
 
         get content() {
@@ -53,7 +52,7 @@ function SiteObjects(DT) {
         }
 
         get parent() {
-            return this._parent;
+            return this.elmP.parentElement;
         }
         set parent(s) {
             this.appendTo(s);
@@ -67,61 +66,34 @@ function SiteObjects(DT) {
         }
 
         appendTo(parent) {
-            this._parent = parent;
             parent.appendChild(this.elmP);
+        }
+
+        prepAdd() {
+            if (this.added) return;
+            for (let i of this.imgs) {
+                i.aload();
+            }
+            this.added = true;
+        }
+    }
+
+    D.Card = class extends Item {
+        constructor(title, link, content, timestamp, tags, author, style) {
+            super(title, timestamp, style);
+
+            this.elmP.classList.add("item", "card");
+            this.link = link;
+            D.parseCardContent(content, this);
         }
     };
 
-    D.Text = class {
+    D.Text = class extends Item {
         constructor(title, content, timestamp, style) {
-            this.elm = document.createElement("a");
+            super(title, timestamp, style);
 
-            {
-                this.titleElm = document.createElement("div");
-                this.titleElm.classList.add("title");
-                this.elm.appendChild(this.titleElm);
-            } {
-                this.bodyElm = document.createElement("div");
-                this.bodyElm.classList.add("body");
-                this.elm.appendChild(this.bodyElm);
-            }
-            this.elm.classList.add("item", "text");
-            this._parent = null;
-
-            this.title = title;
+            this.elmP.classList.add("item", "text");
             this.content = content;
-        }
-
-        get content() {
-            return this.bodyElm.innerHTML;
-        }
-        set content(e) {
-            this.bodyElm.innerHTML = e;
-        }
-
-        get title() {
-            return this.titleElm.innerHTML;
-        }
-        set title(e) {
-
-            if (e) {
-                this.titleElm.innerHTML = e;
-            } else {
-                this.titleElm.classList.add("nonexistant");
-                this.titleElm.innerHTML = "";
-            }
-        }
-
-        get parent() {
-            return this._parent;
-        }
-        set parent(s) {
-            this.appendTo(s);
-        }
-
-        appendTo(parent) {
-            this._parent = parent;
-            parent.appendChild(this.elm);
         }
     };
 
@@ -219,18 +191,27 @@ function SiteObjects(DT) {
         return e;
     };
 
-    D.parseDisplayContent = function (dt) {
+    Image.prototype.aload = function() {
+        if (this.src) return false;
+        this.src = this.asrc;
+        this.classList.add("load");
+        return true;
+    };
+
+    D.parseDisplayContent = function (dt, imgs) {
         switch (dt.type) {
             case "img":
                 {
                     let r = document.createElement("img");
-                    r.src = D.path + dt.src;
+                    r.asrc = D.path + dt.src;
                     r.title = dt.caption;
+                    if (!imgs) debugger;
+                    imgs.push(r);
                     return r;
                 }
                 break;
             case "iframe":
-                return D.parseDisplayContent(dt.alt);
+                return D.parseDisplayContent(dt.alt, imgs);
             default:
                 {
                     let r = document.createElement("div");
@@ -241,22 +222,21 @@ function SiteObjects(DT) {
         return document.createTextNode("Error! Unknown reason");
     };
 
-    D.parseCardContent = function (dt, e) {
+    D.parseCardContent = function (dt, that) {
         {
             let description = document.createElement("div");
             description.innerHTML = dt.description;
-            e.bodyElm.appendChild(description);
+            that.bodyElm.appendChild(description);
         } {
             let display = document.createElement("div");
             for (let i of dt.display) {
-                display.appendChild(D.parseDisplayContent(i));
+                display.appendChild(D.parseDisplayContent(i, that.imgs));
             }
-            e.displayElm.appendChild(display);
+            that.displayElm.appendChild(display);
         }
     };
 
     D.parseText = function (dt) {
-        console.log(Date.now());
         return new D.Text(dt.title, dt.content, dt.timestamp, dt.style);
     };
     D.parseCard = function (dt) {
