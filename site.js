@@ -161,7 +161,7 @@ function Site(DT) {
         }
 
         // load visible
-        while (scroll()); 
+        while (scroll());
     }
 
     function makeDocFrag() {
@@ -212,7 +212,7 @@ function Site(DT) {
             hm = false;
 
         if (
-            D.body.scrollTop + D.body.clientHeight >= 
+            D.body.scrollTop + D.body.clientHeight >=
             D.body.scrollHeight - D.children[D.lastAddedChildrenIx].elmP.clientHeight
         ) {
             for (let i = 0; i < childrenl; i++) {
@@ -227,6 +227,12 @@ function Site(DT) {
             }
         }
         return hm;
+    }
+
+    function wheel(e) {
+        if (!e.shiftKey) return;
+
+        D.body.scrollBy(0, Math.sign(e.deltaY) * 4);
     }
 
     D.addItem = function (item) {
@@ -253,7 +259,10 @@ function Site(DT) {
         makeDocFrag();
 
         addEventListener("resize", resize);
-        addEventListener("mousemove", mousemove);
+        addEventListener("mousemove", mousemove); // check for mouse
+        addEventListener("wheel", wheel, {
+            passive: true
+        }); // hold shift to slow scroll
         D.body.addEventListener("scroll", scroll, {
             passive: true
         });

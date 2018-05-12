@@ -17,10 +17,6 @@ function SiteObjects(DT) {
                 this.bodyElm = document.createElement("div");
                 this.bodyElm.classList.add("body");
                 this.elm.appendChild(this.bodyElm);
-            } {
-                this.displayElm = document.createElement("div");
-                this.displayElm.classList.add("display");
-                this.elm.appendChild(this.displayElm);
             }
 
             this.added = false;
@@ -79,11 +75,22 @@ function SiteObjects(DT) {
     }
 
     D.Card = class extends Item {
-        constructor(title, link, content, timestamp, tags, author, style) {
+        constructor(title, link, content, timestamp, tags, author, no, style) {
             super(title, timestamp, style);
+
+            {
+                this.displayElm = document.createElement("div");
+                this.displayElm.classList.add("display");
+                this.elm.appendChild(this.displayElm);
+            } {
+                this.metaElm = document.createElement("div");
+                this.metaElm.classList.add("meta");
+                this.elm.appendChild(this.metaElm);
+            }
 
             this.elmP.classList.add("item", "card");
             this.link = link;
+            D.parseCardMeta(timestamp, tags, author, no, this);
             D.parseCardContent(content, this);
         }
     };
@@ -191,7 +198,7 @@ function SiteObjects(DT) {
         return e;
     };
 
-    Image.prototype.aload = function() {
+    Image.prototype.aload = function () {
         if (this.src) return false;
         this.src = this.asrc;
         this.classList.add("load");
@@ -219,15 +226,36 @@ function SiteObjects(DT) {
 
     D.parseCardContent = function (dt, that) {
         {
-            let description = document.createElement("div");
-            description.innerHTML = dt.description;
-            that.bodyElm.appendChild(description);
+            let description = document.createElement("div"); // create element
+            description.innerHTML = dt.description; // set element content
+            that.bodyElm.appendChild(description); // push to body
         } {
             let display = document.createElement("div");
-            for (let i of dt.display) {
+            for (let i of dt.display) { // for every item in display
                 display.appendChild(D.parseDisplayContent(i, that.imgs));
             }
             that.displayElm.appendChild(display);
+        }
+    };
+
+    D.parseCardMeta = function (dtTimestamp, dtTags, dtAuthor, dtNo, that) {
+        that.titleElm.setAttribute("no", dtNo); // set number attibute to title
+
+        {
+            let tags = document.createElement("div"); // create element
+            tags.innerHTML = dtTags.join(", "); // set content to tags
+            tags.classList.add("tags");
+            that.metaElm.appendChild(tags);
+        } {
+            let author = document.createElement("div");
+            author.innerHTML = dtAuthor.join(", ");
+            author.classList.add("author");
+            that.metaElm.appendChild(author);
+        } {
+            let timestamp = document.createElement("div");
+            timestamp.innerHTML = new Date(dtTimestamp).toLocaleDateString();
+            timestamp.classList.add("timestamp");
+            that.metaElm.appendChild(timestamp);
         }
     };
 
@@ -235,7 +263,7 @@ function SiteObjects(DT) {
         return new D.Text(dt.title, dt.content, dt.timestamp, dt.style);
     };
     D.parseCard = function (dt) {
-        return new D.Card(dt.name, D.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.style);
+        return new D.Card(dt.name, D.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.no, dt.style);
     };
 
     D.parse = function (dt) {
