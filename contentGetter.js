@@ -54,7 +54,7 @@ function ContentGetter(DT) {
             }
         }
         error(e) {
-            console.log('err');
+            console.log("err");
             if (this.alertError) {
                 DT.Utils.prompta("Failed to load resource: " + this.url);
                 console.error("Failed to load resource: " + this.url, e);
@@ -71,7 +71,7 @@ function ContentGetter(DT) {
     D.add = function (id, url, preventCache, loadHandler) {
         if (D.toGet[id]) {
             let req = D.toGet[id];
-            if (req.status == 200 && !preventCache) {
+            if (req.status === 200 && !preventCache) {
                 if (loadHandler) {
                     loadHandler(D.toGet[id].response);
                 }

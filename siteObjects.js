@@ -2,9 +2,9 @@ function SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
-    D.path = "http://10.194.22.107:8081"; // set to location.origin when in production
+    D.path = "http://localhost:8081"; //* set to location.origin when in production
 
-    class Item {
+    class Item { // abstract item
         constructor(title, timestamp, style) {
             this.elmP = document.createElement("a");
             this.elm = document.createElement("div");
@@ -200,26 +200,21 @@ function SiteObjects(DT) {
 
     D.parseDisplayContent = function (dt, imgs) {
         switch (dt.type) {
-            case "img":
-                {
-                    let r = document.createElement("img");
-                    r.asrc = D.path + dt.src;
-                    r.title = dt.caption;
-                    if (!imgs) debugger;
-                    imgs.push(r);
-                    return r;
-                }
-                break;
-            case "iframe":
-                return D.parseDisplayContent(dt.alt, imgs);
-            default:
-                {
-                    let r = document.createElement("div");
-                    r.innerHTML = "Error! <br><b>Reason:</b> Item is of unknown type";
-                    return r;
-                }
+        case "img": {
+            let r = document.createElement("img");
+            r.asrc = D.path + dt.src;
+            r.title = dt.caption;
+            imgs.push(r);
+            return r;
         }
-        return document.createTextNode("Error! Unknown reason");
+        case "iframe":
+            return D.parseDisplayContent(dt.alt, imgs);
+        default: {
+            let r = document.createElement("div");
+            r.innerHTML = "Error! <br><b>Reason:</b> Item is of unknown type";
+            return r;
+        }
+        }
     };
 
     D.parseCardContent = function (dt, that) {
@@ -246,12 +241,12 @@ function SiteObjects(DT) {
     D.parse = function (dt) {
         if (dt.hidden) return null;
         switch (dt.type) {
-            case "text":
-                return D.parseText(dt);
-            case "card":
-                return D.parseCard(dt);
-            default:
-                return new D.ErrorCard("Reason: Card is of unknown type");
+        case "text":
+            return D.parseText(dt);
+        case "card":
+            return D.parseCard(dt);
+        default:
+            return new D.ErrorCard("Reason: Card is of unknown type");
         }
     };
 }

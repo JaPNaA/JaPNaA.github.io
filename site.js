@@ -96,7 +96,7 @@ function Site(DT) {
             e = Math.floor((innerWidth - D.menuWidth) / D.maxItemWidth);
         }
 
-        if (D.lastMenuCollapsed != menuCollapsed) {
+        if (D.lastMenuCollapsed !== menuCollapsed) {
             let a, b;
             if (menuCollapsed) {
                 a = D.collapsedMenuWidth + "px";
@@ -115,8 +115,8 @@ function Site(DT) {
             D.lastMenuCollapsed = menuCollapsed;
         }
 
-        if (D.bodyFragCount == e) return;
-        if (e == 0) e = 1;
+        if (D.bodyFragCount === e) return;
+        if (e === 0) e = 1;
 
         var bodyFragCount,
             bodyFrag = [],
@@ -133,8 +133,8 @@ function Site(DT) {
         D.bodyFrag = bodyFrag;
 
         // set css
-        DT.Utils.setCssRule(".bodyFrag", "width", (100 / bodyFragCount) + "%");
-        if (bodyFragCount == 1) {
+        DT.Utils.setCssRule(".bodyFrag", "width", 100 / bodyFragCount + "%");
+        if (bodyFragCount === 1) {
             DT.Utils.setCssRule(".itemP", "max-width", null);
         } else {
             DT.Utils.setCssRule(".itemP", "max-width", "none");
@@ -161,11 +161,7 @@ function Site(DT) {
         }
 
         // load visible
-        while (true) {
-            if (!scroll()) {
-                break;
-            }
-        }
+        while (scroll()); 
     }
 
     function makeDocFrag() {
@@ -204,7 +200,7 @@ function Site(DT) {
     function mousemove() {
         if (!D.itemPop) {
             D.itemPop = true;
-            body.classList.add('itemPop');
+            body.classList.add("itemPop");
         }
     }
 
