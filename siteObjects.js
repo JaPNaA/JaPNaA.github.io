@@ -9,6 +9,8 @@ function SiteObjects(DT) {
             this.elmP = document.createElement("a");
             this.elm = document.createElement("div");
 
+            this.elmP.target = "_blank";
+
             {
                 this.titleElm = document.createElement("div");
                 this.titleElm.classList.add("title");

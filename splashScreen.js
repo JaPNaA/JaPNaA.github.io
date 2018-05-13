@@ -1,5 +1,7 @@
 function SplashScreen(DT) {
-    var D = {};
+    var D = {
+        loadingSI: -1
+    };
     DT.SplashScreen = D;
 
     var elm = document.createElement("div"),
@@ -9,9 +11,26 @@ function SplashScreen(DT) {
 
     {
         let a = document.createElement("div");
-        a.innerHTML = "JaPNaA loading..."; //* spinning JaPNaASite icon
-        a.classList.add("middleCenter");
+        a.style.position = "fixed";
+        a.style.left = "50%";
+        a.style.top = "40%";
+        a.style.transform = "translate(-50%, -50%)";
         a.style.fontSize = "32px";
+        a.style.textAlign = "center";
+
+        {
+            let b = document.createElement("div");
+            b.innerHTML = "JaPNaA";
+            a.appendChild(b);
+        }
+        {
+            let b = document.createElement("div");
+            b.innerHTML = "Loading...";
+            D.loadingSI = setInterval(function() {
+                b.innerHTML += ".";
+            }, 1000);
+            a.appendChild(b);
+        }
         elm.appendChild(a);
     }
 
@@ -20,6 +39,7 @@ function SplashScreen(DT) {
     }
 
     function remove() {
+        clearInterval(D.loadingSI);
         parent.removeChild(elm);
     }
 

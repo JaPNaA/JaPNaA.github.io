@@ -3,6 +3,11 @@ function Site(DT) {
             bodyFragCount: null,
             body: null,
             menu: null,
+            menuItems: {
+                about: null,
+                search: null, 
+                yearList: null
+            },
             maxItemWidth: 624,
             minItemWidth: 480,
             menuWidth: 224,
@@ -26,18 +31,21 @@ function Site(DT) {
         {
             let a = document.createElement("div");
             a.innerHTML = "About";
+            D.menuItems.about = a;
             menu.appendChild(a);
         } {
             let s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
             let a = DT.SiteObjects.searchButton();
+            D.menuItems.search = a;
             menu.appendChild(a);
         } {
             let s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
             let a = DT.SiteObjects.yearList();
+            D.menuItems.yearList = a;
             menu.appendChild(a);
         }
 
@@ -70,14 +78,14 @@ function Site(DT) {
         // }
 
         DT.ContentGetter.add("content", "content/0.json", true, function (e) {
-            var d = JSON.parse(e).data;
+            var d = e.data;
             for (let i of d) {
                 let item = DT.SiteObjects.parse(i);
                 if (!item) continue;
                 D.children.push(item);
             }
             buildBodyFrags();
-        });
+        }, "json");
 
         // buildBodyFrags();
 
@@ -267,7 +275,11 @@ function Site(DT) {
             passive: true
         });
 
-        requestAnimationFrame(DT.SplashScreen.closeSplashScreen);
+        addEventListener("load", function() {
+            DT.SplashScreen.closeSplashScreen();
+        }, {
+            once: true
+        });
 
         document.body.appendChild(docFrag);
     };

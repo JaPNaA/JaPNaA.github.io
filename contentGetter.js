@@ -5,22 +5,26 @@ function ContentGetter(DT) {
     DT.ContentGetter = D;
 
     class Request {
-        constructor(url, preventCache) {
+        constructor(url, preventCache, responseType) {
             this.url = url;
             this.preventCache = preventCache;
+            this.responseType = responseType || "text";
             this.alertError = false;
+
+            this.requestJSON = null;
 
             this.requestObj = null;
 
             this.events = {
                 load: []
             };
+            this.addedListeners = false;
 
             this.request();
         }
 
         get response() {
-            return this.requestObj.response;
+            return this.requestJSON || this.requestObj.response;
         }
         get status() {
             return this.requestObj.status;
@@ -35,9 +39,14 @@ function ContentGetter(DT) {
             } else {
                 x.open("GET", this.url);
             }
-            x.responseType = "text";
-            x.addEventListener("load", () => this.load(x.response));
-            x.addEventListener("error", e => this.error(e));
+            x.responseType = this.responseType;
+
+            if (!this.addedListeners) {
+                x.addEventListener("load", () => this.load(x.response));
+                x.addEventListener("error", e => this.error(e));
+                this.addedListeners = true;
+            }
+
             x.send();
 
             this.requestObj = x;
@@ -49,8 +58,17 @@ function ContentGetter(DT) {
         }
 
         load(e) {
+            var response = this.response || e;
+
+            if (this.responseType === "json" && typeof response !== "object") {
+                try {
+                    response = this.responseJSON = JSON.parse(response);
+                } catch (e) {
+                    console.warn("Resource " + this.url + " is type " + this.responseType + " but failed to parse");
+                }
+            }
             for (let i of this.events.load) {
-                i(e);
+                i(response);
             }
         }
         error(e) {
@@ -68,20 +86,21 @@ function ContentGetter(DT) {
         }
     }
 
-    D.add = function (id, url, preventCache, loadHandler) {
-        if (D.toGet[id]) {
+    D.add = function (id, url, preventCache, loadHandler, responseType) {
+        if (D.toGet[id]) { // if request exists
             let req = D.toGet[id];
-            if (req.status === 200 && !preventCache) {
+            if (req.status === 200 && !preventCache) { // if loaded and not caching is off
                 if (loadHandler) {
-                    loadHandler(D.toGet[id].response);
+                    loadHandler(D.toGet[id].response); // call loaded
                 }
             } else {
+                req.addEventListener("load", loadHandler);
                 req.request();
             }
 
             return D.toGet[id];
         } else {
-            D.toGet[id] = new Request(url, preventCache);
+            D.toGet[id] = new Request(url, preventCache, responseType);
 
             if (loadHandler) {
                 D.toGet[id].addEventListener("load", loadHandler);
