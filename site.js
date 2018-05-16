@@ -27,6 +27,7 @@ function Site(DT) {
         var menu = document.createElement("div");
         D.menu = menu;
         menu.id = "menu";
+        menu.classList.add("noselect");
 
         {
             let a = document.createElement("div");
@@ -55,6 +56,7 @@ function Site(DT) {
     function createHead() {
         var head = document.createElement("div");
         head.id = "head";
+        head.classList.add("noselect");        
 
         {
             let title = document.createElement("div");

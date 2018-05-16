@@ -160,18 +160,65 @@ function SiteObjects(DT) {
         return document.createElement("hr");
     };
     D.searchButton = function () {
-        var e = document.createElement("div"); {
+        var e = document.createElement("div"),
+            active = false, // state: button is active
+            aniframe = 0,
+            anitime = 150,
+            then = 0,
+            oPos = null,
+            paddTop = 10,
+            aniactive = false;
+
+        function startAni() {
+            if (aniactive) return;
+            then = performance.now();
+            requestAnimationFrame(reqanf);
+        }
+        function updPos() {
+            e.style.transform = 
+                "translateY(" + 
+                DT.Utils.easingFunctions.easeInOutQuad(aniframe) * -oPos + 
+                "px)";
+        }
+
+        function reqanf(now) {
+            var tt = now - then;
+            then = now;
+            if (active) {
+                aniframe += tt / anitime;
+                if (aniframe > 1) {
+                    aniframe = 1;
+                    aniactive = false;
+                    updPos();
+                    return;
+                }
+            } else {
+                aniframe -= tt / anitime;
+                if (aniframe < 0) {
+                    aniframe = 0;
+                    aniactive = false;
+                    updPos();
+                    return;
+                }
+            }
+            updPos();
+            requestAnimationFrame(reqanf);
+        }
+
+        e.classList.add("searchItem");
+
+        {
             let a = document.createElement("div");
             a.classList.add("searchButton");
 
             {
-                let b = document.createElement("div");
+                let b = document.createElement("div"); // create search text
                 b.innerHTML = "Search";
                 b.classList.add("text");
 
                 a.appendChild(b);
             } {
-                let b = document.createElement("div");
+                let b = document.createElement("div"); // create icon
                 b.classList.add("img");
 
                 {
@@ -185,6 +232,23 @@ function SiteObjects(DT) {
 
             e.appendChild(a);
         }
+        
+        e.addEventListener("click", function () {
+            active ^= true;
+
+            if (oPos === null) {
+                oPos = e.getBoundingClientRect().y - paddTop;
+            }
+
+            if (active) {
+                DT.Site.menu.classList.add("searching");
+                DT.Search.listenToKeystrokes(true);
+            } else {
+                DT.Site.menu.classList.remove("searching");
+                DT.Search.listenToKeystrokes(false);
+            }
+            startAni();
+        });
 
         return e;
     };

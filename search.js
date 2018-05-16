@@ -1,20 +1,21 @@
 function Search(DT) {
     var D = {
-        button: null,
-        content: null,
-        searchConfig: {
-            fields: {
-                "title": {boost: 2},
-                "body": {boost: 1},
-                "no": {boost: 5},
-                "tags": {boost: 2},
-                "author": {boost: 2},
-                "caption": {boost: 1}
-            },
-            bool: "OR",
-            expand: true
-        }
-    };
+            button: null,
+            content: null,
+            searchConfig: {
+                fields: {
+                    "title": {boost: 2},
+                    "body": {boost: 1},
+                    "no": {boost: 5},
+                    "tags": {boost: 2},
+                    "author": {boost: 2},
+                    "caption": {boost: 1}
+                },
+                bool: "OR",
+                expand: true
+            }
+        },
+        listening = false;
     DT.Search = D;
 
     function translateIndex(id, dt) {
@@ -42,6 +43,10 @@ function Search(DT) {
         }
     }
 
+    function keydownHandler(e) {
+        console.log(e.key);
+    }
+
     function load() {
         let dl = D.content.data.length;
         for (let i = 0; i < dl; i++) {
@@ -51,6 +56,17 @@ function Search(DT) {
 
     D.search = function(e) {
         return D.index.search(e, D.searchConfig);
+    };
+
+    D.listenToKeystrokes = function(e) {
+        if (e) {
+            if (listening) return;
+            listening = true;
+            addEventListener("keydown", keydownHandler);
+        } else {
+            listening = false;
+            removeEventListener("keydown", keydownHandler);
+        }
     };
 
     D.setup = function () {

@@ -64,6 +64,15 @@ img {
     transform: translateX(calc(48px - 224px));
 }
 
+#menu.searching > :not(.searchItem) {
+    opacity: 0;
+}
+
+#menu .searchItem {
+    z-index: 7;
+    will-change: transform;
+}
+
 #menu > div {
     font-size: 28px;
     padding: 8px;
@@ -109,6 +118,8 @@ img {
 
 #menu .searchButton img {
     height: 1em;
+    margin: 0;
+    padding: 0;
     width: auto;
 }
 
