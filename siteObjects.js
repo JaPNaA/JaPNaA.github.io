@@ -2,7 +2,8 @@ function SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
-    D.path = "http://localhost:8081"; //* set to location.origin when in production
+    // D.path = "http://localhost:8081"; //* set to location.origin when in production
+    D.path = location.origin;
 
     class Item { // abstract item
         constructor(title, timestamp, style) {
