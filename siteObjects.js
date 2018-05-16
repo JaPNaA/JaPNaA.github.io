@@ -3,7 +3,7 @@ function SiteObjects(DT) {
     DT.SiteObjects = D;
 
     // D.path = "http://localhost:8081"; //* set to location.origin when in production
-    D.path = location.origin;
+    D.path = "https://japnaa.github.io";
 
     class Item { // abstract item
         constructor(title, timestamp, style) {
