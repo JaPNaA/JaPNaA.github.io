@@ -2,8 +2,8 @@ function SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
-    // D.path = "http://localhost:8081"; //* set to location.origin when in production
-    D.path = "https://japnaa.github.io";
+    D.path = "http://localhost:8081"; //* set to location.origin when in production
+    // D.path = "https://japnaa.github.io";
 
     class Item { // abstract item
         constructor(title, timestamp, style) {
@@ -164,7 +164,7 @@ function SiteObjects(DT) {
         var e = document.createElement("div"),
             active = false, // state: button is active
             aniframe = 0,
-            anitime = 150,
+            anitime = 350,
             then = 0,
             oPos = null,
             paddTop = 10,
@@ -203,6 +203,7 @@ function SiteObjects(DT) {
                 }
             }
             updPos();
+            aniactive = true;
             requestAnimationFrame(reqanf);
         }
 
@@ -243,10 +244,16 @@ function SiteObjects(DT) {
 
             if (active) {
                 DT.Site.menu.classList.add("searching");
+                DT.Site.head.classList.add("searching");
                 DT.Search.listenToKeystrokes(true);
             } else {
                 DT.Site.menu.classList.remove("searching");
+                DT.Site.head.classList.remove("searching");
                 DT.Search.listenToKeystrokes(false);
+            }
+
+            if (aniactive) {
+                console.log("clicked while animating!");
             }
             startAni();
         });

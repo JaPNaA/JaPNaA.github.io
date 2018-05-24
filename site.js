@@ -18,7 +18,8 @@ function Site(DT) {
             scrollHeight: 0,
             children: [],
             lastAddedChildrenIx: 0,
-            bodyFrag: []
+            bodyFrag: [],
+            titleText: "JaPNaA"
         },
         docFrag = document.createDocumentFragment();
     DT.Site = D;
@@ -55,13 +56,15 @@ function Site(DT) {
 
     function createHead() {
         var head = document.createElement("div");
+        D.head = head;
         head.id = "head";
         head.classList.add("noselect");        
 
         {
             let title = document.createElement("div");
             title.id = "titleText";
-            title.innerHTML = "JaPNaA";
+            title.innerHTML = D.titleText;
+            D.title = title;
             head.appendChild(title);
         }
 

@@ -71,6 +71,7 @@ img {
 #menu .searchItem {
     z-index: 7;
     will-change: transform;
+    transition: none;
 }
 
 #menu > div {
@@ -137,13 +138,52 @@ img {
     background-image: linear-gradient(45deg, #80ffc4, #2effa8);
     z-index: 5;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.24);
+    transition: none;
+}
+
+#head.searching {
+    background-color: #90d6ff;
+    background-image: linear-gradient(45deg, #90d6ff, #6bc9ff);
+}
+
+#head #searchInput {
+    position: absolute;
+    top: -1px;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    width: calc(100% - 32px); /* maximize - (padding left + margin right)*/
+
+    /* transitions before hide */
+    opacity: 0;
+    transform: rotate3d(1, 0, 0, 90deg);
 }
 
 #titleText {
+    /* transitions before show */
+    opacity: 1;
+    transform: rotate3d(1, 0, 0, 0deg);
+}
+
+#head.searching #titleText {
+    /* transitions after hide */
+    opacity: 0;
+    transform: rotate3d(1, 0, 0, 90deg);
+}
+#head.searching #searchInput {
+    /* transitions after show */
+    opacity: 1;
+    transform: rotate3d(1, 0, 0, 0deg);
+}
+
+#head #titleText, #head #searchInput {
     font-family: "Share Tech Mono", courier, monospace;
     font-size: 42px;
     line-height: 64px;
     padding-left: 16px;
+    
+    will-change: opacity, transform;
+    transition: 0.15s ease-in-out;
 }
 
 @keyframes blink {
@@ -161,7 +201,7 @@ img {
     }
 }
 
-#titleText::after {
+#head:not(.searching) #titleText::after {
     content: "_";
     animation: blink 0.7s linear 0s infinite alternate;
 }

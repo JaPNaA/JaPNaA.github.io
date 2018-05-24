@@ -45,6 +45,12 @@ function Utils(DT) {
         x.send();
     };
 
+    D.emptyElement = function(e) {
+        while (e.firstChild) {
+            e.removeChild(e.firstChild);
+        }
+    };
+
     D.setup = function() {
         document.head.appendChild(stylesheet);
     };

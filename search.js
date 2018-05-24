@@ -1,21 +1,22 @@
 function Search(DT) {
     var D = {
-            button: null,
-            content: null,
-            searchConfig: {
-                fields: {
-                    "title": {boost: 2},
-                    "body": {boost: 1},
-                    "no": {boost: 5},
-                    "tags": {boost: 2},
-                    "author": {boost: 2},
-                    "caption": {boost: 1}
-                },
-                bool: "OR",
-                expand: true
-            }
+        button: null,
+        content: null,
+        searchConfig: {
+            fields: {
+                "title": {boost: 2},
+                "body": {boost: 1},
+                "no": {boost: 5},
+                "tags": {boost: 2},
+                "author": {boost: 2},
+                "caption": {boost: 1}
+            },
+            bool: "OR",
+            expand: true
         },
-        listening = false;
+        inputElm: null,
+        listening: false
+    };
     DT.Search = D;
 
     function translateIndex(id, dt) {
@@ -44,7 +45,24 @@ function Search(DT) {
     }
 
     function keydownHandler(e) {
-        console.log(e.key);
+        // if (e.key.length === 1) {
+        //     D.input += e.key;
+        // } else {
+        //     switch(e.key) {
+        //     case "Backspace":
+        //         D.input = D.input.slice(0, D.input.length - 1);
+        //         break;
+        //     case "Enter":
+        //         break;
+        //     }
+        // }
+        // DT.Site.title.innerText = D.input;
+    }
+
+    function focusHandler() {
+        if (!D.listening) {
+            this.blur();
+        }
     }
 
     function load() {
@@ -60,12 +78,18 @@ function Search(DT) {
 
     D.listenToKeystrokes = function(e) {
         if (e) {
-            if (listening) return;
-            listening = true;
+            if (D.listening) return;
+            D.listening = true;
             addEventListener("keydown", keydownHandler);
+
+            if (D.input.length <= 13) {
+                D.input = "";
+            }
+            D.inputElm.focus();
         } else {
-            listening = false;
+            D.listening = false;
             removeEventListener("keydown", keydownHandler);
+            D.inputElm.blur();
         }
     };
 
@@ -87,6 +111,25 @@ function Search(DT) {
             this.setRef("id");
 
             this.saveDocument(false);
+        });
+
+        D.inputElm = document.createElement("input");
+        D.inputElm.id = "searchInput";
+        D.inputElm.type = "text";
+        D.inputElm.placeholder = "Enter query...";
+        D.inputElm.value = "";
+
+        D.inputElm.addEventListener("focus", focusHandler);
+
+        DT.Site.head.appendChild(D.inputElm);
+
+        Object.defineProperty(D, "input", {
+            get: function() {
+                return D.inputElm.value;
+            },
+            set: function(e) {
+                D.inputElm.value = e;
+            }
         });
     };
 }
