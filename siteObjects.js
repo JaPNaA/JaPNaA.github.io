@@ -2,9 +2,6 @@ function SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
-    D.path = "http://localhost:8081"; //* set to location.origin when in production
-    // D.path = "https://japnaa.github.io";
-
     class Item { // abstract item
         constructor(title, timestamp, style) {
             this.elmP = document.createElement("a");
@@ -243,12 +240,10 @@ function SiteObjects(DT) {
             }
 
             if (active) {
-                DT.Site.menu.classList.add("searching");
-                DT.Site.head.classList.add("searching");
+                DT.Site.main.classList.add("searching");
                 DT.Search.listenToKeystrokes(true);
             } else {
-                DT.Site.menu.classList.remove("searching");
-                DT.Site.head.classList.remove("searching");
+                DT.Site.main.classList.remove("searching");
                 DT.Search.listenToKeystrokes(false);
             }
 
@@ -283,7 +278,7 @@ function SiteObjects(DT) {
         switch (dt.type) {
         case "img": {
             let r = document.createElement("img");
-            r.asrc = D.path + dt.src;
+            r.asrc = DT.Site.path + dt.src;
             r.title = dt.caption;
             imgs.push(r);
             return r;
@@ -337,7 +332,7 @@ function SiteObjects(DT) {
         return new D.Text(dt.title, dt.content, dt.timestamp, dt.style);
     };
     D.parseCard = function (dt) {
-        return new D.Card(dt.name, D.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.no, dt.style);
+        return new D.Card(dt.name, DT.Site.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.no, dt.style);
     };
 
     D.parse = function (dt) {

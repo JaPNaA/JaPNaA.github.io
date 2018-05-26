@@ -64,7 +64,7 @@ img {
     transform: translateX(calc(48px - 224px));
 }
 
-#menu.searching > :not(.searchItem) {
+#main.searching #menu > :not(.searchItem) {
     opacity: 0;
 }
 
@@ -141,7 +141,7 @@ img {
     transition: none;
 }
 
-#head.searching {
+#main.searching #head {
     background-color: #90d6ff;
     background-image: linear-gradient(45deg, #90d6ff, #6bc9ff);
 }
@@ -165,12 +165,12 @@ img {
     transform: rotate3d(1, 0, 0, 0deg);
 }
 
-#head.searching #titleText {
+#main.searching #head #titleText {
     /* transitions after hide */
     opacity: 0;
     transform: rotate3d(1, 0, 0, 90deg);
 }
-#head.searching #searchInput {
+#main.searching #head #searchInput {
     /* transitions after show */
     opacity: 1;
     transform: rotate3d(1, 0, 0, 0deg);
@@ -201,7 +201,7 @@ img {
     }
 }
 
-#head:not(.searching) #titleText::after {
+#main:not(.searching) #head #titleText::after {
     content: "_";
     animation: blink 0.7s linear 0s infinite alternate;
 }

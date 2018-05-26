@@ -19,7 +19,8 @@ function Site(DT) {
             children: [],
             lastAddedChildrenIx: 0,
             bodyFrag: [],
-            titleText: "JaPNaA"
+            titleText: "JaPNaA",
+            path: "http://localhost:8081" //* set to location.origin when in production
         },
         docFrag = document.createDocumentFragment();
     DT.Site = D;
@@ -179,6 +180,7 @@ function Site(DT) {
 
     function makeDocFrag() {
         var main = document.createElement("div");
+        main.id = "main";
         D.main = main;
 
         {
