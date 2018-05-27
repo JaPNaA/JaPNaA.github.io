@@ -95,6 +95,7 @@ function Site(DT) {
 
     function createSearchOverlay() {
         var overlay = document.createElement("div");
+        overlay.classList.add("bodyFrag");
         overlay.id = "searchOverlay";
         D.searchOverlay = overlay;
 
@@ -150,11 +151,11 @@ function Site(DT) {
         D.bodyFrag = bodyFrag;
 
         // set css
-        DT.Utils.setCssRule(".bodyFrag", "width", 100 / bodyFragCount + "%");
+        DT.Utils.setCssRule("#body .bodyFrag", "width", 100 / bodyFragCount + "%");
         if (bodyFragCount === 1) {
-            DT.Utils.setCssRule(".itemP", "max-width", null);
+            DT.Utils.setCssRule("#body .itemP", "max-width", null);
         } else {
-            DT.Utils.setCssRule(".itemP", "max-width", "none");
+            DT.Utils.setCssRule("#body .itemP", "max-width", "none");
         }
         DT.Utils.reloadCss();
 
