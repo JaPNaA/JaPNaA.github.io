@@ -1,26 +1,28 @@
 function Site(DT) {
     var D = {
-            bodyFragCount: null,
-            body: null,
-            menu: null,
-            menuItems: {
+            bodyFragCount: null, // amount of columns
+            bodyP: null, // body element parent
+            body: null, // element
+            searchOverlay: null, // element over body that contains results for search
+            menu: null, // element
+            menuItems: { // items in menu element
                 about: null,
                 search: null, 
                 yearList: null
             },
-            maxItemWidth: 624,
-            minItemWidth: 480,
-            menuWidth: 224,
-            collapsedMenuWidth: 48,
-            lastMenuCollapsed: false,
-            itemPop: false,
-            allowedDeviation: 64,
-            scrollHeight: 0,
-            children: [],
-            lastAddedChildrenIx: 0,
-            bodyFrag: [],
-            titleText: "JaPNaA",
-            path: "http://localhost:8081" //* set to location.origin when in production
+            maxItemWidth: 624, // max width for items in body element
+            minItemWidth: 480, // min ...
+            menuWidth: 224, // width of menu
+            collapsedMenuWidth: 48, // width of menu when collapsed
+            lastMenuCollapsed: false, // if the menu was collasped
+            itemPop: false, // if the item 'pops' on mouse hover
+            allowedDeviation: 64, // how far an item can be in the wrong column if it follows left to right
+            scrollHeight: 0, // body element's height
+            children: [], // items in the body
+            lastAddedChildrenIx: 0, // index of the last item that was lazy-added
+            bodyFrag: [], // all column elements
+            titleText: "JaPNaA", // text in the title
+            path: "http://localhost:8081" // path of images and links //* set to location.origin when in production
         },
         docFrag = document.createDocumentFragment();
     DT.Site = D;
@@ -62,7 +64,8 @@ function Site(DT) {
         head.classList.add("noselect");        
 
         {
-            let title = document.createElement("div");
+            let title = document.createElement("a");
+            title.href = D.path;
             title.id = "titleText";
             title.innerHTML = D.titleText;
             D.title = title;
@@ -77,12 +80,6 @@ function Site(DT) {
         D.body = body;
         body.id = "body";
 
-        // place holder
-        // for (let i = 0; i < 25; i++) {
-        //     let item = new DT.SiteObjects.Text("Look at my very nice title " + i, "JaPNaA. This is the content. ".repeat(Math.round(Math.random() * 10 + 1) ** 2));
-        //     D.children.push(item);
-        // }
-
         DT.ContentGetter.add("content", "content/0.json", true, function (e) {
             var d = e.data;
             for (let i of d) {
@@ -93,9 +90,15 @@ function Site(DT) {
             buildBodyFrags();
         }, "json");
 
-        // buildBodyFrags();
-
         return body;
+    }
+
+    function createSearchOverlay() {
+        var overlay = document.createElement("div");
+        overlay.id = "searchOverlay";
+        D.searchOverlay = overlay;
+
+        return overlay;
     }
 
     function buildBodyFrags() {
@@ -192,8 +195,10 @@ function Site(DT) {
 
             {
                 let body = document.createElement("div");
+                D.bodyP = body;
                 body.id = "bodyP";
                 body.appendChild(createBody());
+                body.appendChild(createSearchOverlay()); // overlays the body
                 content.appendChild(body);
             } {
                 let head = document.createElement("div");
@@ -215,7 +220,7 @@ function Site(DT) {
     function mousemove() {
         if (!D.itemPop) {
             D.itemPop = true;
-            body.classList.add("itemPop");
+            D.bodyP.classList.add("itemPop");
         }
     }
 
@@ -252,11 +257,7 @@ function Site(DT) {
 
     D.addItem = function (item) {
         let smallest = D.bodyFrag[0],
-            sch = smallest.clientHeight,
-            parent = document.createElement("div");
-
-        parent.classList.add("itemP");
-        item.appendTo(parent);
+            sch = smallest.clientHeight;
 
         for (let i = 1; i < D.bodyFrag.length; i++) {
             let cfrag = D.bodyFrag[i];
@@ -267,7 +268,7 @@ function Site(DT) {
         }
 
         D.scrollHeight = sch;
-        smallest.appendChild(parent);
+        item.appendTo(smallest);
     };
 
     D.setup = function () {

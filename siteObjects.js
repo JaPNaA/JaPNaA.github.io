@@ -2,13 +2,19 @@ function SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
+    Image.prototype.aload = function () {
+        if (this.src) return false;
+        this.src = this.asrc;
+        this.classList.add("load");
+        return true;
+    };
+
     class Item { // abstract item
         constructor(title, timestamp, style) {
             this.elmP = document.createElement("a");
             this.elm = document.createElement("div");
 
-            this.elmP.target = "_blank";
-
+            
             {
                 this.titleElm = document.createElement("div");
                 this.titleElm.classList.add("title");
@@ -18,13 +24,17 @@ function SiteObjects(DT) {
                 this.bodyElm.classList.add("body");
                 this.elm.appendChild(this.bodyElm);
             }
-
+            
             this.added = false;
-
+            
             this.imgs = [];
+            
+            this.elmP.target = "_blank";
+            this.elm.classList.add("item");
+            this.elm.style = style;
 
             this.title = title;
-            this.elmP.style = style;
+            this.elmP.classList.add("itemP");
             this.elmP.appendChild(this.elm);
         }
 
@@ -74,6 +84,39 @@ function SiteObjects(DT) {
         }
     }
 
+    class ResultItem {
+        constructor(timestamp, style) {
+            this.elmP = document.createElement("div");
+            this.elm = document.createElement("div");
+            
+            this.elm.classList.add("item");
+            this.elm.style = style;
+
+            this.elmP.classList.add("itemP", "result");
+            this.elmP.appendChild(this.elm);
+        }
+
+        get parent() {
+            return this.elmP.parentElement;
+        }
+        set parent(s) {
+            this.appendTo(s);
+        }
+
+        appendTo(parent) {
+            parent.appendChild(this.elmP);
+        }
+    }
+
+    D.Text = class extends Item {
+        constructor(title, content, timestamp, style) {
+            super(title, timestamp, style);
+
+            this.elm.classList.add("text");
+            this.content = content;
+        }
+    };
+
     D.Card = class extends Item {
         constructor(title, link, content, timestamp, tags, author, no, style) {
             super(title, timestamp, style);
@@ -88,19 +131,27 @@ function SiteObjects(DT) {
                 this.elm.appendChild(this.metaElm);
             }
 
-            this.elmP.classList.add("item", "card");
+            this.elm.classList.add("card");
             this.link = link;
             D.parseCardMeta(timestamp, tags, author, no, this);
             D.parseCardContent(content, this);
         }
     };
 
-    D.Text = class extends Item {
+    D.ResultText = class extends ResultItem {
         constructor(title, content, timestamp, style) {
-            super(title, timestamp, style);
+            super(timestamp, style);
 
-            this.elmP.classList.add("item", "text");
-            this.content = content;
+            this.elm.innerHTML = "this is a test text";
+            this.elm.classList.add("text");
+        }
+    };
+    D.ResultCard = class extends ResultItem {
+        constructor(title, link, content, timestamp, tags, author, no, style) {
+            super(timestamp, style);
+
+            this.elm.innerHTML = "this is a test card";
+            this.elm.classList.add("card");
         }
     };
 
@@ -152,126 +203,6 @@ function SiteObjects(DT) {
             this._parent = parent;
             parent.appendChild(this.elm);
         }
-    };
-
-    D.separator = function () {
-        return document.createElement("hr");
-    };
-    D.searchButton = function () {
-        var e = document.createElement("div"),
-            active = false, // state: button is active
-            aniframe = 0,
-            anitime = 350,
-            then = 0,
-            oPos = null,
-            paddTop = 10,
-            aniactive = false;
-
-        function startAni() {
-            if (aniactive) return;
-            then = performance.now();
-            requestAnimationFrame(reqanf);
-        }
-        function updPos() {
-            e.style.transform = 
-                "translateY(" + 
-                DT.Utils.easingFunctions.easeInOutQuad(aniframe) * -oPos + 
-                "px)";
-        }
-
-        function reqanf(now) {
-            var tt = now - then;
-            then = now;
-            if (active) {
-                aniframe += tt / anitime;
-                if (aniframe > 1) {
-                    aniframe = 1;
-                    aniactive = false;
-                    updPos();
-                    return;
-                }
-            } else {
-                aniframe -= tt / anitime;
-                if (aniframe < 0) {
-                    aniframe = 0;
-                    aniactive = false;
-                    updPos();
-                    return;
-                }
-            }
-            updPos();
-            aniactive = true;
-            requestAnimationFrame(reqanf);
-        }
-
-        e.classList.add("searchItem");
-
-        {
-            let a = document.createElement("div");
-            a.classList.add("searchButton");
-
-            {
-                let b = document.createElement("div"); // create search text
-                b.innerHTML = "Search";
-                b.classList.add("text");
-
-                a.appendChild(b);
-            } {
-                let b = document.createElement("div"); // create icon
-                b.classList.add("img");
-
-                {
-                    let c = document.createElement("img");
-                    c.src = "img/searchIcon.png";
-                    b.appendChild(c);
-                }
-
-                a.appendChild(b);
-            }
-
-            e.appendChild(a);
-        }
-        
-        e.addEventListener("click", function () {
-            active ^= true;
-
-            if (oPos === null) {
-                oPos = e.getBoundingClientRect().y - paddTop;
-            }
-
-            if (active) {
-                DT.Site.main.classList.add("searching");
-                DT.Search.listenToKeystrokes(true);
-            } else {
-                DT.Site.main.classList.remove("searching");
-                DT.Search.listenToKeystrokes(false);
-            }
-
-            if (aniactive) {
-                console.log("clicked while animating!");
-            }
-            startAni();
-        });
-
-        return e;
-    };
-    D.yearList = function () {
-        var e = document.createDocumentFragment();
-
-        for (let i = 2016; i <= 2018; i++) { //* make this set the variables automatically
-            let a = document.createElement("div");
-            a.innerHTML = i;
-            e.appendChild(a);
-        }
-
-        return e;
-    };
-
-    Image.prototype.aload = function () {
-        if (this.src) return false;
-        this.src = this.asrc;
-        this.classList.add("load");
-        return true;
     };
 
     D.parseDisplayContent = function (dt, imgs) {
@@ -335,6 +266,13 @@ function SiteObjects(DT) {
         return new D.Card(dt.name, DT.Site.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.no, dt.style);
     };
 
+    D.parseResultText = function (dt) {
+        return new D.ResultText(dt.title, dt.content, dt.timestamp, dt.style);
+    };
+    D.parseResultCard = function (dt) {
+        return new D.ResultCard(dt.name, DT.Site.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.no, dt.style);
+    };
+
     D.parse = function (dt) {
         if (dt.hidden) return null;
         switch (dt.type) {
@@ -345,5 +283,130 @@ function SiteObjects(DT) {
         default:
             return new D.ErrorCard("Reason: Card is of unknown type");
         }
+    };
+
+    D.parseResult = function (dt) {
+        if (dt.hidden) return null;
+        switch (dt.type) {
+        case "text":
+            return D.parseResultText(dt);
+        case "card":
+            return D.parseResultCard(dt);
+        default:
+            return new D.ErrorCard("Reason: Card is of unknown type");
+        }
+    };
+
+    D.separator = function () {
+        return document.createElement("hr");
+    };
+    D.searchButton = function () {
+        var e = document.createElement("div"),
+            active = false, // state: button is active
+            aniframe = 0,
+            anitime = 350,
+            then = 0,
+            oPos = null,
+            paddTop = 10,
+            aniactive = false;
+
+        function startAni() {
+            if (aniactive) return;
+            then = performance.now();
+            requestAnimationFrame(reqanf);
+        }
+        function updPos() {
+            e.style.transform =
+                "translateY(" +
+                DT.Utils.easingFunctions.easeInOutQuad(aniframe) * -oPos +
+                "px)";
+        }
+
+        function reqanf(now) {
+            var tt = now - then;
+            then = now;
+            if (active) {
+                aniframe += tt / anitime;
+                if (aniframe > 1) {
+                    aniframe = 1;
+                    aniactive = false;
+                    updPos();
+                    return;
+                }
+            } else {
+                aniframe -= tt / anitime;
+                if (aniframe < 0) {
+                    aniframe = 0;
+                    aniactive = false;
+                    updPos();
+                    return;
+                }
+            }
+            updPos();
+            aniactive = true;
+            requestAnimationFrame(reqanf);
+        }
+
+        e.classList.add("searchItem");
+
+        {
+            let a = document.createElement("div");
+            a.classList.add("searchButton");
+
+            {
+                let b = document.createElement("div"); // create search text
+                b.innerHTML = "Search";
+                b.classList.add("text");
+
+                a.appendChild(b);
+            } {
+                let b = document.createElement("div"); // create icon
+                b.classList.add("img");
+
+                {
+                    let c = document.createElement("img");
+                    c.src = "img/searchIcon.png";
+                    b.appendChild(c);
+                }
+
+                a.appendChild(b);
+            }
+
+            e.appendChild(a);
+        }
+
+        e.addEventListener("click", function () {
+            active ^= true;
+
+            if (oPos === null) {
+                oPos = e.getBoundingClientRect().y - paddTop;
+            }
+
+            if (active) {
+                DT.Site.main.classList.add("searching");
+                DT.Search.listenToKeystrokes(true);
+            } else {
+                DT.Site.main.classList.remove("searching");
+                DT.Search.listenToKeystrokes(false);
+            }
+
+            if (aniactive) {
+                console.log("clicked while animating!");
+            }
+            startAni();
+        });
+
+        return e;
+    };
+    D.yearList = function () {
+        var e = document.createDocumentFragment();
+
+        for (let i = 2016; i <= 2018; i++) { //* make this set the variables automatically
+            let a = document.createElement("div");
+            a.innerHTML = i;
+            e.appendChild(a);
+        }
+
+        return e;
     };
 }

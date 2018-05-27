@@ -56,7 +56,7 @@ img {
     padding-bottom: 0;
     box-sizing: border-box;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 3px 0px 8px rgba(0, 0, 0, 0.24);
-    z-index: 6;
+    z-index: 7;
     overflow: hidden;
 }
 
@@ -69,9 +69,13 @@ img {
 }
 
 #menu .searchItem {
-    z-index: 7;
+    z-index: 8;
     will-change: transform;
     transition: none;
+}
+
+#main:not(.searching) #menu > div:not(.searchItem) {
+    cursor: pointer;
 }
 
 #menu > div {
@@ -81,7 +85,6 @@ img {
     background-color: transparent;
     will-change: background-color;
     transition: 0.15s;
-    cursor: pointer;
 }
 
 #menu.collapse > div {
@@ -105,6 +108,10 @@ img {
 #menu .searchButton {
     display: flex;
     transform: translateX(28%);
+}
+
+#menu .searchItem {
+    cursor: pointer;
 }
 
 #menu .searchButton .text {
@@ -136,7 +143,7 @@ img {
     height: 64px;
     background-color: #80ffc4;
     background-image: linear-gradient(45deg, #80ffc4, #2effa8);
-    z-index: 5;
+    z-index: 6;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.24);
     transition: none;
 }
@@ -159,10 +166,13 @@ img {
     transform: rotate3d(1, 0, 0, 90deg);
 }
 
-#titleText {
+#head #titleText {
     /* transitions before show */
     opacity: 1;
     transform: rotate3d(1, 0, 0, 0deg);
+    position: absolute;
+    color: #000000;
+    text-decoration: none;
 }
 
 #main.searching #head #titleText {
@@ -206,7 +216,24 @@ img {
     animation: blink 0.7s linear 0s infinite alternate;
 }
 
-#body {
+#main.searching #searchOverlay {
+    /* after searching */
+    opacity: 1;
+    z-index: 5;
+}
+
+#searchOverlay {
+    z-index: 3;
+    background-color: #e8f6ff;
+    display: block;
+
+    transition: 0.15s ease-out;
+
+    /* before searching */
+    opacity: 0;
+}
+
+#body, #searchOverlay {
     position: fixed;
     top: 64px;
     left: 224px;
@@ -217,10 +244,17 @@ img {
     overflow-y: scroll;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
+}
+
+#body {
+    z-index: 5;
+}
+
+#main.searching #body {
     z-index: 4;
 }
 
-#body::-webkit-scrollbar {
+#body::-webkit-scrollbar, #searchOverlay::-webkit-scrollbar {
     background-color: #ebe4e7;
     width: 0px !important;
 }
@@ -235,7 +269,7 @@ img {
 }
 
 #headP {
-    z-index: 3;
+    z-index: 4;
 }
 
 .bodyFrag {
@@ -255,11 +289,11 @@ img {
     box-sizing: border-box;
     max-width: 834px;
     text-align: left;
+    text-decoration: none;
 }
 
 .item {
     display: block;
-    text-decoration: none;
     color: #000000;
     border-radius: 4px;
     padding: 16px;
@@ -374,7 +408,7 @@ img {
     opacity: 0.92;
 }
 
-#body.itemPop .item:hover,
+#bodyP.itemPop .item:hover,
 .item.pop {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transform: scale(1.0075);

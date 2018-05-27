@@ -1,8 +1,8 @@
 function Search(DT) {
     var D = {
-        button: null,
-        content: null,
-        searchConfig: {
+        button: null, // search button
+        content: null, // content/0.json
+        searchConfig: { // config to pass through search library
             fields: {
                 "title": {boost: 2},
                 "body": {boost: 1},
@@ -14,14 +14,24 @@ function Search(DT) {
             bool: "OR",
             expand: true
         },
-        inputElm: null,
-        listening: false
+        inputElm: null, // <input> in head for user input
+        listening: false, // if searching is active
+        results: [], // search results from library
+        items: {}, // elements already created from a search result
+        index: null, // index outputed from search library
+        linput: null // last input
+        // input: inputElm.value
     };
     DT.Search = D;
 
     function translateIndex(id, dt) {
         switch(dt.type) {
         case "card":
+            var captions = [];
+            for (let i of dt.content.display) {
+                captions.push(i.caption);
+            }
+
             return {
                 id: id,
                 title: dt.name,
@@ -29,7 +39,7 @@ function Search(DT) {
                 author: dt.author.join(" "),
                 tags: dt.tags.join(" "),
                 no: dt.no,
-                caption: dt.content.caption
+                caption: captions.join(" ")
             };
         case "text":
             return {
@@ -44,19 +54,71 @@ function Search(DT) {
         }
     }
 
+    function getResultItem(id) {
+        if (D.items[id] !== undefined) {
+            return D.items[id];
+        }
+
+        let elm = DT.SiteObjects.parseResult(D.content.data[id]);
+        D.items[id] = elm;
+        return elm;
+    }
+
+    function addResult(e) {
+        var result = getResultItem(e.ref);
+        if (result) {
+            result.appendTo(DT.Site.searchOverlay);
+        }
+    }
+
+    function updateResults() {
+        //* timeout before updating, so it doesn't update every key
+
+        var results = D.search(D.input);
+        D.results = results;
+        console.log(results);
+
+        DT.Utils.emptyElement(DT.Site.searchOverlay);
+
+        for (let i of results) {
+            addResult(i);
+            // console.log(new DT.SiteObjects.ResultCard(i));
+        }
+    }
+
+    function changeHandler() {
+        if (D.input === D.linput) return;
+        D.linput = D.input;
+
+        if (D.input.length > 1) {
+            updateResults();
+        }
+    }
+
     function keydownHandler(e) {
-        // if (e.key.length === 1) {
-        //     D.input += e.key;
-        // } else {
-        //     switch(e.key) {
-        //     case "Backspace":
-        //         D.input = D.input.slice(0, D.input.length - 1);
-        //         break;
-        //     case "Enter":
-        //         break;
-        //     }
-        // }
-        // DT.Site.title.innerText = D.input;
+        if (e.keyCode === 13) {
+            if (D.input.length < 2) {
+                console.log("input length must be more than 2");
+                // under inputElm, show "input length must be more than 2"
+                return;
+            }
+            console.log("enter");
+
+            updateResults(); // enter forces search
+            return;
+        }
+        changeHandler();
+    }
+
+    function registerHandlers() {
+        D.inputElm.addEventListener("keydown", keydownHandler);
+        D.inputElm.addEventListener("keyup", changeHandler);
+        D.inputElm.addEventListener("change", changeHandler);
+    }
+    function unregisterHandlers() {
+        D.inputElm.removeEventListener("keydown", keydownHandler);
+        D.inputElm.removeEventListener("keyup", changeHandler);
+        D.inputElm.removeEventListener("change", changeHandler);
     }
 
     function focusHandler() {
@@ -80,7 +142,8 @@ function Search(DT) {
         if (e) {
             if (D.listening) return;
             D.listening = true;
-            addEventListener("keydown", keydownHandler);
+
+            registerHandlers();
 
             if (D.input.length <= 13) {
                 D.input = "";
@@ -88,7 +151,9 @@ function Search(DT) {
             D.inputElm.focus();
         } else {
             D.listening = false;
-            removeEventListener("keydown", keydownHandler);
+            
+            unregisterHandlers();
+
             D.inputElm.blur();
         }
     };

@@ -1,6 +1,6 @@
 function ContentGetter(DT) {
     var D = {
-        toGet: {}
+        toGet: {} // every request
     };
     DT.ContentGetter = D;
 
