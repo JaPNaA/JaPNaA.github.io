@@ -110,15 +110,23 @@ function Search(DT) {
         changeHandler();
     }
 
+    function gKeydownHandler(e) {
+        if (D.listening) {
+            D.inputElm.focus();
+        }
+    }
+
     function registerHandlers() {
         D.inputElm.addEventListener("keydown", keydownHandler);
         D.inputElm.addEventListener("keyup", changeHandler);
         D.inputElm.addEventListener("change", changeHandler);
+        addEventListener("keydown", gKeydownHandler);
     }
     function unregisterHandlers() {
         D.inputElm.removeEventListener("keydown", keydownHandler);
         D.inputElm.removeEventListener("keyup", changeHandler);
         D.inputElm.removeEventListener("change", changeHandler);
+        removeEventListener("keydown", gKeydownHandler);        
     }
 
     function focusHandler() {

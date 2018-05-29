@@ -13,7 +13,6 @@ function SiteObjects(DT) {
         constructor(title, timestamp, style) {
             this.elmP = document.createElement("a");
             this.elm = document.createElement("div");
-
             
             {
                 this.titleElm = document.createElement("div");
@@ -52,7 +51,7 @@ function SiteObjects(DT) {
             if (e) {
                 this.titleElm.innerHTML = e;
             } else {
-                this.titleElm.classList.add("nonexistant");
+                this.titleElm.classList.add("nonexistent");
                 this.titleElm.innerHTML = "";
             }
         }
@@ -84,11 +83,14 @@ function SiteObjects(DT) {
         }
     }
 
-    class ResultItem {
+    class ResultItem { // doesn't have as much as Item, because card and text have different DOM structures
         constructor(timestamp, style) {
             this.elmP = document.createElement("div");
             this.elm = document.createElement("div");
             
+            this.imgs = [];
+            this.added = false;
+
             this.elm.classList.add("item");
             this.elm.style = style;
 
@@ -105,6 +107,14 @@ function SiteObjects(DT) {
 
         appendTo(parent) {
             parent.appendChild(this.elmP);
+        }
+        
+        prepAdd() {
+            if (this.added) return;
+            for (let i of this.imgs) {
+                i.aload();
+            }
+            this.added = true;
         }
     }
 
@@ -142,16 +152,71 @@ function SiteObjects(DT) {
         constructor(title, content, timestamp, style) {
             super(timestamp, style);
 
-            this.elm.innerHTML = "this is a test text";
+            {
+                this.titleElm = document.createElement("div");
+                this.titleElm.classList.add("title");
+                this.elm.appendChild(this.titleElm);
+            } {
+                this.bodyElm = document.createElement("div");
+                this.bodyElm.classList.add("body");
+                this.elm.appendChild(this.bodyElm);
+            }
+            
+            this.titleElm.innerHTML = title;
+            this.bodyElm.innerHTML = content; // cut off at point
+
+            this.args = [].slice.call(arguments);
+
             this.elm.classList.add("text");
         }
     };
+
     D.ResultCard = class extends ResultItem {
         constructor(title, link, content, timestamp, tags, author, no, style) {
             super(timestamp, style);
 
-            this.elm.innerHTML = "this is a test card";
+            // stucture
+            {
+                this.leftCol = document.createElement("div");
+                this.leftCol.classList.add("left", "col");
+                this.elm.appendChild(this.leftCol);
+
+                {
+                    this.imgElm = document.createElement("div");
+                    this.imgElm.classList.add("img");
+                    this.leftCol.appendChild(this.imgElm);
+                }
+            } {
+                this.rightCol = document.createElement("div");
+                this.rightCol.classList.add("right", "col");
+                this.elm.appendChild(this.rightCol);
+
+                {
+                    this.titleElm = document.createElement("div");
+                    this.titleElm.classList.add("title");
+                    this.rightCol.appendChild(this.titleElm);
+                } {
+                    this.bodyElm = document.createElement("div");
+                    this.bodyElm.classList.add("body");
+                    this.rightCol.appendChild(this.bodyElm);
+                }
+            }
+
+            // content
+            // right
+            this.titleElm.innerHTML = title;
+            this.titleElm.setAttribute("no", no);
+            this.bodyElm.innerHTML = content.description;
+            // left
+            if (content.display[0]) {
+                this.imgElm.appendChild(D.parseDisplayContent(content.display[0], this.imgs));
+            }
+
+            this.args = [].slice.call(arguments);
+
             this.elm.classList.add("card");
+
+            this.prepAdd();
         }
     };
 
@@ -187,7 +252,7 @@ function SiteObjects(DT) {
             if (e) {
                 this.titleElm.innerHTML = e;
             } else {
-                this.titleElm.classList.add("nonexistant");
+                this.titleElm.classList.add("nonexistent");
                 this.titleElm.innerHTML = "";
             }
         }
@@ -239,7 +304,7 @@ function SiteObjects(DT) {
     };
 
     D.parseCardMeta = function (dtTimestamp, dtTags, dtAuthor, dtNo, that) {
-        that.titleElm.setAttribute("no", dtNo); // set number attibute to title
+        that.titleElm.setAttribute("no", dtNo); // set number attribute to title
 
         {
             let tags = document.createElement("div"); // create element

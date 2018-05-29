@@ -14,7 +14,7 @@ function Site(DT) {
             minItemWidth: 480, // min ...
             menuWidth: 224, // width of menu
             collapsedMenuWidth: 48, // width of menu when collapsed
-            lastMenuCollapsed: false, // if the menu was collasped
+            lastMenuCollapsed: false, // if the menu was collapsed
             itemPop: false, // if the item 'pops' on mouse hover
             allowedDeviation: 64, // how far an item can be in the wrong column if it follows left to right
             scrollHeight: 0, // body element's height
@@ -34,6 +34,14 @@ function Site(DT) {
         menu.classList.add("noselect");
 
         {
+            let a = document.createElement("div");
+            a.innerHTML = "•••"; // include: send feedback, contact me, view all projects, changelog, copyright
+            D.menuItems.about = a;
+            menu.appendChild(a);
+        } {
+            let s = DT.SiteObjects.separator();
+            menu.appendChild(s);
+        } {
             let a = document.createElement("div");
             a.innerHTML = "About";
             D.menuItems.about = a;
