@@ -148,7 +148,7 @@ function SiteObjects(DT) {
         }
     };
 
-    D.ResultText = class extends ResultItem {
+    D.ResultText = class extends ResultItem { //* when clicked, expand to full card
         constructor(title, content, timestamp, style) {
             super(timestamp, style);
 
@@ -175,7 +175,7 @@ function SiteObjects(DT) {
         constructor(title, link, content, timestamp, tags, author, no, style) {
             super(timestamp, style);
 
-            // stucture
+            // structure
             {
                 this.leftCol = document.createElement("div");
                 this.leftCol.classList.add("left", "col");
@@ -431,6 +431,7 @@ function SiteObjects(DT) {
                 {
                     let c = document.createElement("img");
                     c.src = "img/searchIcon.png";
+                    c.alt = "search icon";
                     b.appendChild(c);
                 }
 
