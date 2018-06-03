@@ -27,6 +27,9 @@ function SiteObjects(DT) {
             this.added = false;
             
             this.imgs = [];
+            this.events = {
+                load: []
+            };
             
             this.elmP.target = "_blank";
             this.elm.classList.add("item");
@@ -74,11 +77,35 @@ function SiteObjects(DT) {
             parent.appendChild(this.elmP);
         }
 
+        addEventListener(t, f) {
+            this.events[t].push(f);
+        }
+        dispatchEvent(t) {
+            for (let i of this.events[t]) {
+                i.call(this);
+            }
+        }
+
         prepAdd() {
             if (this.added) return;
-            for (let i of this.imgs) {
-                i.aload();
+            var requiredDep = this.imgs.length,
+                loadedDep = 0;
+
+            if (requiredDep) {
+                for (let i of this.imgs) {
+                    i.aload();
+                    i.addEventListener("load", () => {
+                        loadedDep++;
+
+                        if (loadedDep >= requiredDep) {
+                            this.dispatchEvent("load");
+                        }
+                    });
+                }
+            } else {
+                this.dispatchEvent("load");
             }
+
             this.added = true;
         }
     }
@@ -87,15 +114,23 @@ function SiteObjects(DT) {
         constructor(timestamp, style) {
             this.elmP = document.createElement("div");
             this.elm = document.createElement("div");
+            this.expandedElm = document.createElement("div");
             
             this.imgs = [];
             this.added = false;
+            this.isExpanded = false;
+            this.loadedExpantion = false;
+            this.expandItem = null;
 
             this.elm.classList.add("item");
+            this.elmP.classList.add("itemP", "result");
+            this.expandedElm.classList.add("expand");
+
             this.elm.style = style;
 
-            this.elmP.classList.add("itemP", "result");
             this.elmP.appendChild(this.elm);
+            this.elmP.appendChild(this.expandedElm);
+            this.elmP.addEventListener("click", () => this.expand());
         }
 
         get parent() {
@@ -107,6 +142,12 @@ function SiteObjects(DT) {
 
         appendTo(parent) {
             parent.appendChild(this.elmP);
+
+            // when changing parents, unexpand, if expanded
+            if (this.isExpanded) {
+                this.unexpand();
+                this.expandedElm.classList.remove("expanded");
+            }
         }
         
         prepAdd() {
@@ -115,6 +156,36 @@ function SiteObjects(DT) {
                 i.aload();
             }
             this.added = true;
+        }
+
+        createExpandItem() {}
+
+        unexpand() {
+            this.expandedElm.removeChild(this.expandItem.elmP);
+            this.isExpanded = false;
+        }
+
+        expand() {
+            if (this.isExpanded) return;
+
+            if (this.loadedExpantion) {
+                this.expandItem.appendTo(this.expandedElm);
+                this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
+                this.expandedElm.classList.add("expanded");
+            } else {
+                this.createExpandItem();
+                this.expandItem.addEventListener("load", () => {
+                    this.expandItem.appendTo(this.expandedElm);
+                    this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
+                });
+                this.expandItem.prepAdd();
+
+                this.expandedElm.classList.add("expanded");
+
+                this.loadedExpantion = true;
+            }
+
+            this.isExpanded = true;
         }
     }
 
@@ -169,6 +240,10 @@ function SiteObjects(DT) {
 
             this.elm.classList.add("text");
         }
+
+        createExpandItem() {
+            this.expandItem = new D.Text(...this.args);
+        }
     };
 
     D.ResultCard = class extends ResultItem {
@@ -217,6 +292,10 @@ function SiteObjects(DT) {
             this.elm.classList.add("card");
 
             this.prepAdd();
+        }
+
+        createExpandItem() {
+            this.expandItem = new D.Card(...this.args);
         }
     };
 
@@ -441,7 +520,7 @@ function SiteObjects(DT) {
             e.appendChild(a);
         }
 
-        e.addEventListener("click", function () {
+        function clickHandler() {
             active ^= true;
 
             if (oPos === null) {
@@ -450,17 +529,27 @@ function SiteObjects(DT) {
 
             if (active) {
                 DT.Site.main.classList.add("searching");
-                DT.Search.listenToKeystrokes(true);
+                DT.Search.initSearch(true);
             } else {
                 DT.Site.main.classList.remove("searching");
-                DT.Search.listenToKeystrokes(false);
+                DT.Search.initSearch(false);
             }
 
             if (aniactive) {
                 console.log("clicked while animating!");
             }
             startAni();
-        });
+        }
+
+        if (DT.Site.search.search) {
+            addEventListener("load", () => {
+                clickHandler();
+                DT.Search.input = DT.Site.search.search;
+                DT.Search.updateResults();
+            });
+        }
+
+        e.addEventListener("click", clickHandler);
 
         return e;
     };

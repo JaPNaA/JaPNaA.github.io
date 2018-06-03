@@ -7,10 +7,14 @@
     --search-color-saturated: #6bc9ff;
     --menu-color: #131313;
     --menu-color-saturated: #191919;
+    --head-height: 64px;
+    --r-left: 224px;
+    --r-width: calc(100% - var(--r-left));
 }
 
 body {
     background-color: var(--background-color, #fffafd);
+    overflow-x: hidden;
 }
 
 img {
@@ -166,14 +170,44 @@ a:active {
 #head {
     position: fixed;
     top: 0;
-    left: 224px;
-    width: calc(100% - 224px);
-    height: 64px;
+    left: var(--r-left, 224px);
+    width: var(--r-width, calc(100% - 224px));
+    height: var(--head-height, 64px);
     background-color: var(--theme-color, #80ffc4);
     background-image: linear-gradient(45deg, var(--theme-color, #80ffc4), var(--theme-color-saturated, #2effa8));
     z-index: 6;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.24);
     transition: none;
+}
+
+#headHint {
+    position: absolute;
+    display: block;
+    z-index: -1;
+
+    top: var(--head-height, 64px);
+    left: var(--r-left, 224px);
+    width: 100%;
+    height: 0;
+    padding: 8px;
+
+    box-sizing: border-box;
+
+    background-color: transparent;
+    opacity: 0;
+    
+    font-size: 14px;
+    color: #484848;
+
+    transition: 0.3s ease-out;
+    transform: rotate3d(-1, 1, -1, 90deg);
+    transform-origin: bottom left;
+    will-change: transform, opacity;
+}
+
+#headHint.show {
+    opacity: 1;
+    transform: rotate3d(0, 0, 0, 90deg);
 }
 
 #main.searching #head {
@@ -217,7 +251,7 @@ a:active {
 #head #titleText, #head #searchInput {
     font-family: "Share Tech Mono", courier, monospace;
     font-size: 42px;
-    line-height: 64px;
+    line-height: var(--head-height, 64px);
     padding-left: 16px;
     
     will-change: opacity, transform;
@@ -263,10 +297,10 @@ a:active {
 
 #body, #searchOverlay {
     position: fixed;
-    top: 64px;
-    left: 224px;
-    width: calc(100% - 224px);
-    height: calc(100% - 64px);
+    top: var(--head-height, 64px);
+    left: var(--r-left);
+    width: var(--r-width, calc(100% - 224px));
+    height: calc(100% - var(--head-height, 64px));
     padding: 8px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -318,6 +352,7 @@ a:active {
     max-width: 834px;
     text-align: left;
     text-decoration: none;
+    position: relative;
 }
 
 .item {
@@ -459,6 +494,18 @@ a:active {
 
 .result .item.card {
     padding-bottom: 16px;
+}
+
+.result .item.text {
+    cursor: pointer;
+}
+
+.expand .itemP {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    z-index: 1;
 }
 
 #bodyP.itemPop .item:hover,

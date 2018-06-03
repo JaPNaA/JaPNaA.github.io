@@ -10,6 +10,11 @@ function Site(DT) {
                 search: null, 
                 yearList: null
             },
+            head: null,
+            headHint: null,
+            showingHeadHint: false,
+            title: null,
+            titleText: "JaPNaA", // text in the title
             maxItemWidth: 624, // max width for items in body element
             minItemWidth: 480, // min ...
             menuWidth: 224, // width of menu
@@ -21,8 +26,8 @@ function Site(DT) {
             children: [], // items in the body
             lastAddedChildrenIx: 0, // index of the last item that was lazy-added
             bodyFrag: [], // all column elements
-            titleText: "JaPNaA", // text in the title
-            path: "http://localhost:8081" // path of images and links //* set to location.origin when in production
+            path: "http://localhost:8081", // path of images and links //* set to location.origin when in production
+            search: DT.Utils.parseSearch(location.search) // parsed object of location.search
         },
         docFrag = document.createDocumentFragment();
     DT.Site = D;
@@ -66,10 +71,13 @@ function Site(DT) {
     }
 
     function createHead() {
-        var head = document.createElement("div");
+        var frag = document.createDocumentFragment(),
+            head = document.createElement("div");
+
         D.head = head;
         head.id = "head";
-        head.classList.add("noselect");        
+        head.classList.add("noselect");
+        frag.appendChild(head);
 
         {
             let title = document.createElement("a");
@@ -78,9 +86,14 @@ function Site(DT) {
             title.innerHTML = D.titleText;
             D.title = title;
             head.appendChild(title);
+        } {
+            let headHint = document.createElement("div");
+            headHint.id = "headHint";
+            D.headHint = headHint;
+            frag.appendChild(headHint);
         }
 
-        return head;
+        return frag;
     }
 
     function createBody() {
@@ -132,10 +145,8 @@ function Site(DT) {
                 b = "calc(100% - " + D.menuWidth + "px)";
             }
 
-            DT.Utils.setCssRule("#body", "left", a);
-            DT.Utils.setCssRule("#body", "width", b);
-            DT.Utils.setCssRule("#head", "left", a);
-            DT.Utils.setCssRule("#head", "width", b);
+            DT.Utils.setCssRule(":root", "--r-left", a);
+            DT.Utils.setCssRule(":root", "--r-width", b);
             DT.Utils.reloadCss();
 
             D.lastMenuCollapsed = menuCollapsed;
@@ -278,6 +289,19 @@ function Site(DT) {
 
         D.scrollHeight = sch;
         item.appendTo(smallest);
+    };
+
+    D.writeHeadHint = function (text) {
+        D.headHint.classList.add("show");
+        D.showingHeadHint = true;
+        DT.Utils.emptyElement(D.headHint);
+        D.headHint.innerHTML = text;
+    };
+    D.clearHeadHint = function () {
+        if (D.showingHeadHint) {
+            D.headHint.classList.remove("show");
+            D.showingHeadHint = false;
+        }
     };
 
     D.setup = function () {

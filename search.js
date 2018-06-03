@@ -71,12 +71,11 @@ function Search(DT) {
         }
     }
 
-    function updateResults() {
+    D.updateResults = function () {
         //* timeout before updating, so it doesn't update every key
 
         var results = D.search(D.input);
         D.results = results;
-        console.log(results);
 
         DT.Utils.emptyElement(DT.Site.searchOverlay);
 
@@ -84,29 +83,40 @@ function Search(DT) {
             addResult(i);
             // console.log(new DT.SiteObjects.ResultCard(i));
         }
+
+        if (!results.length) {
+            DT.Site.writeHeadHint("No results found");
+        } else {
+            DT.Site.clearHeadHint();
+        }
     }
 
     function changeHandler() {
         if (D.input === D.linput) return;
         D.linput = D.input;
+        DT.Utils.emptyElement(DT.Site.searchOverlay);
 
         if (D.input.length > 1) {
-            updateResults();
+            D.updateResults();
         }
     }
 
     function keydownHandler(e) {
         if (e.keyCode === 13) {
             if (D.input.length < 2) {
-                console.log("input length must be more than 2");
-                // under inputElm, show "input length must be more than 2"
+                DT.Site.writeHeadHint("Input length must be more than 1");
                 return;
             }
             console.log("enter");
 
-            updateResults(); // enter forces search
+            D.updateResults(); // enter forces search
             return;
         }
+
+        if (D.input.length >= 1) {
+            DT.Site.clearHeadHint();
+        }
+
         changeHandler();
     }
 
@@ -146,7 +156,7 @@ function Search(DT) {
         return D.index.search(e, D.searchConfig);
     };
 
-    D.listenToKeystrokes = function(e) {
+    D.initSearch = function(e) {
         if (e) {
             if (D.listening) return;
             D.listening = true;
@@ -155,7 +165,9 @@ function Search(DT) {
 
             if (D.input.length <= 13) {
                 D.input = "";
+                DT.Utils.emptyElement(DT.Site.searchOverlay);
             }
+
             D.inputElm.focus();
         } else {
             D.listening = false;

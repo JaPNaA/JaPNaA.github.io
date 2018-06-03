@@ -55,6 +55,24 @@ function Utils(DT) {
         document.head.appendChild(stylesheet);
     };
 
+    D.parseSearch = function(search) {
+        var r = {},
+            s = decodeURIComponent(search.slice(1)),
+            ss = s.split("?");
+        
+        for (let i of ss) {
+            let ix = i.indexOf("="),
+                q = i.slice(0, ix),
+                v = i.slice(ix + 1);
+            
+            if (q && v) {
+                r[q] = v;
+            }
+        }
+
+        return r;
+    };
+
     D.easingFunctions = {
         // no easing, no acceleration
         linear: function (t) {
