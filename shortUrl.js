@@ -3,7 +3,18 @@ function ShortUrl(DT) {
     DT.ShortUrl = D;
 
     function alertHashDoesntExist(e) {
-        DT.Utils.prompta("Requested short URL hash <b>" + e + "</b> doesn't exist");
+        {
+            let prompt = document.createDocumentFragment(),
+                bold = document.createElement("b");
+
+            prompt.appendChild(document.createTextNode("Requested short URL hash: ")); // "Requested short URL hash: "
+            bold.innerHTML = e; // `<b> ${e} </b>`
+            prompt.appendChild(bold);
+            prompt.appendChild(document.createTextNode(" doesn't exist.")); // " doesn't exist"
+        
+            DT.Utils.prompta(prompt);
+        }
+
         clearHash();
     }
 
@@ -62,7 +73,7 @@ function ShortUrl(DT) {
             break;
 
         default: // from redirects list
-            DT.ContentGetter.add("redirects", "content/redirects.txt", true, function (e) {
+            DT.ContentGetter.add("redirects", "content/redirects.txt", false, function (e) {
                 var lines = e.split("\n"),
                     list = [],
                     linesL = lines.length,

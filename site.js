@@ -15,6 +15,7 @@ function Site(DT) {
             showingHeadHint: false,
             title: null,
             titleText: "JaPNaA", // text in the title
+            notificationList: null,
             maxItemWidth: 624, // max width for items in body element
             minItemWidth: 480, // min ...
             menuWidth: 224, // width of menu
@@ -40,7 +41,7 @@ function Site(DT) {
 
         {
             let a = document.createElement("div");
-            a.innerHTML = "•••"; // include: send feedback, contact me, view all projects, changelog, copyright
+            a.innerHTML = "•••"; //* include: send feedback, contact me, view all projects, changelog, copyright
             D.menuItems.about = a;
             menu.appendChild(a);
         } {
@@ -121,6 +122,14 @@ function Site(DT) {
         D.searchOverlay = overlay;
 
         return overlay;
+    }
+
+    function createNotificationList() {
+        var notList = document.createElement("div");
+        notList.id = "notificationList";
+        D.notificationList = notList;
+
+        return notList;
     }
 
     function buildBodyFrags() {
@@ -228,6 +237,10 @@ function Site(DT) {
             }
 
             main.appendChild(content);
+        } {
+            let notificationList = document.createElement("div");
+            notificationList.appendChild(createNotificationList());
+            main.appendChild(notificationList);
         }
 
         docFrag.appendChild(main);

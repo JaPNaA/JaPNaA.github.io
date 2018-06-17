@@ -10,6 +10,7 @@
     --head-height: 64px;
     --r-left: 224px;
     --r-width: calc(100% - var(--r-left));
+    --notification-width: 332px;
 }
 
 body {
@@ -61,7 +62,7 @@ a:active {
     width: 100%;
     height: 100%;
     background-color: var(--background-color, #fffafd);
-    z-index: 11;
+    z-index: 13;
     opacity: 1;
     transition: 0.35s cubic-bezier(0.55, 0.09, 0.68, 0.53);
 }
@@ -96,7 +97,7 @@ a:active {
     transform: translateX(calc(48px - 224px));
 }
 
-#main.searching #menu > :not(.searchItem) {
+#main.searching #menu > :not(.searchItem), #main.searching #menu > group > div {
     opacity: 0;
 }
 
@@ -106,11 +107,11 @@ a:active {
     transition: none;
 }
 
-#main:not(.searching) #menu > div:not(.searchItem) {
+#main:not(.searching) #menu > div:not(.searchItem), #menu > group > div:not(.searchItem) {
     cursor: pointer;
 }
 
-#menu > div {
+#menu > div, #menu > group > div {
     font-size: 28px;
     padding: 8px;
     text-align: center;
@@ -119,7 +120,7 @@ a:active {
     transition: 0.15s;
 }
 
-#menu.collapse > div {
+#menu.collapse > div, #menu.collapse > group > div {
     text-align: right;
 }
 
@@ -163,7 +164,7 @@ a:active {
     width: auto;
 }
 
-#menu > div:hover {
+#menu > div:hover, #menu > group > div:hover {
     background-color: #ffffff14;
 }
 
@@ -500,6 +501,11 @@ a:active {
     cursor: pointer;
 }
 
+.result.expanded > .item {
+    transition: 0.15s;
+    opacity: 0;
+}
+
 .expand .itemP {
     position: absolute;
     top: 0;
@@ -514,4 +520,52 @@ a:active {
     transform: scale(1.0075);
     z-index: 1;
     will-change: transform;
+}
+
+.prompta {
+    background-color: #ffffff;
+    font-family: 'Open Sans';
+    position: relative;
+
+    border-radius: 4px;
+    margin: 4px 4px 6px 0;
+    padding: 10px;
+
+    box-shadow: 2px 4px 16px #00000080;
+    
+    /* transitions */
+    will-change: opacity, transform;
+
+    opacity: 0;
+    transform: scale(0.9);
+    left: 24px;
+
+    transition: 0.2s ease-out;
+}
+
+.prompta.show {
+    opacity: 1;
+    transform: scale(1);
+    left: 0;
+}
+
+#notificationList {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 11;
+
+    height: auto;
+    max-height: 100vh;
+    width: 100vw;
+    max-width: var(--notification-width, 332px);
+    
+    background-color: transparent;
+    margin: 2px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#notificationList::-webkit-scrollbar {
+    width: 0 !important;
 }

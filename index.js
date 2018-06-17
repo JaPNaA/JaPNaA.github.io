@@ -19,5 +19,14 @@
         }
     }
 
-    window.DT = DT; //* for debugging
+    //* for debugging
+    window.DT = DT; 
+
+    setTimeout(function () {
+        for (let i = 0; i < 25; i++) {
+            setTimeout(function () {
+                DT.Utils.prompta(i.toString());
+            }, i * 250);
+        }
+    }, 1000);
 }());

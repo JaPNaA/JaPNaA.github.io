@@ -162,6 +162,8 @@ function SiteObjects(DT) {
 
         unexpand() {
             this.expandedElm.removeChild(this.expandItem.elmP);
+            this.elmP.style.height = "auto";
+            this.elmP.classList.remove("expanded");
             this.isExpanded = false;
         }
 
@@ -185,6 +187,7 @@ function SiteObjects(DT) {
                 this.loadedExpantion = true;
             }
 
+            this.elmP.classList.add("expanded");
             this.isExpanded = true;
         }
     }
@@ -554,14 +557,20 @@ function SiteObjects(DT) {
         return e;
     };
     D.yearList = function () {
-        var e = document.createDocumentFragment();
+        var group = document.createElement("group");
 
-        for (let i = 2016; i <= 2018; i++) { //* make this set the variables automatically
-            let a = document.createElement("div");
-            a.innerHTML = i;
-            e.appendChild(a);
-        }
+        DT.ContentGetter.add("content", "content/0.json", false, function (e) {
+            var data = e.data,
+                first = new Date(data[data.length - 1].timestamp).getFullYear(),
+                last = new Date(data[0].timestamp).getFullYear();
 
-        return e;
+            for (let i = last; i >= first; i--) {
+                let a = document.createElement("div");
+                a.innerHTML = i;
+                group.appendChild(a);
+            }
+        }, "json");
+
+        return group;
     };
 }

@@ -21,8 +21,57 @@ function Utils(DT) {
         stylesheet.innerHTML = str;
     };
 
-    D.prompta = function(e) {
-        console.log("%c" + e, "color: #F0F;");
+    D.reqreqanf = function (e) {
+        requestAnimationFrame(function () {
+            requestAnimationFrame(e);
+        });
+    };
+
+    /**
+     * Creates a popup on the site
+     * @param {String|Element} content popup content
+     * @param {Number} [importancy = 0] how important the prompt is
+     * @param {Number} [ttl] how long before the notification automatically closes, leave null for forever
+     * @param {Boolean} [closeabe] can the user close the notification
+     */
+    D.prompta = function (content, importancy, ttl, closeable) {
+        // create element
+        var prompta = document.createElement("div"),
+            parent = DT.Site.notificationList;
+
+        prompta.classList.add("prompta");
+
+        // fill element
+        if (content.constructor == String) {
+            prompta.innerHTML = content;
+        } else {
+            prompta.appendChild(content);
+        }
+
+        switch (importancy) {
+            default:
+            case 0:
+                // info, on notifications
+                break;
+            case 1:
+                // warning, on notifications, brighter colors
+                break;
+            case 2:
+                // important, on notifications, very bright colors
+                break;
+            case 3:
+                // very important, blocks other actions
+                break;
+        }
+
+        parent.appendChild(prompta);
+        D.reqreqanf(() => prompta.classList.add("show"));
+
+        return {
+            close: function () {
+                // close prompt
+            }
+        }; // utility functions
     };
 
     D.setCssRule = function(query, rule, ruleParam) {
