@@ -12,7 +12,7 @@ function ShortUrl(DT) {
             prompt.appendChild(bold);
             prompt.appendChild(document.createTextNode(" doesn't exist.")); // " doesn't exist"
         
-            DT.Utils.prompta(prompt);
+            DT.Utils.prompta(prompt, 1);
         }
 
         clearHash();

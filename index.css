@@ -528,8 +528,7 @@ a:active {
     position: relative;
 
     border-radius: 4px;
-    margin: 4px 4px 6px 0;
-    padding: 10px;
+    border-left: #ffffff 6px solid;
 
     box-shadow: 2px 4px 16px #00000080;
     
@@ -537,8 +536,10 @@ a:active {
     will-change: opacity, transform;
 
     opacity: 0;
-    transform: scale(0.9);
     left: 24px;
+
+    margin: 0;
+    padding: 0;
 
     transition: 0.2s ease-out;
 }
@@ -547,6 +548,29 @@ a:active {
     opacity: 1;
     transform: scale(1);
     left: 0;
+
+    margin: 4px 4px 6px 0;
+    padding: 10px;
+}
+
+.prompta.info {
+    border-color: #2887f7;
+    background-color: #e1efff;
+}
+
+.prompta.warn {
+    border-color: #ffd800;
+    background-color: #fff6c4;
+}
+
+.prompta.error {
+    border-color: #ff0000;
+    background-color: #ffbebe;
+}
+
+.prompta.success {
+    border-color: #30e400;
+    background-color: #aeffbf;
 }
 
 #notificationList {

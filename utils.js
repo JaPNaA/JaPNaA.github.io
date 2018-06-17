@@ -37,7 +37,8 @@ function Utils(DT) {
     D.prompta = function (content, importancy, ttl, closeable) {
         // create element
         var prompta = document.createElement("div"),
-            parent = DT.Site.notificationList;
+            parent = DT.Site.notificationList,
+            originalHeight = 0;
 
         prompta.classList.add("prompta");
 
@@ -52,20 +53,42 @@ function Utils(DT) {
             default:
             case 0:
                 // info, on notifications
+                prompta.classList.add("info");
                 break;
             case 1:
                 // warning, on notifications, brighter colors
+                prompta.classList.add("warn");
                 break;
             case 2:
                 // important, on notifications, very bright colors
+                prompta.classList.add("error");
                 break;
             case 3:
+                // success, like info, but lime
+                prompta.classList.add("success");
+                break;
+            case 4: // special
                 // very important, blocks other actions
+                prompta.classList.add("block");
                 break;
         }
 
-        parent.appendChild(prompta);
-        D.reqreqanf(() => prompta.classList.add("show"));
+        if (parent.firstChild) {
+            parent.insertBefore(prompta, parent.firstChild);
+        } else {
+            parent.appendChild(prompta);
+        }
+        
+        originalHeight = prompta.clientHeight;
+        prompta.style.height = 0;
+        D.reqreqanf(function () {
+            prompta.classList.add("show");
+            prompta.style.height = originalHeight + "px";
+
+            addEventListener("transitionend", function () {
+                prompta.style.height = "auto";
+            }, { once: true });
+        });
 
         return {
             close: function () {

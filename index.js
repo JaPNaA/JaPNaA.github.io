@@ -25,8 +25,8 @@
     setTimeout(function () {
         for (let i = 0; i < 25; i++) {
             setTimeout(function () {
-                DT.Utils.prompta(i.toString());
-            }, i * 250);
+                DT.Utils.prompta(i.toString(), i % 5);
+            }, i * 50);
         }
     }, 1000);
 }());
