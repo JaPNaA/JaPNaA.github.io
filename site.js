@@ -12,6 +12,9 @@ function Site(DT) {
             },
             head: null,
             headHint: null,
+            headHintD: {
+                ttl: {}
+            },
             showingHeadHint: false,
             title: null,
             titleText: "JaPNaA", // text in the title
@@ -29,7 +32,7 @@ function Site(DT) {
             bodyFrag: [], // all column elements
             path: "http://localhost:8081", // path of images and links //* set to location.origin when in production
             search: DT.Utils.parseSearch(location.search) // parsed object of location.search
-        },
+        },e
         docFrag = document.createDocumentFragment();
     DT.Site = D;
 
@@ -304,13 +307,36 @@ function Site(DT) {
         item.appendTo(smallest);
     };
 
-    D.writeHeadHint = function (text) {
+    D.writeHeadHint = function (id, text, ttl) {
+        for (let i in D.headHintD.ttl) {
+            let j = D.headHintD.ttl[i];
+            if (j !== null) {
+                clearTimeout(D.headHintD.ttl[i]);
+                D.headHintD.ttl[i] = null;
+            }
+        }
+        if (ttl) {
+            D.headHintD.ttl[id] =
+                setTimeout(function () {
+                    D.clearHeadHint();
+                }, ttl);;
+        }
+
         D.headHint.classList.add("show");
         D.showingHeadHint = true;
         DT.Utils.emptyElement(D.headHint);
         D.headHint.innerHTML = text;
     };
+
     D.clearHeadHint = function () {
+        for (let i in D.headHintD.ttl) {
+            let j = D.headHintD.ttl[i];
+            if (j !== null) {
+                clearTimeout(D.headHintD.ttl[i]);
+                D.headHintD.ttl[i] = null;
+            }
+        }
+
         if (D.showingHeadHint) {
             D.headHint.classList.remove("show");
             D.showingHeadHint = false;

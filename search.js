@@ -85,7 +85,7 @@ function Search(DT) {
         }
 
         if (!results.length) {
-            DT.Site.writeHeadHint("No results found");
+            DT.Site.writeHeadHint(0, "No results found");
         } else {
             DT.Site.clearHeadHint();
         }
@@ -104,7 +104,7 @@ function Search(DT) {
     function keydownHandler(e) {
         if (e.keyCode === 13) {
             if (D.input.length < 2) {
-                DT.Site.writeHeadHint("Input length must be more than 1");
+                DT.Site.writeHeadHint(0, "Input length must be more than 1");
                 return;
             }
             console.log("enter");

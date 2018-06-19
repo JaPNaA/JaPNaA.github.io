@@ -23,10 +23,10 @@
     window.DT = DT; 
 
     setTimeout(function () {
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 5; i++) {
             setTimeout(function () {
-                DT.Utils.prompta(i.toString(), i % 5);
-            }, i * 50);
+                DT.Utils.prompta(i + ": " + "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", i % 5, 0);
+            }, i * 1000);
         }
     }, 1000);
 }());

@@ -32,25 +32,34 @@ function Utils(DT) {
      * @param {String|Element} content popup content
      * @param {Number} [importancy = 0] how important the prompt is
      * @param {Number} [ttl] how long before the notification automatically closes, leave null for forever
-     * @param {Boolean} [closeabe] can the user close the notification
+     * @param {Boolean} [uncloseable] can the user close the notification
      */
-    D.prompta = function (content, importancy, ttl, closeable) {
+    D.prompta = function (content, importancy, ttl, uncloseable) {
         // create element
         var prompta = document.createElement("div"),
             parent = DT.Site.notificationList,
-            originalHeight = 0;
+            contentElm = document.createElement("div"),
+            originalHeight = 0,
+            thisUtils = { // utility functions
+                close: function () {
+                    prompta.classList.remove("show");
+                    prompta.style.height = 0;
+                    prompta.addEventListener("transitionend", function () { // close symbol can also trigger this, but it won't since the transition on prompta is shorter than the close.
+                        parent.removeChild(prompta);
+                    }, { once: true });
+                }
+            };
 
         prompta.classList.add("prompta");
 
-        // fill element
+        // give element content
         if (content.constructor == String) {
-            prompta.innerHTML = content;
+            contentElm.innerHTML = content;
         } else {
-            prompta.appendChild(content);
+            contentElm.appendChild(content);
         }
 
         switch (importancy) {
-            default:
             case 0:
                 // info, on notifications
                 prompta.classList.add("info");
@@ -71,6 +80,29 @@ function Utils(DT) {
                 // very important, blocks other actions
                 prompta.classList.add("block");
                 break;
+            default: // unclassified
+                break;
+        }
+
+        if (!uncloseable) {
+            // create close button
+            let buttonFG = document.createElement("div"),
+                button = document.createElement("object");
+            button.data = "close-button.svg";
+            button.type = "image/svg+xml";
+
+            button.classList.add("close");
+            buttonFG.classList.add("closeFG");
+
+            prompta.appendChild(button);
+            prompta.appendChild(buttonFG);
+
+            buttonFG.addEventListener("click", function () {
+                thisUtils.close();
+            });
+            buttonFG.addEventListener("mouseover", function () {
+                DT.Site.writeHeadHint(1, `<div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> / Compressed from original</div>`, 5000);
+            });
         }
 
         if (parent.firstChild) {
@@ -78,7 +110,9 @@ function Utils(DT) {
         } else {
             parent.appendChild(prompta);
         }
-        
+
+        prompta.appendChild(contentElm);
+
         originalHeight = prompta.clientHeight;
         prompta.style.height = 0;
         D.reqreqanf(function () {
@@ -90,11 +124,7 @@ function Utils(DT) {
             }, { once: true });
         });
 
-        return {
-            close: function () {
-                // close prompt
-            }
-        }; // utility functions
+        return thisUtils;
     };
 
     D.setCssRule = function(query, rule, ruleParam) {
