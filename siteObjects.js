@@ -544,6 +544,7 @@ function SiteObjects(DT) {
             startAni();
         }
 
+        // automated search with url
         if (DT.Site.search.search) {
             addEventListener("load", () => {
                 clickHandler();

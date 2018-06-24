@@ -47,10 +47,12 @@ function Utils(DT) {
                     prompta.addEventListener("transitionend", function () { // close symbol can also trigger this, but it won't since the transition on prompta is shorter than the close.
                         parent.removeChild(prompta);
                     }, { once: true });
-                }
+                },
+                elm: prompta
             };
 
         prompta.classList.add("prompta");
+        contentElm.classList.add("content");
 
         // give element content
         if (content.constructor == String) {
@@ -85,6 +87,9 @@ function Utils(DT) {
         }
 
         if (!uncloseable) {
+            // add class
+            prompta.classList.add("closeable");
+
             // create close button
             let buttonFG = document.createElement("div"),
                 button = document.createElement("object");
@@ -104,7 +109,7 @@ function Utils(DT) {
                 DT.Site.writeHeadHint(1, `<div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> / Compressed from original</div>`, 5000);
             });
         }
-
+        
         if (parent.firstChild) {
             parent.insertBefore(prompta, parent.firstChild);
         } else {

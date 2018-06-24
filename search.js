@@ -14,6 +14,8 @@ function Search(DT) {
             bool: "OR",
             expand: true
         },
+        sI: -1, // timer to prevent searching every key
+        timeout: 250, // time to wait before searching
         inputElm: null, // <input> in head for user input
         listening: false, // if searching is active
         results: [], // search results from library
@@ -72,8 +74,6 @@ function Search(DT) {
     }
 
     D.updateResults = function () {
-        //* timeout before updating, so it doesn't update every key
-
         var results = D.search(D.input);
         D.results = results;
 
@@ -89,6 +89,8 @@ function Search(DT) {
         } else {
             DT.Site.clearHeadHint();
         }
+
+        history.replaceState(null, null, location.origin + "/?search=" + encodeURIComponent(D.input));
     }
 
     function changeHandler() {
@@ -97,7 +99,9 @@ function Search(DT) {
         DT.Utils.emptyElement(DT.Site.searchOverlay);
 
         if (D.input.length > 1) {
-            D.updateResults();
+            D.sI = setTimeout(function () {
+                D.updateResults();
+            }, D.timeout);
         }
     }
 
@@ -115,8 +119,11 @@ function Search(DT) {
 
         if (D.input.length >= 1) {
             DT.Site.clearHeadHint();
+        } else {
+            history.replaceState(null, null, location.origin);
         }
 
+        clearTimeout(D.sI);
         changeHandler();
     }
 
@@ -179,7 +186,7 @@ function Search(DT) {
     };
 
     D.setup = function () {
-        D.button = DT.Site.menuItems.search;
+        D.button = DT.Menu.menuItems.search;
         DT.ContentGetter.add("content", "content/0.json", false, function (e) {
             D.content = e;
             load();

@@ -4,12 +4,7 @@ function Site(DT) {
             bodyP: null, // body element parent
             body: null, // element
             searchOverlay: null, // element over body that contains results for search
-            menu: null, // element
-            menuItems: { // items in menu element
-                about: null,
-                search: null, 
-                yearList: null
-            },
+            menu: null,
             head: null,
             headHint: null,
             headHintD: {
@@ -32,45 +27,13 @@ function Site(DT) {
             bodyFrag: [], // all column elements
             path: "http://localhost:8081", // path of images and links //* set to location.origin when in production
             search: DT.Utils.parseSearch(location.search) // parsed object of location.search
-        },e
+        },
         docFrag = document.createDocumentFragment();
     DT.Site = D;
 
     function createMenu() {
-        var menu = document.createElement("div");
-        D.menu = menu;
-        menu.id = "menu";
-        menu.classList.add("noselect");
-
-        {
-            let a = document.createElement("div");
-            a.innerHTML = "•••"; //* include: send feedback, contact me, view all projects, changelog, copyright
-            D.menuItems.about = a;
-            menu.appendChild(a);
-        } {
-            let s = DT.SiteObjects.separator();
-            menu.appendChild(s);
-        } {
-            let a = document.createElement("div");
-            a.innerHTML = "About";
-            D.menuItems.about = a;
-            menu.appendChild(a);
-        } {
-            let s = DT.SiteObjects.separator();
-            menu.appendChild(s);
-        } {
-            let a = DT.SiteObjects.searchButton();
-            D.menuItems.search = a;
-            menu.appendChild(a);
-        } {
-            let s = DT.SiteObjects.separator();
-            menu.appendChild(s);
-        } {
-            let a = DT.SiteObjects.yearList();
-            D.menuItems.yearList = a;
-            menu.appendChild(a);
-        }
-
+        var menu = DT.Menu.menu;
+        D.menu = DT.Menu.menu;
         return menu;
     }
 
@@ -220,6 +183,8 @@ function Site(DT) {
 
         {
             let menu = document.createElement("div");
+            DT.Menu.menuP = menu;
+            menu.id = "menuP";
             menu.appendChild(createMenu());
             main.appendChild(menu);
         } {
