@@ -3,7 +3,7 @@
         L = null;
 
     try {
-        L = [SplashScreen, Utils, ContentGetter, ShortUrl, SiteObjects, Menu, Site, Elasticlunr, Search, PerformanceTest];
+        L = [SplashScreen, Utils, ContentGetter, ShortUrl, SiteObjects, Menu, Site, Elasticlunr, Search];
     } catch(err) {
         location.reload(true); // add something to prevent from looping forever
         return;
