@@ -9,7 +9,9 @@
     --menu-color-saturated: #191919;
     --head-height: 64px;
     --r-left: 224px;
+    --R-LEFT: 224px;
     --r-width: calc(100% - var(--r-left));
+    --R-WIDTH: calc(100% - var(--R-LEFT));
     --notification-width: 332px;
 }
 
@@ -75,21 +77,28 @@ a:active {
 
 #menu, .submenu {
     position: fixed;
+    font-family: 'Share Tech Mono';
+
     top: 0;
     left: 0;
     height: 100%;
     width: 224px;
+    z-index: 7;
+
     background-color: var(--menu-color, #131313);
     background-image: linear-gradient(339deg, var(--menu-color, #131313), var(--menu-color-saturated, #191919));
     color: #f5f5f5;
-    font-family: 'Share Tech Mono';
+
     padding-top: 16px;
     padding-left: 0;
     padding-right: 0;
     padding-bottom: 0;
+
     box-sizing: border-box;
-    z-index: 7;
     overflow: hidden;
+
+    transition: 0.3s ease-in-out;
+    will-change: transform;
 }
 
 #menu {
@@ -110,11 +119,11 @@ a:active {
     transition: none;
 }
 
-#main:not(.searching) #menu > div:not(.searchItem), #menu > group > div:not(.searchItem) {
+#main:not(.searching) #menu > div:not(.searchItem), #menu > group > div:not(.searchItem), .submenu > div {
     cursor: pointer;
 }
 
-#menu > div, #menu > group > div {
+#menu > div, #menu > group > div, .submenu > div {
     font-size: 28px;
     padding: 8px;
     text-align: center;
@@ -127,7 +136,7 @@ a:active {
     text-align: right;
 }
 
-#menu hr {
+#menu hr, .submenu hr {
     border-color: #adadad;
     border-width: 1px;
     border-top-width: 0.5px;
@@ -167,8 +176,66 @@ a:active {
     width: auto;
 }
 
-#menu > div:hover, #menu > group > div:hover {
+#menu > div:hover, #menu > group > div:hover, .submenu > div:hover {
     background-color: #ffffff14;
+}
+
+#menu.sub {
+    transform: translateX(-32px);
+}
+
+.submenu {
+    will-change: left;
+    transition: 0.3s ease-in-out;
+    white-space: nowrap;
+
+    /* before animation */
+    left: var(--R-LEFT);
+    width: 0;
+    opacity: 0.9;
+}
+
+.submenu.open {
+    /* after animation */
+    left: 0;
+    width: var(--R-LEFT);
+    opacity: 1;
+}
+
+.submenu .backButton .arrow, .submenu .backButton .back {
+    transition: 0.15s ease-out;
+}
+
+.submenu .backButton {
+    position: relative;
+}
+
+.submenu .backButton .arrow {
+    /* before transition */
+    will-change: transform;
+    opacity: 1;
+}
+
+.submenu .backButton:hover .arrow {
+    /* after transition */
+    transform: translateX(-32px);
+}
+
+.submenu .backButton .back {
+    position: absolute;
+    top: 8px;
+    left: 80px;
+
+    /* before transition */
+    will-change: transform, opacity;
+    opacity: 0;
+}
+
+.submenu .backButton:hover .back {
+    /* after transition */
+    will-change: transform, opacity;
+    transform: translateX(16px);
+    opacity: 1;
 }
 
 #head {
@@ -182,6 +249,9 @@ a:active {
     z-index: 6;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.24);
     transition: none;
+
+    will-change: left, width;
+    transition: 0.3s ease-in-out;
 }
 
 #headHint {

@@ -536,6 +536,9 @@ function SiteObjects(DT) {
             } else {
                 DT.Site.main.classList.remove("searching");
                 DT.Search.initSearch(false);
+
+                DT.Utils.writeUrl(location.origin);
+                DT.Site.clearHeadHint();
             }
 
             if (aniactive) {

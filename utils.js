@@ -21,6 +21,10 @@ function Utils(DT) {
         stylesheet.innerHTML = str;
     };
 
+    D.writeUrl = function (e) {
+        history.replaceState(null, null, e);
+    };
+
     D.reqreqanf = function (e) {
         requestAnimationFrame(function () {
             requestAnimationFrame(e);

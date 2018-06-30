@@ -90,7 +90,7 @@ function Search(DT) {
             DT.Site.clearHeadHint();
         }
 
-        history.replaceState(null, null, location.origin + "/?search=" + encodeURIComponent(D.input));
+        DT.Utils.writeUrl(location.origin + "/?search=" + encodeURIComponent(D.input));
     }
 
     function changeHandler() {
@@ -120,7 +120,7 @@ function Search(DT) {
         if (D.input.length >= 1) {
             DT.Site.clearHeadHint();
         } else {
-            history.replaceState(null, null, location.origin);
+            DT.Utils.writeUrl(location.origin);
         }
 
         clearTimeout(D.sI);
