@@ -326,6 +326,10 @@ function Site(DT) {
             once: true
         });
 
+        if (!navigator.onLine) {
+            DT.Utils.prompta("You're offline", 1, 5000, false);
+        }
+
         document.body.appendChild(docFrag);
     };
 }
