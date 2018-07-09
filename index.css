@@ -94,6 +94,7 @@ a:active {
     padding-right: 0;
     padding-bottom: 0;
 
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 3px 0 8px rgba(0, 0, 0, 0.24);
     box-sizing: border-box;
     overflow: hidden;
 
@@ -101,8 +102,10 @@ a:active {
     will-change: transform;
 }
 
-#menu {
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 3px 0 8px rgba(0, 0, 0, 0.24);
+#menu a, .submenu a {
+    width: 100%;
+    display: block;
+    color: inherit;
 }
 
 #menu.collapse {

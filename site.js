@@ -48,7 +48,7 @@ function Site(DT) {
 
         {
             let title = document.createElement("a");
-            title.href = D.path;
+            title.href = location.origin;
             title.id = "titleText";
             title.innerHTML = D.titleText;
             D.title = title;

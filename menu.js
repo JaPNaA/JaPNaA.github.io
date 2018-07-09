@@ -64,11 +64,22 @@ function Menu(DT) {
         //* include: send feedback, contact me, view all projects, changelog, copyright
         {
             let feedback = document.createElement("div");
-            feedback.innerHTML = "Feedback";
+            {
+                let a = document.createElement("a");
+                a.href = "https://github.com/JaPNaA/JaPNaA.github.io/issues/new";
+                a.target = "_blank";
+                a.innerHTML = "Feedback";
+                feedback.appendChild(a);
+            }
             sub.appendChild(feedback);
         } {
             let contact = document.createElement("div");
-            contact.innerHTML = "Contact me";
+            {
+                let a = document.createElement("a");
+                a.href = "mailto:japnaabot@gmail.com";
+                a.innerHTML = "Contact";
+                contact.appendChild(a);
+            }
             sub.appendChild(contact);
         }
 
@@ -76,11 +87,23 @@ function Menu(DT) {
 
         {
             let allProjects = document.createElement("div");
-            allProjects.innerHTML = "All projects";
+            {
+                let a = document.createElement("a");
+                a.href = DT.Site.path;
+                a.target = "_blank";
+                a.innerHTML = "All projects";
+                allProjects.appendChild(a);
+            }
             sub.appendChild(allProjects);
         } {
             let changelog = document.createElement("div");
-            changelog.innerHTML = "Changelog";
+            {
+                let a = document.createElement("a");
+                a.href = "/content/changelog.txt";
+                a.target = "_blank";
+                a.innerHTML = "Changelog";
+                changelog.appendChild(a);
+            }
             sub.appendChild(changelog);
         }
 
@@ -127,6 +150,9 @@ function Menu(DT) {
         } {
             let a = document.createElement("div");
             a.innerHTML = "About";
+            a.addEventListener("click", function () {
+                DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+            });
             D.menuItems.about = a;
             menu.appendChild(a);
         } {
@@ -142,6 +168,9 @@ function Menu(DT) {
         } {
             let a = DT.SiteObjects.yearList();
             D.menuItems.yearList = a;
+            a.addEventListener("click", function () {
+                DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+            });
             menu.appendChild(a);
         }
 

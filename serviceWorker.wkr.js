@@ -44,22 +44,18 @@ addEventListener("fetch", function (e) {
     if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
         return;
     }
-
+    
     if (e.request.url.startsWith(location.origin + "/content/")) {
         // cache information from content
-        fetch(e.request)
-            .then(function () {
-
-            }, function () {
-
-            });
+        console.log(e.request.url);
         e.respondWith(
             caches.match(e.request)
                 .then(function (r) {
-
                     if (r) {
+                        console.log("return cache");
                         return r;
                     } else {
+                        console.log("return fetch");
                         return fetch(e.request);
                     }
                 })
@@ -76,12 +72,12 @@ addEventListener("fetch", function (e) {
 
                 caches.open(CONTENT_CACHE_NAME)
                     .then(function (cache) {
+                        console.log("cache", e.request.url);
                         cache.put(e.request, responseToCache);
                     });
 
                 return response;
-            }
-            );
+            });
     }
 
     e.respondWith(
