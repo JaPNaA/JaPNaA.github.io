@@ -1,117 +1,121 @@
-try {
+function ShortUrl(DT) {
+    var D = {};
+    DT.ShortUrl = D;
 
-function reqShortUrlNX(e) {
-    prompta("Requested short URL hash <b>" + e + "</b> doesn't exist");
-    location.hash = "";
-}
+    function alertHashDoesntExist(e) {
+        {
+            let prompt = document.createDocumentFragment(),
+                bold = document.createElement("b");
 
-function redirectUrlHash() {
-    if (!location.hash) return;
+            prompt.appendChild(document.createTextNode("Requested short URL hash: ")); // "Requested short URL hash: "
+            bold.innerHTML = e; // `<b> ${e} </b>`
+            prompt.appendChild(bold);
+            prompt.appendChild(document.createTextNode(" doesn't exist.")); // " doesn't exist"
+        
+            DT.Utils.prompta(prompt, 1);
+        }
 
-    var re = null,
-        args = {
-            forget: false
-        },
-        lh = location.hash.replace(/^#/, ""),
-        flh = lh[0],
-        mlh = lh.slice(1);
+        clearHash();
+    }
 
-    switch (flh) {
+    function setLocation(e) {
+        location.assign(e);
+    }
+
+    function clearHash() {
+        history.replaceState(null, null, location.origin);
+    }
+
+    function redirectUrlHash() {
+        if (!location.hash) return;
+
+        var newHref = null,
+            args = {
+                forget: false
+            },
+            hash = location.hash.replace(/^#/, ""),
+            firshCharHash = hash[0],
+            hashContent = hash.slice(1);
+
+        clearHash();
+
+        if (!hash) return;
+
+        switch (firshCharHash) {
         case "#": // number on site
-            try {
-                var mlhi = parseInt(mlh);
-            } catch (e) {
-                break;
-            }
-            var f = function() {
-                var a = dt.content.data.find(function (e) {
-                    return e.no == mlhi;
-                });
+            var hashInt = parseInt(hashContent),
+                f = function (dt) {
+                    var a = dt.find(function (e) {
+                        return e.no === hashInt;
+                    });
 
-                if (a) {
-                    location.replace(a.content.link);
-                } else {
-                    reqShortUrlNX(lh);
-                }
-            };
-            if (!window.dt) {
-                addEventListener("load", f);
-                return;
-            } else {
-                f();
-            }
+                    console.log(a);
+
+                    if (a) {
+                        setLocation(DT.Site.path + a.content.link);
+                    } else {
+                        alertHashDoesntExist(hash);
+                    }
+                };
+
+            DT.ContentGetter.add("content", "content/0.json", false, function (e) {
+                f(e.data);
+            }, "json");
             break;
         case "_":
-            var y = mlh.match(/^\d*/)[0],
-                yn = parseInt(y) || 0,
-                n = mlh.slice(y.length);
-            debugger;
-            re = "Thingy_" + (yn + 2016) + "/" + n;
+            var year = hashContent.match(/^\d*/)[0],
+                yearInt = parseInt(year) || 0,
+                path = hashContent.slice(year.length);
+
+            if (!yearInt) break;
+
+            newHref = DT.Site.path + "/Thingy_" + (yearInt + 2016) + "/" + path;
             break;
 
         default: // from redirects list
-            var a = new XMLHttpRequest();
-            a.responseType = "text";
-            a.open("GET", "redirects.txt?d=" + new Date().getTime() + Math.random());
+            DT.ContentGetter.add("redirects", "content/redirects.txt", false, function (e) {
+                var lines = e.split("\n"),
+                    list = [],
+                    linesL = lines.length,
+                    redirectLink = null;
 
-            a.addEventListener("load", function () {
-                var r = a.response.split("\n"),
-                    l = [],
-                    rl = r.length,
-                    re = null;
+                for (var i = 0; i < linesL; i++) { // int i in lines
+                    var ri = lines[i].split(/\s*,\s*/g); // split by comma
 
-                for (var i = 0; i < rl; i++) {
-                    var ri = r[i].split(/\s*,\s*/g);
-                    if (ri[0] == lh) {
-                        let ar = ri.slice(2);
-
-                        if(ar.includes("forget")) {
-                            args.forget = true;
-                        }
-
-                        re = ri[1];
+                    // find hash
+                    if (ri[0] === hash) {
+                        redirectLink = ri[1];
                         break;
                     }
                 }
 
-                if (re) {
-                    location.replace(re);
-                    if (args.forget) {
-                        location.hash = "";
-                    }
+                if (redirectLink) {
+                    setLocation(redirectLink);
                 } else {
-                    reqShortUrlNX(lh);
+                    alertHashDoesntExist(hash);
                 }
-            });
-            a.addEventListener("error", e => prompta(e));
-            a.send();
+            }, "text");
             return;
-            break;
-    }
-
-    if (re) {
-        location.replace(re);
-        if (args.forget) {
-            location.hash = "";
         }
-    } else {
-        if (window.prompta) {
-            reqShortUrlNX(lh);
+
+        if (newHref) {
+            setLocation(newHref);
+            if (args.forget) {
+                clearHash();
+            }
         } else {
-            addEventListener("load", function () {
-                reqShortUrlNX(lh);
-            });
+            if (window.prompta) {
+                alertHashDoesntExist(hash);
+            } else {
+                addEventListener("load", function () {
+                    alertHashDoesntExist(hash);
+                });
+            }
         }
     }
-}
 
-addEventListener("hashchange", redirectUrlHash);
-redirectUrlHash();
-
-} catch (e) {
-    console.error(e);
-    try {
-        prompta(e);
-    } catch (e) {}
-    dt.fallback.push(!1);
+    D.setup = function () {
+        addEventListener("hashchange", redirectUrlHash);
+        redirectUrlHash();
+    };
 }

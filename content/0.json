@@ -1,5 +1,10 @@
 {
     "data": [{
+            "type": "text",
+            "title": "This website looks a little different...",
+            "content": "yea. i think so to.",
+            "timestamp": 1526239901042
+        }, {
             "type": "card",
             "tags": ["game", "block", "invasion", "ball", "ballz"],
             "author": ["JaPNaA"],
@@ -154,7 +159,7 @@
             "no": 10,
             "content": {
                 "link": "/Thingy_2017/ticTacToeMachineLearning/",
-                "description": "I taught a computer to learn. Progress. This project was inspired by <a target='_blank' href='https://boingboing.net/2009/11/02/mechanical-computer.html'>MENACE.</a>",
+                "description": "I taught a computer to learn. Progress. This project was inspired by <a target='_blank' href='https://boingboing.net/2009/11/02/mechanical-computer.html'>MENACE</a>.",
                 "display": [{
                     "type": "img",
                     "caption": "A game in-progress",

@@ -1,3 +1,16 @@
+Version 0.3.0:
+  - Release
+  - Entire revamp of the site
+    - Different styles
+    - Added menu
+    - Made search better
+    - Optimizations
+    - Added splash screen
+    - Changes will no longer be in your face
+  - Removed special treatment for WebCrawlers
+  - There is no longer a fallback, the site will instead send you to the raw file. This will be fixed in future updates.
+  - Added a license (finally)
+
 Version 0.2.9:
   - Hide tags if width of device is too small
   - Add not mobile compatible indicator
@@ -13,7 +26,7 @@ Version 0.2.8:
 
 Version 0.2.7:
   - SEO improvements
-  - Prevent webcrawlers from getting "JaPNaA - Fallback" title
+  - Prevent WebCrawlers from getting "JaPNaA - Fallback" title
 
 Version 0.2.6:
   - Proper search functionality
