@@ -25,7 +25,7 @@ function Site(DT) {
             children: [], // items in the body
             lastAddedChildrenIx: 0, // index of the last item that was lazy-added
             bodyFrag: [], // all column elements
-            path: "http://localhost:8081", // path of images and links //* set to location.origin when in production
+            path: location.origin, // path of images and links //* set to location.origin when in production
             search: DT.Utils.parseSearch(location.search) // parsed object of location.search
         },
         docFrag = document.createDocumentFragment();
