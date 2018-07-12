@@ -44,8 +44,12 @@ function Utils(DT) {
             parent = DT.Site.notificationList,
             contentElm = document.createElement("div"),
             originalHeight = 0,
+            closed = false,
             thisUtils = { // utility functions
                 close: function () {
+                    if (this.closed) return;
+                    this.closed = true;
+
                     prompta.classList.remove("show");
                     prompta.style.height = 0;
                     prompta.addEventListener("transitionend", function () { // close symbol can also trigger this, but it won't since the transition on prompta is shorter than the close.

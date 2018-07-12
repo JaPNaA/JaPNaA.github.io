@@ -17,7 +17,7 @@ function Search(DT) {
         sI: -1, // timer to prevent searching every key
         timeout: 250, // time to wait before searching
         inputElm: null, // <input> in head for user input
-        listening: false, // if searching is active
+        listening: false, // if searching is active, equiv. of "active"
         results: [], // search results from library
         items: {}, // elements already created from a search result
         index: null, // index outputed from search library

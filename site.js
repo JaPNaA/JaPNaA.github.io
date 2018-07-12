@@ -4,6 +4,7 @@ function Site(DT) {
             bodyP: null, // body element parent
             body: null, // element
             searchOverlay: null, // element over body that contains results for search
+            aboutPage: null, // element over body that contains the about page
             menu: null,
             head: null,
             headHint: null,
@@ -25,7 +26,7 @@ function Site(DT) {
             children: [], // items in the body
             lastAddedChildrenIx: 0, // index of the last item that was lazy-added
             bodyFrag: [], // all column elements
-            path: location.origin, // path of images and links //* set to location.origin when in production
+            path: location.origin === "http://localhost:8080" ? "http://localhost:8081" : location.origin, // path of images and links //* set to location.origin when in production
             search: DT.Utils.parseSearch(location.search) // parsed object of location.search
         },
         docFrag = document.createDocumentFragment();
@@ -68,7 +69,7 @@ function Site(DT) {
         D.body = body;
         body.id = "body";
 
-        DT.ContentGetter.add("content", "content/0.json", true, function (e) {
+        let req = DT.ContentGetter.add("content", "content/0.json", true, function (e) {
             var d = e.data;
             for (let i of d) {
                 let item = DT.SiteObjects.parse(i);
@@ -77,6 +78,10 @@ function Site(DT) {
             }
             buildBodyFrags();
         }, "json");
+        
+        req.addEventListener("error", function () { // alerts the user if the request failed
+            DT.Utils.prompta("Could not load content", 2, null, true);
+        });
 
         return body;
     }
@@ -88,6 +93,15 @@ function Site(DT) {
         D.searchOverlay = overlay;
 
         return overlay;
+    }
+
+    function createAboutPage() {
+        var about = document.createElement("div");
+        about.classList.add("bodyFrag");
+        about.id = "aboutPage";
+        D.aboutPage = about;
+
+        return about;
     }
 
     function createNotificationList() {
@@ -195,6 +209,7 @@ function Site(DT) {
                 D.bodyP = body;
                 body.id = "bodyP";
                 body.appendChild(createBody());
+                body.appendChild(createAboutPage()); // about page overlaying the body
                 body.appendChild(createSearchOverlay()); // overlays the body
                 content.appendChild(body);
             } {

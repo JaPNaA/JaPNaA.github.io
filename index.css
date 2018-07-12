@@ -114,6 +114,7 @@ a:active {
 
 #main.searching #menu > :not(.searchItem), #main.searching #menu > group > div {
     opacity: 0;
+    visibility: hidden;
 }
 
 #menu .searchItem {
@@ -357,24 +358,31 @@ a:active {
     animation: blink 0.7s linear 0s infinite alternate;
 }
 
-#main.searching #searchOverlay {
-    /* after searching */
+#main.searching #searchOverlay, #main.aboutpageActive #aboutPage {
+    /* after active */
     opacity: 1;
     z-index: 5;
 }
 
 #searchOverlay {
-    z-index: 3;
     background-color: #e8f6ff;
+}
+
+#aboutPage {
+    background-color: var(--background-color);
+}
+
+#searchOverlay, #aboutPage {
+    z-index: 3;
     display: block;
 
     transition: 0.15s ease-out;
 
-    /* before searching */
+    /* before active */
     opacity: 0;
 }
 
-#body, #searchOverlay {
+#body, #searchOverlay, #aboutPage {
     position: fixed;
     top: var(--head-height, 64px);
     left: var(--r-left);
@@ -395,7 +403,7 @@ a:active {
     z-index: 4;
 }
 
-#body::-webkit-scrollbar, #searchOverlay::-webkit-scrollbar {
+#body::-webkit-scrollbar, #searchOverlay::-webkit-scrollbar, #aboutPage::-webkit-scrollbar {
     background-color: #ebe4e7;
     width: 0px !important;
 }
@@ -419,6 +427,7 @@ a:active {
     vertical-align: top;
     box-sizing: border-box;
     text-align: center;
+    margin-bottom: 50vh;
 }
 
 .itemP {
@@ -511,6 +520,7 @@ a:active {
     will-change: opacity;
     font-family: 'Roboto';
     font-size: 0.66em;
+    z-index: -2;
 }
 
 .item.card:hover .meta {

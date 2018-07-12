@@ -16,6 +16,7 @@ function SiteObjects(DT) {
             
             {
                 this.titleElm = document.createElement("div");
+                this.titleElm.title = "Name #PostNo.";
                 this.titleElm.classList.add("title");
                 this.elm.appendChild(this.titleElm);
             } {
@@ -391,16 +392,19 @@ function SiteObjects(DT) {
         {
             let tags = document.createElement("div"); // create element
             tags.innerHTML = dtTags.join(", "); // set content to tags
+            tags.title = "You can search these terms";
             tags.classList.add("tags");
             that.metaElm.appendChild(tags);
         } {
             let author = document.createElement("div");
             author.innerHTML = dtAuthor.join(", ");
+            author.title = "These are the people that created this\n(It's only me ik)";
             author.classList.add("author");
             that.metaElm.appendChild(author);
         } {
             let timestamp = document.createElement("div");
             timestamp.innerHTML = new Date(dtTimestamp).toLocaleDateString();
+            timestamp.title = "Time this was posted.\nAutomatically adjusted to locale timezone.\n\nMilliseconds since Jan 1, 1970 12:00AM/0:00 (UTC +0): \n" + dtTimestamp.toString();
             timestamp.classList.add("timestamp");
             that.metaElm.appendChild(timestamp);
         }
@@ -573,6 +577,8 @@ function SiteObjects(DT) {
                 a.innerHTML = i;
                 group.appendChild(a);
             }
+
+            group.dispatchEvent(new Event("load"));
         }, "json");
 
         return group;

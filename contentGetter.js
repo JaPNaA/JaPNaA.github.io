@@ -16,7 +16,8 @@ function ContentGetter(DT) {
             this.requestObj = null;
 
             this.events = {
-                load: []
+                load: [],
+                error: []
             };
             this.addedListeners = false;
 
@@ -70,20 +71,25 @@ function ContentGetter(DT) {
                     console.warn("Resource " + this.url + " is type " + this.responseType + " but failed to parse");
                 }
             }
-            for (let i of this.events.load) {
-                i(response);
-            }
+
+            this.dispatchEvent("load", response);
         }
         error(e) {
-            console.log("err");
             if (this.alertError) {
-                DT.Utils.prompta("Failed to load resource: " + this.url);
+                DT.Utils.prompta("Failed to load resource: " + this.url, 2, null, false);
                 console.error("Failed to load resource: " + this.url, e);
             } else {
                 console.warn("Failed to load resource: " + this.url, e);
             }
+
+            this.dispatchEvent("error", e);
         }
 
+        dispatchEvent(t, e) {
+            for (let i of this.events[t]) {
+                i(e);
+            }
+        }
         addEventListener(t, e) {
             this.events[t].push(e);
         }

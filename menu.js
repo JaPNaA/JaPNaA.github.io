@@ -151,7 +151,8 @@ function Menu(DT) {
             let a = document.createElement("div");
             a.innerHTML = "About";
             a.addEventListener("click", function () {
-                DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+                // DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+                DT.AboutPage.activate();
             });
             D.menuItems.about = a;
             menu.appendChild(a);
@@ -168,9 +169,15 @@ function Menu(DT) {
         } {
             let a = DT.SiteObjects.yearList();
             D.menuItems.yearList = a;
-            a.addEventListener("click", function () {
-                DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+
+            a.addEventListener("load", function () {
+                for (let i of a.children) {
+                    i.addEventListener("click", function () {
+                        DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+                    });
+                }
             });
+
             menu.appendChild(a);
         }
 
