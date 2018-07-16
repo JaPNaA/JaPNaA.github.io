@@ -1,19 +1,24 @@
 {
+    "$schema": "schema/info.schema.json",
     "data": [
         {
             "type": "text",
-            "title": "About",
-            "content": "JaP is kewl.<br>I'm 14.076 years old (as of writing), currently attending Applewood Heights Secondary school. I consider myself an okay programmer; I'm great at JavaScript and Python, okay at Java, learning C# and C++. <br> On this site, you can find some of my projects which that have exceeded 400 lines of code, or marks a benchmark.",
-            "timestamp": 1513054800000
+            "title": "About me",
+            "content": "JaP is kewl.\n\n<b>tl;dr</b>\nI post things that I create here. (But only the good ones.)\n\nI'm 14 (I'm in high school) and I like to create things, I use this site so that I can show off to other people. Including showing off the site. Since I'm showing off the site, I only include the projects that will make it seem like I'm good at what I do, and hide away all of the terrible and unfinished stuff.",
+            "timestamp": 1531609145815
         },
         {
             "type": "text",
-            "title": "Older",
-            "content": "JaP is kewl.<br>I'm 13.985 years old (as of writing), currently attending Applewood Heights Secondary school. I consider myself an okay programmer; I'm great at JavaScript and Python, and learning C++. <br> You probably heard of this website from my friends because they're offering free advertising.<br>On this site, you can find some of my projects which that have exceeded 400 lines of code.",
-            "timestamp": 1510117200000
+            "title": "Social",
+            "content": "Now, I'm anti-social so, most of the accounts are going to be private, (that means don't contact me) but I'll list them anyway.\n\nTwitter - <a href=\"https://twitter.com/JaPNaA_\" target=\"_blank\">@JaPNaA_</a>\nInstagram - <a href=\"https://www.instagram.com/japnaa_/\" target=\"_blank\">@japnaa_</a>\nSnapchat - <a href=\"https://www.snapchat.com/add/jap.naa\" target=\"_blank\">jap.naa</a>\nReddit - <a href=\"https://www.reddit.com/user/JaPNaA/\" target=\"_blank\">u/JaPNaA</a>\nYouTube - <a href=\"https://www.youtube.com/channel/UC4tfahjNNwEPrSrC3m6QeBQ/\" target=\"_blank\">JustAChannel</a>\nDiscord - JaPNaA#3864"
+        },
+        {
+            "type": "text",
+            "title": "About this site",
+            "content": "This site took 3 months to make. I'm very slow.\n\nAttributions can be found inside of the ... button on the menu to the left, then click 3d party licences"
         }
     ],
-    "meta":{
+    "meta": {
         "previous": null,
         "after": null,
         "index": 0

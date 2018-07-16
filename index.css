@@ -96,10 +96,12 @@ a:active {
 
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 3px 0 8px rgba(0, 0, 0, 0.24);
     box-sizing: border-box;
-    overflow: hidden;
 
     transition: 0.3s ease-in-out;
     will-change: transform;
+
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 #menu a, .submenu a {
@@ -403,7 +405,7 @@ a:active {
     z-index: 4;
 }
 
-#body::-webkit-scrollbar, #searchOverlay::-webkit-scrollbar, #aboutPage::-webkit-scrollbar {
+#body::-webkit-scrollbar, #searchOverlay::-webkit-scrollbar, #aboutPage::-webkit-scrollbar, #menu::-webkit-scrollbar, .submenu::-webkit-scrollbar, #notificationList::-webkit-scrollbar {
     background-color: #ebe4e7;
     width: 0px !important;
 }
@@ -456,11 +458,12 @@ a:active {
     transition: 0.175s cubic-bezier(0.52, 0.13, 0.65, 0.95);
     z-index: 0;
     position: relative;
+    white-space: pre-wrap;
 }
 
 .item > div > div:not(.display) {
     opacity: 0.92;
-    will-change: opacity;
+    /* will-change: opacity; /* too much memory */
     transition: 0.15s ease-in;
 }
 
@@ -517,7 +520,7 @@ a:active {
     top: 0;
     left: 0;
     opacity: 0.4;
-    will-change: opacity;
+    /* will-change: opacity; /* too much memory */
     font-family: 'Roboto';
     font-size: 0.66em;
     z-index: -2;
@@ -607,7 +610,7 @@ a:active {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transform: translateY(-6px);
     z-index: 1;
-    will-change: transform;
+    /* will-change: transform; /* too much memory */
 }
 
 .prompta {
@@ -715,8 +718,4 @@ a:active {
     background-color: transparent;
     margin: 2px;
     overflow: visible;
-}
-
-#notificationList::-webkit-scrollbar {
-    width: 0 !important;
 }

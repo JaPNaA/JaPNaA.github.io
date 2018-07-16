@@ -1,5 +1,7 @@
 {
-    "data": [{
+    "$schema": "schema/info.schema.json",
+    "data": [
+        {
             "type": "text",
             "title": "This website looks a little different...",
             "content": "yea. i think so to.",
@@ -351,6 +353,12 @@
                     "src": "/Thingy_2017/minesweeperAI/Untitled.png"
                 }]
             }
+        },
+        {
+            "type": "text",
+            "content": "Welcome to the end",
+            "timestamp": 1499054400000,
+            "comment": "this is so that the yearList will generate properly without putting more effort into the site"
         }
     ],
     "meta": {

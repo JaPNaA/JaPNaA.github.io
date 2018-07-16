@@ -110,8 +110,31 @@ function Menu(DT) {
         sub.appendChild(DT.SiteObjects.separator());
 
         {
+            let license = document.createElement("div");
+            {
+                let a = document.createElement("a");
+                a.href = "LICENSE.txt";
+                a.target = "_blank";
+                a.innerHTML = "License";
+                license.appendChild(a);
+            }
+            sub.appendChild(license);
+        }
+        {
+            let thridparty = document.createElement("div");
+            {
+                let a = document.createElement("a");
+                a.href = "LICENSE-3RD-PARTY.txt";
+                a.target = "_blank";
+                a.innerHTML = "3rd Party <br> Licenses";
+                thridparty.appendChild(a);
+            }
+            sub.appendChild(thridparty);
+        }
+        {
             let copyright = document.createElement("div");
-            copyright.innerHTML = "Copyright (c) 2018 JaPNaA <br> All Rights Reserved.";
+            copyright.innerHTML = "Copyright (c) 2018 JaPNaA";
+            copyright.title = "Not registered tho";
             copyright.style.fontSize = "0.8rem";
             copyright.style.opacity = 0.5;
             sub.appendChild(copyright);
