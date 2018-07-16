@@ -1,12 +1,12 @@
 {
   "name": "JaPNaA.github.io",
   "short_name": "JaPNaA",
-  "start_url": "/",
-  "display": "standalone",
+  "start_url": "./index.html",
+  "display": "browser",
   "background_color": "#fffafd",
   "theme_color": "#80ffc4",
   "orientation": "any",
-  "scope": "/",
+  "scope": "./",
   "icons": [
     {
       "src": "/img/ico/android-icon-36x36.png",

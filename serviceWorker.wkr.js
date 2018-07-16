@@ -1,4 +1,7 @@
-// version 0.0.9
+// version 0.3.1.1
+
+// comment to debug
+// console.log = function () { }; // because I log too many things and I can't be bothered to remove them
 
 const CACHE_NAME = "JaPNaA-github-io_cache",
     CONTENT_CACHE_NAME = "JaPNaA-github-io_content-cache";
@@ -23,12 +26,53 @@ var cachePaths = [
     "/normalize.css",
     "/elasticlunr.min.js",
     "/close-button.svg"
-];
+]
+
+var cachedVersionPath = "version.txt",
+    newestVersion = null,
+    cachedVersion = null,
+    isCheckingVersion = false,
+    hasCheckedVersion = false;
 
 function createCaches() {
+    console.log("creating / updating caches");
+    caches.open(CACHE_NAME)
+        .then(function (cache) {
+            cache.add(cachedVersionPath);
+            hasCheckedVersion = true;
+        });
+
     return caches.open(CACHE_NAME)
         .then(function (cache) {
             return cache.addAll(cachePaths);
+        });
+}
+
+function checkVersion() {
+    fetch(cachedVersionPath) // request for newest version
+        .then(function (req) {
+            return req.text(); // return newest version text
+        })
+        .then(function (version) {
+            newestVersion = version; // set to currentVersion
+            return caches.match(cachedVersionPath); // request for the cached version
+        })
+        .then(function (req) {
+            return req.text(); // cached version
+        })
+        .then(function (cVersion) {
+            cachedVersion = cVersion; // set to cached version
+        })
+        .then(function () {
+            if (newestVersion == cachedVersion) {
+                hasCheckedVersion = true;
+                console.log("current version: " + cachedVersion);
+            } else {
+                console.log("new version availble, current: " + cachedVersion + ", new: " + newestVersion);
+                console.log("updating caches");
+
+                createCaches();
+            }
         });
 }
 
@@ -41,21 +85,25 @@ addEventListener("activate", function (e) {
 });
 
 addEventListener("fetch", function (e) {
+    if (!hasCheckedVersion && !isCheckingVersion) {
+        isCheckingVersion = true;
+        checkVersion();
+    }
+
     if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
         return;
     }
     
     if (e.request.url.startsWith(location.origin + "/content/")) {
         // cache information from content
-        console.log(e.request.url);
         e.respondWith(
             caches.match(e.request)
                 .then(function (r) {
                     if (r) {
-                        console.log("return cache");
+                        console.log("return cache: " + e.request.url);
                         return r;
                     } else {
-                        console.log("return fetch");
+                        console.log("return fetch: " + e.request.url);
                         return fetch(e.request);
                     }
                 })
@@ -72,7 +120,7 @@ addEventListener("fetch", function (e) {
 
                 caches.open(CONTENT_CACHE_NAME)
                     .then(function (cache) {
-                        console.log("cache", e.request.url);
+                        console.log("cache: " + e.request.url);
                         cache.put(e.request, responseToCache);
                     });
 
@@ -84,8 +132,10 @@ addEventListener("fetch", function (e) {
         caches.match(e.request)
             .then(function (r) {
                 if (r) {
+                    console.log("return cache: " + e.request.url)
                     return r;
                 } else {
+                    console.log("return fetch: " + e.request.url)
                     return fetch(e.request);
                 }
             })

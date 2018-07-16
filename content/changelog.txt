@@ -1,3 +1,17 @@
+Version 0.3.1:
+  - Several bug fixes
+  - About page now exists, but lacks animations or interesting information
+  - New: version.txt this is the version number of the site, and will be updated whenever the site is.
+  - Service workers
+	- Updates caches in the background when version.txt does
+
+[TODO]
+  - alert user when a new version is availible by using non-sw code to check
+  - show about page is active in menu
+  - Fallback.js
+  - Optimizing for mobile
+  - Make scrollbar not invisible, for UX!!!
+
 Version 0.3.0:
   - Release
   - Entire revamp of the site
