@@ -124,7 +124,7 @@ function Menu(DT) {
             let thridparty = document.createElement("div");
             {
                 let a = document.createElement("a");
-                a.href = "3rdPartyLicenses.txt";
+                a.href = "3rdPartyLices.txt";
                 a.target = "_blank";
                 a.innerHTML = "3rd Party <br> Licenses";
                 thridparty.appendChild(a);
