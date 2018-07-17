@@ -99,21 +99,18 @@ function Utils(DT) {
             prompta.classList.add("closeable");
 
             // create close button
-            let buttonFG = document.createElement("div"),
-                button = document.createElement("object");
-            button.data = "close-button.svg";
+            let button = document.createElement("img");
+            button.src = "close-button.svg";
             button.type = "image/svg+xml";
 
             button.classList.add("close");
-            buttonFG.classList.add("closeFG");
 
             prompta.appendChild(button);
-            prompta.appendChild(buttonFG);
 
-            buttonFG.addEventListener("click", function () {
+            button.addEventListener("click", function () {
                 thisUtils.close();
             });
-            buttonFG.addEventListener("mouseover", function () {
+            button.addEventListener("mouseover", function () {
                 DT.Site.writeHeadHint(1, `<div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> / Compressed from original</div>`, 5000);
             });
         }

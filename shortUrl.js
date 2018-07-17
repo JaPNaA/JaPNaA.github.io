@@ -58,7 +58,7 @@ function ShortUrl(DT) {
                     }
                 };
 
-            DT.ContentGetter.add("content", "content/0.json", false, function (e) {
+            DT.ContentGetter.add("content", "content/0.json", true, function (e) {
                 f(e.data);
             }, "json");
             break;
@@ -73,7 +73,7 @@ function ShortUrl(DT) {
             break;
 
         default: // from redirects list
-            DT.ContentGetter.add("redirects", "content/redirects.txt", false, function (e) {
+            DT.ContentGetter.add("redirects", "content/redirects.txt", true, function (e) {
                 var lines = e.split("\n"),
                     list = [],
                     linesL = lines.length,

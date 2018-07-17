@@ -190,6 +190,7 @@ function Site(DT) {
         while (scroll());
     }
 
+    // column of cards
     function makeDocFrag() {
         var main = document.createElement("div");
         main.id = "main";
@@ -323,6 +324,11 @@ function Site(DT) {
         }
     };
 
+    // check version of site
+    function checkVersion() {
+        DT.ContentGetter.get()
+    }
+
     D.setup = function () {
         makeDocFrag();
 
@@ -342,7 +348,7 @@ function Site(DT) {
         });
 
         if (!navigator.onLine) {
-            DT.Utils.prompta("You're offline", 1, 5000, false);
+            DT.Utils.prompta("You're offline", 1, null, false);
         }
 
         document.body.appendChild(docFrag);

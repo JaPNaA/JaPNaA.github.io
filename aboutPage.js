@@ -10,7 +10,7 @@ function AboutPage(DT) {
         DT.Site.main.classList.toggle("aboutpageActive");
 
         if (!D.loaded) {
-            DT.ContentGetter.add("about", "content/about.json", false, function (e) {
+            DT.ContentGetter.add("about", "content/about.json", true, function (e) {
                 var d = e.data;
 
                 DT.Utils.emptyElement(D.elm);

@@ -670,7 +670,7 @@ a:active {
     width: calc(100% - 12px);
 }
 
-.prompta .closeFG, .prompta .close {
+.prompta .close {
     position: absolute;
 
     width: 12px;
@@ -679,11 +679,9 @@ a:active {
     top: 8px;
     right: 8px;
 
-    cursor: pointer;
-}
+    margin: 0;
 
-.prompta .closeFG {
-    z-index: 2;
+    cursor: pointer;
 }
 
 .prompta .close {

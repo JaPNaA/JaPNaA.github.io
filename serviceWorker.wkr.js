@@ -1,7 +1,7 @@
-// version 0.3.1.1
+// version 0.3.1.2
 
 // comment to debug
-// console.log = function () { }; // because I log too many things and I can't be bothered to remove them
+console.log = function () { }; // because I log too many things and I can't be bothered to remove them
 
 const CACHE_NAME = "JaPNaA-github-io_cache",
     CONTENT_CACHE_NAME = "JaPNaA-github-io_content-cache";
@@ -22,8 +22,10 @@ var cachePaths = [
     "splashScreen.js",
     "/utils.js",
     "/serviceWorker.js",
+    "/aboutPage.js",
     
     "/normalize.css",
+    "/img/searchIcon.png",
     "/elasticlunr.min.js",
     "/close-button.svg"
 ]
@@ -32,10 +34,15 @@ var cachedVersionPath = "version.txt",
     newestVersion = null,
     cachedVersion = null,
     isCheckingVersion = false,
-    hasCheckedVersion = false;
+    hasCheckedVersion = false,
+    hasCached = false; // used to prevent updating cache twice in a session
 
 function createCaches() {
-    console.log("creating / updating caches");
+    if (hasCached) return;
+    hasCached = true;
+
+    console.log("creating/updating caches");
+
     caches.open(CACHE_NAME)
         .then(function (cache) {
             cache.add(cachedVersionPath);
@@ -96,14 +103,18 @@ addEventListener("fetch", function (e) {
     
     if (e.request.url.startsWith(location.origin + "/content/")) {
         // cache information from content
+        let url = e.request.url,
+            ixNoCache = url.lastIndexOf("?nocache="),
+            cUrl = ixNoCache < 0 ? url : url.slice(0, ixNoCache); // if nocache exists, use removed, else, use normal
+
         e.respondWith(
-            caches.match(e.request)
+            caches.match(cUrl)
                 .then(function (r) {
                     if (r) {
-                        console.log("return cache: " + e.request.url);
+                        console.log("return cache: " + cUrl);
                         return r;
                     } else {
-                        console.log("return fetch: " + e.request.url);
+                        console.log("return fetch: " + cUrl);
                         return fetch(e.request);
                     }
                 })
@@ -120,8 +131,8 @@ addEventListener("fetch", function (e) {
 
                 caches.open(CONTENT_CACHE_NAME)
                     .then(function (cache) {
-                        console.log("cache: " + e.request.url);
-                        cache.put(e.request, responseToCache);
+                        console.log("cache: " + cUrl);
+                        cache.put(cUrl, responseToCache);
                     });
 
                 return response;

@@ -567,7 +567,7 @@ function SiteObjects(DT) {
     D.yearList = function () {
         var group = document.createElement("group");
 
-        DT.ContentGetter.add("content", "content/0.json", false, function (e) {
+        DT.ContentGetter.add("content", "content/0.json", true, function (e) {
             var data = e.data,
                 first = new Date(data[data.length - 1].timestamp).getFullYear(),
                 last = new Date(data[0].timestamp).getFullYear();

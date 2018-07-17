@@ -187,7 +187,7 @@ function Search(DT) {
 
     D.setup = function () {
         D.button = DT.Menu.menuItems.search;
-        DT.ContentGetter.add("content", "content/0.json", false, function (e) {
+        DT.ContentGetter.add("content", "content/0.json", true, function (e) {
             D.content = e;
             load();
         }, "json");

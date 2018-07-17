@@ -98,7 +98,7 @@ function ContentGetter(DT) {
     D.add = function (id, url, preventCache, loadHandler, responseType) {
         if (D.toGet[id]) { // if request exists
             let req = D.toGet[id];
-            if ((req.status === 200 && !preventCache) || req.readyState == XMLHttpRequest.LOADING) { // if loaded and not caching is off
+            if (req.status === 200 || req.readyState == XMLHttpRequest.LOADING) { // if loaded and not caching is off
                 if (loadHandler) {
                     loadHandler(D.toGet[id].response); // call loaded
                 }
