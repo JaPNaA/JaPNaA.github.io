@@ -1,4 +1,4 @@
-// version 0.3.1.2
+// version 0.3.1.3
 
 // comment to debug
 console.log = function () { }; // because I log too many things and I can't be bothered to remove them
@@ -24,9 +24,10 @@ var cachePaths = [
     "/serviceWorker.js",
     "/aboutPage.js",
     
-    "/normalize.css",
+    "/3rdParty/normalize.css",
+    "/3rdParty/elasticlunr.min.js",
+
     "/img/searchIcon.png",
-    "/elasticlunr.min.js",
     "/close-button.svg"
 ]
 
