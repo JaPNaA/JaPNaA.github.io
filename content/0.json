@@ -4,7 +4,7 @@
         {
             "type": "text",
             "title": "This website looks a little different...",
-            "content": "yea. i think so to.",
+            "content": "yea. i think so to.\nMaybe it's because this site has gone through a re-design... idk\nMaybe you can see everything that's changed in the <a href=\"/content/changelog.txt\">changelog</a>. idk.",
             "timestamp": 1526239901042
         }, {
             "type": "card",

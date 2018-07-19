@@ -1,4 +1,4 @@
-// version 0.3.1.3
+// version 0.3.1.7
 
 // comment to debug
 console.log = function () { }; // because I log too many things and I can't be bothered to remove them
@@ -108,24 +108,31 @@ addEventListener("fetch", function (e) {
             ixNoCache = url.lastIndexOf("?nocache="),
             cUrl = ixNoCache < 0 ? url : url.slice(0, ixNoCache); // if nocache exists, use removed, else, use normal
 
-        e.respondWith(
-            caches.match(cUrl)
-                .then(function (r) {
-                    if (r) {
-                        console.log("return cache: " + cUrl);
-                        return r;
-                    } else {
-                        console.log("return fetch: " + cUrl);
-                        return fetch(e.request);
-                    }
-                })
-        );
+        //e.respondWith(
+        //    caches.match(cUrl)
+        //        .then(function (r) {
+        //            if (r) {
+        //                console.log("return cache: " + cUrl);
+        //                return r;
+        //            } else {
+        //                console.log("return fetch: " + cUrl);
+        //                return fetch(e.request);
+        //            }
+        //        })
+        //);
 
-        let request = e.request.clone();
-        return fetch(request)
+        e.respondWith(fetch(e.request)
             .then(function (response) {
                 if (!response || response.status !== 200 || response.type !== 'basic') {
-                    return response;
+                    return caches.match(cUrl)
+                        .then(function (r) {
+                            if (r) {
+                                console.log("return cache: " + e.request.url);
+                                return r;
+                            } else {
+                                return response;
+                            }
+                        });
                 }
 
                 var responseToCache = response.clone();
@@ -137,19 +144,26 @@ addEventListener("fetch", function (e) {
                     });
 
                 return response;
-            });
-    }
-
-    e.respondWith(
-        caches.match(e.request)
-            .then(function (r) {
-                if (r) {
-                    console.log("return cache: " + e.request.url)
-                    return r;
-                } else {
-                    console.log("return fetch: " + e.request.url)
-                    return fetch(e.request);
-                }
             })
-    );
+            .catch(function() {
+                return caches.match(cUrl)
+                    .then(function (r) {
+                        console.log("return cache: " + e.request.url);
+                        return r;
+                    });
+            }));
+    } else {
+        e.respondWith(
+            caches.match(e.request)
+                .then(function (r) {
+                    if (r) {
+                        console.log("return cache: " + e.request.url);
+                        return r;
+                    } else {
+                        console.log("return fetch: " + e.request.url);
+                        return fetch(e.request);
+                    }
+                })
+        );
+    }
 });

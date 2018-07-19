@@ -34,7 +34,7 @@ function Utils(DT) {
     /**
      * Creates a popup on the site
      * @param {String|Element} content popup content
-     * @param {Number} [importancy = 0] how important the prompt is
+     * @param {Number} [importancy] how important the prompt is
      * @param {Number} [ttl] how long before the notification automatically closes, leave null for forever
      * @param {Boolean} [uncloseable] can the user close the notification
      */

@@ -248,6 +248,11 @@ function Site(DT) {
             childrenl = D.children.length,
             hm = false;
 
+        if (D.children.length == 0) {
+            location.reload(false);
+            return false;
+        }
+
         if (
             D.body.scrollTop + D.body.clientHeight >=
             D.body.scrollHeight - D.children[D.lastAddedChildrenIx].elmP.clientHeight
