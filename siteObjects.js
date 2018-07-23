@@ -203,7 +203,7 @@ function SiteObjects(DT) {
     };
 
     D.Card = class extends Item {
-        constructor(title, link, content, timestamp, tags, author, no, style) {
+        constructor(title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {
             super(title, timestamp, style);
 
             {
@@ -219,7 +219,7 @@ function SiteObjects(DT) {
             this.elm.classList.add("card");
             this.link = link;
             D.parseCardMeta(timestamp, tags, author, no, this);
-            D.parseCardContent(content, this);
+            D.parseCardContent(content, this, shouldFormatDescription);
         }
     };
 
@@ -238,7 +238,11 @@ function SiteObjects(DT) {
             }
             
             this.titleElm.innerHTML = title;
-            this.bodyElm.innerHTML = content; // cut off at point
+            this.bodyElm.innerHTML = content.substr(0, 200); // cut off at 200 characters
+
+            if (content.length > 200) {
+                this.bodyElm.innerHTML += "...";
+            }
 
             this.args = [].slice.call(arguments);
 
@@ -251,7 +255,7 @@ function SiteObjects(DT) {
     };
 
     D.ResultCard = class extends ResultItem {
-        constructor(title, link, content, timestamp, tags, author, no, style) {
+        constructor(title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {
             super(timestamp, style);
 
             // structure
@@ -285,7 +289,7 @@ function SiteObjects(DT) {
             // right
             this.titleElm.innerHTML = title;
             this.titleElm.setAttribute("no", no);
-            this.bodyElm.innerHTML = content.description;
+            this.bodyElm.innerHTML = D.parseDisplayContent(content.description, shouldFormatDescription);
             // left
             if (content.display[0]) {
                 this.imgElm.appendChild(D.parseDisplayContent(content.display[0], this.imgs));
@@ -372,10 +376,10 @@ function SiteObjects(DT) {
         }
     };
 
-    D.parseCardContent = function (dt, that) {
+    D.parseCardContent = function (dt, that, shouldFormatDescription) {
         {
             let description = document.createElement("div"); // create element
-            description.innerHTML = dt.description; // set element content
+            description.innerHTML = D.parseDescriptionContent(dt.description, shouldFormatDescription); // set element content
             that.bodyElm.appendChild(description); // push to body
         } {
             let display = document.createElement("div");
@@ -411,17 +415,48 @@ function SiteObjects(DT) {
     };
 
     D.parseText = function (dt) {
-        return new D.Text(dt.title, dt.content, dt.timestamp, dt.style);
+        return new D.Text (
+            dt.title,
+            D.parseDescriptionContent(dt.content, dt.jsformat), // format string for ${{js}}, if required
+            dt.timestamp,
+            dt.style
+        );
     };
     D.parseCard = function (dt) {
-        return new D.Card(dt.name, DT.Site.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.no, dt.style);
+        return new D.Card (
+            dt.name,
+            DT.Site.path + dt.content.link,
+            dt.content,
+            dt.jsformat,
+            dt.timestamp,
+            dt.tags,
+            dt.author,
+            dt.no,
+            dt.style
+        );
     };
 
+    // parseResult is for a result from search.js
     D.parseResultText = function (dt) {
-        return new D.ResultText(dt.title, dt.content, dt.timestamp, dt.style);
+        return new D.ResultText (
+            dt.title,
+            D.parseDescriptionContent(dt.content, dt.jsformat), // format string for ${{js}}, if required
+            dt.timestamp,
+            dt.style
+        );
     };
     D.parseResultCard = function (dt) {
-        return new D.ResultCard(dt.name, DT.Site.path + dt.content.link, dt.content, dt.timestamp, dt.tags, dt.author, dt.no, dt.style);
+        return new D.ResultCard (
+            dt.name,
+            DT.Site.path + dt.content.link,
+            dt.content,
+            dt.jsformat,
+            dt.timestamp,
+            dt.tags,
+            dt.author,
+            dt.no,
+            dt.style
+        );
     };
 
     D.parse = function (dt) {
@@ -440,12 +475,52 @@ function SiteObjects(DT) {
         if (dt.hidden) return null;
         switch (dt.type) {
         case "text":
+            console.log(dt);
             return D.parseResultText(dt);
         case "card":
+            console.log(dt);
             return D.parseResultCard(dt);
         default:
             return new D.ErrorCard("Reason: Card is of unknown type");
         }
+    };
+
+    D.parseDescriptionContent = function (content, formatjs) {
+        if (!formatjs) { // if doesn't need formatting, return content
+            return content;
+        }
+
+        var regex = /\${{(.+?)}}/g, // matches ${{ anything }}
+            matches = [], // list of all matches
+            formattedTo = 0, // index of how far the string has formatted to
+            formattedStr = ""; // formatted string to return
+
+        while (true) { // push match to matches until there're no more matches
+            let match = regex.exec(content);
+
+            if (match) { // format on the way
+                let result = eval("(function() {" + match[1] + "}());"); // evaluated result
+
+                if (result === null) { // there's no null.toString or undefined.toString, so
+                    result = "null";
+                } else if (result === undefined) {
+                    result = "undefined";
+                } else { // convert to string
+                    result = result.toString();
+                }
+
+                // add where the last format was, to current format
+                formattedStr += content.slice(formattedTo, match.index) + result;
+
+                // move formattedTo to end of match
+                formattedTo = match.index + match[0].length;
+            } else {
+                break;
+            }
+        }
+
+        // return string + remaining text
+        return formattedStr + content.slice(formattedTo);
     };
 
     D.separator = function () {
