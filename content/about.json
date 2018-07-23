@@ -4,7 +4,8 @@
         {
             "type": "text",
             "title": "About me",
-            "content": "JaP is kewl.\n\n<b>tl;dr</b>\nI post things that I create here. (But only the good ones.)\n\nI'm 14 (I'm in high school) and I like to create things, I use this site so that I can show off to other people. Including showing off the site. Since I'm showing off the site, I only include the projects that will make it seem like I'm good at what I do, and hide away all of the terrible and unfinished stuff.",
+            "content": "JaP is kewl.\n\n<b>tl;dr</b>\nI post things that I create here. (But only the good ones.)\n\nI'm <span style=\"background-color: #ffffcc;\" title=\"May be incorrect if the system time is incorrect\">${{var e=new Date,t=e.getFullYear(),n=e.getMonth(),a=e.getDate(),r=t-2003-1;return(n>10||10==n&&a>=28)&&r++,r}}</span> years old (I'm in high school) and I like to create things, I use this site so that I can show off to other people. Including showing off the site. Since I'm showing off the site, I only include the projects that will make it seem like I'm good at what I do, and hide away all of the terrible and unfinished stuff.",
+            "jsformat": true,
             "timestamp": 1531609145815
         },
         {

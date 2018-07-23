@@ -87,6 +87,10 @@
                     "style": {
                         "description": "inline css",
                         "type": "string"
+                    },
+                    "jsformat": {
+                        "description": "replace ${{js}} with evaluated result",
+                        "type": "boolean"
                     }
                 },
                 "required": ["type"]
