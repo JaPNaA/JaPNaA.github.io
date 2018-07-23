@@ -1,7 +1,7 @@
-// version 0.3.1.7
+// version 0.3.2.15
 
 // comment to debug
-console.log = function () { }; // because I log too many things and I can't be bothered to remove them
+//console.log = function () { }; // because I log too many things and I can't be bothered to remove them
 
 const CACHE_NAME = "JaPNaA-github-io_cache",
     CONTENT_CACHE_NAME = "JaPNaA-github-io_content-cache";
@@ -38,25 +38,60 @@ var cachedVersionPath = "version.txt",
     hasCheckedVersion = false,
     hasCached = false; // used to prevent updating cache twice in a session
 
-function createCaches() {
+function createCaches(e) {
     if (hasCached) return;
     hasCached = true;
 
     console.log("creating/updating caches");
 
-    caches.open(CACHE_NAME)
+    var nocacheHeader = new Headers(),
+        fetchInit = {
+            method: "GET",
+            headers: nocacheHeader
+        };
+    nocacheHeader.append('pragma', 'no-cache');
+    nocacheHeader.append('cache-control', 'no-cache');
+
+    // remove previous caches
+    caches.keys().then(function (keys) {
+        for (let key of keys) {
+            caches.open(key).then(function (cache) {
+                cache.keys().then(function (ckeys) {
+                    for (ckey of ckeys) {
+                        cache.delete(key);
+                    }
+                });
+            });
+        }
+    });
+
+    let vercheck = caches.open(CACHE_NAME)
         .then(function (cache) {
-            cache.add(cachedVersionPath);
+            fetch(cachedVersionPath, fetchInit).then(function (r) {
+                cache.put(cachedVersionPath, r);
+            });
             hasCheckedVersion = true;
         });
 
-    return caches.open(CACHE_NAME)
+    let cache = caches.open(CACHE_NAME)
         .then(function (cache) {
-            return cache.addAll(cachePaths);
+            for (let cachePath of cachePaths) {
+                fetch(cachePath, fetchInit).then(function (r) {
+                    cache.put(cachePath, r);
+                });
+            }
+            return;
         });
+
+    if (e) {
+        e.waitUntil(cache);
+        e.waitUntil(vercheck);
+    }
+
+    return vercheck;
 }
 
-function checkVersion() {
+function checkVersion(e) {
     fetch(cachedVersionPath) // request for newest version
         .then(function (req) {
             return req.text(); // return newest version text
@@ -78,24 +113,24 @@ function checkVersion() {
             } else {
                 console.log("new version availble, current: " + cachedVersion + ", new: " + newestVersion);
                 console.log("updating caches");
-
+                
                 createCaches();
             }
         });
 }
 
 addEventListener("install", function (e) {
-    e.waitUntil(createCaches());
+    createCaches(e);
 });
 
 addEventListener("activate", function (e) {
-    e.waitUntil(createCaches());
+    createCaches(e);
 });
 
 addEventListener("fetch", function (e) {
     if (!hasCheckedVersion && !isCheckingVersion) {
         isCheckingVersion = true;
-        checkVersion();
+        checkVersion(e);
     }
 
     if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
@@ -145,13 +180,27 @@ addEventListener("fetch", function (e) {
 
                 return response;
             })
-            .catch(function() {
+            .catch(function () {
                 return caches.match(cUrl)
                     .then(function (r) {
                         console.log("return cache: " + e.request.url);
                         return r;
                     });
             }));
+    } else if (e.request.url == location.origin + "/reloadCache") {
+        hasCached = false;
+
+        e.respondWith(
+            new Response("ok", {
+                headers: { 'Content-Type': 'text/plain' }
+            })
+        );
+
+        createCaches(e)
+            .then(function () {
+                console.log("reloaded caches");
+            })
+        console.log("reloading caches");
     } else {
         e.respondWith(
             caches.match(e.request)

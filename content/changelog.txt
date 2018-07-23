@@ -1,3 +1,8 @@
+Version 0.3.2:
+  - Site will now update (properly)
+  - Added dynamic text (that means some content can update without contacting the server)
+  - Fixing typos. It's a fun pasttime.
+
 Version 0.3.1:
   - Several bug fixes
   - About page now exists, but lacks animations or interesting information

@@ -1,12 +1,16 @@
 function ServiceWorker(DT) {
     var D = {
-        worker: null
+        worker: null,
+        checkedVersion: false
     };
     DT.ServiceWorker = D;
 
     function checkVersion() {
         var current = null,
             latest = null;
+
+        if (D.checkedVersion) return;
+        D.checkedVersion = true;
 
         function _checkdone() { // callback for both requests to compare data
             if (current !== null && latest !== null) {
@@ -15,6 +19,21 @@ function ServiceWorker(DT) {
                 } else {
                     console.log("running old");
 
+                    { // request worker to reload
+                        let x = new XMLHttpRequest();
+                        x.open("POST", "/reloadCache");
+                        x.addEventListener("load", function () {
+                            if (x.response == "ok") {
+                                DT.Utils.prompta("An update was found! To see the new version, just <a href=\"" + location.href + "\">reload</a>.", 0, null, false);
+                            } else {
+                                DT.Utils.prompta("An update was found!... but failed to update :( Please send a bug report. <br> " +
+                                    JSON.stringify({ responseCode: x.responseCode, response: x.response })
+                                , 2, null, false);
+                            }
+                        });
+                        x.responseType = "text";
+                        x.send();
+                    }
                 }
             }
         }
@@ -49,18 +68,16 @@ function ServiceWorker(DT) {
     }
 
     function initServiceWorker() {
-        navigator.serviceWorker.register("serviceWorker.wkr.js",{
+        navigator.serviceWorker.register("serviceWorker.wkr.js", {
             updateViaCache: 'all'
         })
             .then(function (worker) {
                 D.worker = worker;
-                onregistered();
+                checkVersion();
             })
             .catch(function (err) {
                 console.warn('ServiceWorker registration failed: ', err);
             });
-
-        checkVersion();
     }
 
     D.setup = function () {
