@@ -267,7 +267,7 @@ a:active {
 
     top: var(--head-height, 64px);
     left: var(--r-left, 224px);
-    width: 100%;
+    width: calc(100% - var(--r-left));
     height: 0;
     padding: 8px;
 
@@ -605,7 +605,7 @@ a:active {
     z-index: 1;
 }
 
-#bodyP.itemPop .item:hover,
+#main.desktop .item:hover,
 .item.pop {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transform: translateY(-6px);
@@ -696,7 +696,7 @@ a:active {
     transition: 0.25s ease-in-out;
 }
 
-.prompta:hover .close {
+#main.desktop .prompta:hover .close, #main:not(.desktop) .prompta .close {
     /* transitions */
     transform: scale(1) rotate(0);
     opacity: 1;

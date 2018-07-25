@@ -289,7 +289,7 @@ function SiteObjects(DT) {
             // right
             this.titleElm.innerHTML = title;
             this.titleElm.setAttribute("no", no);
-            this.bodyElm.innerHTML = D.parseDisplayContent(content.description, shouldFormatDescription);
+            this.bodyElm.innerHTML = D.parseDescriptionContent(content.description, shouldFormatDescription);
             // left
             if (content.display[0]) {
                 this.imgElm.appendChild(D.parseDisplayContent(content.display[0], this.imgs));

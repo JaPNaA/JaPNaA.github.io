@@ -20,7 +20,7 @@ function Site(DT) {
             menuWidth: 224, // width of menu
             collapsedMenuWidth: 48, // width of menu when collapsed
             lastMenuCollapsed: false, // if the menu was collapsed
-            itemPop: false, // if the item 'pops' on mouse hover
+            isDesktop: false, // if the item 'pops' on mouse hover
             allowedDeviation: 64, // how far an item can be in the wrong column if it follows left to right
             scrollHeight: 0, // body element's height
             children: [], // items in the body
@@ -32,6 +32,8 @@ function Site(DT) {
         docFrag = document.createDocumentFragment();
     DT.Site = D;
 
+    // create functions
+    // --------------------------------------------------------------------------------
     function createMenu() {
         var menu = DT.Menu.menu;
         D.menu = DT.Menu.menu;
@@ -190,6 +192,9 @@ function Site(DT) {
         while (scroll());
     }
 
+    // make functions 
+    // --------------------------------------------------------------------------------
+
     // column of cards
     function makeDocFrag() {
         var main = document.createElement("div");
@@ -230,16 +235,29 @@ function Site(DT) {
         docFrag.appendChild(main);
     }
 
+    // event handlers
+    // --------------------------------------------------------------------------------
+
     function resize() {
         buildBodyFrags();
     }
 
     function mousemove() {
-        if (!D.itemPop) {
-            D.itemPop = true;
-            D.bodyP.classList.add("itemPop");
+        if (!D.isDesktop) {
+            D.isDesktop = true;
+            updateDeviceType();
         }
     }
+
+    function touch(e) {
+        if (!D.isMobile) {
+            D.isMobile = true;
+            updateDeviceType();
+        }
+    }
+
+    // scrolling
+    // --------------------------------------------------------------------------------
 
     // lazy loading
     function scroll() {
@@ -277,6 +295,8 @@ function Site(DT) {
         D.body.scrollBy(0, Math.sign(e.deltaY) * 4);
     }
 
+    // public functions
+    // --------------------------------------------------------------------------------
     D.addItem = function (item) {
         let smallest = D.bodyFrag[0],
             sch = smallest.clientHeight;
@@ -329,23 +349,49 @@ function Site(DT) {
         }
     };
 
+    // misc. functions
+    // --------------------------------------------------------------------------------
+
     // check version of site
     function checkVersion() {
         DT.ContentGetter.get()
     }
 
+    function updateDeviceType() {
+        if (D.isMobile) {
+            D.main.classList.remove("desktop");
+        } else if (D.isDesktop) {
+            D.main.classList.add("desktop");
+        } else {
+            D.main.classList.remove("desktop");
+        }
+    }
+
     D.setup = function () {
         makeDocFrag();
 
-        addEventListener("resize", resize);
+        // user events
         addEventListener("mousemove", mousemove); // check for mouse
         addEventListener("wheel", wheel, {
             passive: true
         }); // hold shift to slow scroll
-        D.body.addEventListener("scroll", scroll, {
+
+        // touch events
+        addEventListener("touchstart", touch, {
+            passive: true
+        });
+        addEventListener("touchend", touch, {
+            passive: true
+        });
+        addEventListener("touchmove", touch, {
             passive: true
         });
 
+        // behaviour events
+        addEventListener("resize", resize);
+        D.body.addEventListener("scroll", scroll, {
+            passive: true
+        });
         addEventListener("load", function() {
             DT.SplashScreen.closeSplashScreen();
         }, {
