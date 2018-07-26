@@ -2,7 +2,7 @@
   "name": "JaPNaA.github.io",
   "short_name": "JaPNaA",
   "start_url": "./index.html",
-  "display": "browser",
+  "display": "minimal-ui",
   "background_color": "#fffafd",
   "theme_color": "#80ffc4",
   "orientation": "any",

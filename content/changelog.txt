@@ -11,11 +11,11 @@ Version 0.3.1:
 	- Updates caches in the background when version.txt changes
 
 [TODO]
-  - alert user when a new version is availible by using non-sw code to check
-  - show about page is active in menu
   - Fallback.js
   - Optimizing for mobile
-  - Make scrollbar not invisible, for UX!!!
+  - Clicked while animating do something
+  - show about page is active in menu
+	- Same animation as search
 
 Version 0.3.0:
   - Release

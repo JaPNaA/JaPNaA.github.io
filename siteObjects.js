@@ -2,6 +2,18 @@ function SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
+    /**
+     * determinds the absolute path of a uri from DT.Site.path
+     * @param {string} uri
+     */
+    function parseURIPath(uri) {
+        if (uri.match(/^(\w*):\/\//)) { // matches START (any protocol)://
+            return uri;
+        } else {
+            return DT.Site.path + uri;
+        }
+    }
+
     Image.prototype.aload = function () {
         if (this.src) return false;
         this.src = this.asrc;
@@ -33,6 +45,7 @@ function SiteObjects(DT) {
             };
             
             this.elmP.target = "_blank";
+            this.elmP.rel = "noopener";
             this.elm.classList.add("item");
             this.elm.style = style;
 
@@ -72,6 +85,13 @@ function SiteObjects(DT) {
         }
         set link(e) {
             this.elmP.href = e;
+        }
+
+        get tabindex() {
+            return this.elmP.tabIndex;
+        }
+        set tabindex(e) {
+            this.elmP.tabIndex = e;
         }
 
         appendTo(parent) {
@@ -198,7 +218,7 @@ function SiteObjects(DT) {
             super(title, timestamp, style);
 
             this.elm.classList.add("text");
-            this.content = content;
+            this.bodyElm.appendChild(content);
         }
     };
 
@@ -238,7 +258,7 @@ function SiteObjects(DT) {
             }
             
             this.titleElm.innerHTML = title;
-            this.bodyElm.innerHTML = content.substr(0, 200); // cut off at 200 characters
+            this.bodyElm.innerHTML = content.innerText.substr(0, 200); // cut off at 200 characters
 
             if (content.length > 200) {
                 this.bodyElm.innerHTML += "...";
@@ -289,7 +309,7 @@ function SiteObjects(DT) {
             // right
             this.titleElm.innerHTML = title;
             this.titleElm.setAttribute("no", no);
-            this.bodyElm.innerHTML = D.parseDescriptionContent(content.description, shouldFormatDescription);
+            this.bodyElm.appendChild(D.parseDescriptionContent(content.description, shouldFormatDescription));
             // left
             if (content.display[0]) {
                 this.imgElm.appendChild(D.parseDisplayContent(content.display[0], this.imgs));
@@ -361,7 +381,7 @@ function SiteObjects(DT) {
         switch (dt.type) {
         case "img": {
             let r = document.createElement("img");
-            r.asrc = DT.Site.path + dt.src;
+            r.asrc = parseURIPath(dt.src);
             r.title = dt.caption;
             imgs.push(r);
             return r;
@@ -379,7 +399,7 @@ function SiteObjects(DT) {
     D.parseCardContent = function (dt, that, shouldFormatDescription) {
         {
             let description = document.createElement("div"); // create element
-            description.innerHTML = D.parseDescriptionContent(dt.description, shouldFormatDescription); // set element content
+            description.appendChild(D.parseDescriptionContent(dt.description, shouldFormatDescription)); // set element content
             that.bodyElm.appendChild(description); // push to body
         } {
             let display = document.createElement("div");
@@ -425,7 +445,7 @@ function SiteObjects(DT) {
     D.parseCard = function (dt) {
         return new D.Card (
             dt.name,
-            DT.Site.path + dt.content.link,
+            parseURIPath(dt.content.link),
             dt.content,
             dt.jsformat,
             dt.timestamp,
@@ -448,7 +468,7 @@ function SiteObjects(DT) {
     D.parseResultCard = function (dt) {
         return new D.ResultCard (
             dt.name,
-            DT.Site.path + dt.content.link,
+            parseURIPath(dt.content.link),
             dt.content,
             dt.jsformat,
             dt.timestamp,
@@ -486,46 +506,64 @@ function SiteObjects(DT) {
     };
 
     D.parseDescriptionContent = function (content, formatjs) {
-        if (!formatjs) { // if doesn't need formatting, return content
-            return content;
+        var formatted = document.createElement("div");
+
+        // ${{ js }}
+        // --------------------------------------------------------------------------------
+        if (formatjs) { // if requires formatting
+            let regex = /\${{(.+?)}}/g, // matches ${{ anything }}
+                matches = [], // list of all matches
+                formattedTo = 0, // index of how far the string has formatted to
+                formattedStr = ""; // formatted string to return
+
+            while (true) { // push match to matches until there're no more matches
+                let match = regex.exec(content);
+
+                if (match) { // format on the way
+                    let result = eval("(function() {" + match[1] + "}());"); // evaluated result
+
+                    if (result === null) { // there's no null.toString or undefined.toString, so
+                        result = "null";
+                    } else if (result === undefined) {
+                        result = "undefined";
+                    } else { // convert to string
+                        result = result.toString();
+                    }
+
+                    // add where the last format was, to current format
+                    formattedStr += content.slice(formattedTo, match.index) + result;
+
+                    // move formattedTo to end of match
+                    formattedTo = match.index + match[0].length;
+                } else {
+                    break;
+                }
+            }
+
+            formatted.innerHTML = formattedStr + content.slice(formattedTo);
+        } else {
+            formatted.innerHTML = content;
         }
 
-        var regex = /\${{(.+?)}}/g, // matches ${{ anything }}
-            matches = [], // list of all matches
-            formattedTo = 0, // index of how far the string has formatted to
-            formattedStr = ""; // formatted string to return
+        // <a href="link" rel="noopener" target="_blank">
+        // --------------------------------------------------------------------------------
+        {
+            let links = formatted.getElementsByTagName("a");
+            for (let i = 0; i < links.length; i++) {
+                let link = links[i];
 
-        while (true) { // push match to matches until there're no more matches
-            let match = regex.exec(content);
-
-            if (match) { // format on the way
-                let result = eval("(function() {" + match[1] + "}());"); // evaluated result
-
-                if (result === null) { // there's no null.toString or undefined.toString, so
-                    result = "null";
-                } else if (result === undefined) {
-                    result = "undefined";
-                } else { // convert to string
-                    result = result.toString();
-                }
-
-                // add where the last format was, to current format
-                formattedStr += content.slice(formattedTo, match.index) + result;
-
-                // move formattedTo to end of match
-                formattedTo = match.index + match[0].length;
-            } else {
-                break;
+                link.rel = "noopener";
+                link.target = "_blank";
             }
         }
 
-        // return string + remaining text
-        return formattedStr + content.slice(formattedTo);
+        return formatted;
     };
 
     D.separator = function () {
         return document.createElement("hr");
     };
+
     D.searchButton = function () {
         var e = document.createElement("div"),
             active = false, // state: button is active
@@ -606,7 +644,7 @@ function SiteObjects(DT) {
             active ^= true;
 
             if (oPos === null) {
-                oPos = e.getBoundingClientRect().y - paddTop;
+                oPos = e.getBoundingClientRect().top - paddTop;
             }
 
             if (active) {
@@ -639,6 +677,7 @@ function SiteObjects(DT) {
 
         return e;
     };
+
     D.yearList = function () {
         var group = document.createElement("group");
 

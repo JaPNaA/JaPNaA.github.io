@@ -40,14 +40,23 @@ function Menu(DT) {
         });
 
         backButton.addEventListener("click", function () {
+            var teSI;
             D.menu.classList.remove("sub");
             sub.classList.remove("open");
 
+            // when transition ends, remove element and stop fallback
             sub.addEventListener("transitionend", function (e) {
-                if (e.path[0] == this && this.parentElement) {
+                //: e.path check is required due to MSEdge
+                if (e.path && e.path[0] == this && this.parentElement) {
                     sub.parentElement.removeChild(sub);
+                    clearTimeout(teSI);
                 }
             });
+
+            // fallback, in case browser doesn't support transitionend
+            teSI = setTimeout(function () {
+                sub.parentElement.removeChild(sub);
+            }, 500);
         });
 
         sub.appendChild(backButton);
@@ -59,9 +68,10 @@ function Menu(DT) {
     }
 
     D.createMoreSub = function () {
+        //* this should not create a sub everytime it's clicked
         var sub = createSub();
 
-        //* include: send feedback, contact me, view all projects, changelog, copyright
+        // includes: send feedback, contact me, view all projects, changelog, copyright
         {
             let feedback = document.createElement("div");
             {
@@ -174,7 +184,6 @@ function Menu(DT) {
             let a = document.createElement("div");
             a.innerHTML = "About";
             a.addEventListener("click", function () {
-                // DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
                 DT.AboutPage.activate();
             });
             D.menuItems.about = a;
@@ -194,8 +203,8 @@ function Menu(DT) {
             D.menuItems.yearList = a;
 
             a.addEventListener("load", function () {
-                for (let i of a.children) {
-                    i.addEventListener("click", function () {
+                for (let i = 0; i < a.children.length; i++) {
+                    a.children[i].addEventListener("click", function () {
                         DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
                     });
                 }

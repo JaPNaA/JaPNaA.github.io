@@ -183,7 +183,12 @@ a:active {
 }
 
 #menu > div:hover, #menu > group > div:hover, .submenu > div:hover {
-    background-color: #ffffff14;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+#menu > div.active, #menu > group > div.active, .submenu > div.active {
+    background-color: rgba(255, 255, 255, 0.12);
+    font-weight: bold;
 }
 
 #menu.sub {
@@ -278,7 +283,7 @@ a:active {
     
     font-size: 14px;
     color: #484848;
-    text-shadow: 0 0 12px #ffffff33, 0 0 4px #ffffff73;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.2), 0 0 4px rgba(255, 255, 255, 0.45);
 
     /* transitions */
     transition: 0.3s ease-out;
@@ -405,9 +410,46 @@ a:active {
     z-index: 4;
 }
 
-#body::-webkit-scrollbar, #searchOverlay::-webkit-scrollbar, #aboutPage::-webkit-scrollbar, #menu::-webkit-scrollbar, .submenu::-webkit-scrollbar, #notificationList::-webkit-scrollbar {
-    background-color: #ebe4e7;
-    width: 0px !important;
+#searchOverlay::-webkit-scrollbar, 
+#aboutPage::-webkit-scrollbar, 
+#body::-webkit-scrollbar {
+    width: 14px;
+    background-color: transparent;
+}
+
+#searchOverlay::-webkit-scrollbar-track, 
+#aboutPage::-webkit-scrollbar-track, 
+#body::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+#searchOverlay::-webkit-scrollbar-thumb, 
+#aboutPage::-webkit-scrollbar-thumb, 
+#body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    border-radius: 7px;
+}
+
+
+.submenu::-webkit-scrollbar, 
+#menu::-webkit-scrollbar {
+    width: 14px;
+    background-color: transparent;
+}
+
+.submenu::-webkit-scrollbar-track, 
+#menu::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.submenu::-webkit-scrollbar-thumb, 
+#menu::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.345);
+    border: 4px solid transparent;
+    background-clip: padding-box;
+    border-radius: 7px;
 }
 
 #bodyP,
@@ -443,6 +485,8 @@ a:active {
     text-align: left;
     text-decoration: none;
     position: relative;
+
+    outline: none;
 }
 
 .item {
@@ -509,7 +553,7 @@ a:active {
     transition: 0.15s ease-in;
     will-change: opacity;
 }
-.item.card:hover .title::after {
+.item.card:hover .title::after, .item.card:focus .title::after {
     opacity: 0.5;
 }
 
@@ -526,7 +570,7 @@ a:active {
     z-index: -2;
 }
 
-.item.card:hover .meta {
+.item.card:hover .meta, .item.card:focus .meta {
     opacity: 0.6;
 }
 
@@ -606,7 +650,8 @@ a:active {
 }
 
 #main.desktop .item:hover,
-.item.pop {
+#main.desktop .itemP:focus .item, 
+.item.pop { 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transform: translateY(-6px);
     z-index: 1;
@@ -623,7 +668,7 @@ a:active {
     border-radius: 4px;
     border-left: #545454 6px solid;
 
-    box-shadow: 2px 4px 16px #00000080;
+    box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.5);
     
     /* transitions */
     will-change: opacity, transform;

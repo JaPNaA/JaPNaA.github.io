@@ -1,35 +1,57 @@
 function Site(DT) {
     var D = {
-            bodyFragCount: null, // amount of columns
-            bodyP: null, // body element parent
-            body: null, // element
-            searchOverlay: null, // element over body that contains results for search
-            aboutPage: null, // element over body that contains the about page
-            menu: null,
-            head: null,
-            headHint: null,
-            headHintD: {
-                ttl: {}
-            },
-            showingHeadHint: false,
-            title: null,
-            titleText: "JaPNaA", // text in the title
-            notificationList: null,
-            maxItemWidth: 624, // max width for items in body element
-            minItemWidth: 480, // min ...
-            menuWidth: 224, // width of menu
-            collapsedMenuWidth: 48, // width of menu when collapsed
-            lastMenuCollapsed: false, // if the menu was collapsed
-            isDesktop: false, // if the item 'pops' on mouse hover
-            allowedDeviation: 64, // how far an item can be in the wrong column if it follows left to right
-            scrollHeight: 0, // body element's height
-            children: [], // items in the body
-            lastAddedChildrenIx: 0, // index of the last item that was lazy-added
-            bodyFrag: [], // all column elements
-            path: location.origin === "http://localhost:8080" ? "http://localhost:8081" : location.origin, // path of images and links //* set to location.origin when in production
-            search: DT.Utils.parseSearch(location.search) // parsed object of location.search
-        },
-        docFrag = document.createDocumentFragment();
+        // elements
+        // --------------------------------------------------------------------------------
+        main: null,                 // where everything goes
+        body: null,                 // element where the main content goes
+        bodyP: null,                // body element's parent element
+
+        menu: null,                 // element on the left for navigation
+
+        head: null,                 // element on the top of the page saying that it's my website
+        title: null,                // element in the head containing the title of the page
+        headHint: null,             // element below the head containing information
+
+        searchOverlay: null,        // element over body that contains results for search
+        aboutPage: null,            // element over body that contains the about page
+        notificationList: null,     // element containing notifications
+
+        children: [],               // items in the body
+        bodyFrag: [],               // all column elements
+
+        // constants
+        // --------------------------------------------------------------------------------
+        titleText: "JaPNaA",        // text in the title
+
+        maxItemWidth: 624,          // MAX width for items in body element
+        minItemWidth: 480,          // MIN width for items in body element
+
+        menuWidth: 224,             // width of menu
+        collapsedMenuWidth: 48,     // width of menu when collapsed
+
+        allowedDeviation: 32,       // how far an item can be in the wrong column if it follows left to right
+        scrollBuffer: 640,          // how far to load elements in the body
+
+        path: location.origin === "http://localhost:8080" ? "http://localhost:8081" : location.origin, // path of images and links (automatically changes)
+
+        // states
+        // --------------------------------------------------------------------------------
+        lastMenuCollapsed: false,   // if the menu was collapsed
+        isDesktop: false,           // if the item 'pops' on mouse hover
+        showingHeadHint: false,
+
+        bodyFragCount: null,        // amount of columns in body
+        scrollHeight: 0,            // body element's height
+        lastAddedChildrenIx: 0,     // index of the last item that was lazy-added
+        search: DT.Utils.parseSearch(location.search), // parsed object of location.search
+
+        headHintD: {                // data for headHint
+            ttl: {}                     // time to live for headhint's elements
+        }
+
+    };
+
+    var docFrag = document.createDocumentFragment();
     DT.Site = D;
 
     // create functions
@@ -73,9 +95,12 @@ function Site(DT) {
 
         let req = DT.ContentGetter.add("content", "content/0.json", true, function (e) {
             var d = e.data;
-            for (let i of d) {
-                let item = DT.SiteObjects.parse(i);
+            for (let i = 0; i < d.length; i++) {
+                let j = d[i];
+
+                let item = DT.SiteObjects.parse(j);
                 if (!item) continue;
+                item.tabindex = j;
                 D.children.push(item);
             }
             buildBodyFrags();
@@ -266,14 +291,14 @@ function Site(DT) {
             childrenl = D.children.length,
             hm = false;
 
-        if (D.children.length == 0) {
+        if (D.children.length == 0) { // if there are no children, reload, because there must be some.
             location.reload(false);
             return false;
         }
 
         if (
-            D.body.scrollTop + D.body.clientHeight >=
-            D.body.scrollHeight - D.children[D.lastAddedChildrenIx].elmP.clientHeight
+            D.body.scrollTop + D.body.clientHeight + D.scrollBuffer /* bottom of visible portion of body element, shifted down by scrollBuffer */ >=
+            D.body.scrollHeight - D.children[D.lastAddedChildrenIx].elmP.clientHeight /* top of last element */
         ) {
             for (let i = 0; i < childrenl; i++) {
                 let j = D.children[i];

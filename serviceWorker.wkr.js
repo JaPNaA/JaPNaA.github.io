@@ -1,7 +1,7 @@
-// version 0.3.3.1
+// version 0.3.3.2
 
 // comment to debug
-//console.log = function () { }; // because I log too many things and I can't be bothered to remove them
+console.log = function () { }; // because I log too many things and I can't be bothered to remove them
 
 const CACHE_NAME = "JaPNaA-github-io_cache",
     CONTENT_CACHE_NAME = "JaPNaA-github-io_content-cache";

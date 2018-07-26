@@ -7,7 +7,16 @@ function AboutPage(DT) {
     DT.AboutPage = D;
 
     D.activate = function () {
-        DT.Site.main.classList.toggle("aboutpageActive");
+        D.active = !D.active;
+
+        if (D.active) {
+            DT.Site.main.classList.add("aboutpageActive");
+            DT.Menu.menuItems.about.classList.add("active");
+        } else {
+            DT.Site.main.classList.remove("aboutpageActive");
+            DT.Menu.menuItems.about.classList.remove("active");
+        }
+
 
         if (!D.loaded) {
             DT.ContentGetter.add("about", "content/about.json", true, function (e) {
