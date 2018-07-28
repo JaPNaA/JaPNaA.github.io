@@ -23,7 +23,12 @@ var cachePaths = [
     "/utils.js",
     "/serviceWorker.js",
     "/aboutPage.js",
-    
+    "/cli.js",
+
+    "/cli/index.html",
+    "/cli/index.js",
+    "/cli/index.css",
+
     "/3rdParty/normalize.css",
     "/3rdParty/elasticlunr.min.js",
 

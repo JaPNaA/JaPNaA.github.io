@@ -3,7 +3,7 @@
         L = null;
 
     try {
-        L = [c_SplashScreen, c_Utils, c_ContentGetter, c_ShortUrl, c_SiteObjects, c_Menu, c_Site, c_Elasticlunr, c_Search, c_ServiceWorker, c_AboutPage];
+        L = [c_SplashScreen, c_Utils, c_ContentGetter, c_ShortUrl, c_SiteObjects, c_Menu, c_Site, c_Elasticlunr, c_Search, c_ServiceWorker, c_AboutPage, c_CLI];
     } catch(err) {
         // location.reload(true); // add something to prevent from looping forever
         throw err;

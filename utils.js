@@ -37,6 +37,7 @@ function c_Utils(DT) {
      * @param {Number} [importancy] how important the prompt is
      * @param {Number} [ttl] how long before the notification automatically closes, leave null for forever
      * @param {Boolean} [uncloseable] can the user close the notification
+     * @returns {Object} Tools to interact with prompta
      */
     D.prompta = function (content, importancy, ttl, uncloseable) {
         // create element
