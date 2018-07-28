@@ -1,4 +1,4 @@
-function Search(DT) {
+function c_Search(DT) {
     var D = {
         button: null, // search button
         content: null, // content/0.json

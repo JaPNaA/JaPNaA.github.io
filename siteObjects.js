@@ -1,4 +1,4 @@
-function SiteObjects(DT) {
+function c_SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 

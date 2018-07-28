@@ -1,4 +1,4 @@
-function ServiceWorker(DT) {
+function c_ServiceWorker(DT) {
     var D = {
         worker: null,
         checkedVersion: false

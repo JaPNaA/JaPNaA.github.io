@@ -1,4 +1,4 @@
-function AboutPage(DT) {
+function c_AboutPage(DT) {
     var D = {
         elm: null,
         active: false,
