@@ -1,8 +1,11 @@
 :root {
     --background-color: #000;
+
     --main-color: #d4d4d4;
     --input-color: #56a5ff;
     --err-color: #ff4848;
+    --wrn-color: #e2e24b;
+    --suc-color: #37df3f;
     
     --font-size: 14px;
 }
@@ -13,6 +16,7 @@ body {
     font-size: var(--font-size);
     font-family: 'Consolas', 'Courier New', Courier, monospace;
     word-break: break-all;
+    overflow-y: scroll;
 }
 
 #input, #output {
@@ -27,6 +31,12 @@ body {
 #output .err {
     color: var(--err-color)
 }
+#output .wrn {
+    color: var(--wrn-color);
+}
+#output .suc {
+    color: var(--suc-color);
+}
 #output .empty {
     height: 1em;
 }
@@ -40,4 +50,5 @@ body {
     outline: none;
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }

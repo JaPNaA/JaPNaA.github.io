@@ -495,10 +495,8 @@ function c_SiteObjects(DT) {
         if (dt.hidden) return null;
         switch (dt.type) {
         case "text":
-            console.log(dt);
             return D.parseResultText(dt);
         case "card":
-            console.log(dt);
             return D.parseResultCard(dt);
         default:
             return new D.ErrorCard("Reason: Card is of unknown type");

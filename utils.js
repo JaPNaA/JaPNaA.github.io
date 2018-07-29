@@ -39,7 +39,7 @@ function c_Utils(DT) {
      * @param {Boolean} [uncloseable] can the user close the notification
      * @returns {Object} Tools to interact with prompta
      */
-    D.prompta = function (content, importancy, ttl, uncloseable) {
+    D.prompta = function (content, importancy, ttl, unclosable) {
         // create element
         var prompta = document.createElement("div"),
             parent = DT.Site.notificationList,
@@ -71,31 +71,31 @@ function c_Utils(DT) {
         }
 
         switch (importancy) {
-            case 0:
-                // info, on notifications
-                prompta.classList.add("info");
-                break;
-            case 1:
-                // warning, on notifications, brighter colors
-                prompta.classList.add("warn");
-                break;
-            case 2:
-                // important, on notifications, very bright colors
-                prompta.classList.add("error");
-                break;
-            case 3:
-                // success, like info, but lime
-                prompta.classList.add("success");
-                break;
-            case 4: // special
-                // very important, blocks other actions
-                prompta.classList.add("block");
-                break;
-            default: // unclassified
-                break;
+        case 0:
+            // info, on notifications
+            prompta.classList.add("info");
+            break;
+        case 1:
+            // warning, on notifications, brighter colors
+            prompta.classList.add("warn");
+            break;
+        case 2:
+            // important, on notifications, very bright colors
+            prompta.classList.add("error");
+            break;
+        case 3:
+            // success, like info, but lime
+            prompta.classList.add("success");
+            break;
+        case 4: // special
+            // very important, blocks other actions
+            prompta.classList.add("block");
+            break;
+        default: // unclassified
+            break;
         }
 
-        if (!uncloseable) {
+        if (!unclosable) {
             // add class
             prompta.classList.add("closeable");
 
