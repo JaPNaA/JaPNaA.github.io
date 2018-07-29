@@ -109,7 +109,7 @@ function c_Search(DT) {
     function keydownHandler(e) {
         if (e.keyCode === 13) {
             // activates secret cli, for experiments
-            if (D.input === "$cli") {
+            if (D.input.toLowerCase() === "$cli") {
                 DT.CLI.activate(); 
                 DT.Menu.menuItems.search.setActive(false);
                 return;
