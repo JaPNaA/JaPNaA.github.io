@@ -1,4 +1,4 @@
-function SiteObjects(DT) {
+function c_SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
 
@@ -495,10 +495,8 @@ function SiteObjects(DT) {
         if (dt.hidden) return null;
         switch (dt.type) {
         case "text":
-            console.log(dt);
             return D.parseResultText(dt);
         case "card":
-            console.log(dt);
             return D.parseResultCard(dt);
         default:
             return new D.ErrorCard("Reason: Card is of unknown type");
@@ -564,6 +562,25 @@ function SiteObjects(DT) {
         return document.createElement("hr");
     };
 
+    //* very hack-y should be fixed
+    D.search_open = function () {
+        // WHY DOES THE SEARCH BUTTON CONTROL THE SEARCHING CLASS? (when there's a js file dedicated to search)
+        DT.Site.main.classList.add("searching");
+        DT.Search.initSearch(true);
+    };
+
+    //* very hack-y should be fixed
+    D.search_close = function () {
+        // WHY DOES THE SEARCH BUTTON CONTROL THE SEARCHING CLASS? (when there's a js file dedicated to search)
+        DT.Site.main.classList.remove("searching");
+        DT.Search.initSearch(false);
+
+        // WHY DOES THE SEARCH BUTTON CONTROL THE URL
+        DT.Utils.writeUrl(location.origin);
+        DT.Site.clearHeadHint();
+    };
+
+    //* very hack-y should be fixed
     D.searchButton = function () {
         var e = document.createElement("div"),
             active = false, // state: button is active
@@ -640,6 +657,7 @@ function SiteObjects(DT) {
             e.appendChild(a);
         }
 
+        // TODO: move this to the search.js file
         function clickHandler() {
             active ^= true;
 
@@ -648,14 +666,9 @@ function SiteObjects(DT) {
             }
 
             if (active) {
-                DT.Site.main.classList.add("searching");
-                DT.Search.initSearch(true);
+                D.search_open();
             } else {
-                DT.Site.main.classList.remove("searching");
-                DT.Search.initSearch(false);
-
-                DT.Utils.writeUrl(location.origin);
-                DT.Site.clearHeadHint();
+                D.search_close();
             }
 
             if (aniactive) {
@@ -663,6 +676,12 @@ function SiteObjects(DT) {
             }
             startAni();
         }
+
+        //* very hack-y should be fixed
+        e.setActive = function(val) {
+            active = !val;
+            clickHandler();
+        };
 
         // automated search with url
         if (DT.Site.search.search) {
@@ -677,6 +696,7 @@ function SiteObjects(DT) {
 
         return e;
     };
+
 
     D.yearList = function () {
         var group = document.createElement("group");

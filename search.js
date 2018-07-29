@@ -1,4 +1,4 @@
-function Search(DT) {
+function c_Search(DT) {
     var D = {
         button: null, // search button
         content: null, // content/0.json
@@ -17,7 +17,7 @@ function Search(DT) {
         sI: -1, // timer to prevent searching every key
         timeout: 250, // time to wait before searching
         inputElm: null, // <input> in head for user input
-        listening: false, // if searching is active, equiv. of "active"
+        active: false, // if searching is active, equiv. of "active"
         results: [], // search results from library
         items: {}, // elements already created from a search result
         index: null, // index outputed from search library
@@ -74,6 +74,7 @@ function Search(DT) {
     }
 
     D.updateResults = function () {
+        if (!D.active) return;
         var results = D.search(D.input);
         D.results = results;
 
@@ -91,7 +92,7 @@ function Search(DT) {
         }
 
         DT.Utils.writeUrl(location.origin + "/?search=" + encodeURIComponent(D.input));
-    }
+    };
 
     function changeHandler() {
         if (D.input === D.linput) return;
@@ -107,6 +108,13 @@ function Search(DT) {
 
     function keydownHandler(e) {
         if (e.keyCode === 13) {
+            // activates secret cli, for experiments
+            if (D.input === "$cli") {
+                DT.CLI.activate(); 
+                DT.Menu.menuItems.search.setActive(false);
+                return;
+            }
+
             if (D.input.length < 2) {
                 DT.Site.writeHeadHint(0, "Input length must be more than 1");
                 return;
@@ -128,7 +136,7 @@ function Search(DT) {
     }
 
     function gKeydownHandler(e) {
-        if (D.listening) {
+        if (D.active) {
             D.inputElm.focus();
         }
     }
@@ -147,7 +155,7 @@ function Search(DT) {
     }
 
     function focusHandler() {
-        if (!D.listening) {
+        if (!D.active) {
             this.blur();
         }
     }
@@ -165,8 +173,8 @@ function Search(DT) {
 
     D.initSearch = function(e) {
         if (e) {
-            if (D.listening) return;
-            D.listening = true;
+            if (D.active) return;
+            D.active = true;
 
             registerHandlers();
 
@@ -177,7 +185,7 @@ function Search(DT) {
 
             D.inputElm.focus();
         } else {
-            D.listening = false;
+            D.active = false;
             
             unregisterHandlers();
 

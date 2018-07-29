@@ -1,4 +1,4 @@
-function ContentGetter(DT) {
+function c_ContentGetter(DT) {
     var D = {
         toGet: {} // every request
     };

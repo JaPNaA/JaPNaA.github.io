@@ -23,13 +23,18 @@ var cachePaths = [
     "/utils.js",
     "/serviceWorker.js",
     "/aboutPage.js",
-    
+    "/cli.js",
+
+    "/cli/index.html",
+    "/cli/index.js",
+    "/cli/index.css",
+
     "/3rdParty/normalize.css",
     "/3rdParty/elasticlunr.min.js",
 
     "/img/searchIcon.png",
     "/close-button.svg"
-]
+];
 
 var cachedVersionPath = "version.txt",
     newestVersion = null,
@@ -49,8 +54,8 @@ function createCaches(e) {
             method: "GET",
             headers: nocacheHeader
         };
-    nocacheHeader.append('pragma', 'no-cache');
-    nocacheHeader.append('cache-control', 'no-cache');
+    nocacheHeader.append("pragma", "no-cache");
+    nocacheHeader.append("cache-control", "no-cache");
 
     // remove previous caches
     caches.keys().then(function (keys) {
@@ -133,7 +138,7 @@ addEventListener("fetch", function (e) {
         checkVersion(e);
     }
 
-    if (e.request.cache === 'only-if-cached' && e.request.mode !== 'same-origin') {
+    if (e.request.cache === "only-if-cached" && e.request.mode !== "same-origin") {
         return;
     }
     
@@ -158,7 +163,7 @@ addEventListener("fetch", function (e) {
 
         e.respondWith(fetch(e.request)
             .then(function (response) {
-                if (!response || response.status !== 200 || response.type !== 'basic') {
+                if (!response || response.status !== 200 || response.type !== "basic") {
                     return caches.match(cUrl)
                         .then(function (r) {
                             if (r) {
@@ -192,14 +197,14 @@ addEventListener("fetch", function (e) {
 
         e.respondWith(
             new Response("ok", {
-                headers: { 'Content-Type': 'text/plain' }
+                headers: { "Content-Type": "text/plain" }
             })
         );
 
         createCaches(e)
             .then(function () {
                 console.log("reloaded caches");
-            })
+            });
         console.log("reloading caches");
     } else {
         e.respondWith(

@@ -1,4 +1,4 @@
-function ServiceWorker(DT) {
+function c_ServiceWorker(DT) {
     var D = {
         worker: null,
         checkedVersion: false
@@ -23,12 +23,13 @@ function ServiceWorker(DT) {
                         let x = new XMLHttpRequest();
                         x.open("POST", "/reloadCache");
                         x.addEventListener("load", function () {
-                            if (x.response == "ok") {
+                            if (x.response === "ok") {
                                 DT.Utils.prompta("An update was found! To see the new version, just <a href=\"" + location.href + "\">reload</a>.", 0, null, false);
                             } else {
                                 DT.Utils.prompta("An update was found!... but failed to update :( Please send a bug report. <br> " +
                                     JSON.stringify({ responseCode: x.responseCode, response: x.response })
-                                , 2, null, false);
+                                    , 2, null, false
+                                );
                             }
                         });
                         x.responseType = "text";

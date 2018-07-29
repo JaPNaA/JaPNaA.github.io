@@ -1,4 +1,4 @@
-function ShortUrl(DT) {
+function c_ShortUrl(DT) {
     var D = {};
     DT.ShortUrl = D;
 
