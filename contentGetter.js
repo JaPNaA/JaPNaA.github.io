@@ -1,9 +1,19 @@
 function c_ContentGetter(DT) {
     var D = {
-        toGet: {} // every request
+        toGet: {}, // every request
+
+        // localStorage
+        // -----------------------------------------------------------------------------
+        localStorage: null,             // localstorage data
+        localStorageKey: "JaPNaASDT",   // key for localstorage
+        canUseLocalStorage: true,       // allow use of localstorage?
+        changedLocalStorage: false,     // has the localstorage been changed since updated?
+        localStorageTimeout: null       // setTimeout for localstorage
     };
     DT.ContentGetter = D;
 
+    // network
+    // -----------------------------------------------------------------------------
     class Request {
         constructor(url, preventCache, responseType) {
             this.url = url;
@@ -95,16 +105,17 @@ function c_ContentGetter(DT) {
         }
     }
 
+    // add content to get
     D.add = function (id, url, preventCache, loadHandler, responseType) {
         if (D.toGet[id]) { // if request exists
             let req = D.toGet[id];
-            if (req.status === 200 || req.readyState == XMLHttpRequest.LOADING) { // if loaded and not caching is off
+            if (req.status === 200 || req.readyState === XMLHttpRequest.LOADING) { // if loaded and not caching is off
                 if (loadHandler) {
                     loadHandler(D.toGet[id].response); // call loaded
                 }
             } else {
                 req.addEventListener("load", loadHandler);
-                if (req.readyState != XMLHttpRequest.OPENED) {
+                if (req.readyState !== XMLHttpRequest.OPENED) {
                     req.request();
                 }
             }
@@ -119,5 +130,54 @@ function c_ContentGetter(DT) {
         }
 
         return D.toGet[id];
+    };
+
+    // localstorage
+    // -----------------------------------------------------------------------------
+    function parseLocalStorage() {
+        try {
+            D.localStorage = JSON.parse(localStorage[D.localStorageKey]);
+        } catch (e) {
+            clearLocalStorage();
+        }
+
+        if (D.localStorage.fdtV) { // still using localstorage of old site, clear
+            clearLocalStorage();
+        }
+    }
+
+    function clearLocalStorage() {
+        localStorage.removeItem(D.localStorageKey);
+        D.localStorage = {};
+        D.changedLocalStorage = true;
+    }
+
+    function stiLocalStorageUpdate() {
+        clearTimeout(D.localStorageTimeout);
+        D.localStorageTimeout = setTimeout(function () {
+            D.updateLocalStorage();
+        }, 100);
+    }
+
+    D.updateLocalStorage = function() {
+        if (D.canUseLocalStorage) {
+            localStorage[D.localStorageKey] = JSON.stringify(D.localStorage);
+            D.changedLocalStorage = false;
+        }
+    };
+
+    D.writeLocalStorage = function(key, value) {
+        D.localStorage[key] = value;
+        D.changedLocalStorage = true;
+        
+        // ensure no information loss
+        stiLocalStorageUpdate();
+    };
+
+    D.setup = function() {
+        parseLocalStorage();
+        addEventListener("beforeunload", function() {
+            D.updateLocalStorage();
+        });
     };
 }

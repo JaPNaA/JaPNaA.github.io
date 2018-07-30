@@ -42,6 +42,14 @@ a:active {
     color: #ee0000;
 }
 
+pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;       
+}
+
 .noselect {
     -webkit-user-select: none;
     -moz-user-select: none;

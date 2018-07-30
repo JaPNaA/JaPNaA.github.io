@@ -1,4 +1,4 @@
-// version 0.3.4
+// version 0.3.4.9
 
 // comment to debug
 console.log = function () { }; // because I log too many things and I can't be bothered to remove them

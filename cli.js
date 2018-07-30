@@ -12,15 +12,44 @@ function c_CLI(DT) {
         active: false,                  // is CLI active?
         loaded: false,
 
-        window: null,                    // window property of CLI window
-        commands: {
-            "prompta": function(str, strargs, importancy, ttl, unclosable, ...content) {
+        window: null,                   // window property of CLI window
+
+        // CLI data
+        // -----------------------------------------------------------------------------
+        commands: {                     // commands accessible by CLI
+            prompta: function(str, strargs, importancy, ttl, unclosable, ...content) {
                 DT.Utils.prompta(content.join(" "), parseInt(importancy), parseInt(ttl), parseInt(unclosable));
                 return 0;
+            },
+            version: function() {
+                D.window.println("Current: " + D.data.version.current);
+                D.window.println("Latest: " + D.data.version.latest);
+                D.window.println("Localstorage: " + D.data.version.localStorage);
+                return 0;
+            },
+            update: function() {
+                D.window.println("Force updating site");
+                DT.ServiceWorker.updateSite();
+                return 0;
+            },
+            reload: function(str, strargs, forceReload) {
+                location.reload(!!parseInt(forceReload));
+                return 1;
             }
         },
-        helpCmd: {
-            "prompta": "Syntax: prompta [int importancy] [int ttl] [1/0 unclosable] [string of message with spaces]"
+        helpCmd: {                      // help for commands
+            prompta: "Syntax: prompta [int importancy] [int ttl] [1/0 unclosable] [string of message with spaces]",
+            version: "Syntax: version\nPrints the version numbers of the site",
+            update: "Syntax: update\nForce updates the site",
+            reload: "Syntax: reload [1/0 forceReload]\nReloads the site"
+        },
+
+        data: {                         // data accessible by CLI, for debugging
+            version: {
+                current: null,
+                latest: null,
+                localStorage: null
+            }
         }
     };
     DT.CLI = D;
@@ -52,8 +81,12 @@ function c_CLI(DT) {
         }
     }
 
+    function checkAvailable() {
+        return D.active && D.loaded && D.window;
+    }
+
     function closeCLI() {
-        if (D.active && D.loaded && D.window) {
+        if (checkAvailable()) {
             D.window.close();
         }
     }
@@ -67,8 +100,33 @@ function c_CLI(DT) {
         openCLI();
     };
 
+    D.log = function(e, cls) {
+        if (checkAvailable()) {
+            D.window.println(e, cls);
+        }
+    };
+
     D.setup = function() {
         addEventListener("message", onreceivemessage);
-        addEventListener("beforeunload", closeCLI);
+
+        // reactive CLI when reloaded with it open
+        // -----------------------------------------------------------------------------
+        // if reloaded and cli is true
+        if (
+            performance.navigation.type === performance.navigation.TYPE_RELOAD && 
+            DT.ContentGetter.localStorage["cli"]
+        ) {
+            D.activate();
+        }
+        DT.ContentGetter.writeLocalStorage("cli", false);
+
+        addEventListener("beforeunload", function() {
+            // if open, set cli to true
+            if (checkAvailable()) {
+                DT.ContentGetter.writeLocalStorage("cli", true);
+                DT.ContentGetter.updateLocalStorage();
+            }
+            closeCLI();
+        });
     };
 }

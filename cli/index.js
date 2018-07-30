@@ -51,10 +51,29 @@ function cmd_eval(str, strargs, ...args) {
     return 0;
 }
 
+function cmd_update() {
+    var x = new XMLHttpRequest();
+
+    println("This is the standalone version of this command.", "wrn");
+
+    x.open("GET", location.origin + "/reloadCache");
+    x.responseType = "text";
+
+    x.addEventListener("load", function() {
+        println("Site updated with response: " + x.status + ", \"" + x.response + "\"");
+    });
+
+    x.send();
+    return 0;
+}
+
 const moreHelp = {
     "echo": "Syntax: echo [string with spaces]\nThis command says whatever you want it to say",
     "eval": "Syntax: echo [string of code with spaces]\nThis command evaluates your code and prints it's return value",
-    "help": "Syntax: help *[command]\nWhen given no arguments, lists all commands.\nWith a name of a command, will print it's help information."
+    "help": "Syntax: help *[command]\nWhen given no arguments, lists all commands.\nWith a name of a command, will print it's help information.",
+    "cls": "Syntax: cls\nClears the console",
+    "update": "Syntax: update\nForce update JaPNaA.github.io",
+    "exit": "Syntax: exit\nCloses the console. (Only works when attached to parent)"
 };
 
 function cmd_help(str, strargs, command) {
@@ -66,7 +85,10 @@ function cmd_help(str, strargs, command) {
             println("Help for command '" + command + "' doesn't exist", "err");
         }
     } else {
-        println(Object.keys(cmdMap).join("\n"));
+        println("Here's a list of commands available:");
+        println("  " + Object.keys(cmdMap).join("\n  "));
+
+        println("\nThis is the CLI for JaPNaA.github.io. The CLI is is tool that I created to assist myself in developing my site. It contains commands that cause things to happen on my site. For example: prompta, to create a prompt on the site; update, to force an update on my site; etc.");
     }
     return 0;
 }
@@ -81,6 +103,7 @@ const cmdMap = {
     "eval": cmd_eval,
     "help": cmd_help,
     "cls": clearConsole,
+    "update": cmd_update,
     "exit": cmd_exit
 };
 

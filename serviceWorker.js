@@ -5,6 +5,46 @@ function c_ServiceWorker(DT) {
     };
     DT.ServiceWorker = D;
 
+    D.updateSite = function() {
+        // request worker to reload
+        var x = new XMLHttpRequest();
+        x.open("GET", "/reloadCache");
+        x.responseType = "text";
+        x.addEventListener("load", function () {
+            if (x.response === "ok") {
+                let a = document.createElement("a"),
+                    textBefore = document.createTextNode("An update was found! To see the new version, just "),
+                    textAfter = document.createTextNode("."),
+                    docFrag = document.createDocumentFragment();
+
+                a.href = location.href;
+                a.innerHTML = "reload";
+
+                docFrag.appendChild(textBefore);
+                docFrag.appendChild(a);
+                docFrag.appendChild(textAfter);
+
+                DT.Utils.prompta(docFrag, 0, null, false);
+            } else {
+                let text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
+                    br = document.createElement("br"),
+                    debugData = document.createElement("pre"),
+                    docFrag = document.createDocumentFragment();
+                
+                debugData.innerHTML = JSON.stringify({ responseCode: x.status, response: x.response });
+
+                docFrag.appendChild(text);
+                docFrag.appendChild(br);
+                docFrag.appendChild(debugData);
+
+                DT.Utils.prompta(docFrag, 2, null, false);
+            }
+            DT.CLI.log("Site updated");
+        });
+        x.send();
+    };
+
+    // serviceworker checks the version of the site, the serviceworker may have have it cached
     function checkVersion() {
         var current = null,
             latest = null;
@@ -13,30 +53,24 @@ function c_ServiceWorker(DT) {
         D.checkedVersion = true;
 
         function _checkdone() { // callback for both requests to compare data
+            let localstorageVersion = DT.ContentGetter.localStorage.version;
+
             if (current !== null && latest !== null) {
-                if (current === latest) {
+                console.log(current, localstorageVersion, latest);
+                if (current === latest && (localstorageVersion === latest || localstorageVersion === undefined)) {
                     console.log("running latest");
                 } else {
                     console.log("running old");
-
-                    { // request worker to reload
-                        let x = new XMLHttpRequest();
-                        x.open("POST", "/reloadCache");
-                        x.addEventListener("load", function () {
-                            if (x.response === "ok") {
-                                DT.Utils.prompta("An update was found! To see the new version, just <a href=\"" + location.href + "\">reload</a>.", 0, null, false);
-                            } else {
-                                DT.Utils.prompta("An update was found!... but failed to update :( Please send a bug report. <br> " +
-                                    JSON.stringify({ responseCode: x.responseCode, response: x.response })
-                                    , 2, null, false
-                                );
-                            }
-                        });
-                        x.responseType = "text";
-                        x.send();
-                    }
+                    D.updateSite();
                 }
+
+                DT.ContentGetter.writeLocalStorage("version", latest);
             }
+
+            // debug
+            DT.CLI.data.version.current = current;
+            DT.CLI.data.version.latest = latest;
+            DT.CLI.data.version.localStorage = localstorageVersion;
         }
 
         DT.ContentGetter.add("versionCurrent", "version.txt", false, function (e) {
@@ -50,34 +84,16 @@ function c_ServiceWorker(DT) {
         }, "text");
     }
 
-    function onregistered() {
-        // D.worker.onupdatefound = function () {
-        //     var main = document.createDocumentFragment(),
-        //         a = document.createTextNode("An update was found! Just "),
-        //         b = document.createElement("a"),
-        //         c = document.createTextNode(" to update!");
-
-        //     b.innerHTML = "reload";
-        //     b.href = location.href;
-
-        //     main.appendChild(a);
-        //     main.appendChild(b);
-        //     main.appendChild(c);
-
-        //     DT.Utils.prompta(main, 0, null, false);
-        // };
-    }
-
     function initServiceWorker() {
         navigator.serviceWorker.register("serviceWorker.wkr.js", {
-            updateViaCache: 'all'
+            updateViaCache: "all"
         })
             .then(function (worker) {
                 D.worker = worker;
                 checkVersion();
             })
             .catch(function (err) {
-                console.warn('ServiceWorker registration failed: ', err);
+                console.warn("ServiceWorker registration failed: ", err);
             });
     }
 

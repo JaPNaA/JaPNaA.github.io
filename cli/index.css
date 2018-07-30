@@ -19,10 +19,14 @@ body {
     overflow-y: scroll;
 }
 
-#input, #output {
+#output, #input{
     background-color: inherit;
     font-display: inherit;
     font-size: var(--font-size);
+}
+
+#output {
+    white-space: pre-wrap;
 }
 
 #output .inp {
