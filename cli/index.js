@@ -229,24 +229,31 @@ addEventListener("load", function() {
 
 let parent = null;
 
-function setupParent() {
-    for (let i in parent.DT.CLI.commands) {
-        cmdMap[i] = parent.DT.CLI.commands[i];
+function setupParentCommands(key) {
+    for (let i in parent[key].commands) {
+        cmdMap[i] = parent[key].commands[i];
     }
-    for (let i in parent.DT.CLI.helpCmd) {
-        moreHelp[i] = parent.DT.CLI.helpCmd[i];
+    for (let i in parent[key].helpCmd) {
+        moreHelp[i] = parent[key].helpCmd[i];
     }
+
+    parent.postMessage("gotAPIs", location.origin);
+
+    println("Received parent APIs!", "suc");
 }
 
 function msg_parentSet(e, args) {
     parent = e.source;
     println("Attached to parent!", "suc");
+}
 
-    setupParent();
+function msg_exposeKey(e, args) {
+    setupParentCommands(args);
 }
 
 const msgCommandMap = {
-    parentSet: msg_parentSet
+    parentSet: msg_parentSet,
+    exposeKey: msg_exposeKey
 };
 
 function parseMessage(e) {
@@ -254,7 +261,7 @@ function parseMessage(e) {
         command, args;
 
     if (splitIx < 0) {
-        command = e;
+        command = e.data;
     } else {
         command = e.data.slice(0, splitIx);
         args = e.data.slice(splitIx + 1);

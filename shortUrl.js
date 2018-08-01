@@ -118,4 +118,6 @@ function c_ShortUrl(DT) {
         addEventListener("hashchange", redirectUrlHash);
         redirectUrlHash();
     };
+    
+    return D;
 }

@@ -40,4 +40,6 @@ function c_AboutPage(DT) {
         D.elm.innerHTML = "Loading content...";
         // new DT.SiteObjects.Text("About JaPNaA", "").appendTo(D.elm);
     };
+    
+    return D;
 }

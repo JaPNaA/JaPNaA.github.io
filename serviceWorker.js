@@ -99,9 +99,11 @@ function c_ServiceWorker(DT) {
 
     D.setup = function () {
         if ("serviceWorker" in window.navigator) {
-            addEventListener("load", initServiceWorker);
+            initServiceWorker();
         } else {
             console.log("Browser doesn't support service workers");
         }
     };
+
+    return D;
 }

@@ -61,4 +61,6 @@ function c_SplashScreen(DT) {
             remove();
         }, 400);
     };
+
+    return D;
 }

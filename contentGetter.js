@@ -180,4 +180,6 @@ function c_ContentGetter(DT) {
             D.updateLocalStorage();
         });
     };
+    
+    return D;
 }

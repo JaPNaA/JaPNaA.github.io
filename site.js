@@ -291,7 +291,7 @@ function c_Site(DT) {
             childrenl = D.children.length,
             hm = false;
 
-        if (D.children.length == 0) { // if there are no children, reload, because there must be some.
+        if (D.children.length === 0) { // if there are no children, reload, because there must be some.
             location.reload(false);
             return false;
         }
@@ -350,7 +350,7 @@ function c_Site(DT) {
             D.headHintD.ttl[id] =
                 setTimeout(function () {
                     D.clearHeadHint();
-                }, ttl);;
+                }, ttl);
         }
 
         D.headHint.classList.add("show");
@@ -376,11 +376,6 @@ function c_Site(DT) {
 
     // misc. functions
     // --------------------------------------------------------------------------------
-
-    // check version of site
-    function checkVersion() {
-        DT.ContentGetter.get()
-    }
 
     function updateDeviceType() {
         if (D.isMobile) {
@@ -429,4 +424,6 @@ function c_Site(DT) {
 
         document.body.appendChild(docFrag);
     };
+
+    return D;
 }

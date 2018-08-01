@@ -1,4 +1,4 @@
-// version 0.3.4.9
+// version 0.3.4.10
 
 // comment to debug
 console.log = function () { }; // because I log too many things and I can't be bothered to remove them
@@ -112,7 +112,7 @@ function checkVersion(e) {
             cachedVersion = cVersion; // set to cached version
         })
         .then(function () {
-            if (newestVersion == cachedVersion) {
+            if (newestVersion === cachedVersion) {
                 hasCheckedVersion = true;
                 console.log("current version: " + cachedVersion);
             } else {
@@ -192,7 +192,7 @@ addEventListener("fetch", function (e) {
                         return r;
                     });
             }));
-    } else if (e.request.url == location.origin + "/reloadCache") {
+    } else if (e.request.url === location.origin + "/reloadCache") {
         hasCached = false;
 
         e.respondWith(

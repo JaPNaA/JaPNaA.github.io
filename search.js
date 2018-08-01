@@ -110,7 +110,11 @@ function c_Search(DT) {
         if (e.keyCode === 13) {
             // activates secret cli, for experiments
             if (D.input.toLowerCase() === "$cli") {
-                DT.CLI.activate(); 
+                if (DT.c_["c_CLI"]) {
+                    DT.CLI.activate(); 
+                } else {
+                    DT.Utils.prompta("c_CLI is not loaded", 2, 0, false);
+                }
                 DT.Menu.menuItems.search.setActive(false);
                 return;
             }
@@ -232,4 +236,6 @@ function c_Search(DT) {
             }
         });
     };
+
+    return D;
 }

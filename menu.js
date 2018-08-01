@@ -7,7 +7,7 @@ function c_Menu(DT) {
             about: null,
             search: null,
             yearList: null
-        },
+        }
     };
     DT.Menu = D;
 
@@ -47,7 +47,7 @@ function c_Menu(DT) {
             // when transition ends, remove element and stop fallback
             sub.addEventListener("transitionend", function (e) {
                 //: e.path check is required due to MSEdge
-                if (e.path && e.path[0] == this && this.parentElement) {
+                if (e.path && e.path[0] === this && this.parentElement) {
                     sub.parentElement.removeChild(sub);
                     clearTimeout(teSI);
                 }
@@ -184,7 +184,12 @@ function c_Menu(DT) {
             let a = document.createElement("div");
             a.innerHTML = "About";
             a.addEventListener("click", function () {
-                DT.AboutPage.activate();
+                if (DT.c_["c_AboutPage"]) {
+                    DT.AboutPage.activate();
+                } else {
+                    console.error("index.js didn't load c_AboutPage, user attempted to launch AboutPage");
+                    DT.Utils.prompta("Failed to launch c_AboutPage. Your browser may not be supported.", 2, 0, false);
+                }
             });
             D.menuItems.about = a;
             menu.appendChild(a);
@@ -220,4 +225,6 @@ function c_Menu(DT) {
         D.menu = D.createMenu();
         D.menuP = DT.Site.menuP;
     };
+
+    return D;
 }

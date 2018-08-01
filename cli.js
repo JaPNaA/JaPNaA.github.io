@@ -6,11 +6,13 @@ function c_CLI(DT) {
         // Constants
         // -----------------------------------------------------------------------------
         cliPath: "/cli/index.html",     // path of index.html for CLI
+        key: DT.Utils.rStr(8),          // key to expose self with
 
         // States and variables
         // -----------------------------------------------------------------------------
         active: false,                  // is CLI active?
-        loaded: false,
+        loaded: false,                  // has CLI loaded?
+        exposed: false,                  // is local variable D exposed?
 
         window: null,                   // window property of CLI window
 
@@ -28,8 +30,12 @@ function c_CLI(DT) {
                 return 0;
             },
             update: function() {
-                D.window.println("Force updating site");
-                DT.ServiceWorker.updateSite();
+                if (DT.c_["c_ServiceWorker"]) {
+                    D.window.println("Force updating site");
+                    DT.ServiceWorker.updateSite();
+                } else {
+                    D.window.println("c_ServiceWorker isn't loaded", "err");
+                }
                 return 0;
             },
             reload: function(str, strargs, forceReload) {
@@ -54,23 +60,51 @@ function c_CLI(DT) {
     };
     DT.CLI = D;
 
+    /**
+     * exposes/hides local variable D
+     * @param {Boolean} e to expose/hide
+     */
+    function exposeSelf(e) {
+        if (e) {
+            window[D.key] = D;
+            D.exposed = true;
+
+            D.window.postMessage("exposeKey:" + D.key, location.origin);
+        } else {
+            delete window[D.key];
+            D.exposed = false;
+        }
+    }
+
     function openCLI() {
         D.window = open(D.cliPath, "cli", `top=${screenY}, left=${screenX}, width=760, height=360`, true);
 
         D.window.addEventListener("ready", function() {
             D.window.postMessage("parentSet: I am your father.", location.origin);
+            exposeSelf(true);
         });
     }
 
     function onreceivemessage(e) {
-        if (e.data.startsWith("childSet:")) {
+        var splitIx = e.data.indexOf(":"),
+            command, args;
+
+        if (splitIx < 0) {
+            command = e.data;
+        } else {
+            command = e.data.slice(0, splitIx);
+            args = e.data.slice(splitIx + 1);
+        }
+
+        switch (command) {
+        case "childSet":
             if (D.loaded || e.source !== D.window) {
                 e.source.postMessage("no.", location.origin);
                 e.source.close();
                 console.log("Killed child, CLI already open");
             } else {
                 D.loaded = true;
-                D.window.addEventListener("beforeunload", function() {
+                D.window.addEventListener("beforeunload", function () {
                     // reset
                     D.active = false;
                     D.loaded = false;
@@ -78,6 +112,13 @@ function c_CLI(DT) {
                 });
                 console.log("CLI attached");
             }
+            break;
+        case "gotAPIs":
+            exposeSelf(false);
+            break;
+        default:
+            console.log("Unknown message from CLI: ", e.data);
+            break;
         }
     }
 
@@ -129,4 +170,6 @@ function c_CLI(DT) {
             closeCLI();
         });
     };
+
+    return D;
 }

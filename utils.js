@@ -36,7 +36,7 @@ function c_Utils(DT) {
      * @param {String|Element} content popup content
      * @param {Number} [importancy] how important the prompt is
      * @param {Number} [ttl] how long before the notification automatically closes, leave null for forever
-     * @param {Boolean} [uncloseable] can the user close the notification
+     * @param {Boolean} [unclosable] can the user close the notification
      * @returns {Object} Tools to interact with prompta
      */
     D.prompta = function (content, importancy, ttl, unclosable) {
@@ -64,7 +64,7 @@ function c_Utils(DT) {
         contentElm.classList.add("content");
 
         // give element content
-        if (content.constructor == String) {
+        if (content.constructor === String) {
             contentElm.innerHTML = content;
         } else {
             contentElm.appendChild(content);
@@ -192,6 +192,18 @@ function c_Utils(DT) {
         return r;
     };
 
+    D.rChar = function() {
+        return String.fromCharCode(Math.floor(Math.random() * 128));
+    };
+
+    D.rStr = function(length) {
+        var r = "";
+        for (let i = 0; i < length; i++) {
+            r += D.rChar();
+        }
+        return r;
+    };
+
     D.easingFunctions = {
         // no easing, no acceleration
         linear: function (t) {
@@ -246,4 +258,6 @@ function c_Utils(DT) {
             return t < .5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
         }
     };
+
+    return D;
 }

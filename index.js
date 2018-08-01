@@ -1,37 +1,80 @@
 (function() {
-    var DT = {},
-        L = null;
+    var DT = {
+        setupQue: [],
+        c_: {}
+    };
 
-    try {
-        L = [
-            c_SplashScreen, 
-            c_Utils, 
-            c_ContentGetter, 
-            c_ShortUrl, 
-            c_SiteObjects, 
-            c_Menu, c_Site, 
-            c_Elasticlunr, 
-            c_Search, 
-            c_ServiceWorker, 
-            c_AboutPage, 
-            c_CLI
-        ];
-    } catch(err) {
-        // location.reload(true); // add something to prevent from looping forever
-        throw err;
-        return;
+    var required = [
+        "c_SplashScreen",
+
+        "c_Utils",
+        "c_ContentGetter",
+        "c_ShortUrl",
+        
+        "c_SiteObjects",
+        "c_Menu",
+        "c_Site",
+        
+        "c_Elasticlunr",
+        "c_Search"
+    ];
+
+    var notRequired = [
+        "c_AboutPage",
+        "c_ServiceWorker",
+        "c_CLI"
+    ];
+
+    function load(c_name) {
+        if (typeof window[c_name] !== "function") return false;
+
+        try {
+            DT.setupQue.push(window[c_name](DT));
+            DT.c_[c_name] = true;
+        } catch (e) {
+            console.error(e);
+            DT.c_[c_name] = false;
+            return false;
+        }
+        return true;
     }
-    
-    for(let i of L) {
-        i(DT);
+
+    function loadRequired() {
+        for (let i of required) {
+            if (load(i)) {
+                console.log("Loaded " + i);
+            } else {
+                console.error("Failed to load" + i);
+            }
+        }
+        setupLoads();
     }
-    for (let i in DT) {
-        let j = DT[i];
-        if (j.setup) {
-            j.setup();
+
+    function loadNotRequired() {
+        for (let i of notRequired) {
+            if (load(i)) {
+                console.log("Loaded " + i);
+            } else {
+                console.warn("Failed to load" + i);
+            }
+        }
+        setupLoads();
+    }
+
+    function setupLoads() {
+        while (DT.setupQue.length) {
+            let i = DT.setupQue.shift();
+            if (!i) continue;
+            if (i.setup) {
+                i.setup();
+            }
         }
     }
+    
+    loadRequired();
+
+    addEventListener("load", loadNotRequired);
 
     //* for debugging
-    window.DT = DT; 
+    window.DT = DT;
 }());

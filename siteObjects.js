@@ -4,7 +4,8 @@ function c_SiteObjects(DT) {
 
     /**
      * determinds the absolute path of a uri from DT.Site.path
-     * @param {string} uri
+     * @param {string} uri uri to parse
+     * @returns {string} parsed uri path
      */
     function parseURIPath(uri) {
         if (uri.match(/^(\w*):\/\//)) { // matches START (any protocol)://
@@ -25,7 +26,7 @@ function c_SiteObjects(DT) {
         constructor(title, timestamp, style) {
             this.elmP = document.createElement("a");
             this.elm = document.createElement("div");
-            
+
             {
                 this.titleElm = document.createElement("div");
                 this.titleElm.title = "Name #PostNo.";
@@ -36,14 +37,14 @@ function c_SiteObjects(DT) {
                 this.bodyElm.classList.add("body");
                 this.elm.appendChild(this.bodyElm);
             }
-            
+
             this.added = false;
-            
+
             this.imgs = [];
             this.events = {
                 load: []
             };
-            
+
             this.elmP.target = "_blank";
             this.elmP.rel = "noopener";
             this.elm.classList.add("item");
@@ -136,7 +137,7 @@ function c_SiteObjects(DT) {
             this.elmP = document.createElement("div");
             this.elm = document.createElement("div");
             this.expandedElm = document.createElement("div");
-            
+
             this.imgs = [];
             this.added = false;
             this.isExpanded = false;
@@ -170,7 +171,7 @@ function c_SiteObjects(DT) {
                 this.expandedElm.classList.remove("expanded");
             }
         }
-        
+
         prepAdd() {
             if (this.added) return;
             for (let i of this.imgs) {
@@ -179,7 +180,7 @@ function c_SiteObjects(DT) {
             this.added = true;
         }
 
-        createExpandItem() {}
+        createExpandItem() { }
 
         unexpand() {
             this.expandedElm.removeChild(this.expandItem.elmP);
@@ -256,7 +257,7 @@ function c_SiteObjects(DT) {
                 this.bodyElm.classList.add("body");
                 this.elm.appendChild(this.bodyElm);
             }
-            
+
             this.titleElm.innerHTML = title;
             this.bodyElm.innerHTML = content.innerText.substr(0, 200); // cut off at 200 characters
 
@@ -435,7 +436,7 @@ function c_SiteObjects(DT) {
     };
 
     D.parseText = function (dt) {
-        return new D.Text (
+        return new D.Text(
             dt.title,
             D.parseDescriptionContent(dt.content, dt.jsformat), // format string for ${{js}}, if required
             dt.timestamp,
@@ -443,7 +444,7 @@ function c_SiteObjects(DT) {
         );
     };
     D.parseCard = function (dt) {
-        return new D.Card (
+        return new D.Card(
             dt.name,
             parseURIPath(dt.content.link),
             dt.content,
@@ -458,7 +459,7 @@ function c_SiteObjects(DT) {
 
     // parseResult is for a result from search.js
     D.parseResultText = function (dt) {
-        return new D.ResultText (
+        return new D.ResultText(
             dt.title,
             D.parseDescriptionContent(dt.content, dt.jsformat), // format string for ${{js}}, if required
             dt.timestamp,
@@ -466,7 +467,7 @@ function c_SiteObjects(DT) {
         );
     };
     D.parseResultCard = function (dt) {
-        return new D.ResultCard (
+        return new D.ResultCard(
             dt.name,
             parseURIPath(dt.content.link),
             dt.content,
@@ -678,7 +679,7 @@ function c_SiteObjects(DT) {
         }
 
         //* very hack-y should be fixed
-        e.setActive = function(val) {
+        e.setActive = function (val) {
             active = !val;
             clickHandler();
         };
@@ -717,4 +718,6 @@ function c_SiteObjects(DT) {
 
         return group;
     };
+
+    return D;
 }
