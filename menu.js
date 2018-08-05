@@ -33,7 +33,8 @@ function c_Menu(DT) {
         var sub = document.createElement("div"),
             backButton = createBackButton(),
             separator = DT.SiteObjects.separator();
-        sub.classList.add("submenu", "noselect");
+        sub.classList.add("submenu");
+        sub.classList.add("noselect");
 
         DT.Utils.reqreqanf(function () {
             sub.classList.add("open");

@@ -178,10 +178,9 @@ function c_Site(DT) {
         // clear
         D.bodyFragCount = e;
         bodyFragCount = e;
-        for (let i of D.bodyFrag) {
-            body.removeChild(i);
+        while (D.bodyFrag.length) {
+            body.removeChild(D.bodyFrag.pop());
         }
-        D.bodyFrag.length = 0;
 
         D.bodyFrag = bodyFrag;
 
@@ -203,14 +202,16 @@ function c_Site(DT) {
             bodyFrag.push(frag);
         }
 
-        for (let item of D.children) {
+        for (let i = 0; i < D.children.length; i++) {
+            let item = D.children[i];
+
             if (item.added) {
                 D.addItem(item);
             }
         }
 
-        for (let i of bodyFrag) {
-            body.appendChild(i);
+        for (let i = 0; i < bodyFrag.length; i++) {
+            body.appendChild(bodyFrag[i]);
         }
 
         // load visible

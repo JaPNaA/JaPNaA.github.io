@@ -20,12 +20,15 @@ function c_AboutPage(DT) {
 
         if (!D.loaded) {
             DT.ContentGetter.add("about", "content/about.json", true, function (e) {
-                var d = e.data;
+                var d = e.data,
+                    dl = d.length;
 
                 DT.Utils.emptyElement(D.elm);
 
-                for (let i of d) {
-                    let item = DT.SiteObjects.parse(i);
+                for (let i = 0; i < dl; i++) {
+                    let j = d[i];
+                    
+                    let item = DT.SiteObjects.parse(j);
                     if (!item) continue;
                     item.appendTo(D.elm);
                 }

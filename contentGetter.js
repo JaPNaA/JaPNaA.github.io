@@ -14,96 +14,122 @@ function c_ContentGetter(DT) {
 
     // network
     // -----------------------------------------------------------------------------
-    class Request {
-        constructor(url, preventCache, responseType) {
-            this.url = url;
-            this.preventCache = preventCache;
-            this.responseType = responseType || "text";
-            this.alertError = false;
 
-            this.requestJSON = null;
+    /**
+     * @class
+     * @param {String} url url to make request to
+     * @param {Boolean} preventCache add ?nocache=* to request url
+     * @param {String} responseType type of response to expect
+     */
+    function Request(url, preventCache, responseType) {
+        this.url = url;
+        this.preventCache = preventCache;
+        this.responseType = responseType || "text";
+        this.alertError = false;
 
-            this.requestObj = null;
+        this.requestJSON = null;
 
-            this.events = {
-                load: [],
-                error: []
-            };
-            this.addedListeners = false;
+        this.requestObj = null;
 
-            this.request();
-        }
+        this.events = {
+            load: [],
+            error: []
+        };
+        this.addedListeners = false;
 
-        get response() {
-            return this.requestJSON || this.requestObj.response;
-        }
-        get status() {
-            return this.requestObj.status;
-        }
-        get readyState() {
-            return this.requestObj.readyState;
-        }
-
-        request() {
-            var x = new XMLHttpRequest();
-            if (this.preventCache) {
-                x.open("GET", this.url +
-                    ("?nocache=" + Date.now() + Math.random())
-                );
-            } else {
-                x.open("GET", this.url);
-            }
-            x.responseType = this.responseType;
-
-            if (!this.addedListeners) {
-                x.addEventListener("load", () => this.load(x.response));
-                x.addEventListener("error", e => this.error(e));
-                this.addedListeners = true;
-            }
-
-            x.send();
-
-            this.requestObj = x;
-        }
-        cancel() {
-            if (this.request) {
-                this.requestObj.abort();
-            }
-        }
-
-        load(e) {
-            var response = this.response || e;
-
-            if (this.responseType === "json" && typeof response !== "object") {
-                try {
-                    response = this.responseJSON = JSON.parse(response);
-                } catch (e) {
-                    console.warn("Resource " + this.url + " is type " + this.responseType + " but failed to parse");
-                }
-            }
-
-            this.dispatchEvent("load", response);
-        }
-        error(e) {
-            if (this.alertError) {
-                DT.Utils.prompta("Failed to load resource: " + this.url, 2, null, false);
-                console.error("Failed to load resource: " + this.url, e);
-            } else {
-                console.warn("Failed to load resource: " + this.url, e);
-            }
-
-            this.dispatchEvent("error", e);
-        }
-
-        dispatchEvent(t, e) {
-            for (let i of this.events[t]) {
-                i(e);
-            }
-        }
-        addEventListener(t, e) {
-            this.events[t].push(e);
-        }
+        this.request();
     }
+
+    Object.defineProperties(Request.prototype, {
+        response: {
+            get: function() {
+                return this.requestJSON || this.requestObj.response;
+            }
+        },
+        status: {
+            get: function() {
+                return this.requestObj.status;
+            }
+        },
+        readyState: {
+            get: function() {
+                return this.requestObj.readyState;
+            }
+        }
+    });
+
+    Request.prototype.request = function () {
+        var x = new XMLHttpRequest();
+        if (this.preventCache) {
+            x.open("GET", this.url +
+                ("?nocache=" + Date.now() + Math.random())
+            );
+        } else {
+            x.open("GET", this.url);
+        }
+        x.responseType = this.responseType;
+
+        if (!this.addedListeners) {
+            let that = this;
+            x.addEventListener("load", function() {
+                that.load(x.response);
+            });
+
+            x.addEventListener("error", function(e) {
+                that.error(e);
+            });
+
+            this.addedListeners = true;
+        }
+
+        x.send();
+
+        this.requestObj = x;
+    };
+
+    Request.prototype.cancel = function () {
+        if (this.request) {
+            this.requestObj.abort();
+        }
+    };
+
+    Request.prototype.load = function (e) {
+        var response = this.response || e;
+
+        if (this.responseType === "json" && typeof response !== "object") {
+            try {
+                response = this.responseJSON = JSON.parse(response);
+            } catch (e) {
+                console.warn("Resource " + this.url + " is type " + this.responseType + " but failed to parse");
+            }
+        }
+
+        this.dispatchEvent("load", response);
+    };
+
+    Request.prototype.error = function (e) {
+        if (this.alertError) {
+            DT.Utils.prompta("Failed to load resource: " + this.url, 2, null, false);
+            console.error("Failed to load resource: " + this.url, e);
+        } else {
+            console.warn("Failed to load resource: " + this.url, e);
+        }
+
+        this.dispatchEvent("error", e);
+    };
+
+    Request.prototype.dispatchEvent = function (t, e) {
+        let handlers = this.events[t],
+            hl = handlers.length;
+
+        for (let i = 0; i < hl; i++) {
+            handlers[i](e);
+        }
+    };
+
+    Request.prototype.addEventListener = function (t, e) {
+        this.events[t].push(e);
+    };
 
     // add content to get
     D.add = function (id, url, preventCache, loadHandler, responseType) {

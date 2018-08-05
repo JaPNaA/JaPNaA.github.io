@@ -16,7 +16,8 @@
 }
 
 body {
-    background-color: var(--background-color, #fffafd);
+    background-color: #fffafd;
+    background-color: var(--background-color);
     overflow-x: hidden;
 }
 
@@ -71,7 +72,8 @@ pre {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--background-color, #fffafd);
+    background-color: #fffafd;
+    background-color: var(--background-color);
     z-index: 13;
     opacity: 1;
     transition: 0.35s cubic-bezier(0.55, 0.09, 0.68, 0.53);
@@ -93,7 +95,8 @@ pre {
     width: 224px;
     z-index: 7;
 
-    background-color: var(--menu-color, #131313);
+    background-color: #131313;
+    background-color: var(--menu-color);
     background-image: linear-gradient(339deg, var(--menu-color, #131313), var(--menu-color-saturated, #191919));
     color: #f5f5f5;
 
@@ -209,6 +212,7 @@ pre {
     white-space: nowrap;
 
     /* before animation */
+    left: 224px;
     left: var(--R-LEFT);
     width: 0;
     opacity: 0.9;
@@ -217,6 +221,7 @@ pre {
 .submenu.open {
     /* after animation */
     left: 0;
+    width: 224px;
     width: var(--R-LEFT);
     opacity: 1;
 }
@@ -260,11 +265,15 @@ pre {
 #head {
     position: fixed;
     top: 0;
-    left: var(--r-left, 224px);
-    width: var(--r-width, calc(100% - 224px));
-    height: var(--head-height, 64px);
-    background-color: var(--theme-color, #80ffc4);
-    background-image: linear-gradient(45deg, var(--theme-color, #80ffc4), var(--theme-color-saturated, #2effa8));
+    left: 224px;
+    left: var(--r-left);
+    width: calc(100% - 224px);
+    width: var(--r-width);
+    height: 64px;
+    height: var(--head-height);
+    background-color: #80ffc4;
+    background-color: var(--theme-color);
+    background-image: linear-gradient(45deg, var(--theme-color), var(--theme-color-saturated));
     z-index: 6;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.24);
     transition: none;
@@ -278,9 +287,12 @@ pre {
     display: block;
     z-index: -1;
 
-    top: var(--head-height, 64px);
-    left: var(--r-left, 224px);
-    width: calc(100% - var(--r-left));
+    top: 64px;
+    top: var(--head-height);
+    left: 224px;
+    left: var(--r-left);
+    width: calc(100% - 224px);
+    width: var(--r-width);
     height: 0;
     padding: 8px;
 
@@ -306,8 +318,9 @@ pre {
 }
 
 #main.searching #head {
-    background-color: var(--search-color, #90d6ff);
-    background-image: linear-gradient(45deg, var(--search-color, #90d6ff), var(--search-color-saturated, #6bc9ff));
+    background-color: #90d6ff;
+    background-color: var(--search-color);
+    background-image: linear-gradient(45deg, var(--search-color), var(--search-color-saturated));
 }
 
 #head #searchInput {
@@ -346,7 +359,8 @@ pre {
 #head #titleText, #head #searchInput {
     font-family: "Share Tech Mono", courier, monospace;
     font-size: 42px;
-    line-height: var(--head-height, 64px);
+    line-height: 64px;
+    line-height: var(--head-height);
     padding-left: 16px;
     
     will-change: opacity, transform;
@@ -384,6 +398,7 @@ pre {
 }
 
 #aboutPage {
+    background-color: #fffafd;
     background-color: var(--background-color);
 }
 
@@ -399,10 +414,14 @@ pre {
 
 #body, #searchOverlay, #aboutPage {
     position: fixed;
-    top: var(--head-height, 64px);
+    top: 64px;
+    top: var(--head-height);
+    left: 224px;
     left: var(--r-left);
-    width: var(--r-width, calc(100% - 224px));
-    height: calc(100% - var(--head-height, 64px));
+    width: calc(100% - 224px);
+    width: var(--r-width);
+    height: calc(100% - 64px);
+    height: calc(100% - var(--head-height));
     padding: 8px;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -757,14 +776,18 @@ pre {
 
 #notificationList {
     position: fixed;
-    top: var(--head-height, 64px);
+    top: 64px;
+    top: var(--head-height);
     right: 0;
     z-index: 11;
 
     height: auto;
-    max-height: calc(100vh - var(--head-height, 64px));
-    width: calc(var(--r-width, 100%) - 16px);
-    max-width: var(--notification-width, 332px);
+    max-height: calc(100vh - 64px);
+    max-height: calc(100vh - var(--head-height));
+    width: calc(100% - 16px);
+    width: calc(var(--r-width) - 16px);
+    max-width: 332px;
+    max-width: var(--notification-width);
     
     background-color: transparent;
     margin: 2px;

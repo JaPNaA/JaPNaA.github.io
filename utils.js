@@ -175,21 +175,24 @@ function c_Utils(DT) {
     };
 
     D.parseSearch = function(search) {
-        var r = {},
-            s = decodeURIComponent(search.slice(1)),
-            ss = s.split("?");
+        var result = {},
+            searchStr = decodeURIComponent(search.slice(1)),
+            strs = searchStr.split("?"),
+            sl = strs.length;
         
-        for (let i of ss) {
-            let ix = i.indexOf("="),
-                q = i.slice(0, ix),
-                v = i.slice(ix + 1);
+        for (let i = 0; i < sl; i++) {
+            let str = strs[i];
+
+            let ix = str.indexOf("="),
+                key = str.slice(0, ix),
+                value = str.slice(ix + 1);
             
-            if (q && v) {
-                r[q] = v;
+            if (key && value) {
+                result[key] = value;
             }
         }
 
-        return r;
+        return result;
     };
 
     D.rChar = function() {

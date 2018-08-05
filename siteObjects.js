@@ -22,362 +22,468 @@ function c_SiteObjects(DT) {
         return true;
     };
 
-    class Item { // abstract item
-        constructor(title, timestamp, style) {
-            this.elmP = document.createElement("a");
-            this.elm = document.createElement("div");
+    /**
+     * abstract item
+     * @class
+     * @param {String} title title of item
+     * @param {Number} timestamp time item was posted
+     * @param {String} style cssString to apply to item
+     */
+    function Item(title, timestamp, style) {
+        this.elmP = document.createElement("a");
+        this.elm = document.createElement("div");
 
-            {
-                this.titleElm = document.createElement("div");
-                this.titleElm.title = "Name #PostNo.";
-                this.titleElm.classList.add("title");
-                this.elm.appendChild(this.titleElm);
-            } {
-                this.bodyElm = document.createElement("div");
-                this.bodyElm.classList.add("body");
-                this.elm.appendChild(this.bodyElm);
-            }
-
-            this.added = false;
-
-            this.imgs = [];
-            this.events = {
-                load: []
-            };
-
-            this.elmP.target = "_blank";
-            this.elmP.rel = "noopener";
-            this.elm.classList.add("item");
-            this.elm.style = style;
-
-            this.title = title;
-            this.elmP.classList.add("itemP");
-            this.elmP.appendChild(this.elm);
+        {
+            this.titleElm = document.createElement("div");
+            this.titleElm.title = "Name #PostNo.";
+            this.titleElm.classList.add("title");
+            this.elm.appendChild(this.titleElm);
+        } {
+            this.bodyElm = document.createElement("div");
+            this.bodyElm.classList.add("body");
+            this.elm.appendChild(this.bodyElm);
         }
 
-        get content() {
-            return this.bodyElm.innerHTML;
-        }
-        set content(e) {
-            this.bodyElm.innerHTML = e;
-        }
+        this.added = false;
 
-        get title() {
-            return this.titleElm.innerHTML;
-        }
-        set title(e) {
-            if (e) {
-                this.titleElm.innerHTML = e;
-            } else {
-                this.titleElm.classList.add("nonexistent");
-                this.titleElm.innerHTML = "";
-            }
-        }
+        this.imgs = [];
+        this.events = {
+            load: []
+        };
 
-        get parent() {
-            return this.elmP.parentElement;
-        }
-        set parent(s) {
-            this.appendTo(s);
-        }
+        this.elmP.target = "_blank";
+        this.elmP.rel = "noopener";
+        this.elm.classList.add("item");
+        this.elm.style = style;
 
-        get link() {
-            return this.elmP.href;
-        }
-        set link(e) {
-            this.elmP.href = e;
-        }
-
-        get tabindex() {
-            return this.elmP.tabIndex;
-        }
-        set tabindex(e) {
-            this.elmP.tabIndex = e;
-        }
-
-        appendTo(parent) {
-            parent.appendChild(this.elmP);
-        }
-
-        addEventListener(t, f) {
-            this.events[t].push(f);
-        }
-        dispatchEvent(t) {
-            for (let i of this.events[t]) {
-                i.call(this);
-            }
-        }
-
-        prepAdd() {
-            if (this.added) return;
-            var requiredDep = this.imgs.length,
-                loadedDep = 0;
-
-            if (requiredDep) {
-                for (let i of this.imgs) {
-                    i.aload();
-                    i.addEventListener("load", () => {
-                        loadedDep++;
-
-                        if (loadedDep >= requiredDep) {
-                            this.dispatchEvent("load");
-                        }
-                    });
-                }
-            } else {
-                this.dispatchEvent("load");
-            }
-
-            this.added = true;
-        }
+        this.title = title;
+        this.elmP.classList.add("itemP");
+        this.elmP.appendChild(this.elm);
     }
 
-    class ResultItem { // doesn't have as much as Item, because card and text have different DOM structures
-        constructor(timestamp, style) {
-            this.elmP = document.createElement("div");
-            this.elm = document.createElement("div");
-            this.expandedElm = document.createElement("div");
+    Object.defineProperties(Item.prototype, {
+        content: {
+            get: function () {
+                return this.bodyElm.innerHTML;
+            },
+            
+            set: function (e) {
+                this.bodyElm.innerHTML = e;
+            }
+        },
+        title: {
+            get: function () {
+                return this.titleElm.innerHTML;
+            },
 
-            this.imgs = [];
-            this.added = false;
-            this.isExpanded = false;
-            this.loadedExpantion = false;
-            this.expandItem = null;
+            set: function (e) {
+                if (e) {
+                    this.titleElm.innerHTML = e;
+                } else {
+                    this.titleElm.classList.add("nonexistent");
+                    this.titleElm.innerHTML = "";
+                }
+            }
+        },
+        parent: {
+            get: function() {
+                return this.elmP.parentElement;
+            },
 
-            this.elm.classList.add("item");
-            this.elmP.classList.add("itemP", "result");
-            this.expandedElm.classList.add("expand");
+            set: function(s) {
+                this.appendTo(s);
+            }
+        },
+        link: {
+            get: function () {
+                return this.elmP.href;
+            },
+            
+            set: function(e) {
+                this.elmP.href = e;
+            }
+        },
+        tabindex: {
+            get: function () {
+                return this.elmP.tabIndex;
+            },
 
-            this.elm.style = style;
-
-            this.elmP.appendChild(this.elm);
-            this.elmP.appendChild(this.expandedElm);
-            this.elmP.addEventListener("click", () => this.expand());
-        }
-
-        get parent() {
-            return this.elmP.parentElement;
-        }
-        set parent(s) {
-            this.appendTo(s);
-        }
-
-        appendTo(parent) {
-            parent.appendChild(this.elmP);
-
-            // when changing parents, unexpand, if expanded
-            if (this.isExpanded) {
-                this.unexpand();
-                this.expandedElm.classList.remove("expanded");
+            set: function (e) {
+                this.elmP.tabIndex = e;
             }
         }
+    });
+    
+    Item.prototype.appendTo = function (parent) {
+        parent.appendChild(this.elmP);
+    };
 
-        prepAdd() {
-            if (this.added) return;
-            for (let i of this.imgs) {
-                i.aload();
+    Item.prototype.addEventListener = function (t, f) {
+        this.events[t].push(f);
+    };
+
+    Item.prototype.dispatchEvent = function(t) {
+        var handlers = this.events[t],
+            hl = handlers.length;
+
+        for (let i = 0; i < hl; i++) {
+            i.call(handlers[i]);
+        }
+    };
+
+    Item.prototype.prepAdd = function() {
+        if (this.added) return;
+        var requiredDep = this.imgs.length,
+            loadedDep = 0;
+
+        if (requiredDep) {
+            let il = this.imgs.length,
+                that = this;
+
+            for (let i = 0; i < il; i++) {
+                let img = this.imgs[i];
+
+                img.aload();
+                img.addEventListener("load", function() {
+                    loadedDep++;
+
+                    if (loadedDep >= requiredDep) {
+                        that.dispatchEvent("load");
+                    }
+                });
             }
-            this.added = true;
+        } else {
+            this.dispatchEvent("load");
         }
 
-        createExpandItem() { }
+        this.added = true;
+    };
 
-        unexpand() {
-            this.expandedElm.removeChild(this.expandItem.elmP);
-            this.elmP.style.height = "auto";
-            this.elmP.classList.remove("expanded");
-            this.isExpanded = false;
+    /**
+     * @class
+     * @param {Number} timestamp time of result item posted
+     * @param {String} style cssString applied to item
+     */
+    function ResultItem(timestamp, style) { // doesn't have as much as Item, because card and text have different DOM structures
+        this.elmP = document.createElement("div");
+        this.elm = document.createElement("div");
+        this.expandedElm = document.createElement("div");
+
+        this.imgs = [];
+        this.added = false;
+        this.isExpanded = false;
+        this.loadedExpantion = false;
+        this.expandItem = null;
+
+        this.elm.classList.add("item");
+        this.elmP.classList.add("itemP");
+        this.elmP.classList.add("result");
+        this.expandedElm.classList.add("expand");
+
+        this.elm.style = style;
+
+        this.elmP.appendChild(this.elm);
+        this.elmP.appendChild(this.expandedElm);
+        this.elmP.addEventListener("click", function() {
+            this.expand();
+        });
+    }
+
+    Object.defineProperties(ResultItem.prototype, {
+        parent: {
+            get: function() {
+                return this.elmP.parentElement;
+            },
+            set: function(s) {
+                this.appendTo(s);
+            }
         }
+    });
 
-        expand() {
-            if (this.isExpanded) return;
+    ResultItem.prototype.appendTo = function(parent) {
+        parent.appendChild(this.elmP);
 
-            if (this.loadedExpantion) {
+        // when changing parents, unexpand, if expanded
+        if (this.isExpanded) {
+            this.unexpand();
+            this.expandedElm.classList.remove("expanded");
+        }
+    };
+
+    ResultItem.prototype.prepAdd = function () {
+        if (this.added) return;
+
+        let il = this.imgs.length;
+
+        for (let i = 0; i < il; i++) {
+            let img = this.imgs[i];
+
+            img.aload();
+        }
+        this.added = true;
+    };
+
+    ResultItem.prototype.createExpandItem = function() {};
+
+    ResultItem.prototype.unexpand = function() {
+        this.expandedElm.removeChild(this.expandItem.elmP);
+        this.elmP.style.height = "auto";
+        this.elmP.classList.remove("expanded");
+        this.isExpanded = false;
+    };
+
+    ResultItem.prototype.expand = function() {
+        if (this.isExpanded) return;
+
+        if (this.loadedExpantion) {
+            this.expandItem.appendTo(this.expandedElm);
+            this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
+            this.expandedElm.classList.add("expanded");
+        } else {
+            this.createExpandItem();
+            this.expandItem.addEventListener("load", function() {
                 this.expandItem.appendTo(this.expandedElm);
                 this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
-                this.expandedElm.classList.add("expanded");
-            } else {
-                this.createExpandItem();
-                this.expandItem.addEventListener("load", () => {
-                    this.expandItem.appendTo(this.expandedElm);
-                    this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
-                });
-                this.expandItem.prepAdd();
+            });
+            this.expandItem.prepAdd();
 
-                this.expandedElm.classList.add("expanded");
+            this.expandedElm.classList.add("expanded");
 
-                this.loadedExpantion = true;
-            }
-
-            this.elmP.classList.add("expanded");
-            this.isExpanded = true;
+            this.loadedExpantion = true;
         }
-    }
 
-    D.Text = class extends Item {
-        constructor(title, content, timestamp, style) {
-            super(title, timestamp, style);
-
-            this.elm.classList.add("text");
-            this.bodyElm.appendChild(content);
-        }
+        this.elmP.classList.add("expanded");
+        this.isExpanded = true;
     };
 
-    D.Card = class extends Item {
-        constructor(title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {
-            super(title, timestamp, style);
+    /**
+     * @class
+     * @extends Item
+     * @param {String} title title of text
+     * @param {String} content content of text
+     * @param {Number} timestamp time of posting text
+     * @param {String} style cssString of style to apply to text
+     */
+    D.Text = function (title, content, timestamp, style) {
+        Item.call(this, title, timestamp, style);
+
+        this.elm.classList.add("text");
+        this.bodyElm.appendChild(content);
+    };
+
+    D.Text.prototype = Object.create(Item.prototype);
+    D.Text.prototype.constructor = D.Text;
+
+    /**
+     * @class
+     * @extends Item
+     * @param {String} title title of text
+     * @param {String} link link card links to
+     * @param {String} content card content
+     * @param {Boolean} shouldFormatDescription if the description should be formatted for ${{}}
+     * @param {Number} timestamp time of posting card
+     * @param {String[]} tags tags of card
+     * @param {String} author authors of what card shows
+     * @param {Number} no card number
+     * @param {String} style cssString of style to apply to card
+     */
+    D.Card = function (title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {    
+        Item.call(this, title, timestamp, style);
+
+        {
+            this.displayElm = document.createElement("div");
+            this.displayElm.classList.add("display");
+            this.elm.appendChild(this.displayElm);
+        } {
+            this.metaElm = document.createElement("div");
+            this.metaElm.classList.add("meta");
+            this.elm.appendChild(this.metaElm);
+        }
+
+        this.elm.classList.add("card");
+        this.link = link;
+        D.parseCardMeta(timestamp, tags, author, no, this);
+        D.parseCardContent(content, this, shouldFormatDescription);
+    };
+
+    D.Card.prototype = Object.create(Item.prototype);
+    D.Card.prototype.constructor = D.Card;
+
+    /**
+     * @class
+     * @extends ResultItem
+     * @param {String} title title of item
+     * @param {String} content content of item
+     * @param {Number} timestamp time of posting item
+     * @param {String} style cssString of card style
+     */
+    D.ResultText = function (title, content, timestamp, style) {
+        ResultItem.call(this, timestamp, style);
+
+        {
+            this.titleElm = document.createElement("div");
+            this.titleElm.classList.add("title");
+            this.elm.appendChild(this.titleElm);
+        } {
+            this.bodyElm = document.createElement("div");
+            this.bodyElm.classList.add("body");
+            this.elm.appendChild(this.bodyElm);
+        }
+
+        this.titleElm.innerHTML = title;
+        this.bodyElm.innerHTML = content.innerText.substr(0, 200); // cut off at 200 characters
+
+        if (content.length > 200) {
+            this.bodyElm.innerHTML += "...";
+        }
+
+        this.args = [].slice.call(arguments);
+
+        this.elm.classList.add("text");
+    };
+
+    D.ResultText.prototype.createExpandItem = function() {
+        this.expandItem = new D.Text.apply(null, this.args);
+    };
+
+    D.ResultText.prototype = Object.create(ResultItem.prototype);
+    D.ResultText.prototype.constructor = D.ResultText;
+
+
+    /**
+     * @class
+     * @extends ResultItem
+     * @param {String} title title of card
+     * @param {String} link link of card
+     * @param {String} content content of card
+     * @param {Boolean} shouldFormatDescription if description should be formatted for ${{}}
+     * @param {Number} timestamp time card was posted
+     * @param {String[]} tags tags of card
+     * @param {String} author author of the content showed in card
+     * @param {Number} no card number
+     * @param {String} style cssString of style applied to card
+     */
+    D.ResultCard = function (title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {
+        ResultItem.call(this, timestamp, style);
+
+        // structure
+        {
+            this.leftCol = document.createElement("div");
+            this.leftCol.classList.add("left");
+            this.leftCol.classList.add("col");
+            this.elm.appendChild(this.leftCol);
 
             {
-                this.displayElm = document.createElement("div");
-                this.displayElm.classList.add("display");
-                this.elm.appendChild(this.displayElm);
-            } {
-                this.metaElm = document.createElement("div");
-                this.metaElm.classList.add("meta");
-                this.elm.appendChild(this.metaElm);
+                this.imgElm = document.createElement("div");
+                this.imgElm.classList.add("img");
+                this.leftCol.appendChild(this.imgElm);
             }
-
-            this.elm.classList.add("card");
-            this.link = link;
-            D.parseCardMeta(timestamp, tags, author, no, this);
-            D.parseCardContent(content, this, shouldFormatDescription);
-        }
-    };
-
-    D.ResultText = class extends ResultItem { //* when clicked, expand to full card
-        constructor(title, content, timestamp, style) {
-            super(timestamp, style);
+        } {
+            this.rightCol = document.createElement("div");
+            this.rightCol.classList.add("right");
+            this.rightCol.classList.add("col");
+            this.elm.appendChild(this.rightCol);
 
             {
                 this.titleElm = document.createElement("div");
                 this.titleElm.classList.add("title");
-                this.elm.appendChild(this.titleElm);
+                this.rightCol.appendChild(this.titleElm);
             } {
                 this.bodyElm = document.createElement("div");
                 this.bodyElm.classList.add("body");
-                this.elm.appendChild(this.bodyElm);
+                this.rightCol.appendChild(this.bodyElm);
             }
-
-            this.titleElm.innerHTML = title;
-            this.bodyElm.innerHTML = content.innerText.substr(0, 200); // cut off at 200 characters
-
-            if (content.length > 200) {
-                this.bodyElm.innerHTML += "...";
-            }
-
-            this.args = [].slice.call(arguments);
-
-            this.elm.classList.add("text");
         }
 
-        createExpandItem() {
-            this.expandItem = new D.Text(...this.args);
+        // content
+        // right
+        this.titleElm.innerHTML = title;
+        this.titleElm.setAttribute("no", no);
+        this.bodyElm.appendChild(D.parseDescriptionContent(content.description, shouldFormatDescription));
+        // left
+        if (content.display[0]) {
+            this.imgElm.appendChild(D.parseDisplayContent(content.display[0], this.imgs));
         }
+
+        this.args = [].slice.call(arguments);
+
+        this.elm.classList.add("card");
+
+        this.prepAdd();
     };
 
-    D.ResultCard = class extends ResultItem {
-        constructor(title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {
-            super(timestamp, style);
+    D.ResultCard.prototype = Object.create(ResultItem.prototype);
+    D.ResultCard.prototype.constructor = D.ResultCard;
 
-            // structure
-            {
-                this.leftCol = document.createElement("div");
-                this.leftCol.classList.add("left", "col");
-                this.elm.appendChild(this.leftCol);
+    D.ResultCard.prototype.createExpandItem = function() {
+        this.expandItem = new D.Card.apply(null, this.args);
+    };
 
-                {
-                    this.imgElm = document.createElement("div");
-                    this.imgElm.classList.add("img");
-                    this.leftCol.appendChild(this.imgElm);
+    /**
+     * @class
+     * @param {String} msg message
+     */
+    D.ErrorCard = function (msg) {
+        this.elm = document.createElement("div"); {
+            this.titleElm = document.createElement("div");
+            this.titleElm.classList.add("title");
+            this.elm.appendChild(this.titleElm);
+        } {
+            this.bodyElm = document.createElement("div");
+            this.bodyElm.classList.add("body");
+            this.elm.appendChild(this.bodyElm);
+        }
+        this.elm.classList.add("item");
+        this.elm.classList.add("error");
+        this._parent = null;
+
+        this.title = "Error parsing this card.";
+        this.content = msg;
+
+    };
+
+    Object.defineProperties(D.ErrorCard.prototype, {
+        content: {
+            get: function() {
+                return this.bodyElm.innerHTML;
+            },
+            
+            set: function(e) {
+                this.bodyElm.innerHTML = e;
+            }
+        },
+        title: {
+            get: function() {
+                return this.titleElm.innerHTML;
+            },
+            
+            set: function(e) {
+                if (e) {
+                    this.titleElm.innerHTML = e;
+                } else {
+                    this.titleElm.classList.add("nonexistent");
+                    this.titleElm.innerHTML = "";
                 }
-            } {
-                this.rightCol = document.createElement("div");
-                this.rightCol.classList.add("right", "col");
-                this.elm.appendChild(this.rightCol);
-
-                {
-                    this.titleElm = document.createElement("div");
-                    this.titleElm.classList.add("title");
-                    this.rightCol.appendChild(this.titleElm);
-                } {
-                    this.bodyElm = document.createElement("div");
-                    this.bodyElm.classList.add("body");
-                    this.rightCol.appendChild(this.bodyElm);
-                }
             }
+        },
+        parent: {
+            get: function() {
+                return this._parent;
+            },
 
-            // content
-            // right
-            this.titleElm.innerHTML = title;
-            this.titleElm.setAttribute("no", no);
-            this.bodyElm.appendChild(D.parseDescriptionContent(content.description, shouldFormatDescription));
-            // left
-            if (content.display[0]) {
-                this.imgElm.appendChild(D.parseDisplayContent(content.display[0], this.imgs));
+            set: function(e) {
+                this.appendTo(s);
             }
-
-            this.args = [].slice.call(arguments);
-
-            this.elm.classList.add("card");
-
-            this.prepAdd();
         }
+    });
 
-        createExpandItem() {
-            this.expandItem = new D.Card(...this.args);
-        }
+    D.ErrorCard.prototype.appendTo = function () {
+        this._parent = parent;
+        parent.appendChild(this.elm);
     };
 
-    D.ErrorCard = class {
-        constructor(msg) {
-            this.elm = document.createElement("div"); {
-                this.titleElm = document.createElement("div");
-                this.titleElm.classList.add("title");
-                this.elm.appendChild(this.titleElm);
-            } {
-                this.bodyElm = document.createElement("div");
-                this.bodyElm.classList.add("body");
-                this.elm.appendChild(this.bodyElm);
-            }
-            this.elm.classList.add("item", "error");
-            this._parent = null;
-
-            this.title = "Error parsing this card.";
-            this.content = msg;
-        }
-
-        get content() {
-            return this.bodyElm.innerHTML;
-        }
-        set content(e) {
-            this.bodyElm.innerHTML = e;
-        }
-
-        get title() {
-            return this.titleElm.innerHTML;
-        }
-        set title(e) {
-            if (e) {
-                this.titleElm.innerHTML = e;
-            } else {
-                this.titleElm.classList.add("nonexistent");
-                this.titleElm.innerHTML = "";
-            }
-        }
-
-        get parent() {
-            return this._parent;
-        }
-        set parent(s) {
-            this.appendTo(s);
-        }
-
-        appendTo(parent) {
-            this._parent = parent;
-            parent.appendChild(this.elm);
-        }
-    };
-
+    // parsing
+    // -----------------------------------------------------------------------------
     D.parseDisplayContent = function (dt, imgs) {
         switch (dt.type) {
         case "img": {
@@ -403,9 +509,12 @@ function c_SiteObjects(DT) {
             description.appendChild(D.parseDescriptionContent(dt.description, shouldFormatDescription)); // set element content
             that.bodyElm.appendChild(description); // push to body
         } {
-            let display = document.createElement("div");
-            for (let i of dt.display) { // for every item in display
-                display.appendChild(D.parseDisplayContent(i, that.imgs));
+            let display = document.createElement("div"),
+                dl = dt.display.length;
+
+            for (let i = 0; i < dl; i++) { // for every item in display
+                let item = dt.display[i];
+                display.appendChild(D.parseDisplayContent(item, that.imgs));
             }
             that.displayElm.appendChild(display);
         }
@@ -559,6 +668,8 @@ function c_SiteObjects(DT) {
         return formatted;
     };
 
+    // Other site objects
+    // -----------------------------------------------------------------------------
     D.separator = function () {
         return document.createElement("hr");
     };
@@ -686,7 +797,7 @@ function c_SiteObjects(DT) {
 
         // automated search with url
         if (DT.Site.search.search) {
-            addEventListener("load", () => {
+            addEventListener("load", function() {
                 clickHandler();
                 DT.Search.input = DT.Site.search.search;
                 DT.Search.updateResults();
@@ -705,7 +816,8 @@ function c_SiteObjects(DT) {
         DT.ContentGetter.add("content", "content/0.json", true, function (e) {
             var data = e.data,
                 first = new Date(data[data.length - 1].timestamp).getFullYear(),
-                last = new Date(data[0].timestamp).getFullYear();
+                last = new Date(data[0].timestamp).getFullYear(),
+                event = document.createEvent("Event");
 
             for (let i = last; i >= first; i--) {
                 let a = document.createElement("div");
@@ -713,7 +825,9 @@ function c_SiteObjects(DT) {
                 group.appendChild(a);
             }
 
-            group.dispatchEvent(new Event("load"));
+            // can't just do new Event because IE
+            event.initEvent("load", false, true);
+            group.dispatchEvent(event);
         }, "json");
 
         return group;

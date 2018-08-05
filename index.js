@@ -40,22 +40,26 @@
     }
 
     function loadRequired() {
-        for (let i of required) {
-            if (load(i)) {
-                console.log("Loaded " + i);
+        for (let i = 0; i < required.length; i++) {
+            let pkg = required[i];
+
+            if (load(pkg)) {
+                console.log("Loaded " + pkg);
             } else {
-                console.error("Failed to load" + i);
+                console.error("Failed to load " + pkg);
             }
         }
         setupLoads();
     }
 
     function loadNotRequired() {
-        for (let i of notRequired) {
-            if (load(i)) {
-                console.log("Loaded " + i);
+        for (let i = 0; i < notRequired.length; i++) {
+            let pkg = notRequired[i];
+
+            if (load(pkg)) {
+                console.log("Loaded " + pkg);
             } else {
-                console.warn("Failed to load" + i);
+                console.warn("Failed to load " + pkg);
             }
         }
         setupLoads();

@@ -29,9 +29,10 @@ function c_Search(DT) {
     function translateIndex(id, dt) {
         switch(dt.type) {
         case "card":
-            var captions = [];
-            for (let i of dt.content.display) {
-                captions.push(i.caption);
+            var captions = [],
+                dl = dt.content.display.length;
+            for (let i = 0; i < dl; i++) {
+                captions.push(dt.content.display[i].caption);
             }
 
             return {
@@ -75,13 +76,14 @@ function c_Search(DT) {
 
     D.updateResults = function () {
         if (!D.active) return;
-        var results = D.search(D.input);
+        var results = D.search(D.input),
+            rl = results.length;
         D.results = results;
 
         DT.Utils.emptyElement(DT.Site.searchOverlay);
 
-        for (let i of results) {
-            addResult(i);
+        for (let i = 0; i < rl; i++) {
+            addResult(results[i]);
             // console.log(new DT.SiteObjects.ResultCard(i));
         }
 
