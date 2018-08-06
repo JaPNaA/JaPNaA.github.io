@@ -1,7 +1,7 @@
 "use strict";
 
 function c_Menu(DT) {
-    const D = {
+    var D = {
         menu: null, // element
         menuP: null,
         menuItems: { // items in menu element
@@ -76,9 +76,9 @@ function c_Menu(DT) {
 
         // includes: send feedback, contact me, view all projects, changelog, copyright
         {
-            let feedback = document.createElement("div");
+            var feedback = document.createElement("div");
             {
-                let a = document.createElement("a");
+                var a = document.createElement("a");
                 a.href = "https://github.com/JaPNaA/JaPNaA.github.io/issues/new";
                 a.target = "_blank";
                 a.innerHTML = "Feedback";
@@ -86,9 +86,9 @@ function c_Menu(DT) {
             }
             sub.appendChild(feedback);
         } {
-            let contact = document.createElement("div");
+            var contact = document.createElement("div");
             {
-                let a = document.createElement("a");
+                var a = document.createElement("a");
                 a.href = "mailto:japnaabot@gmail.com";
                 a.innerHTML = "Contact";
                 contact.appendChild(a);
@@ -99,9 +99,9 @@ function c_Menu(DT) {
         sub.appendChild(DT.SiteObjects.separator());
 
         {
-            let allProjects = document.createElement("div");
+            var allProjects = document.createElement("div");
             {
-                let a = document.createElement("a");
+                var a = document.createElement("a");
                 a.href = DT.Site.path + "/Thingy/";
                 a.target = "_blank";
                 a.innerHTML = "All projects";
@@ -109,9 +109,9 @@ function c_Menu(DT) {
             }
             sub.appendChild(allProjects);
         } {
-            let changelog = document.createElement("div");
+            var changelog = document.createElement("div");
             {
-                let a = document.createElement("a");
+                var a = document.createElement("a");
                 a.href = "/content/changelog.txt";
                 a.target = "_blank";
                 a.innerHTML = "Changelog";
@@ -123,9 +123,9 @@ function c_Menu(DT) {
         sub.appendChild(DT.SiteObjects.separator());
 
         {
-            let license = document.createElement("div");
+            var license = document.createElement("div");
             {
-                let a = document.createElement("a");
+                var a = document.createElement("a");
                 a.href = "LICENSE.txt";
                 a.target = "_blank";
                 a.innerHTML = "License";
@@ -134,9 +134,9 @@ function c_Menu(DT) {
             sub.appendChild(license);
         }
         {
-            let thridparty = document.createElement("div");
+            var thridparty = document.createElement("div");
             {
-                let a = document.createElement("a");
+                var a = document.createElement("a");
                 a.href = "/3rdParty/3rdPartyLices.txt";
                 a.target = "_blank";
                 a.innerHTML = "3rd Party <br> Licenses";
@@ -145,7 +145,7 @@ function c_Menu(DT) {
             sub.appendChild(thridparty);
         }
         {
-            let copyright = document.createElement("div");
+            var copyright = document.createElement("div");
             copyright.innerHTML = "Copyright (c) 2018 JaPNaA";
             copyright.title = "Not registered tho";
             copyright.style.fontSize = "0.8rem";
@@ -173,7 +173,7 @@ function c_Menu(DT) {
         menu.classList.add("noselect");
 
         {
-            let a = document.createElement("div");
+            var a = document.createElement("div");
             a.innerHTML = "\u2022\u2022\u2022"; 
             D.menuItems.more = a;
             a.addEventListener("click", function () {
@@ -181,10 +181,10 @@ function c_Menu(DT) {
             });
             menu.appendChild(a);
         } {
-            let s = DT.SiteObjects.separator();
+            var s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
-            let a = document.createElement("div");
+            var a = document.createElement("div");
             a.innerHTML = "About";
             a.addEventListener("click", function () {
                 if (DT.c_["c_AboutPage"]) {
@@ -197,21 +197,21 @@ function c_Menu(DT) {
             D.menuItems.about = a;
             menu.appendChild(a);
         } {
-            let s = DT.SiteObjects.separator();
+            var s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
-            let a = DT.SiteObjects.searchButton();
+            var a = DT.SiteObjects.searchButton();
             D.menuItems.search = a;
             menu.appendChild(a);
         } {
-            let s = DT.SiteObjects.separator();
+            var s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
-            let a = DT.SiteObjects.yearList();
+            var a = DT.SiteObjects.yearList();
             D.menuItems.yearList = a;
 
             a.addEventListener("load", function () {
-                for (let i = 0; i < a.children.length; i++) {
+                for (var i = 0; i < a.children.length; i++) {
                     a.children[i].addEventListener("click", function () {
                         DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
                     });

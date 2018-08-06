@@ -6,7 +6,7 @@ function c_ShortUrl(DT) {
 
     function alertHashDoesntExist(e) {
         {
-            let prompt = document.createDocumentFragment(),
+            var prompt = document.createDocumentFragment(),
                 bold = document.createElement("b");
 
             prompt.appendChild(document.createTextNode("Requested short URL hash: ")); // "Requested short URL hash: "

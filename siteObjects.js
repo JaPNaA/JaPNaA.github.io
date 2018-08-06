@@ -128,7 +128,7 @@ function c_SiteObjects(DT) {
         var handlers = this.events[t],
             hl = handlers.length;
 
-        for (let i = 0; i < hl; i++) {
+        for (var i = 0; i < hl; i++) {
             handlers[i].call(this);
         }
     };
@@ -139,11 +139,11 @@ function c_SiteObjects(DT) {
             loadedDep = 0;
 
         if (requiredDep) {
-            let il = this.imgs.length,
+            var il = this.imgs.length,
                 that = this;
 
-            for (let i = 0; i < il; i++) {
-                let img = this.imgs[i];
+            for (var i = 0; i < il; i++) {
+                var img = this.imgs[i];
 
                 img.aload();
                 img.addEventListener("load", function() {
@@ -217,10 +217,10 @@ function c_SiteObjects(DT) {
     ResultItem.prototype.prepAdd = function () {
         if (this.added) return;
 
-        let il = this.imgs.length;
+        var il = this.imgs.length;
 
-        for (let i = 0; i < il; i++) {
-            let img = this.imgs[i];
+        for (var i = 0; i < il; i++) {
+            var img = this.imgs[i];
 
             img.aload();
         }
@@ -244,7 +244,7 @@ function c_SiteObjects(DT) {
             this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
             this.expandedElm.classList.add("expanded");
         } else {
-            let that = this;
+            var that = this;
             this.createExpandItem();
             this.expandItem.addEventListener("load", function() {
                 that.expandItem.appendTo(that.expandedElm);
@@ -498,7 +498,7 @@ function c_SiteObjects(DT) {
     D.parseDisplayContent = function (dt, imgs) {
         switch (dt.type) {
         case "img": {
-            let r = document.createElement("img");
+            var r = document.createElement("img");
             r.asrc = parseURIPath(dt.src);
             r.title = dt.caption;
             imgs.push(r);
@@ -507,7 +507,7 @@ function c_SiteObjects(DT) {
         case "iframe":
             return D.parseDisplayContent(dt.alt, imgs);
         default: {
-            let r = document.createElement("div");
+            var r = document.createElement("div");
             r.innerHTML = "Error! <br><b>Reason:</b> Item is of unknown type";
             return r;
         }
@@ -516,15 +516,15 @@ function c_SiteObjects(DT) {
 
     D.parseCardContent = function (dt, that, shouldFormatDescription) {
         {
-            let description = document.createElement("div"); // create element
+            var description = document.createElement("div"); // create element
             description.appendChild(D.parseDescriptionContent(dt.description, shouldFormatDescription)); // set element content
             that.bodyElm.appendChild(description); // push to body
         } {
-            let display = document.createElement("div"),
+            var display = document.createElement("div"),
                 dl = dt.display.length;
 
-            for (let i = 0; i < dl; i++) { // for every item in display
-                let item = dt.display[i];
+            for (var i = 0; i < dl; i++) { // for every item in display
+                var item = dt.display[i];
                 display.appendChild(D.parseDisplayContent(item, that.imgs));
             }
             that.displayElm.appendChild(display);
@@ -535,19 +535,19 @@ function c_SiteObjects(DT) {
         that.titleElm.setAttribute("no", dtNo); // set number attribute to title
 
         {
-            let tags = document.createElement("div"); // create element
+            var tags = document.createElement("div"); // create element
             tags.innerHTML = dtTags.join(", "); // set content to tags
             tags.title = "You can search these terms";
             tags.classList.add("tags");
             that.metaElm.appendChild(tags);
         } {
-            let author = document.createElement("div");
+            var author = document.createElement("div");
             author.innerHTML = dtAuthor.join(", ");
             author.title = "These are the people that created this\n(It's only me ik)";
             author.classList.add("author");
             that.metaElm.appendChild(author);
         } {
-            let timestamp = document.createElement("div");
+            var timestamp = document.createElement("div");
             timestamp.innerHTML = new Date(dtTimestamp).toLocaleDateString();
             timestamp.title = "Time this was posted.\nAutomatically adjusted to locale timezone.\n\nMilliseconds since Jan 1, 1970 12:00AM/0:00 (UTC +0): \n" + dtTimestamp.toString();
             timestamp.classList.add("timestamp");
@@ -630,16 +630,16 @@ function c_SiteObjects(DT) {
         // ${{ js }}
         // --------------------------------------------------------------------------------
         if (formatjs) { // if requires formatting
-            let regex = /\${{(.+?)}}/g, // matches ${{ anything }}
+            var regex = /\${{(.+?)}}/g, // matches ${{ anything }}
                 matches = [], // list of all matches
                 formattedTo = 0, // index of how far the string has formatted to
                 formattedStr = ""; // formatted string to return
 
             while (true) { // push match to matches until there're no more matches
-                let match = regex.exec(content);
+                var match = regex.exec(content);
 
                 if (match) { // format on the way
-                    let result = eval("(function() {" + match[1] + "}());"); // evaluated result
+                    var result = eval("(function() {" + match[1] + "}());"); // evaluated result
 
                     if (result === null) { // there's no null.toString or undefined.toString, so
                         result = "null";
@@ -667,9 +667,9 @@ function c_SiteObjects(DT) {
         // <a href="link" rel="noopener" target="_blank">
         // --------------------------------------------------------------------------------
         {
-            let links = formatted.getElementsByTagName("a");
-            for (let i = 0; i < links.length; i++) {
-                let link = links[i];
+            var links = formatted.getElementsByTagName("a");
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i];
 
                 link.rel = "noopener";
                 link.target = "_blank";
@@ -754,21 +754,21 @@ function c_SiteObjects(DT) {
         e.classList.add("searchItem");
 
         {
-            let a = document.createElement("div");
+            var a = document.createElement("div");
             a.classList.add("searchButton");
 
             {
-                let b = document.createElement("div"); // create search text
+                var b = document.createElement("div"); // create search text
                 b.innerHTML = "Search";
                 b.classList.add("text");
 
                 a.appendChild(b);
             } {
-                let b = document.createElement("div"); // create icon
+                var b = document.createElement("div"); // create icon
                 b.classList.add("img");
 
                 {
-                    let c = document.createElement("img");
+                    var c = document.createElement("img");
                     c.src = "img/searchIcon.png";
                     c.alt = "search icon";
                     b.appendChild(c);
@@ -830,8 +830,8 @@ function c_SiteObjects(DT) {
                 last = new Date(data[0].timestamp).getFullYear(),
                 event = document.createEvent("Event");
 
-            for (let i = last; i >= first; i--) {
-                let a = document.createElement("div");
+            for (var i = last; i >= first; i--) {
+                var a = document.createElement("div");
                 a.innerHTML = i;
                 group.appendChild(a);
             }

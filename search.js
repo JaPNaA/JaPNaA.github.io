@@ -33,7 +33,7 @@ function c_Search(DT) {
         case "card":
             var captions = [],
                 dl = dt.content.display.length;
-            for (let i = 0; i < dl; i++) {
+            for (var i = 0; i < dl; i++) {
                 captions.push(dt.content.display[i].caption);
             }
 
@@ -64,7 +64,7 @@ function c_Search(DT) {
             return D.items[id];
         }
 
-        let elm = DT.SiteObjects.parseResult(D.content.data[id]);
+        var elm = DT.SiteObjects.parseResult(D.content.data[id]);
         D.items[id] = elm;
         return elm;
     }
@@ -84,7 +84,7 @@ function c_Search(DT) {
 
         DT.Utils.emptyElement(DT.Site.searchOverlay);
 
-        for (let i = 0; i < rl; i++) {
+        for (var i = 0; i < rl; i++) {
             addResult(results[i]);
             // console.log(new DT.SiteObjects.ResultCard(i));
         }
@@ -169,8 +169,8 @@ function c_Search(DT) {
     }
 
     function load() {
-        let dl = D.content.data.length;
-        for (let i = 0; i < dl; i++) {
+        var dl = D.content.data.length;
+        for (var i = 0; i < dl; i++) {
             D.index.addDoc(translateIndex(i, D.content.data[i]));
         }
     }

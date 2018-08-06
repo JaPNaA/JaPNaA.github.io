@@ -23,3 +23,8 @@ window.onerror = function (e) {
 
     initFallback();
 };
+
+// polyfills n' stuff
+if (!location.origin) {
+    location.origin = location.protocol + "//" + location.host;
+}

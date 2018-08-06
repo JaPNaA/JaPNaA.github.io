@@ -12,7 +12,7 @@ function c_SplashScreen(DT) {
     elm.id = "splashScreen";
 
     {
-        let a = document.createElement("div");
+        var a = document.createElement("div");
         a.style.position = "fixed";
         a.style.left = "50%";
         a.style.top = "40%";
@@ -21,12 +21,12 @@ function c_SplashScreen(DT) {
         a.style.textAlign = "center";
 
         {
-            let b = document.createElement("div");
+            var b = document.createElement("div");
             b.innerHTML = "JaPNaA";
             a.appendChild(b);
         }
         {
-            let b = document.createElement("div");
+            var b = document.createElement("div");
             b.innerHTML = "Loading...";
             D.loadingSI = setInterval(function() {
                 b.innerHTML += ".";
@@ -42,7 +42,13 @@ function c_SplashScreen(DT) {
 
     function remove() {
         clearInterval(D.loadingSI);
-        parent.removeChild(elm);
+
+        // in try/catch because IE
+        try {
+            parent.removeChild(elm);
+        } catch(e) {
+            console.warn(e);
+        }
     }
 
     D.setup = function() {

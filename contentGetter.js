@@ -72,7 +72,7 @@ function c_ContentGetter(DT) {
         x.responseType = this.responseType;
 
         if (!this.addedListeners) {
-            let that = this;
+            var that = this;
             x.addEventListener("load", function() {
                 that.load(x.response);
             });
@@ -121,10 +121,10 @@ function c_ContentGetter(DT) {
     };
 
     Request.prototype.dispatchEvent = function (t, e) {
-        let handlers = this.events[t],
+        var handlers = this.events[t],
             hl = handlers.length;
 
-        for (let i = 0; i < hl; i++) {
+        for (var i = 0; i < hl; i++) {
             handlers[i](e);
         }
     };
@@ -136,7 +136,7 @@ function c_ContentGetter(DT) {
     // add content to get
     D.add = function (id, url, preventCache, loadHandler, responseType) {
         if (D.toGet[id]) { // if request exists
-            let req = D.toGet[id];
+            var req = D.toGet[id];
             if (req.status === 200 || req.readyState === XMLHttpRequest.LOADING) { // if loaded and not caching is off
                 if (loadHandler) {
                     loadHandler(D.toGet[id].response); // call loaded

@@ -27,10 +27,10 @@ function c_AboutPage(DT) {
 
                 DT.Utils.emptyElement(D.elm);
 
-                for (let i = 0; i < dl; i++) {
-                    let j = d[i];
+                for (var i = 0; i < dl; i++) {
+                    var j = d[i];
 
-                    let item = DT.SiteObjects.parse(j);
+                    var item = DT.SiteObjects.parse(j);
                     if (!item) continue;
                     item.appendTo(D.elm);
                 }

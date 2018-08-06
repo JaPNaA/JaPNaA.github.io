@@ -42,8 +42,8 @@
     }
 
     function loadRequired() {
-        for (let i = 0; i < required.length; i++) {
-            let pkg = required[i];
+        for (var i = 0; i < required.length; i++) {
+            var pkg = required[i];
 
             if (load(pkg)) {
                 console.log("Loaded " + pkg);
@@ -55,8 +55,8 @@
     }
 
     function loadNotRequired() {
-        for (let i = 0; i < notRequired.length; i++) {
-            let pkg = notRequired[i];
+        for (var i = 0; i < notRequired.length; i++) {
+            var pkg = notRequired[i];
 
             if (load(pkg)) {
                 console.log("Loaded " + pkg);
@@ -69,7 +69,7 @@
 
     function setupLoads() {
         while (DT.setupQue.length) {
-            let i = DT.setupQue.shift();
+            var i = DT.setupQue.shift();
             if (!i) continue;
             if (i.setup) {
                 i.setup();

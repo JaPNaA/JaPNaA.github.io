@@ -8,12 +8,12 @@ function c_Utils(DT) {
 
     D.reloadCss = function() {
         var str = "";
-        for (let query in D.cssData) {
-            let rules = D.cssData[query],
+        for (var query in D.cssData) {
+            var rules = D.cssData[query],
                 s = query + "{";
 
-            for (let rule in rules) {
-                let ruleParam = rules[rule];
+            for (var rule in rules) {
+                var ruleParam = rules[rule];
                 if (!ruleParam) continue;
                 s += rule + ":" + ruleParam + ";";
             }
@@ -102,7 +102,7 @@ function c_Utils(DT) {
             prompta.classList.add("closeable");
 
             // create close button
-            let button = document.createElement("img");
+            var button = document.createElement("img");
             button.src = "close-button.svg";
             button.type = "image/svg+xml";
 
@@ -182,10 +182,10 @@ function c_Utils(DT) {
             strs = searchStr.split("?"),
             sl = strs.length;
         
-        for (let i = 0; i < sl; i++) {
-            let str = strs[i];
+        for (var i = 0; i < sl; i++) {
+            var str = strs[i];
 
-            let ix = str.indexOf("="),
+            var ix = str.indexOf("="),
                 key = str.slice(0, ix),
                 value = str.slice(ix + 1);
             
@@ -203,7 +203,7 @@ function c_Utils(DT) {
 
     D.rStr = function(length) {
         var r = "";
-        for (let i = 0; i < length; i++) {
+        for (var i = 0; i < length; i++) {
             r += D.rChar();
         }
         return r;

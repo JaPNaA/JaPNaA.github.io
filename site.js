@@ -74,14 +74,14 @@ function c_Site(DT) {
         frag.appendChild(head);
 
         {
-            let title = document.createElement("a");
+            var title = document.createElement("a");
             title.href = location.origin;
             title.id = "titleText";
             title.innerHTML = D.titleText;
             D.title = title;
             head.appendChild(title);
         } {
-            let headHint = document.createElement("div");
+            var headHint = document.createElement("div");
             headHint.id = "headHint";
             D.headHint = headHint;
             frag.appendChild(headHint);
@@ -95,12 +95,12 @@ function c_Site(DT) {
         D.body = body;
         body.id = "body";
 
-        let req = DT.ContentGetter.add("content", "content/0.json", true, function (e) {
+        var req = DT.ContentGetter.add("content", "content/0.json", true, function (e) {
             var d = e.data;
-            for (let i = 0; i < d.length; i++) {
-                let j = d[i];
+            for (var i = 0; i < d.length; i++) {
+                var j = d[i];
 
-                let item = DT.SiteObjects.parse(j);
+                var item = DT.SiteObjects.parse(j);
                 if (!item) continue;
                 item.tabindex = j;
                 D.children.push(item);
@@ -154,7 +154,7 @@ function c_Site(DT) {
         }
 
         if (D.lastMenuCollapsed !== menuCollapsed) {
-            let a, b;
+            var a, b;
             if (menuCollapsed) {
                 a = D.collapsedMenuWidth + "px";
                 b = "calc(100% - " + D.collapsedMenuWidth + "px)";
@@ -196,23 +196,23 @@ function c_Site(DT) {
         DT.Utils.reloadCss();
 
         // build
-        for (let i = 0; i < bodyFragCount; i++) {
-            let frag = document.createElement("div");
+        for (var i = 0; i < bodyFragCount; i++) {
+            var frag = document.createElement("div");
             frag.classList.add("bodyFrag");
 
             document.body.appendChild(frag);
             bodyFrag.push(frag);
         }
 
-        for (let i = 0; i < D.children.length; i++) {
-            let item = D.children[i];
+        for (var i = 0; i < D.children.length; i++) {
+            var item = D.children[i];
 
             if (item.added) {
                 D.addItem(item);
             }
         }
 
-        for (let i = 0; i < bodyFrag.length; i++) {
+        for (var i = 0; i < bodyFrag.length; i++) {
             body.appendChild(bodyFrag[i]);
         }
 
@@ -230,16 +230,16 @@ function c_Site(DT) {
         D.main = main;
 
         {
-            let menu = document.createElement("div");
+            var menu = document.createElement("div");
             DT.Menu.menuP = menu;
             menu.id = "menuP";
             menu.appendChild(createMenu());
             main.appendChild(menu);
         } {
-            let content = document.createElement("div");
+            var content = document.createElement("div");
 
             {
-                let body = document.createElement("div");
+                var body = document.createElement("div");
                 D.bodyP = body;
                 body.id = "bodyP";
                 body.appendChild(createBody());
@@ -247,7 +247,7 @@ function c_Site(DT) {
                 body.appendChild(createSearchOverlay()); // overlays the body
                 content.appendChild(body);
             } {
-                let head = document.createElement("div");
+                var head = document.createElement("div");
                 head.id = "headP";
                 head.appendChild(createHead());
                 content.appendChild(head);
@@ -255,7 +255,7 @@ function c_Site(DT) {
 
             main.appendChild(content);
         } {
-            let notificationList = document.createElement("div");
+            var notificationList = document.createElement("div");
             notificationList.appendChild(createNotificationList());
             main.appendChild(notificationList);
         }
@@ -303,8 +303,8 @@ function c_Site(DT) {
             D.body.scrollTop + D.body.clientHeight + D.scrollBuffer /* bottom of visible portion of body element, shifted down by scrollBuffer */ >=
             D.body.scrollHeight - D.children[D.lastAddedChildrenIx].elmP.clientHeight /* top of last element */
         ) {
-            for (let i = 0; i < childrenl; i++) {
-                let j = D.children[i];
+            for (var i = 0; i < childrenl; i++) {
+                var j = D.children[i];
                 if (!j.added) {
                     j.prepAdd();
                     D.addItem(j);
@@ -326,11 +326,11 @@ function c_Site(DT) {
     // public functions
     // --------------------------------------------------------------------------------
     D.addItem = function (item) {
-        let smallest = D.bodyFrag[0],
+        var smallest = D.bodyFrag[0],
             sch = smallest.clientHeight;
 
-        for (let i = 1; i < D.bodyFrag.length; i++) {
-            let cfrag = D.bodyFrag[i];
+        for (var i = 1; i < D.bodyFrag.length; i++) {
+            var cfrag = D.bodyFrag[i];
             if (cfrag.clientHeight < sch - D.allowedDeviation) {
                 smallest = cfrag;
                 sch = cfrag.clientHeight;
@@ -342,8 +342,8 @@ function c_Site(DT) {
     };
 
     D.writeHeadHint = function (id, text, ttl) {
-        for (let i in D.headHintD.ttl) {
-            let j = D.headHintD.ttl[i];
+        for (var i in D.headHintD.ttl) {
+            var j = D.headHintD.ttl[i];
             if (j !== null) {
                 clearTimeout(D.headHintD.ttl[i]);
                 D.headHintD.ttl[i] = null;
@@ -363,8 +363,8 @@ function c_Site(DT) {
     };
 
     D.clearHeadHint = function () {
-        for (let i in D.headHintD.ttl) {
-            let j = D.headHintD.ttl[i];
+        for (var i in D.headHintD.ttl) {
+            var j = D.headHintD.ttl[i];
             if (j !== null) {
                 clearTimeout(D.headHintD.ttl[i]);
                 D.headHintD.ttl[i] = null;

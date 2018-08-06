@@ -14,7 +14,7 @@ function c_ServiceWorker(DT) {
         x.responseType = "text";
         x.addEventListener("load", function () {
             if (x.response === "ok") {
-                let a = document.createElement("a"),
+                var a = document.createElement("a"),
                     textBefore = document.createTextNode("An update was found! To see the new version, just "),
                     textAfter = document.createTextNode("."),
                     docFrag = document.createDocumentFragment();
@@ -28,7 +28,7 @@ function c_ServiceWorker(DT) {
 
                 DT.Utils.prompta(docFrag, 0, null, false);
             } else {
-                let text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
+                var text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
                     br = document.createElement("br"),
                     debugData = document.createElement("pre"),
                     docFrag = document.createDocumentFragment();
@@ -55,7 +55,7 @@ function c_ServiceWorker(DT) {
         D.checkedVersion = true;
 
         function _checkdone() { // callback for both requests to compare data
-            let localstorageVersion = DT.ContentGetter.localStorage.version;
+            var localstorageVersion = DT.ContentGetter.localStorage.version;
 
             if (current !== null && latest !== null) {
                 console.log(current, localstorageVersion, latest);

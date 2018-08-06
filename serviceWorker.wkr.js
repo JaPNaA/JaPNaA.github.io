@@ -5,7 +5,7 @@
 // comment to debug
 console.log = function () { }; // because I log too many things and I can't be bothered to remove them
 
-const CACHE_NAME = "JaPNaA-github-io_cache",
+var CACHE_NAME = "JaPNaA-github-io_cache",
     CONTENT_CACHE_NAME = "JaPNaA-github-io_content-cache";
 
 var cachePaths = [
@@ -61,10 +61,10 @@ function createCaches(e) {
 
     // remove previous caches
     caches.keys().then(function (keys) {
-        for (let key of keys) {
+        for (var key of keys) {
             caches.open(key).then(function (cache) {
                 cache.keys().then(function (ckeys) {
-                    for (let ckey of ckeys) {
+                    for (var ckey of ckeys) {
                         cache.delete(key);
                     }
                 });
@@ -72,7 +72,7 @@ function createCaches(e) {
         }
     });
 
-    let vercheck = caches.open(CACHE_NAME)
+    var vercheck = caches.open(CACHE_NAME)
         .then(function (cache) {
             fetch(cachedVersionPath, fetchInit).then(function (r) {
                 cache.put(cachedVersionPath, r);
@@ -80,9 +80,9 @@ function createCaches(e) {
             hasCheckedVersion = true;
         });
 
-    let cache = caches.open(CACHE_NAME)
+    var cache = caches.open(CACHE_NAME)
         .then(function (cache) {
-            for (let cachePath of cachePaths) {
+            for (var cachePath of cachePaths) {
                 fetch(cachePath, fetchInit).then(function (r) {
                     cache.put(cachePath, r);
                 });
@@ -146,7 +146,7 @@ addEventListener("fetch", function (e) {
     
     if (e.request.url.startsWith(location.origin + "/content/")) {
         // cache information from content
-        let url = e.request.url,
+        var url = e.request.url,
             ixNoCache = url.lastIndexOf("?nocache="),
             cUrl = ixNoCache < 0 ? url : url.slice(0, ixNoCache); // if nocache exists, use removed, else, use normal
 
