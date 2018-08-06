@@ -1,17 +1,15 @@
 Version 0.3.4:
   - Added CLI, which can be (secretly) activated by searching for "$cli"
 
+[Version 0.3.5:]
+  - Almost full support for browsers back to IE 10 (2012)
+  - More of a chance to run the website normally if a component fails to load
+
 [TODO]
   - Refactor siteObjects.js > searchButton
-  - Fallback.js
   - Optimizing for mobile
   - Clicked while animating do something
-    - Supporting older browsers
-    - IE 10
-    - IE 9
-    - IE 8
-    - IE 7
-    - IE 5?
+    - Redirect unsupported browsers to /content/0.json.
   - Supporting mobile devices
   - Optimize site by using display: none on hidden overlays
 
