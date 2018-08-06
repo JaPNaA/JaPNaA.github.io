@@ -1,5 +1,7 @@
 // version 0.3.4.11
 
+"use strict";
+
 // comment to debug
 console.log = function () { }; // because I log too many things and I can't be bothered to remove them
 
@@ -62,7 +64,7 @@ function createCaches(e) {
         for (let key of keys) {
             caches.open(key).then(function (cache) {
                 cache.keys().then(function (ckeys) {
-                    for (ckey of ckeys) {
+                    for (let ckey of ckeys) {
                         cache.delete(key);
                     }
                 });

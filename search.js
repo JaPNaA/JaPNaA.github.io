@@ -1,3 +1,5 @@
+"use strict";
+
 function c_Search(DT) {
     var D = {
         button: null, // search button

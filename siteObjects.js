@@ -1,3 +1,5 @@
+"use strict";
+
 function c_SiteObjects(DT) {
     var D = {};
     DT.SiteObjects = D;
@@ -54,7 +56,7 @@ function c_SiteObjects(DT) {
         this.elmP.target = "_blank";
         this.elmP.rel = "noopener";
         this.elm.classList.add("item");
-        this.elm.style = style;
+        this.elm.style.cssText = style;
 
         this.title = title;
         this.elmP.classList.add("itemP");
@@ -127,7 +129,7 @@ function c_SiteObjects(DT) {
             hl = handlers.length;
 
         for (let i = 0; i < hl; i++) {
-            i.call(handlers[i]);
+            handlers[i].call(this);
         }
     };
 
@@ -165,6 +167,8 @@ function c_SiteObjects(DT) {
      * @param {String} style cssString applied to item
      */
     function ResultItem(timestamp, style) { // doesn't have as much as Item, because card and text have different DOM structures
+        var that = this;
+    
         this.elmP = document.createElement("div");
         this.elm = document.createElement("div");
         this.expandedElm = document.createElement("div");
@@ -180,12 +184,12 @@ function c_SiteObjects(DT) {
         this.elmP.classList.add("result");
         this.expandedElm.classList.add("expand");
 
-        this.elm.style = style;
+        this.elm.style.cssText = style;
 
         this.elmP.appendChild(this.elm);
         this.elmP.appendChild(this.expandedElm);
         this.elmP.addEventListener("click", function() {
-            this.expand();
+            that.expand();
         });
     }
 
@@ -240,10 +244,11 @@ function c_SiteObjects(DT) {
             this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
             this.expandedElm.classList.add("expanded");
         } else {
+            let that = this;
             this.createExpandItem();
             this.expandItem.addEventListener("load", function() {
-                this.expandItem.appendTo(this.expandedElm);
-                this.elmP.style.height = this.expandItem.elmP.clientHeight + "px";
+                that.expandItem.appendTo(that.expandedElm);
+                that.elmP.style.height = that.expandItem.elmP.clientHeight + "px";
             });
             this.expandItem.prepAdd();
 
@@ -342,12 +347,15 @@ function c_SiteObjects(DT) {
         this.elm.classList.add("text");
     };
 
-    D.ResultText.prototype.createExpandItem = function() {
-        this.expandItem = new D.Text.apply(null, this.args);
-    };
-
     D.ResultText.prototype = Object.create(ResultItem.prototype);
     D.ResultText.prototype.constructor = D.ResultText;
+
+    D.ResultText.prototype.createExpandItem = function() {
+        var arglist = this.args.slice();
+
+        arglist.unshift(D.Text);
+        this.expandItem = new (D.Text.bind.apply(D.Text, arglist))();
+    };
 
 
     /**
@@ -415,8 +423,11 @@ function c_SiteObjects(DT) {
     D.ResultCard.prototype = Object.create(ResultItem.prototype);
     D.ResultCard.prototype.constructor = D.ResultCard;
 
-    D.ResultCard.prototype.createExpandItem = function() {
-        this.expandItem = new D.Card.apply(null, this.args);
+    D.ResultCard.prototype.createExpandItem = function () {
+        var arglist = this.args.slice();
+
+        arglist.unshift(D.Card);
+        this.expandItem = new (D.Card.bind.apply(D.Card, arglist))();
     };
 
     /**

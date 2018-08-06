@@ -1,3 +1,5 @@
+"use strict";
+
 function c_Utils(DT) {
     var D = {},
         stylesheet = document.createElement("style");

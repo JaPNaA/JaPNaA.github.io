@@ -1,3 +1,5 @@
+"use strict";
+
 function c_ServiceWorker(DT) {
     var D = {
         worker: null,

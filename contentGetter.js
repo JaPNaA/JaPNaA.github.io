@@ -1,3 +1,5 @@
+"use strict";
+
 function c_ContentGetter(DT) {
     var D = {
         toGet: {}, // every request

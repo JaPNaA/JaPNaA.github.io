@@ -1,3 +1,5 @@
+"use strict";
+
 // Command line interface that opens upon secret search entry
 // used for stuff not as easy to do on DevTools.
 

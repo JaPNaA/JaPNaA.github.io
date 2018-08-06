@@ -1,3 +1,5 @@
+"use strict";
+
 function c_AboutPage(DT) {
     var D = {
         elm: null,
@@ -27,7 +29,7 @@ function c_AboutPage(DT) {
 
                 for (let i = 0; i < dl; i++) {
                     let j = d[i];
-                    
+
                     let item = DT.SiteObjects.parse(j);
                     if (!item) continue;
                     item.appendTo(D.elm);

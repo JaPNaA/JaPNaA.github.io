@@ -1,3 +1,5 @@
+"use strict";
+
 function c_SplashScreen(DT) {
     var D = {
         loadingSI: -1

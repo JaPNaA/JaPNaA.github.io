@@ -1,3 +1,5 @@
+"use strict";
+
 function c_ShortUrl(DT) {
     var D = {};
     DT.ShortUrl = D;

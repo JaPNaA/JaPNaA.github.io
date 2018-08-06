@@ -1,3 +1,5 @@
+"use strict";
+
 function c_Menu(DT) {
     const D = {
         menu: null, // element

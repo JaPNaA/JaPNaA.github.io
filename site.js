@@ -1,3 +1,5 @@
+"use strict";
+
 function c_Site(DT) {
     var D = {
         // elements
