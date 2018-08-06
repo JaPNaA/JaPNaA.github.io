@@ -145,7 +145,7 @@ function c_Menu(DT) {
             sub.appendChild(thridparty);
         }
         {
-            copyright = document.createElement("div");
+            var copyright = document.createElement("div");
             copyright.innerHTML = "Copyright (c) 2018 JaPNaA";
             copyright.title = "Not registered tho";
             copyright.style.fontSize = "0.8rem";
