@@ -754,7 +754,7 @@ function c_SiteObjects(DT) {
 
         e.classList.add("searchItem");
 
-        var a, b;
+        var a, b, c;
         {
             a = document.createElement("div");
             a.classList.add("searchButton");
