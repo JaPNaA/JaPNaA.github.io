@@ -1,6 +1,6 @@
 "use strict";
 
-var $input = document.getElementById("input"),
+const $input = document.getElementById("input"),
     $output = document.getElementById("output");
 
 function cmd_echo(str, strargs) {
@@ -69,7 +69,7 @@ function cmd_update() {
     return 0;
 }
 
-var moreHelp = {
+const moreHelp = {
     "echo": "Syntax: echo [string with spaces]\nThis command says whatever you want it to say",
     "eval": "Syntax: echo [string of code with spaces]\nThis command evaluates your code and prints it's return value",
     "help": "Syntax: help *[command]\nWhen given no arguments, lists all commands.\nWith a name of a command, will print it's help information.",
@@ -80,7 +80,7 @@ var moreHelp = {
 
 function cmd_help(str, strargs, command) {
     if (command) {
-        var helpStr = moreHelp[command];
+        let helpStr = moreHelp[command];
         if (helpStr) {
             println(helpStr);
         } else {
@@ -100,7 +100,7 @@ function cmd_exit() {
     return 1;
 }
 
-var cmdMap = {
+const cmdMap = {
     "echo": cmd_echo,
     "eval": cmd_eval,
     "help": cmd_help,
@@ -121,7 +121,7 @@ function processCommand(str) {
     if (!str) return;
 
     if (func) {
-        var termCode = func(str, strargs, ...args);
+        let termCode = func(str, strargs, ...args);
         if (termCode !== 0) {
             println("Process exited with code: " + termCode, "err");
         }
@@ -156,7 +156,7 @@ function clearConsole() {
 
 $input.addEventListener("keydown", function(e) {
     if (e.keyCode === 13 && !e.shiftKey) {
-        var val = $input.value;
+        let val = $input.value;
         $input.value = "";
         inputValue(val);
 
@@ -186,8 +186,8 @@ resizeAndScrollToInput();
 addEventListener("resize", resizeAndScrollToInput);
 $input.addEventListener("input", resizeAndScrollToInput);
 
-var commandHistory = [];
-var historyIx = -1;
+let commandHistory = [];
+let historyIx = -1;
 
 addEventListener("keydown", function(e) {
     $input.focus();
@@ -229,13 +229,13 @@ addEventListener("load", function() {
 // connection to parent
 // -----------------------------------------------------------------------------
 
-var parent = null;
+let parent = null;
 
 function setupParentCommands(key) {
-    for (var i in parent[key].commands) {
+    for (let i in parent[key].commands) {
         cmdMap[i] = parent[key].commands[i];
     }
-    for (var i in parent[key].helpCmd) {
+    for (let i in parent[key].helpCmd) {
         moreHelp[i] = parent[key].helpCmd[i];
     }
 
@@ -253,7 +253,7 @@ function msg_exposeKey(e, args) {
     setupParentCommands(args);
 }
 
-var msgCommandMap = {
+const msgCommandMap = {
     parentSet: msg_parentSet,
     exposeKey: msg_exposeKey
 };
@@ -269,7 +269,7 @@ function parseMessage(e) {
         args = e.data.slice(splitIx + 1);
     }
 
-    var func = msgCommandMap[command];
+    let func = msgCommandMap[command];
     if (func) {
         func(e, args);
     } else {

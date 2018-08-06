@@ -196,7 +196,8 @@ function c_Site(DT) {
         DT.Utils.reloadCss();
 
         // build
-        for (var i = 0; i < bodyFragCount; i++) {
+        var i;
+        for (i = 0; i < bodyFragCount; i++) {
             var frag = document.createElement("div");
             frag.classList.add("bodyFrag");
 
@@ -204,7 +205,7 @@ function c_Site(DT) {
             bodyFrag.push(frag);
         }
 
-        for (var i = 0; i < D.children.length; i++) {
+        for (i = 0; i < D.children.length; i++) {
             var item = D.children[i];
 
             if (item.added) {
@@ -212,7 +213,7 @@ function c_Site(DT) {
             }
         }
 
-        for (var i = 0; i < bodyFrag.length; i++) {
+        for (i = 0; i < bodyFrag.length; i++) {
             body.appendChild(bodyFrag[i]);
         }
 

@@ -1,7 +1,7 @@
 "use strict";
 
 function c_ServiceWorker(DT) {
-    var D = {
+    const D = {
         worker: null,
         checkedVersion: false
     };
@@ -14,7 +14,7 @@ function c_ServiceWorker(DT) {
         x.responseType = "text";
         x.addEventListener("load", function () {
             if (x.response === "ok") {
-                var a = document.createElement("a"),
+                let a = document.createElement("a"),
                     textBefore = document.createTextNode("An update was found! To see the new version, just "),
                     textAfter = document.createTextNode("."),
                     docFrag = document.createDocumentFragment();
@@ -28,7 +28,7 @@ function c_ServiceWorker(DT) {
 
                 DT.Utils.prompta(docFrag, 0, null, false);
             } else {
-                var text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
+                let text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
                     br = document.createElement("br"),
                     debugData = document.createElement("pre"),
                     docFrag = document.createDocumentFragment();

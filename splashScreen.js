@@ -12,7 +12,7 @@ function c_SplashScreen(DT) {
     elm.id = "splashScreen";
 
     {
-        var a = document.createElement("div");
+        var a = document.createElement("div"), b;
         a.style.position = "fixed";
         a.style.left = "50%";
         a.style.top = "40%";
@@ -21,12 +21,12 @@ function c_SplashScreen(DT) {
         a.style.textAlign = "center";
 
         {
-            var b = document.createElement("div");
+            b = document.createElement("div");
             b.innerHTML = "JaPNaA";
             a.appendChild(b);
         }
         {
-            var b = document.createElement("div");
+            b = document.createElement("div");
             b.innerHTML = "Loading...";
             D.loadingSI = setInterval(function() {
                 b.innerHTML += ".";

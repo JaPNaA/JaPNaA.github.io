@@ -496,9 +496,10 @@ function c_SiteObjects(DT) {
     // parsing
     // -----------------------------------------------------------------------------
     D.parseDisplayContent = function (dt, imgs) {
+        var r;
         switch (dt.type) {
         case "img": {
-            var r = document.createElement("img");
+            r = document.createElement("img");
             r.asrc = parseURIPath(dt.src);
             r.title = dt.caption;
             imgs.push(r);
@@ -507,7 +508,7 @@ function c_SiteObjects(DT) {
         case "iframe":
             return D.parseDisplayContent(dt.alt, imgs);
         default: {
-            var r = document.createElement("div");
+            r = document.createElement("div");
             r.innerHTML = "Error! <br><b>Reason:</b> Item is of unknown type";
             return r;
         }
@@ -753,22 +754,23 @@ function c_SiteObjects(DT) {
 
         e.classList.add("searchItem");
 
+        var a, b;
         {
-            var a = document.createElement("div");
+            a = document.createElement("div");
             a.classList.add("searchButton");
 
             {
-                var b = document.createElement("div"); // create search text
+                b = document.createElement("div"); // create search text
                 b.innerHTML = "Search";
                 b.classList.add("text");
 
                 a.appendChild(b);
             } {
-                var b = document.createElement("div"); // create icon
+                b = document.createElement("div"); // create icon
                 b.classList.add("img");
 
                 {
-                    var c = document.createElement("img");
+                    c = document.createElement("img");
                     c.src = "img/searchIcon.png";
                     c.alt = "search icon";
                     b.appendChild(c);

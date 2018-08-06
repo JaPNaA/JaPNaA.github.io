@@ -72,13 +72,13 @@ function c_Menu(DT) {
 
     D.createMoreSub = function () {
         //* this should not create a sub everytime it's clicked
-        var sub = createSub();
+        var sub = createSub(), a;
 
         // includes: send feedback, contact me, view all projects, changelog, copyright
         {
             var feedback = document.createElement("div");
             {
-                var a = document.createElement("a");
+                a = document.createElement("a");
                 a.href = "https://github.com/JaPNaA/JaPNaA.github.io/issues/new";
                 a.target = "_blank";
                 a.innerHTML = "Feedback";
@@ -88,7 +88,7 @@ function c_Menu(DT) {
         } {
             var contact = document.createElement("div");
             {
-                var a = document.createElement("a");
+                a = document.createElement("a");
                 a.href = "mailto:japnaabot@gmail.com";
                 a.innerHTML = "Contact";
                 contact.appendChild(a);
@@ -101,7 +101,7 @@ function c_Menu(DT) {
         {
             var allProjects = document.createElement("div");
             {
-                var a = document.createElement("a");
+                a = document.createElement("a");
                 a.href = DT.Site.path + "/Thingy/";
                 a.target = "_blank";
                 a.innerHTML = "All projects";
@@ -111,7 +111,7 @@ function c_Menu(DT) {
         } {
             var changelog = document.createElement("div");
             {
-                var a = document.createElement("a");
+                a = document.createElement("a");
                 a.href = "/content/changelog.txt";
                 a.target = "_blank";
                 a.innerHTML = "Changelog";
@@ -125,7 +125,7 @@ function c_Menu(DT) {
         {
             var license = document.createElement("div");
             {
-                var a = document.createElement("a");
+                a = document.createElement("a");
                 a.href = "LICENSE.txt";
                 a.target = "_blank";
                 a.innerHTML = "License";
@@ -136,7 +136,7 @@ function c_Menu(DT) {
         {
             var thridparty = document.createElement("div");
             {
-                var a = document.createElement("a");
+                a = document.createElement("a");
                 a.href = "/3rdParty/3rdPartyLices.txt";
                 a.target = "_blank";
                 a.innerHTML = "3rd Party <br> Licenses";
@@ -145,7 +145,7 @@ function c_Menu(DT) {
             sub.appendChild(thridparty);
         }
         {
-            var copyright = document.createElement("div");
+            copyright = document.createElement("div");
             copyright.innerHTML = "Copyright (c) 2018 JaPNaA";
             copyright.title = "Not registered tho";
             copyright.style.fontSize = "0.8rem";
@@ -167,13 +167,13 @@ function c_Menu(DT) {
     };
 
     D.createMenu = function () {
-        var menu = document.createElement("div");
+        var menu = document.createElement("div"), a, s;
         D.menu = menu;
         menu.id = "menu";
         menu.classList.add("noselect");
 
         {
-            var a = document.createElement("div");
+            a = document.createElement("div");
             a.innerHTML = "\u2022\u2022\u2022"; 
             D.menuItems.more = a;
             a.addEventListener("click", function () {
@@ -181,10 +181,10 @@ function c_Menu(DT) {
             });
             menu.appendChild(a);
         } {
-            var s = DT.SiteObjects.separator();
+            s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
-            var a = document.createElement("div");
+            a = document.createElement("div");
             a.innerHTML = "About";
             a.addEventListener("click", function () {
                 if (DT.c_["c_AboutPage"]) {
@@ -197,17 +197,17 @@ function c_Menu(DT) {
             D.menuItems.about = a;
             menu.appendChild(a);
         } {
-            var s = DT.SiteObjects.separator();
+            s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
-            var a = DT.SiteObjects.searchButton();
+            a = DT.SiteObjects.searchButton();
             D.menuItems.search = a;
             menu.appendChild(a);
         } {
-            var s = DT.SiteObjects.separator();
+            s = DT.SiteObjects.separator();
             menu.appendChild(s);
         } {
-            var a = DT.SiteObjects.yearList();
+            a = DT.SiteObjects.yearList();
             D.menuItems.yearList = a;
 
             a.addEventListener("load", function () {
