@@ -1,5 +1,5 @@
 {
-    "$schema": "schema/info.schema.json",
+    "$schema": "./schema/info.schema.json",
     "data": [
         {
             "type": "text",
