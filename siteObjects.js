@@ -686,74 +686,12 @@ function c_SiteObjects(DT) {
         return document.createElement("hr");
     };
 
-    //* very hack-y should be fixed
-    D.search_open = function () {
-        // WHY DOES THE SEARCH BUTTON CONTROL THE SEARCHING CLASS? (when there's a js file dedicated to search)
-        DT.Site.main.classList.add("searching");
-        DT.Search.initSearch(true);
-    };
-
-    //* very hack-y should be fixed
-    D.search_close = function () {
-        // WHY DOES THE SEARCH BUTTON CONTROL THE SEARCHING CLASS? (when there's a js file dedicated to search)
-        DT.Site.main.classList.remove("searching");
-        DT.Search.initSearch(false);
-
-        // WHY DOES THE SEARCH BUTTON CONTROL THE URL
-        DT.Utils.writeUrl(location.origin);
-        DT.Site.clearHeadHint();
-    };
-
-    //* very hack-y should be fixed
     D.searchButton = function () {
-        var e = document.createElement("div"),
-            active = false, // state: button is active
-            aniframe = 0,
-            anitime = 350,
-            then = 0,
-            oPos = null,
-            paddTop = 10,
-            aniactive = false;
-
-        function startAni() {
-            if (aniactive) return;
-            then = performance.now();
-            requestAnimationFrame(reqanf);
-        }
-        function updPos() {
-            e.style.transform =
-                "translateY(" +
-                DT.Utils.easingFunctions.easeInOutQuad(aniframe) * -oPos +
-                "px)";
-        }
-
-        function reqanf(now) {
-            var tt = now - then;
-            then = now;
-            if (active) {
-                aniframe += tt / anitime;
-                if (aniframe > 1) {
-                    aniframe = 1;
-                    aniactive = false;
-                    updPos();
-                    return;
-                }
-            } else {
-                aniframe -= tt / anitime;
-                if (aniframe < 0) {
-                    aniframe = 0;
-                    aniactive = false;
-                    updPos();
-                    return;
-                }
-            }
-            updPos();
-            aniactive = true;
-            requestAnimationFrame(reqanf);
-        }
+        var e = document.createElement("div");
 
         e.classList.add("searchItem");
 
+        // build DOM tree
         var a, b, c;
         {
             a = document.createElement("div");
@@ -782,42 +720,8 @@ function c_SiteObjects(DT) {
             e.appendChild(a);
         }
 
-        // TODO: move this to the search.js file
-        function clickHandler() {
-            active ^= true;
-
-            if (oPos === null) {
-                oPos = e.getBoundingClientRect().top - paddTop;
-            }
-
-            if (active) {
-                D.search_open();
-            } else {
-                D.search_close();
-            }
-
-            if (aniactive) {
-                console.log("clicked while animating!");
-            }
-            startAni();
-        }
-
-        //* very hack-y should be fixed
-        e.setActive = function (val) {
-            active = !val;
-            clickHandler();
-        };
-
-        // automated search with url
-        if (DT.Site.search.search) {
-            addEventListener("load", function() {
-                clickHandler();
-                DT.Search.input = DT.Site.search.search;
-                DT.Search.updateResults();
-            });
-        }
-
-        e.addEventListener("click", clickHandler);
+        // because this is a special object
+        DT.Search.initSearchButton(e);
 
         return e;
     };

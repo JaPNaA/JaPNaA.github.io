@@ -3,7 +3,18 @@
 function c_Search(DT) {
     var D = {
         button: null, // search button
+        buttonData: {
+            active: false, // is searching
+            aniframe: 0,
+            anitime: 350,
+            then: 0,
+            oPos: null,
+            paddTop: 10,
+            aniactive: false
+        },
+
         content: null, // content/0.json
+
         searchConfig: { // config to pass through search library
             fields: {
                 "title": {boost: 2},
@@ -13,9 +24,10 @@ function c_Search(DT) {
                 "author": {boost: 2},
                 "caption": {boost: 1}
             },
-            bool: "OR",
+            bool: "AND",
             expand: true
         },
+        
         sI: -1, // timer to prevent searching every key
         timeout: 250, // time to wait before searching
         inputElm: null, // <input> in head for user input
@@ -107,6 +119,8 @@ function c_Search(DT) {
             D.sI = setTimeout(function () {
                 D.updateResults();
             }, D.timeout);
+        } else {
+            DT.Utils.writeUrl(location.origin);
         }
     }
 
@@ -119,7 +133,7 @@ function c_Search(DT) {
                 } else {
                     DT.Utils.prompta("c_CLI is not loaded", 2, 0, false);
                 }
-                DT.Menu.menuItems.search.setActive(false);
+                D.setActive(false);
                 return;
             }
 
@@ -135,8 +149,6 @@ function c_Search(DT) {
 
         if (D.input.length >= 1) {
             DT.Site.clearHeadHint();
-        } else {
-            DT.Utils.writeUrl(location.origin);
         }
 
         clearTimeout(D.sI);
@@ -201,6 +213,95 @@ function c_Search(DT) {
         }
     };
 
+    // Search button
+    // -----------------------------------------------------------------------------
+    // animation
+
+    function button_updPos() {
+        D.button.style.transform =
+            "translateY(" +
+            DT.Utils.easingFunctions.easeInOutQuad(D.buttonData.aniframe) 
+              * -D.buttonData.oPos +
+            "px)";
+    }
+
+    function button_reqanf(now) {
+        var bd = D.buttonData,
+            tt = now - bd.then;
+
+        bd.then = now;
+
+        if (bd.active) {
+            bd.aniframe += tt / bd.anitime;
+            if (bd.aniframe > 1) {
+                bd.aniframe = 1;
+                bd.aniactive = false;
+                button_updPos();
+                return;
+            }
+        } else {
+            bd.aniframe -= tt / bd.anitime;
+            if (bd.aniframe < 0) {
+                bd.aniframe = 0;
+                bd.aniactive = false;
+                button_updPos();
+                return;
+            }
+        }
+        
+        button_updPos();
+        bd.aniactive = true;
+        requestAnimationFrame(button_reqanf);
+    }
+
+    function button_startAni() {
+        if (D.buttonData.aniactive) return;
+        D.buttonData.then = performance.now();
+        requestAnimationFrame(button_reqanf);
+    }
+
+    function button_updState() {
+        if (D.buttonData.oPos === null) {
+            D.buttonData.oPos = D.button.getBoundingClientRect().top - D.buttonData.paddTop;
+        }
+
+        if (D.buttonData.active) {
+            DT.Site.main.classList.add("searching");
+            DT.Search.initSearch(true);
+        } else {
+            DT.Site.main.classList.remove("searching");
+            DT.Search.initSearch(false);
+
+            DT.Utils.writeUrl(location.origin);
+            DT.Site.clearHeadHint();
+        }
+
+        button_startAni();
+    }
+    
+    function button_click() {
+        D.buttonData.active ^= true;
+
+        button_updState();
+
+        if (D.buttonData.aniactive) {
+            console.log("clicked while animating!");
+        }
+    }
+
+    D.setActive = function(val) {
+        D.buttonData.active = val;
+        button_updState();
+    };
+
+    // called when the searchbutton is created in siteobjects.js
+    D.initSearchButton = function(e) {
+        D.button = e;
+        D.button.addEventListener("click", button_click);
+    };
+
+    // setup
+    // -----------------------------------------------------------------------------
     D.setup = function () {
         D.button = DT.Menu.menuItems.search;
         DT.ContentGetter.add("content", "content/0.json", true, function (e) {
@@ -239,6 +340,15 @@ function c_Search(DT) {
                 D.inputElm.value = e;
             }
         });
+
+        // if search query in url, init search
+        if (DT.Site.search.search) {
+            addEventListener("load", function () {
+                DT.Search.setActive(true);
+                DT.Search.input = DT.Site.search.search;
+                DT.Search.updateResults();
+            });
+        }
     };
 
     return D;

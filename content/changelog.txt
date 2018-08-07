@@ -6,12 +6,12 @@ Version 0.3.4:
   - More of a chance to run the website normally if a component fails to load
 
 [TODO]
-  - Refactor siteObjects.js > searchButton
   - Optimizing for mobile
   - Clicked while animating do something
     - Redirect unsupported browsers to /content/0.json.
   - Supporting mobile devices
   - Optimize site by using display: none on hidden overlays
+  - Let splashScreen.js show information with performance.getEntriesByType("resource");
 
 Version 0.3.3:
   - Optimizations and fixes and stuff
