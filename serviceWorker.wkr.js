@@ -3,7 +3,7 @@
 "use strict";
 
 // comment to debug
-console.log = function () { }; // because I log too many things and I can't be bothered to remove them
+// console.log = function () { }; // because I log too many things and I can't be bothered to remove them
 
 var CACHE_NAME = "JaPNaA-github-io_cache",
     CONTENT_CACHE_NAME = "JaPNaA-github-io_content-cache";
@@ -59,8 +59,11 @@ function createCaches(e) {
     nocacheHeader.append("pragma", "no-cache");
     nocacheHeader.append("cache-control", "no-cache");
 
+
+    let vercheck, cache;
+
     // remove previous caches
-    caches.keys().then(function (keys) {
+    let remcache = caches.keys().then(function (keys) {
         for (var key of keys) {
             caches.open(key).then(function (cache) {
                 cache.keys().then(function (ckeys) {
@@ -70,32 +73,36 @@ function createCaches(e) {
                 });
             });
         }
+    }).then(function() {
+        vercheck = caches.open(CACHE_NAME)
+            .then(function (cache) {
+                fetch(cachedVersionPath, fetchInit).then(function (r) {
+                    cache.put(cachedVersionPath, r);
+                });
+                hasCheckedVersion = true;
+            });
+
+        cache = caches.open(CACHE_NAME)
+            .then(function (cache) {
+                for (let cachePath of cachePaths) {
+                    fetch(cachePath, fetchInit).then(function (r) {
+                        cache.put(cachePath, r);
+                    });
+                }
+                return;
+            }); 
+
+        if (e) {
+            e.waitUntil(cache);
+            e.waitUntil(vercheck);
+        }
     });
 
-    var vercheck = caches.open(CACHE_NAME)
-        .then(function (cache) {
-            fetch(cachedVersionPath, fetchInit).then(function (r) {
-                cache.put(cachedVersionPath, r);
-            });
-            hasCheckedVersion = true;
-        });
-
-    var cache = caches.open(CACHE_NAME)
-        .then(function (cache) {
-            for (var cachePath of cachePaths) {
-                fetch(cachePath, fetchInit).then(function (r) {
-                    cache.put(cachePath, r);
-                });
-            }
-            return;
-        });
-
     if (e) {
-        e.waitUntil(cache);
-        e.waitUntil(vercheck);
+        e.waitUntil(remcache);
     }
 
-    return vercheck;
+    return remcache;
 }
 
 function checkVersion(e) {
