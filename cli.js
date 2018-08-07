@@ -25,6 +25,16 @@ function c_CLI(DT) {
                 DT.Utils.prompta(content.join(" "), parseInt(importancy), parseInt(ttl), parseInt(unclosable));
                 return 0;
             },
+            search: function(str, strargs) {
+                if (strargs) {
+                    DT.Search.setActive(true);
+                    DT.Search.input = strargs;
+                    DT.Search.updateResults();
+                } else {
+                    DT.Search.setActive(false);
+                }
+                return 0;
+            },
             version: function() {
                 D.window.println("Current: " + D.data.version.current);
                 D.window.println("Latest: " + D.data.version.latest);
@@ -46,10 +56,11 @@ function c_CLI(DT) {
             }
         },
         helpCmd: {                      // help for commands
-            prompta: "Syntax: prompta [int importancy] [int ttl] [1/0 unclosable] [string of message with spaces]",
+            prompta: "Syntax: prompta [int importancy] [int ttl] [1/0 unclosable] [string of message with spaces]\nCreates a prompta with parameters",
+            search: "Syntax: search *[string of search query with spaces = close search]\nSearches query, if not provided with query, closes search",
             version: "Syntax: version\nPrints the version numbers of the site",
             update: "Syntax: update\nForce updates the site",
-            reload: "Syntax: reload [1/0 forceReload]\nReloads the site"
+            reload: "Syntax: reload *[1/0 forceReload = 0]\nReloads the site"
         },
 
         data: {                         // data accessible by CLI, for debugging

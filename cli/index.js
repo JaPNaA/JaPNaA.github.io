@@ -116,7 +116,7 @@ function processCommand(str) {
         func = cmdMap[command],
         
         firstSpace = str.match(/\s/),
-        strargs = firstSpace ? str.slice(firstSpace.index) : "";
+        strargs = firstSpace ? str.slice(firstSpace.index + 1) : "";
 
     if (!str) return;
 
