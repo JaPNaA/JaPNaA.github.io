@@ -2,7 +2,10 @@
 
 function c_SplashScreen(DT) {
     var D = {
-        loadingSI: -1
+        loadingSI: -1,
+        progressBarSI: -1,
+        loadingBar: null,
+        loadingProgress: null
     };
     DT.SplashScreen = D;
 
@@ -12,7 +15,7 @@ function c_SplashScreen(DT) {
     elm.id = "splashScreen";
 
     {
-        var a = document.createElement("div"), b;
+        var a = document.createElement("div"), b, c, d;
         a.style.position = "fixed";
         a.style.left = "50%";
         a.style.top = "40%";
@@ -23,20 +26,58 @@ function c_SplashScreen(DT) {
         {
             b = document.createElement("div");
             b.innerHTML = "JaPNaA";
+            b.classList.add("title");
             a.appendChild(b);
         }
         {
             b = document.createElement("div");
+            b.classList.add("loadingText");
             b.innerHTML = "Loading...";
-            D.loadingSI = setInterval(function() {
-                b.innerHTML += ".";
-            }, 1000);
+            // D.loadingSI = setInterval(function() {
+            //     b.innerHTML += ".";
+            // }, 1000);
+            a.appendChild(b);
+        }
+        { // add something to check if loadingbar is possible
+            b = document.createElement("div");
+            b.classList.add("loadingStatus");
+
+            {
+                c = document.createElement("div");
+                c.classList.add("loadingBar");
+
+                {
+                    d = document.createElement("div");
+                    d.classList.add("loadingProgress");
+                    D.loadingProgress = d;
+                    c.appendChild(d);
+                }
+
+                D.loadingBar = c;
+                b.appendChild(c);
+            }
+
             a.appendChild(b);
         }
         elm.appendChild(a);
     }
 
+    function updateLoadingBar(progress) {
+        D.loadingProgress.style.width = progress * 100 + "%";
+    }
+
+    function networkProgessCheck() {
+        var loaded = performance.getEntriesByType("resource").length,
+            progress = loaded / 29;
+        
+        updateLoadingBar(progress);
+
+        D.progressBarSI = requestAnimationFrame(networkProgessCheck);
+    }
+
+
     function initSplashScreen() {
+        networkProgessCheck();
         parent.appendChild(elm);
     }
 
@@ -57,8 +98,11 @@ function c_SplashScreen(DT) {
 
     D.closeSplashScreen = function() {
         elm.classList.add("remove");
-        elm.addEventListener("transitionend", function() {
+
+        elm.addEventListener("transitionend", function(e) {
+            if (e.path[0] !== elm) return;
             remove();
+            cancelAnimationFrame(D.progressBarSI);
             clearInterval(sI);
         }, {
             once: true
@@ -66,6 +110,7 @@ function c_SplashScreen(DT) {
 
         // for browsers that may not support transitionend
         sI = setTimeout(function() {
+            cancelAnimationFrame(D.progressBarSI);
             remove();
         }, 400);
     };

@@ -4,6 +4,7 @@ Version 0.3.4:
 [Version 0.3.5:]
   - Almost full support for browsers back to IE 10 (2012)
   - More of a chance to run the website normally if a component fails to load
+  - New splashScreen, with a loading bar
 
 [TODO]
   - Optimizing for mobile
@@ -11,7 +12,6 @@ Version 0.3.4:
     - Redirect unsupported browsers to /content/0.json.
   - Supporting mobile devices
   - Optimize site by using display: none on hidden overlays
-  - Let splashScreen.js show information with performance.getEntriesByType("resource");
 
 Version 0.3.3:
   - Optimizations and fixes and stuff

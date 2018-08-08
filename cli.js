@@ -53,6 +53,13 @@ function c_CLI(DT) {
             reload: function(str, strargs, forceReload) {
                 location.reload(!!parseInt(forceReload));
                 return 1;
+            },
+            rd: function() {
+                D.commands.update();
+                setTimeout(function() {
+                    D.commands.reload();
+                }, 500);
+                return 0;
             }
         },
         helpCmd: {                      // help for commands
@@ -60,7 +67,8 @@ function c_CLI(DT) {
             search: "Syntax: search *[string of search query with spaces = close search]\nSearches query, if not provided with query, closes search",
             version: "Syntax: version\nPrints the version numbers of the site",
             update: "Syntax: update\nForce updates the site",
-            reload: "Syntax: reload *[1/0 forceReload = 0]\nReloads the site"
+            reload: "Syntax: reload *[1/0 forceReload = 0]\nReloads the site",
+            rd: "Syntax: rd\nUpdates, then reloads the site"
         },
 
         data: {                         // data accessible by CLI, for debugging

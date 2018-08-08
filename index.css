@@ -85,9 +85,44 @@ pre {
     will-change: opacity, transform;
 }
 
+#splashScreen .title {
+    font-family: "Share Tech Mono", courier, monospace;
+    font-size: 44px;
+    margin-bottom: 8px;
+}
+
+#splashScreen .loadingText {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+#splashScreen .loadingBar {
+    position: relative;
+
+    background-color: #00000028;
+
+    min-width: 360px;
+    width: 27vw;
+    height: 4px;
+
+    border-radius: 3px;
+
+    overflow: hidden;
+}
+
+#splashScreen .loadingProgress {
+    background-color: #00000069;
+
+    height: 100%;
+    width: 0;
+    
+    transition: 150ms ease-in-out;
+}
+
 #menu, .submenu {
     position: fixed;
-    font-family: 'Share Tech Mono';
+    font-family: "Share Tech Mono", courier, monospace;
 
     top: 0;
     left: 0;
@@ -592,7 +627,7 @@ pre {
     left: 0;
     opacity: 0.4;
     /* will-change: opacity; /* too much memory */
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     font-size: 0.66em;
     z-index: -2;
 }
@@ -687,7 +722,7 @@ pre {
 
 .prompta {
     background-color: #ffffff;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', sans-serif;
     position: relative;
     cursor: default;
     overflow: hidden;
