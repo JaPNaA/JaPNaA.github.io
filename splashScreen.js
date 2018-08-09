@@ -3,9 +3,11 @@
 function c_SplashScreen(DT) {
     var D = {
         loadingSI: -1,
+
         progressBarSI: -1,
         loadingBar: null,
-        loadingProgress: null
+        loadingProgress: null,
+        loadingBarEnabled: false
     };
     DT.SplashScreen = D;
 
@@ -38,7 +40,12 @@ function c_SplashScreen(DT) {
             // }, 1000);
             a.appendChild(b);
         }
-        { // add something to check if loadingbar is possible
+        
+        if (
+            window.performance && // check if supported
+            performance.getEntriesByType &&
+            performance.getEntriesByType("resource")
+        ) {
             b = document.createElement("div");
             b.classList.add("loadingStatus");
 
@@ -58,6 +65,7 @@ function c_SplashScreen(DT) {
             }
 
             a.appendChild(b);
+            D.loadingBarEnabled = true;
         }
         elm.appendChild(a);
     }
@@ -67,8 +75,9 @@ function c_SplashScreen(DT) {
     }
 
     function networkProgessCheck() {
+        if (!D.loadingBarEnabled) return;
         var loaded = performance.getEntriesByType("resource").length,
-            progress = loaded / 29;
+            progress = loaded / 22;
         
         updateLoadingBar(progress);
 
@@ -93,16 +102,22 @@ function c_SplashScreen(DT) {
     }
 
     D.setup = function() {
+        if (!D.loadingBarEnabled) {
+            console.warn("Loading bar not supported");
+        }
+
         initSplashScreen();
     };
 
     D.closeSplashScreen = function() {
         elm.classList.add("remove");
+        
+        updateLoadingBar(1);
+        cancelAnimationFrame(D.progressBarSI);
 
         elm.addEventListener("transitionend", function(e) {
-            if (e.path[0] !== elm) return;
+            if (e.target !== elm) return;
             remove();
-            cancelAnimationFrame(D.progressBarSI);
             clearInterval(sI);
         }, {
             once: true
@@ -110,7 +125,6 @@ function c_SplashScreen(DT) {
 
         // for browsers that may not support transitionend
         sI = setTimeout(function() {
-            cancelAnimationFrame(D.progressBarSI);
             remove();
         }, 400);
     };

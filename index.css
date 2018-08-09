@@ -100,7 +100,7 @@ pre {
 #splashScreen .loadingBar {
     position: relative;
 
-    background-color: #00000028;
+    background-color: rgba(0, 0, 0, 0.157);
 
     min-width: 360px;
     width: 27vw;
@@ -112,7 +112,7 @@ pre {
 }
 
 #splashScreen .loadingProgress {
-    background-color: #00000069;
+    background-color: rgba(0, 0, 0, 0.412);
 
     height: 100%;
     width: 0;
