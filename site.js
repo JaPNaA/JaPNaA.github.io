@@ -26,7 +26,7 @@ function c_Site(DT) {
         titleText: "JaPNaA",        // text in the title
 
         maxItemWidth: 624,          // MAX width for items in body element
-        minItemWidth: 480,          // MIN width for items in body element
+        minItemWidth: 654,          // MIN width for items in body element
 
         menuWidth: 224,             // width of menu
         collapsedMenuWidth: 48,     // width of menu when collapsed
@@ -146,10 +146,10 @@ function c_Site(DT) {
             e;
 
         if (menuCollapsed) {
-            D.menu.classList.add("collapse");
+            DT.Menu.collapse();
             e = Math.floor((innerWidth - D.collapsedMenuWidth) / D.maxItemWidth);
         } else {
-            D.menu.classList.remove("collapse");
+            DT.Menu.expand();
             e = Math.floor((innerWidth - D.menuWidth) / D.maxItemWidth);
         }
 

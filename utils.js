@@ -172,6 +172,17 @@ function c_Utils(DT) {
         }
     };
 
+    D.isDescendant = function(parent, child) {
+        var node = child.parentNode;
+        while (node !== null) {
+            if (node === parent) {
+                return true;
+            }
+            node = node.parentNode;
+        }
+        return false;
+    };
+
     D.setup = function() {
         document.head.appendChild(stylesheet);
     };

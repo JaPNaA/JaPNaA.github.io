@@ -4,6 +4,7 @@ function c_Menu(DT) {
     var D = {
         menu: null, // element
         menuP: null,
+        expanded: true, // is the menu element is expanded
         menuItems: { // items in menu element
             more: null,
             about: null,
@@ -156,13 +157,37 @@ function c_Menu(DT) {
         D.menuP.appendChild(sub);
     };
 
-    D.moreClicked = function () {
-        if (DT.Site.lastMenuCollapsed) {
-            //* expand menu
+    D.expand = function() {
+        if (D.expanded) return;
+        D.expanded = true;
+        D.menu.classList.remove("collapse");
+    };
 
-        } else {
-            //* opens submenu
+    D.collapse = function() {
+        if (!D.expanded || !DT.Site.lastMenuCollapsed) return;
+        D.expanded = false;
+        D.menu.classList.add("collapse");
+    };
+
+    D.moreClicked = function () {
+        if (D.expanded) {
+            // opens submenu
             D.createMoreSub();
+        } else {
+            // expand menu
+            D.expand();
+        }
+    };
+
+    D.clickOutside = function(e) {
+        if (
+            D.expanded && DT.Site.lastMenuCollapsed && // if can collapse
+            !(                                         // clicked outside of menu
+                D.menuP === e.target ||
+                DT.Utils.isDescendant(D.menuP, e.target)
+            )
+        ) {
+            D.collapse();
         }
     };
 
@@ -187,6 +212,8 @@ function c_Menu(DT) {
             a = document.createElement("div");
             a.innerHTML = "About";
             a.addEventListener("click", function () {
+                D.collapse();
+
                 if (DT.c_["c_AboutPage"]) {
                     DT.AboutPage.activate();
                 } else {
@@ -201,6 +228,9 @@ function c_Menu(DT) {
             menu.appendChild(s);
         } {
             a = DT.SiteObjects.searchButton();
+            a.addEventListener("click", function () {
+                D.collapse();
+            });
             D.menuItems.search = a;
             menu.appendChild(a);
         } {
@@ -211,6 +241,7 @@ function c_Menu(DT) {
             D.menuItems.yearList = a;
 
             a.addEventListener("load", function () {
+                D.collapse();
                 for (var i = 0; i < a.children.length; i++) {
                     a.children[i].addEventListener("click", function () {
                         DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
@@ -225,6 +256,9 @@ function c_Menu(DT) {
     };
 
     D.setup = function () {
+        addEventListener("click", D.clickOutside);
+        addEventListener("touchdown", D.clickOutside);
+
         D.menu = D.createMenu();
         D.menuP = DT.Site.menuP;
     };

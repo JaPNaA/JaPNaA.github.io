@@ -14,7 +14,7 @@ function c_CLI(DT) {
         // -----------------------------------------------------------------------------
         active: false,                  // is CLI active?
         loaded: false,                  // has CLI loaded?
-        exposed: false,                  // is local variable D exposed?
+        exposed: false,                 // is local variable D exposed?
 
         window: null,                   // window property of CLI window
 

@@ -102,8 +102,8 @@ pre {
 
     background-color: rgba(0, 0, 0, 0.157);
 
-    min-width: 360px;
-    width: 27vw;
+    max-width: 360px;
+    width: 80vw;
     height: 4px;
 
     border-radius: 3px;
@@ -534,6 +534,12 @@ pre {
     box-sizing: border-box;
     text-align: center;
     margin-bottom: 50vh;
+}
+
+@media only screen and (max-width: 664px) {
+    .item.card .meta .tags {
+        display: none;
+    }
 }
 
 .itemP {
