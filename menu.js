@@ -164,7 +164,7 @@ function c_Menu(DT) {
     };
 
     D.collapse = function() {
-        if (!D.expanded || !DT.Site.lastMenuCollapsed) return;
+        if (!D.expanded || !DT.Site.menuCollapsed) return;
         D.expanded = false;
         D.menu.classList.add("collapse");
     };
@@ -181,7 +181,7 @@ function c_Menu(DT) {
 
     D.clickOutside = function(e) {
         if (
-            D.expanded && DT.Site.lastMenuCollapsed && // if can collapse
+            D.expanded && DT.Site.menuCollapsed && // if can collapse
             !(                                         // clicked outside of menu
                 D.menuP === e.target ||
                 DT.Utils.isDescendant(D.menuP, e.target)

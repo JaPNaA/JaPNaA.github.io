@@ -38,7 +38,7 @@ function c_Site(DT) {
 
         // states
         // --------------------------------------------------------------------------------
-        lastMenuCollapsed: false,   // if the menu was collapsed
+        menuCollapsed: false,   // if the menu was collapsed
         isDesktop: false,           // if the item 'pops' on mouse hover
         showingHeadHint: false,
 
@@ -153,7 +153,7 @@ function c_Site(DT) {
             e = Math.floor((innerWidth - D.menuWidth) / D.maxItemWidth);
         }
 
-        if (D.lastMenuCollapsed !== menuCollapsed) {
+        if (D.menuCollapsed !== menuCollapsed) {
             var a, b;
             if (menuCollapsed) {
                 a = D.collapsedMenuWidth + "px";
@@ -167,7 +167,7 @@ function c_Site(DT) {
             DT.Utils.setCssRule(":root", "--r-width", b);
             DT.Utils.reloadCss();
 
-            D.lastMenuCollapsed = menuCollapsed;
+            D.menuCollapsed = menuCollapsed;
         }
 
         if (D.bodyFragCount === e) return;
