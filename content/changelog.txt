@@ -7,7 +7,6 @@ Version 0.3.5:
   - Optimizing for mobile
   - Clicked while animating do something
     - Redirect unsupported browsers to /content/0.json.
-  - Supporting mobile devices
   - Optimize site by using display: none on hidden overlays
 
 Version 0.3.4:
