@@ -2,6 +2,23 @@
     "$schema": "./schema/info.schema.json",
     "data": [
         {
+            "type": "card", 
+            "tags": ["scrapper", "google", "sheets", "forms", "\"database\"", "user input"],
+            "author": ["JaPNaA"],
+            "name": "Your* Site\u2122",
+            "timestamp": 1535400333069,
+            "no": 19,
+            "content": {
+                "link": "/Thingy_2018/GSheetScrapper/",
+                "description": "This projects uses Google Forms and Google Sheets to gather user input and display them on a static site.",
+                "display": [{
+                    "type": "img",
+                    "caption": "teh start screen of ur site",
+                    "src": "/Thingy_2018/0p/yourSite.png"
+                }]
+            },
+            "style": "background-color: #72ffa1;"
+        }, {
             "type": "text",
             "title": "This website looks a little different...",
             "content": "yea. i think so to.\nMaybe it's because this site has gone through a re-design... idk\nMaybe you can see everything that's changed in the <a href=\"/content/changelog.txt\">changelog</a>. idk.",
