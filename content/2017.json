@@ -352,6 +352,7 @@
     "meta": {
         "previous": "2016.json",
         "after": "2018.json",
-        "index": 1
+        "index": 1,
+        "range": 2017
     }
 }

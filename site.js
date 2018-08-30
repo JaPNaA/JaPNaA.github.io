@@ -92,7 +92,7 @@ function c_Site(DT) {
 
     function onLoadedContent(e) {
         var d = e.data;
-        for (var i = 0; i < d.length; i++) {
+        for (var i = d.length - 1; i >= 0; i--) { // loop backwards: newest first
             var j = d[i];
 
             var item = DT.SiteObjects.parse(j);

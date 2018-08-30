@@ -24,6 +24,7 @@
     "meta": {
         "after": "2017.json",
         "previous": null,
-        "index": 0
+        "index": 0,
+        "range": 2016
     }
 }

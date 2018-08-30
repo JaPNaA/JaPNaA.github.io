@@ -107,8 +107,13 @@
                 },
                 "index": {
                     "description": "index of current file"
+                },
+                "range": {
+                    "type": ["number", "array"],
+                    "description": "first to last year of listed projects"
                 }
-            }
+            },
+            "required": ["previous", "after", "index", "range"]
         }
     },
     "required": ["data", "meta"]

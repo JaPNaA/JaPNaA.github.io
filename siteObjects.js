@@ -728,13 +728,12 @@ function c_SiteObjects(DT) {
 
 
     D.yearList = function () {
-        var group = document.createElement("group");
+        var group = document.createElement("group"),
+            first = 0,
+            last = 0;
 
-        DT.ContentGetter.add("content", "content/0.json", true, function (e) {
-            var data = e.data,
-                first = new Date(data[data.length - 1].timestamp).getFullYear(),
-                last = new Date(data[0].timestamp).getFullYear(),
-                event = document.createEvent("Event");
+        function onLoad() {
+            var event = document.createEvent("Event");
 
             for (var i = last; i >= first; i--) {
                 var a = document.createElement("div");
@@ -745,7 +744,35 @@ function c_SiteObjects(DT) {
             // can't just do new Event because IE
             event.initEvent("load", false, true);
             group.dispatchEvent(event);
-        }, "json");
+        }
+
+        function _checkLoad() {
+            if (first && last) {
+                onLoad();
+            }
+        }
+
+        function onGetFirst(e) {
+            if (typeof e.meta.range === "number") {
+                first = e.meta.range;
+            } else {
+                first = Math.min(e.meta.range[0], e.meta.range[1]);
+            }
+            _checkLoad();
+        }
+        function onGetLast(e) {
+            if (typeof e.meta.range === "number") {
+                last = e.meta.range;
+            } else {
+                last = Math.max(e.meta.range[0], e.meta.range[1]);
+            }
+            _checkLoad();
+        }
+
+        DT.ContentGetter.siteContent.addEventListener("index", function() {
+            DT.ContentGetter.siteContent.lastReq.addEventListener("load", onGetLast);
+            DT.ContentGetter.siteContent.firstReq.addEventListener("load", onGetFirst);
+        });
 
         return group;
     };
