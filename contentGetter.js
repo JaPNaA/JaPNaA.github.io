@@ -231,9 +231,6 @@ function c_ContentGetter(DT) {
      * @class
      */
     function SiteContent() {
-        /** @type {Object} */
-        this._indexRaw = null;
-
         this.path = "content/";
 
         /** @type {String} */
@@ -319,11 +316,9 @@ function c_ContentGetter(DT) {
     };
 
     SiteContent.prototype.onLoadIndex = function (e) {
-        this._indexRaw = e;
-
-        this.pathFirst = e.first;
-        this.pathLast = e.last;
-        this.allPaths = e.all;
+        this.pathFirst = e[0];
+        this.pathLast = e[e.length - 1];
+        this.allPaths = e;
 
         // fill array with null (which is an object)
         for (let i = 0; i < this.allPaths.length; i++) {
