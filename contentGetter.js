@@ -162,8 +162,6 @@ function c_ContentGetter(DT) {
                     req.request();
                 }
             }
-
-            return D.toGet[id];
         } else {
             D.toGet[id] = new Request(id, url, preventCache, responseType);
 
@@ -279,7 +277,8 @@ function c_ContentGetter(DT) {
 
         if (i === 0) {
             this.first = content;
-        } else if (i === this.allPaths.length - 1) {
+        }
+        if (i === this.allPaths.length - 1) {
             this.last = content;
         }
     };
@@ -290,7 +289,8 @@ function c_ContentGetter(DT) {
 
         if (index === 0) {
             this.firstReq = req;
-        } else if (index === this.allPaths.length - 1) {
+        }
+        if (index === this.allPaths.length - 1) {
             this.lastReq = req;
         }
         

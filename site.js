@@ -38,13 +38,16 @@ function c_Site(DT) {
 
         // states
         // --------------------------------------------------------------------------------
-        menuCollapsed: false,   // if the menu was collapsed
+        menuCollapsed: false,       // if the menu was collapsed
         isDesktop: false,           // if the item 'pops' on mouse hover
         showingHeadHint: false,
 
         bodyFragCount: null,        // amount of columns in body
+        
         scrollHeight: 0,            // body element's height
         lastAddedChildrenIx: 0,     // index of the last item that was lazy-added
+        oldestAddedFile: 0,         // oldest file downloaded
+
         search: DT.Utils.parseSearch(location.search), // parsed object of location.search
 
         headHintD: {                // data for headHint
@@ -100,6 +103,9 @@ function c_Site(DT) {
             item.tabindex = j;
             D.children.push(item);
         }
+
+        D.oldestAddedFile = e.meta.range;
+
         buildBodyFrags();
     }
 
@@ -295,10 +301,8 @@ function c_Site(DT) {
 
     // lazy loading
     function scroll() {
-        var ih = innerHeight,
-            imgs = document.querySelectorAll(".display img:not(.load)"),
-            childrenl = D.children.length,
-            hm = false;
+        var childrenl = D.children.length,
+            hasMore = false;
 
         if (D.children.length === 0) { // if there are no children, reload, because there must be some.
             location.reload(false);
@@ -315,12 +319,19 @@ function c_Site(DT) {
                     j.prepAdd();
                     D.addItem(j);
                     D.lastAddedChildrenIx = i;
-                    hm = true;
+                    hasMore = true;
                     break;
                 }
             }
         }
-        return hm;
+
+        if (!hasMore) {
+            if (D.oldestAddedFile > DT.ContentGetter.siteContent.first.meta.range) {
+                console.log("more");
+            }
+        }
+
+        return hasMore;
     }
 
     function wheel(e) {
@@ -423,9 +434,7 @@ function c_Site(DT) {
         });
         addEventListener("load", function () {
             DT.SplashScreen.closeSplashScreen();
-        }, {
-                once: true
-            });
+        }, { once: true });
 
         if (!navigator.onLine) {
             DT.Utils.prompta("You're offline", 1, null, false);
