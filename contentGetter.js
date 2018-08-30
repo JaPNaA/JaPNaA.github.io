@@ -23,12 +23,15 @@ function c_ContentGetter(DT) {
 
     /**
      * @class
+     * @param {String} id request id
      * @param {String} url url to make request to
      * @param {Boolean} preventCache add ?nocache=* to request url
      * @param {String} responseType type of response to expect
      */
-    function Request(url, preventCache, responseType) {
+    function Request(id, url, preventCache, responseType) {
+        this.id = id;
         this.url = url;
+
         this.preventCache = preventCache;
         this.responseType = responseType || "text";
         this.alertError = false;
@@ -162,7 +165,7 @@ function c_ContentGetter(DT) {
 
             return D.toGet[id];
         } else {
-            D.toGet[id] = new Request(url, preventCache, responseType);
+            D.toGet[id] = new Request(id, url, preventCache, responseType);
 
             if (loadHandler) {
                 D.toGet[id].addEventListener("load", loadHandler);
@@ -234,9 +237,9 @@ function c_ContentGetter(DT) {
         this.path = "content/";
 
         /** @type {String} */
-        this.firstPath = null;
+        this.pathFirst = null;
         /** @type {String} */
-        this.lastPath = null;
+        this.pathLast = null;
         /** @type {String[]} */
         this.allPaths = null;
 
@@ -248,10 +251,33 @@ function c_ContentGetter(DT) {
         /** @type {Object} */
         this.last = null;
 
+        /** @type {Request} */
+        this.firstReq = null;
+        /** @type {Request} */
+        this.lastReq = null;
+        /** @type {Request} */
+        this.indexReq = null;
+
+        this.events = {
+            "index": [],
+            "load": [],
+            "error": []
+        };
+
         this.setup();
     }
 
-    SiteContent.prototype.loadedContent = function(i, content) {
+    SiteContent.prototype.addEventListener = function(type, handler) {
+        this.events[type].push(handler);
+    };
+
+    SiteContent.prototype.dispatchEvent = function(type, data) {
+        for (let handler of this.events[type]) {
+            handler(data);
+        }
+    };
+
+    SiteContent.prototype.onLoadContent = function(i, content) {
         this.content[i] = content;
 
         if (i === 0) {
@@ -261,31 +287,55 @@ function c_ContentGetter(DT) {
         }
     };
 
-    SiteContent.prototype.getContent = function() {
-        // TEMP
-        this.getAllContent();
+    SiteContent.prototype.loadContent = function(index) {
+        let path = this.allPaths[index],
+            req = D.add("content." + path, this.path + path, false, this.onLoadContent.bind(this, index), "json");
+
+        if (index === 0) {
+            this.firstReq = req;
+        } else if (index === this.allPaths.length - 1) {
+            this.lastReq = req;
+        }
+        
+        req.addEventListener("error", function() {
+            this.dispatchEvent("error", req);
+        }.bind(this));
+
+        req.addEventListener("load", function () {
+            this.dispatchEvent("load", req);
+        }.bind(this));
     };
 
+    SiteContent.prototype.getContent = function() {
+        this.loadContent(0);                        // load first
+        this.loadContent(this.allPaths.length - 1); // and last content
+    };
+
+    //* should be called at search
     SiteContent.prototype.getAllContent = function() {
         for (let i = 0; i < this.allPaths.length; i++) {
-            let path = this.allPaths[i];
-            this.content[i] = null;
-            D.add("content." + path, this.path + path, false, this.loadedContent.bind(this, i), "json");
+            this.loadContent(i);
         }
     };
 
     SiteContent.prototype.onLoadIndex = function (e) {
-        this.index = e;
+        this._indexRaw = e;
 
-        this.firstPath = e.first;
-        this.lastPath = e.last;
+        this.pathFirst = e.first;
+        this.pathLast = e.last;
         this.allPaths = e.all;
 
+        // fill array with null (which is an object)
+        for (let i = 0; i < this.allPaths.length; i++) {
+            this.content[i] = null;
+        }
+
         this.getContent();
+        this.dispatchEvent("index");
     };
 
     SiteContent.prototype.setup = function () {
-        D.add("contentIndex", "content/index.json", true, this.onLoadIndex.bind(this), "json");
+        this.indexReq = D.add("contentIndex", "content/index.json", true, this.onLoadIndex.bind(this), "json");
     };
 
     D.siteContent = new SiteContent();

@@ -10,7 +10,8 @@ function c_Menu(DT) {
             about: null,
             search: null,
             yearList: null
-        }
+        },
+        moreSub: null // menu ...
     };
     DT.Menu = D;
 
@@ -32,6 +33,14 @@ function c_Menu(DT) {
         return backButton;
     }
 
+    function initSub(sub) {
+        DT.Utils.reqreqanf(function () {
+            sub.classList.add("open");
+        });
+
+        D.menu.classList.add("sub");
+    }
+
     function createSub() {
         var sub = document.createElement("div"),
             backButton = createBackButton(),
@@ -39,40 +48,28 @@ function c_Menu(DT) {
         sub.classList.add("submenu");
         sub.classList.add("noselect");
 
-        DT.Utils.reqreqanf(function () {
-            sub.classList.add("open");
-        });
+        initSub(sub);
 
         backButton.addEventListener("click", function () {
-            var teSI;
+            if (!D.menu.classList.contains("sub")) return;
+
             D.menu.classList.remove("sub");
             sub.classList.remove("open");
-
-            // when transition ends, remove element and stop fallback
-            sub.addEventListener("transitionend", function (e) {
-                //: e.path check is required due to MSEdge
-                if (e.path && e.path[0] === this && this.parentElement) {
-                    sub.parentElement.removeChild(sub);
-                    clearTimeout(teSI);
-                }
-            });
-
-            // fallback, in case browser doesn't support transitionend
-            teSI = setTimeout(function () {
-                sub.parentElement.removeChild(sub);
-            }, 500);
         });
 
         sub.appendChild(backButton);
         sub.appendChild(separator);
 
-        // and also adds .sub to menu
-        D.menu.classList.add("sub");
         return sub;
     }
 
     D.createMoreSub = function () {
-        //* this should not create a sub everytime it's clicked
+        if (D.moreSub) {
+            initSub(D.moreSub);
+            D.menuP.appendChild(D.moreSub);
+            return;
+        }
+
         var sub = createSub(), a;
 
         // includes: send feedback, contact me, view all projects, changelog, copyright
@@ -154,16 +151,17 @@ function c_Menu(DT) {
             sub.appendChild(copyright);
         }
 
+        D.moreSub = sub;
         D.menuP.appendChild(sub);
     };
 
-    D.expand = function() {
+    D.expand = function () {
         if (D.expanded) return;
         D.expanded = true;
         D.menu.classList.remove("collapse");
     };
 
-    D.collapse = function() {
+    D.collapse = function () {
         if (!D.expanded || !DT.Site.menuCollapsed) return;
         D.expanded = false;
         D.menu.classList.add("collapse");
@@ -179,7 +177,7 @@ function c_Menu(DT) {
         }
     };
 
-    D.clickOutside = function(e) {
+    D.clickOutside = function (e) {
         if (
             D.expanded && DT.Site.menuCollapsed && // if can collapse
             !(                                         // clicked outside of menu
@@ -199,7 +197,7 @@ function c_Menu(DT) {
 
         {
             a = document.createElement("div");
-            a.innerHTML = "\u2022\u2022\u2022"; 
+            a.innerHTML = "\u2022\u2022\u2022";
             D.menuItems.more = a;
             a.addEventListener("click", function () {
                 D.moreClicked();

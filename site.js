@@ -90,7 +90,7 @@ function c_Site(DT) {
         return frag;
     }
 
-    function onLoadedContent (e) {
+    function onLoadedContent(e) {
         var d = e.data;
         for (var i = 0; i < d.length; i++) {
             var j = d[i];
@@ -108,10 +108,12 @@ function c_Site(DT) {
         D.body = body;
         body.id = "body";
 
-        // request for content
-        var req = DT.ContentGetter.add("content", "content/0.json", true, onLoadedContent, "json");
-        
-        req.addEventListener("error", function () { // alerts the user if the request failed
+        // wait for index to load, then wait for content
+        DT.ContentGetter.siteContent.addEventListener("index", function() {
+            DT.ContentGetter.siteContent.lastReq.addEventListener("load", onLoadedContent);
+        });
+
+        DT.ContentGetter.siteContent.addEventListener("error", function () { // alerts the user if the request failed
             DT.Utils.prompta("Could not load content", 2, null, true);
         });
 
@@ -419,11 +421,11 @@ function c_Site(DT) {
         D.body.addEventListener("scroll", scroll, {
             passive: true
         });
-        addEventListener("load", function() {
+        addEventListener("load", function () {
             DT.SplashScreen.closeSplashScreen();
         }, {
-            once: true
-        });
+                once: true
+            });
 
         if (!navigator.onLine) {
             DT.Utils.prompta("You're offline", 1, null, false);
