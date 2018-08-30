@@ -1,0 +1,29 @@
+{
+    "$schema": "./schema/info.schema.json",
+    "data": [
+        {
+            "type": "card",
+            "tags": [
+                "first",
+                "website"
+            ],
+            "author": [
+                "JaPNaA"
+            ],
+            "name": "My First Ever Site",
+            "timestamp": 1464753600000,
+            "no": 0,
+            "content": {
+                "link": "/Thingy_2016/MyFirstEverSite/",
+                "description": "This is my first site that I've ever created. No JS, no CSS, just HTML.",
+                "display": []
+            },
+            "style": "background-color: yellow;"
+        }
+    ],
+    "meta": {
+        "after": "2017.json",
+        "previous": null,
+        "index": 0
+    }
+}
