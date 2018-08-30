@@ -90,23 +90,26 @@ function c_Site(DT) {
         return frag;
     }
 
+    function onLoadedContent (e) {
+        var d = e.data;
+        for (var i = 0; i < d.length; i++) {
+            var j = d[i];
+
+            var item = DT.SiteObjects.parse(j);
+            if (!item) continue;
+            item.tabindex = j;
+            D.children.push(item);
+        }
+        buildBodyFrags();
+    }
+
     function createBody() {
         var body = document.createElement("div");
         D.body = body;
         body.id = "body";
 
-        var req = DT.ContentGetter.add("content", "content/0.json", true, function (e) {
-            var d = e.data;
-            for (var i = 0; i < d.length; i++) {
-                var j = d[i];
-
-                var item = DT.SiteObjects.parse(j);
-                if (!item) continue;
-                item.tabindex = j;
-                D.children.push(item);
-            }
-            buildBodyFrags();
-        }, "json");
+        // request for content
+        var req = DT.ContentGetter.add("content", "content/0.json", true, onLoadedContent, "json");
         
         req.addEventListener("error", function () { // alerts the user if the request failed
             DT.Utils.prompta("Could not load content", 2, null, true);

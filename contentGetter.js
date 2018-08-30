@@ -10,7 +10,11 @@ function c_ContentGetter(DT) {
         localStorageKey: "JaPNaASDT",   // key for localstorage
         canUseLocalStorage: true,       // allow use of localstorage?
         changedLocalStorage: false,     // has the localstorage been changed since updated?
-        localStorageTimeout: null       // setTimeout for localstorage
+        localStorageTimeout: null,      // setTimeout for localstorage
+
+        // site content
+        // -----------------------------------------------------------------------------
+        siteContent: null               // content to be loaded to the site
     };
     DT.ContentGetter = D;
 
@@ -44,17 +48,17 @@ function c_ContentGetter(DT) {
 
     Object.defineProperties(Request.prototype, {
         response: {
-            get: function() {
+            get: function () {
                 return this.requestJSON || this.requestObj.response;
             }
         },
         status: {
-            get: function() {
+            get: function () {
                 return this.requestObj.status;
             }
         },
         readyState: {
-            get: function() {
+            get: function () {
                 return this.requestObj.readyState;
             }
         }
@@ -73,11 +77,11 @@ function c_ContentGetter(DT) {
 
         if (!this.addedListeners) {
             var that = this;
-            x.addEventListener("load", function() {
+            x.addEventListener("load", function () {
                 that.load(x.response);
             });
 
-            x.addEventListener("error", function(e) {
+            x.addEventListener("error", function (e) {
                 that.error(e);
             });
 
@@ -133,7 +137,15 @@ function c_ContentGetter(DT) {
         this.events[t].push(e);
     };
 
-    // add content to get
+    /**
+     * Add content to get
+     * @param {String} id id of item
+     * @param {String} url url of item to get
+     * @param {Boolean} preventCache prevent cache
+     * @param {Function} loadHandler callback
+     * @param {String} responseType responsetype
+     * @returns {Request} request
+     */
     D.add = function (id, url, preventCache, loadHandler, responseType) {
         if (D.toGet[id]) { // if request exists
             var req = D.toGet[id];
@@ -187,27 +199,96 @@ function c_ContentGetter(DT) {
         }, 100);
     }
 
-    D.updateLocalStorage = function() {
+    D.updateLocalStorage = function () {
         if (D.canUseLocalStorage) {
             localStorage[D.localStorageKey] = JSON.stringify(D.localStorage);
             D.changedLocalStorage = false;
         }
     };
 
-    D.writeLocalStorage = function(key, value) {
+    D.writeLocalStorage = function (key, value) {
         D.localStorage[key] = value;
         D.changedLocalStorage = true;
-        
+
         // ensure no information loss
         stiLocalStorageUpdate();
     };
 
-    D.setup = function() {
+    D.setup = function () {
         parseLocalStorage();
-        addEventListener("beforeunload", function() {
+        addEventListener("beforeunload", function () {
             D.updateLocalStorage();
         });
     };
-    
+
+    // load site content
+    // -----------------------------------------------------------------------------
+    /**
+     * Loads site content
+     * @class
+     */
+    function SiteContent() {
+        /** @type {Object} */
+        this._indexRaw = null;
+
+        this.path = "content/";
+
+        /** @type {String} */
+        this.firstPath = null;
+        /** @type {String} */
+        this.lastPath = null;
+        /** @type {String[]} */
+        this.allPaths = null;
+
+        /** @type {Object[]} */
+        this.content = [];
+
+        /** @type {Object} */
+        this.first = null;
+        /** @type {Object} */
+        this.last = null;
+
+        this.setup();
+    }
+
+    SiteContent.prototype.loadedContent = function(i, content) {
+        this.content[i] = content;
+
+        if (i === 0) {
+            this.first = content;
+        } else if (i === this.allPaths.length - 1) {
+            this.last = content;
+        }
+    };
+
+    SiteContent.prototype.getContent = function() {
+        // TEMP
+        this.getAllContent();
+    };
+
+    SiteContent.prototype.getAllContent = function() {
+        for (let i = 0; i < this.allPaths.length; i++) {
+            let path = this.allPaths[i];
+            this.content[i] = null;
+            D.add("content." + path, this.path + path, false, this.loadedContent.bind(this, i), "json");
+        }
+    };
+
+    SiteContent.prototype.onLoadIndex = function (e) {
+        this.index = e;
+
+        this.firstPath = e.first;
+        this.lastPath = e.last;
+        this.allPaths = e.all;
+
+        this.getContent();
+    };
+
+    SiteContent.prototype.setup = function () {
+        D.add("contentIndex", "content/index.json", true, this.onLoadIndex.bind(this), "json");
+    };
+
+    D.siteContent = new SiteContent();
+
     return D;
 }
