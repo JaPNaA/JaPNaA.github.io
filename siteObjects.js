@@ -753,19 +753,11 @@ function c_SiteObjects(DT) {
         }
 
         function onGetFirst(e) {
-            if (typeof e.meta.range === "number") {
-                first = e.meta.range;
-            } else {
-                first = Math.min(e.meta.range[0], e.meta.range[1]);
-            }
+            first = e.meta.range;
             _checkLoad();
         }
         function onGetLast(e) {
-            if (typeof e.meta.range === "number") {
-                last = e.meta.range;
-            } else {
-                last = Math.max(e.meta.range[0], e.meta.range[1]);
-            }
+            last = e.meta.range;
             _checkLoad();
         }
 
