@@ -43,10 +43,12 @@ function c_Site(DT) {
         showingHeadHint: false,
 
         bodyFragCount: null,        // amount of columns in body
-        
         scrollHeight: 0,            // body element's height
         lastAddedChildrenIx: 0,     // index of the last item that was lazy-added
+
         oldestAddedFile: 0,         // oldest file downloaded
+        requestedForMore: false,    // if has requested for more content, used to prevent loading same content twice
+        loadedAll: false,           // if has reached end of content
 
         search: DT.Utils.parseSearch(location.search), // parsed object of location.search
 
@@ -104,7 +106,7 @@ function c_Site(DT) {
             D.children.push(item);
         }
 
-        D.oldestAddedFile = e.meta.range;
+        D.oldestAddedFile = e.meta.index;
 
         buildBodyFrags();
     }
@@ -326,8 +328,24 @@ function c_Site(DT) {
         }
 
         if (!hasMore) {
-            if (D.oldestAddedFile > DT.ContentGetter.siteContent.first.meta.range) {
-                console.log("more");
+            if (D.oldestAddedFile > DT.ContentGetter.siteContent.first.meta.index && !D.requestedForMore) {
+                if (DT.ContentGetter.siteContent.content[D.oldestAddedFile - 1]) {
+                    // already loaded
+                    D.oldestAddedFile--;
+                    onLoadedContent(DT.ContentGetter.siteContent.content[D.oldestAddedFile]);
+                } else {
+                    // not yet loaded
+                    D.requestedForMore = true;
+                    let req = DT.ContentGetter.siteContent.getContent(D.oldestAddedFile - 1);
+                    req.addEventListener("load", function (e) {
+                        D.requestedForMore = false;
+                        D.oldestAddedFile--;
+                        onLoadedContent(e);
+                    });
+                    req.addEventListener("error", function() {
+                        DT.Utils.prompta("Failed to load content before " + DT.ContentGetter.siteContent.content[D.oldestAddedFile].meta.range, 2, null, false);
+                    });
+                }
             }
         }
 

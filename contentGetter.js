@@ -262,17 +262,22 @@ function c_ContentGetter(DT) {
         this.setup();
     }
 
-    SiteContent.prototype.addEventListener = function(type, handler) {
+    SiteContent.prototype.addEventListener = function (type, handler) {
         this.events[type].push(handler);
     };
 
-    SiteContent.prototype.dispatchEvent = function(type, data) {
+    SiteContent.prototype.dispatchEvent = function (type, data) {
         for (let handler of this.events[type]) {
             handler(data);
         }
     };
 
-    SiteContent.prototype.onLoadContent = function(i, content) {
+    /**
+     * callback when content is loaded
+     * @param {Number} i content index
+     * @param {Object} content content
+     */
+    SiteContent.prototype.onLoadContent = function (i, content) {
         this.content[i] = content;
 
         if (i === 0) {
@@ -283,9 +288,19 @@ function c_ContentGetter(DT) {
         }
     };
 
-    SiteContent.prototype.loadContent = function(index) {
+    /**
+     * Gets content based on index
+     * @param {Number} index index of file
+     * @returns {Request} request generated
+     */
+    SiteContent.prototype.getContent = function (index) {
+        if (this.content[index]) return;
+
         let path = this.allPaths[index],
-            req = D.add("content." + path, this.path + path, false, this.onLoadContent.bind(this, index), "json");
+            req = D.add(
+                "content." + path, this.path + path, false,
+                this.onLoadContent.bind(this, index), "json"
+            );
 
         if (index === 0) {
             this.firstReq = req;
@@ -293,28 +308,40 @@ function c_ContentGetter(DT) {
         if (index === this.allPaths.length - 1) {
             this.lastReq = req;
         }
-        
-        req.addEventListener("error", function() {
+
+        req.addEventListener("error", function () {
             this.dispatchEvent("error", req);
         }.bind(this));
 
         req.addEventListener("load", function () {
             this.dispatchEvent("load", req);
         }.bind(this));
+
+        return req;
     };
 
-    SiteContent.prototype.getContent = function() {
-        this.loadContent(0);                        // load first
-        this.loadContent(this.allPaths.length - 1); // and last content
+    /**
+     * Gets first and last file
+     */
+    SiteContent.prototype.getRequiredContent = function () {
+        this.getContent(0);                        // load first
+        this.getContent(this.allPaths.length - 1); // and last content
     };
 
     //* should be called at search
-    SiteContent.prototype.getAllContent = function() {
+    /**
+     * Gets all content from all indexed files
+     */
+    SiteContent.prototype.getAllContent = function () {
         for (let i = 0; i < this.allPaths.length; i++) {
-            this.loadContent(i);
+            this.getContent(i);
         }
     };
 
+    /**
+     * callback when index file is loaded
+     * @param {Object} e index content
+     */
     SiteContent.prototype.onLoadIndex = function (e) {
         this.pathFirst = e[0];
         this.pathLast = e[e.length - 1];
@@ -325,7 +352,7 @@ function c_ContentGetter(DT) {
             this.content[i] = null;
         }
 
-        this.getContent();
+        this.getRequiredContent();
         this.dispatchEvent("index");
     };
 
