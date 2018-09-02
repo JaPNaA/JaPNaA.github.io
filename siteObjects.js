@@ -19,7 +19,7 @@ function c_SiteObjects(DT) {
 
     Image.prototype.aload = function () {
         if (this.src) return false;
-        this.src = this.asrc;
+        this.src = this.dataSrc;
         this.classList.add("load");
         return true;
     };
@@ -500,7 +500,7 @@ function c_SiteObjects(DT) {
         switch (dt.type) {
         case "img": {
             r = document.createElement("img");
-            r.asrc = parseURIPath(dt.src);
+            r.dataSrc = parseURIPath(dt.src);
             r.title = dt.caption;
             imgs.push(r);
             return r;

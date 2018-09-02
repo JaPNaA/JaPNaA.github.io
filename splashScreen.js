@@ -14,6 +14,7 @@ function c_SplashScreen(DT) {
     var elm = document.createElement("div"),
         parent = document.body,
         sI = -1;
+
     elm.id = "splashScreen";
 
     {
@@ -77,7 +78,7 @@ function c_SplashScreen(DT) {
     function networkProgessCheck() {
         if (!D.loadingBarEnabled) return;
         var loaded = performance.getEntriesByType("resource").length,
-            progress = loaded / 22;
+            progress = loaded / 30;
         
         updateLoadingBar(progress);
 
@@ -114,6 +115,7 @@ function c_SplashScreen(DT) {
         
         updateLoadingBar(1);
         cancelAnimationFrame(D.progressBarSI);
+        console.log("Resouces loaded: " + performance.getEntriesByType("resource").length);
 
         elm.addEventListener("transitionend", function(e) {
             if (e.target !== elm) return;

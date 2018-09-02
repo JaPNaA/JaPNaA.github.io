@@ -8,8 +8,8 @@ function c_ServiceWorker(DT) {
     DT.ServiceWorker = D;
 
     function alertUpdateSuccessful() {
-        let a = document.createElement("a"),
-            textBefore = document.createTextNode("An update was found! To see the new version, just "),
+        const a = document.createElement("a"),
+            textBefore = document.createTextNode("An update was found! To finalize the update, just "),
             textAfter = document.createTextNode("."),
             seeChangelog = document.createElement("a"),
             docFrag = document.createDocumentFragment();
@@ -36,7 +36,7 @@ function c_ServiceWorker(DT) {
     }
 
     function alertUpdateUnsuccessful(x) {
-        let text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
+        const text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
             br = document.createElement("br"),
             debugData = document.createElement("pre"),
             docFrag = document.createDocumentFragment();
