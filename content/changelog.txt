@@ -1,13 +1,19 @@
-Version 0.3.5:
-  - Almost full support for browsers back to IE 10 (2012)
-  - More of a chance to run the website normally if a component fails to load
-  - New splashScreen, with a loading bar
+Version 0.3.6:
+  - Split content into different files by year
 
 [TODO]
   - Optimizing for mobile
   - Clicked while animating do something
-    - Redirect unsupported browsers to /content/0.json.
+  - Redirect unsupported browsers to /content/0.json.
   - Optimize site by using display: none on hidden overlays
+  - Closing a prompta should result in next prompta's close button to appear, 
+    unless user has moved mouse out of notifications div
+  - Add 'see changes' button on the update notification
+
+Version 0.3.5:
+  - Almost full support for browsers back to IE 10 (2012)
+  - More of a chance to run the website normally if a component fails to load
+  - New splashScreen, with a loading bar
 
 Version 0.3.4:
   - Added CLI, which can be (secretly) activated by searching for "$cli"
