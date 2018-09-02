@@ -33,13 +33,19 @@ function c_Search(DT) {
         inputElm: null, // <input> in head for user input
         active: false, // if searching is active, equiv. of "active"
         results: [], // search results from library
-        items: {}, // elements already created from a search result
+        parsedItems: {}, // elements already created from a search result
         index: null, // index outputed from search library
         linput: null // last input
         // input: inputElm.value
     };
     DT.Search = D;
 
+    /**
+     * Converts content JSON file entries to elasticlunr entries
+     * @param {String} id id of indexing doc
+     * @param {Object} dt item from content JSON files
+     * @returns {Object} indexing doc
+     */
     function translateIndex(id, dt) {
         switch(dt.type) {
         case "card":
@@ -72,12 +78,20 @@ function c_Search(DT) {
     }
 
     function getResultItem(id) {
-        if (D.items[id] !== undefined) {
-            return D.items[id];
+        // check if it's been parsed before
+        if (D.parsedItems[id] !== undefined) {
+            return D.parsedItems[id];
         }
 
-        var elm = DT.SiteObjects.parseResult(D.content.data[id]);
-        D.items[id] = elm;
+        var splitId = id.split(":"),
+            fileIndex = parseInt(splitId[0]),
+            itemIndex = parseInt(splitId[1]);
+
+        var elm = DT.SiteObjects.parseResult(
+            D.content[fileIndex].data[itemIndex]
+        );
+
+        D.parsedItems[id] = elm;
         return elm;
     }
 
@@ -161,6 +175,12 @@ function c_Search(DT) {
         }
     }
 
+    function focusHandler() {
+        if (!D.active) {
+            this.blur();
+        }
+    }
+
     function registerHandlers() {
         D.inputElm.addEventListener("keydown", keydownHandler);
         D.inputElm.addEventListener("keyup", changeHandler);
@@ -174,16 +194,12 @@ function c_Search(DT) {
         removeEventListener("keydown", gKeydownHandler);        
     }
 
-    function focusHandler() {
-        if (!D.active) {
-            this.blur();
-        }
-    }
-
     function load() {
-        var dl = D.content.data.length;
-        for (var i = 0; i < dl; i++) {
-            D.index.addDoc(translateIndex(i, D.content.data[i]));
+        for (var i = 0; i < D.content.length; i++) {
+            let chunk = D.content[i];
+            for (var j = 0; j < chunk.data.length; j++) {
+                D.index.addDoc(translateIndex(i + ":" + j, chunk.data[j]));
+            }
         }
     }
 
@@ -268,6 +284,7 @@ function c_Search(DT) {
         if (D.buttonData.active) {
             DT.Site.main.classList.add("searching");
             DT.Search.initSearch(true);
+            D.requestAllData();
         } else {
             DT.Site.main.classList.remove("searching");
             DT.Search.initSearch(false);
@@ -300,14 +317,47 @@ function c_Search(DT) {
         D.button.addEventListener("click", button_click);
     };
 
+    function onGetAllData() {
+        D.content = DT.ContentGetter.siteContent.content;
+        load();
+    }
+
+    function onLoadedIndex() {
+        let allreqs = DT.ContentGetter.siteContent.getAllContent(),
+            required = allreqs.length,
+            done = 0;
+
+        function _checkDone() {
+            done++;
+            if (done >= required) {
+                onGetAllData();
+            }
+        }
+
+        for (let i = 0; i < allreqs.length; i++) {
+            let req = allreqs[i];
+            req.addEventListener("load", _checkDone);
+        }
+        _checkDone(); // in case of 0 required
+    }
+
+    D.requestAllData = function() {
+        console.log("requesting for all data");
+        if (DT.ContentGetter.siteContent.loadedIndex) {
+            onLoadedIndex();
+        } else {
+            DT.ContentGetter.siteContent.addEventListener("index", onLoadedIndex);
+        }
+    };
+
     // setup
     // -----------------------------------------------------------------------------
     D.setup = function () {
         D.button = DT.Menu.menuItems.search;
-        DT.ContentGetter.add("content", "content/0.json", true, function (e) {
-            D.content = e;
-            load();
-        }, "json");
+        // DT.ContentGetter.add("content", "content/0.json", true, function (e) {
+        //     D.content = e;
+        //     load();
+        // }, "json");
 
         D.index = DT.Elasticlunr(function() {
             this.addField("title");

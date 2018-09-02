@@ -253,6 +253,8 @@ function c_ContentGetter(DT) {
         /** @type {Request} */
         this.indexReq = null;
 
+        this.loadedIndex = false;
+
         this.events = {
             "index": [],
             "load": [],
@@ -331,11 +333,19 @@ function c_ContentGetter(DT) {
     //* should be called at search
     /**
      * Gets all content from all indexed files
+     * @returns {Request[]} list of requests made
      */
     SiteContent.prototype.getAllContent = function () {
+        const reqlist = [];
+
         for (let i = 0; i < this.allPaths.length; i++) {
-            this.getContent(i);
+            let req = this.getContent(i);
+            if (req) {
+                reqlist.push(req);
+            }
         }
+
+        return reqlist;
     };
 
     /**
@@ -346,6 +356,7 @@ function c_ContentGetter(DT) {
         this.pathFirst = e[0];
         this.pathLast = e[e.length - 1];
         this.allPaths = e;
+        this.loadedIndex = true;
 
         // fill array with null (which is an object)
         for (let i = 0; i < this.allPaths.length; i++) {
