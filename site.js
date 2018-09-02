@@ -110,6 +110,26 @@ function c_Site(DT) {
 
         buildBodyFrags();
     }
+    
+    function loadNextContentFile() {
+        if (DT.ContentGetter.siteContent.content[D.oldestAddedFile - 1]) {
+            // already loaded, like the last file
+            D.oldestAddedFile--;
+            onLoadedContent(DT.ContentGetter.siteContent.content[D.oldestAddedFile]);
+        } else {
+            // not yet loaded
+            D.requestedForMore = true;
+            let req = DT.ContentGetter.siteContent.getContent(D.oldestAddedFile - 1);
+            req.addEventListener("load", function (e) {
+                D.requestedForMore = false;
+                D.oldestAddedFile--;
+                onLoadedContent(e);
+            });
+            req.addEventListener("error", function () {
+                DT.Utils.prompta("Failed to load content before " + DT.ContentGetter.siteContent.content[D.oldestAddedFile].meta.range, 2, null, false);
+            });
+        }
+    }
 
     function createBody() {
         var body = document.createElement("div");
@@ -328,24 +348,11 @@ function c_Site(DT) {
         }
 
         if (!hasMore) {
-            if (D.oldestAddedFile > DT.ContentGetter.siteContent.first.meta.index && !D.requestedForMore) {
-                if (DT.ContentGetter.siteContent.content[D.oldestAddedFile - 1]) {
-                    // already loaded
-                    D.oldestAddedFile--;
-                    onLoadedContent(DT.ContentGetter.siteContent.content[D.oldestAddedFile]);
-                } else {
-                    // not yet loaded
-                    D.requestedForMore = true;
-                    let req = DT.ContentGetter.siteContent.getContent(D.oldestAddedFile - 1);
-                    req.addEventListener("load", function (e) {
-                        D.requestedForMore = false;
-                        D.oldestAddedFile--;
-                        onLoadedContent(e);
-                    });
-                    req.addEventListener("error", function() {
-                        DT.Utils.prompta("Failed to load content before " + DT.ContentGetter.siteContent.content[D.oldestAddedFile].meta.range, 2, null, false);
-                    });
-                }
+            if (
+                D.oldestAddedFile > DT.ContentGetter.siteContent.first.meta.index && 
+                !D.requestedForMore
+            ) {
+                loadNextContentFile();
             }
         }
 
