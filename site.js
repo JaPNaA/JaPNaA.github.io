@@ -119,7 +119,7 @@ function c_Site(DT) {
         } else {
             // not yet loaded
             D.requestedForMore = true;
-            let req = DT.ContentGetter.siteContent.getContent(D.oldestAddedFile - 1);
+            var req = DT.ContentGetter.siteContent.getContent(D.oldestAddedFile - 1);
             req.addEventListener("load", function (e) {
                 D.requestedForMore = false;
                 D.oldestAddedFile--;

@@ -269,8 +269,8 @@ function c_ContentGetter(DT) {
     };
 
     SiteContent.prototype.dispatchEvent = function (type, data) {
-        for (let handler of this.events[type]) {
-            handler(data);
+        for (var i = 0; i < this.events[type].length; i++) {
+            this.events[type][i](data);
         }
     };
 
@@ -298,7 +298,7 @@ function c_ContentGetter(DT) {
     SiteContent.prototype.getContent = function (index) {
         if (this.content[index]) return;
 
-        let path = this.allPaths[index],
+        var path = this.allPaths[index],
             req = D.add(
                 "content." + path, this.path + path, false,
                 this.onLoadContent.bind(this, index), "json"
@@ -336,10 +336,10 @@ function c_ContentGetter(DT) {
      * @returns {Request[]} list of requests made
      */
     SiteContent.prototype.getAllContent = function () {
-        const reqlist = [];
+        var reqlist = [];
 
-        for (let i = 0; i < this.allPaths.length; i++) {
-            let req = this.getContent(i);
+        for (var i = 0; i < this.allPaths.length; i++) {
+            var req = this.getContent(i);
             if (req) {
                 reqlist.push(req);
             }
@@ -359,7 +359,7 @@ function c_ContentGetter(DT) {
         this.loadedIndex = true;
 
         // fill array with null (which is an object)
-        for (let i = 0; i < this.allPaths.length; i++) {
+        for (var i = 0; i < this.allPaths.length; i++) {
             this.content[i] = null;
         }
 

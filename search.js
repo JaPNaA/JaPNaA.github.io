@@ -196,7 +196,7 @@ function c_Search(DT) {
 
     function load() {
         for (var i = 0; i < D.content.length; i++) {
-            let chunk = D.content[i];
+            var chunk = D.content[i];
             for (var j = 0; j < chunk.data.length; j++) {
                 D.index.addDoc(translateIndex(i + ":" + j, chunk.data[j]));
             }
@@ -323,7 +323,7 @@ function c_Search(DT) {
     }
 
     function onLoadedIndex() {
-        let allreqs = DT.ContentGetter.siteContent.getAllContent(),
+        var allreqs = DT.ContentGetter.siteContent.getAllContent(),
             required = allreqs.length,
             done = 0;
 
@@ -334,8 +334,8 @@ function c_Search(DT) {
             }
         }
 
-        for (let i = 0; i < allreqs.length; i++) {
-            let req = allreqs[i];
+        for (var i = 0; i < allreqs.length; i++) {
+            var req = allreqs[i];
             req.addEventListener("load", _checkDone);
         }
         _checkDone(); // in case of 0 required
