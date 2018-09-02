@@ -68,7 +68,7 @@ function createCaches(e) {
             caches.open(key).then(function (cache) {
                 cache.keys().then(function (ckeys) {
                     for (var ckey of ckeys) {
-                        cache.delete(key);
+                        cache.delete(ckey);
                     }
                 });
             });
