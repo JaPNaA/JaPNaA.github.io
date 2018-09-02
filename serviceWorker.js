@@ -7,6 +7,49 @@ function c_ServiceWorker(DT) {
     };
     DT.ServiceWorker = D;
 
+    function alertUpdateSuccessful() {
+        let a = document.createElement("a"),
+            textBefore = document.createTextNode("An update was found! To see the new version, just "),
+            textAfter = document.createTextNode("."),
+            seeChangelog = document.createElement("a"),
+            docFrag = document.createDocumentFragment();
+
+        a.href = location.href;
+        a.innerHTML = "reload";
+        a.addEventListener("click", function(e) {
+            e.preventDefault();
+            location.reload(true); // force reload
+        });
+
+        seeChangelog.href = "/content/changelog.txt";
+        seeChangelog.target = "_blank";
+        seeChangelog.innerHTML = "See changes";
+        seeChangelog.style.marginTop = "8px";
+        seeChangelog.style.display = "block";
+
+        docFrag.appendChild(textBefore);
+        docFrag.appendChild(a);
+        docFrag.appendChild(textAfter);
+        docFrag.appendChild(seeChangelog);
+
+        DT.Utils.prompta(docFrag, 0, null, false);
+    }
+
+    function alertUpdateUnsuccessful(x) {
+        let text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
+            br = document.createElement("br"),
+            debugData = document.createElement("pre"),
+            docFrag = document.createDocumentFragment();
+
+        debugData.innerHTML = JSON.stringify({ responseCode: x.status, response: x.response });
+
+        docFrag.appendChild(text);
+        docFrag.appendChild(br);
+        docFrag.appendChild(debugData);
+
+        DT.Utils.prompta(docFrag, 2, null, false);
+    }
+
     D.updateSite = function() {
         // request worker to reload
         var x = new XMLHttpRequest();
@@ -14,32 +57,9 @@ function c_ServiceWorker(DT) {
         x.responseType = "text";
         x.addEventListener("load", function () {
             if (x.response === "ok") {
-                let a = document.createElement("a"),
-                    textBefore = document.createTextNode("An update was found! To see the new version, just "),
-                    textAfter = document.createTextNode("."),
-                    docFrag = document.createDocumentFragment();
-
-                a.href = location.href;
-                a.innerHTML = "reload";
-
-                docFrag.appendChild(textBefore);
-                docFrag.appendChild(a);
-                docFrag.appendChild(textAfter);
-
-                DT.Utils.prompta(docFrag, 0, null, false);
+                alertUpdateSuccessful();
             } else {
-                let text = document.createTextNode("An update was found!... but failed to update (maybe) :( Please send a bug report"),
-                    br = document.createElement("br"),
-                    debugData = document.createElement("pre"),
-                    docFrag = document.createDocumentFragment();
-                
-                debugData.innerHTML = JSON.stringify({ responseCode: x.status, response: x.response });
-
-                docFrag.appendChild(text);
-                docFrag.appendChild(br);
-                docFrag.appendChild(debugData);
-
-                DT.Utils.prompta(docFrag, 2, null, false);
+                alertUpdateUnsuccessful(x);
             }
             DT.CLI.log("Site updated");
         });
