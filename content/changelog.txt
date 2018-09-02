@@ -1,5 +1,6 @@
 Version 0.3.6:
   - Split content into different files by year
+  - Added see changes when update occurs
 
 [TODO]
   - Optimizing for mobile
