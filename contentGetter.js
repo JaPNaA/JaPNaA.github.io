@@ -18,7 +18,63 @@ function c_ContentGetter(DT) {
     };
     DT.ContentGetter = D;
 
-    // network
+    // Network Tracker
+    // -----------------------------------------------------------------------------
+    /**
+     * @class
+     */
+    function NetworkTracker() {
+        this.totalRequests = 0;
+        this.loadedRequests = 0;
+
+        this.events = {
+            "load": []
+        }; 
+
+        this.loaded = false;
+    }
+
+    Object.defineProperties(NetworkTracker.prototype, {
+        progress: {
+            get: function() {
+                return this.loadedRequests / this.totalRequests;
+            }
+        }
+    });
+
+    NetworkTracker.prototype.addEventListener = function(type, handler) {
+        this.events[type].push(handler);
+    };
+
+    NetworkTracker.prototype.dispatchEvent = function(type) {
+        for (var i = 0; i < this.events[type].length; i++) {
+            this.events[type][i]();
+        }
+    };
+
+    NetworkTracker.prototype.checkDone = function() {
+        if (this.loadedRequests >= this.totalRequests) {
+            this.loaded = true;
+            this.dispatchEvent("load");
+        }
+    };
+
+    NetworkTracker.prototype.newRequest = function() {
+        this.totalRequests++;
+    };
+    
+    NetworkTracker.prototype.cancelRequest = function() {
+        this.totalRequests--;
+    };
+
+    NetworkTracker.prototype.loadedRequest = function() {
+        this.loadedRequests++;
+        this.checkDone();
+    };
+
+    D.networkTracker = new NetworkTracker();
+
+    // Network
     // -----------------------------------------------------------------------------
 
     /**
@@ -79,19 +135,19 @@ function c_ContentGetter(DT) {
         x.responseType = this.responseType;
 
         if (!this.addedListeners) {
-            var that = this;
             x.addEventListener("load", function () {
-                that.load(x.response);
-            });
+                this.load(x.response);
+            }.bind(this));
 
             x.addEventListener("error", function (e) {
-                that.error(e);
-            });
+                this.error(e);
+            }.bind(this));
 
             this.addedListeners = true;
         }
 
         x.send();
+        D.networkTracker.newRequest();
 
         this.requestObj = x;
     };
@@ -99,6 +155,7 @@ function c_ContentGetter(DT) {
     Request.prototype.cancel = function () {
         if (this.request) {
             this.requestObj.abort();
+            D.networkTracker.cancelRequest();
         }
     };
 
@@ -114,6 +171,7 @@ function c_ContentGetter(DT) {
         }
 
         this.dispatchEvent("load", response);
+        D.networkTracker.loadedRequest();
     };
 
     Request.prototype.error = function (e) {
@@ -125,6 +183,7 @@ function c_ContentGetter(DT) {
         }
 
         this.dispatchEvent("error", e);
+        D.networkTracker.loadedRequest();
     };
 
     Request.prototype.dispatchEvent = function (t, e) {

@@ -19,6 +19,16 @@ function c_SiteObjects(DT) {
 
     Image.prototype.aload = function () {
         if (this.src) return false;
+        DT.ContentGetter.networkTracker.newRequest();
+        
+        this.addEventListener("load", function() {
+            DT.ContentGetter.networkTracker.loadedRequest();
+        });
+        
+        this.addEventListener("error", function() {
+            DT.ContentGetter.networkTracker.loadedRequest();
+        });
+
         this.src = this.dataSrc;
         this.classList.add("load");
         return true;

@@ -457,9 +457,9 @@ function c_Site(DT) {
         D.body.addEventListener("scroll", scroll, {
             passive: true
         });
-        addEventListener("load", function () {
+        DT.ContentGetter.networkTracker.addEventListener("load", function () {
             DT.SplashScreen.closeSplashScreen();
-        }, { once: true });
+        });
 
         if (!navigator.onLine) {
             DT.Utils.prompta("You're offline", 1, null, false);

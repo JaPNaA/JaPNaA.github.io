@@ -7,7 +7,10 @@ function c_SplashScreen(DT) {
         progressBarSI: -1,
         loadingBar: null,
         loadingProgress: null,
-        loadingBarEnabled: false
+        loadingBarEnabled: false,
+
+        spalshScreenClosed: false,
+        maxProgress: 0
     };
     DT.SplashScreen = D;
 
@@ -77,10 +80,12 @@ function c_SplashScreen(DT) {
 
     function networkProgessCheck() {
         if (!D.loadingBarEnabled) return;
-        var loaded = performance.getEntriesByType("resource").length,
-            progress = loaded / 30;
         
-        updateLoadingBar(progress);
+        var progress = DT.ContentGetter.networkTracker.progress;
+        if (progress > D.maxProgress) {
+            // D.maxProgress = progress;
+            updateLoadingBar(progress);
+        }
 
         D.progressBarSI = requestAnimationFrame(networkProgessCheck);
     }
@@ -111,6 +116,9 @@ function c_SplashScreen(DT) {
     };
 
     D.closeSplashScreen = function() {
+        if (D.spalshScreenClosed) return;
+        D.spalshScreenClosed = true;
+
         elm.classList.add("remove");
         
         updateLoadingBar(1);
