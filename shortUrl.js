@@ -106,7 +106,7 @@ function c_ShortUrl(DT) {
                 clearHash();
             }
         } else {
-            if (window.prompta) {
+            if (DT.Utils && DT.Utils.prompta) {
                 alertHashDoesntExist(hash);
             } else {
                 addEventListener("load", function () {

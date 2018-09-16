@@ -35,7 +35,7 @@ function c_Utils(DT) {
 
     /**
      * Creates a popup on the site
-     * @param {String|Element} content popup content
+     * @param {Element|String} content popup content
      * @param {Number} [importancy] how important the prompt is
      * @param {Number} [ttl] how long before the notification automatically closes, leave null for forever
      * @param {Boolean} [unclosable] can the user close the notification
@@ -54,7 +54,7 @@ function c_Utils(DT) {
                     this.closed = true;
 
                     prompta.classList.remove("show");
-                    prompta.style.height = 0;
+                    prompta.style.height = "0";
                     prompta.addEventListener("transitionend", function () { // close symbol can also trigger this, but it won't since the transition on prompta is shorter than the close.
                         parent.removeChild(prompta);
                     }, { once: true });
@@ -66,11 +66,12 @@ function c_Utils(DT) {
         contentElm.classList.add("content");
 
         // give element content
-        if (content.constructor === String) {
+        if (typeof content === "string") {
             contentElm.innerHTML = content;
-        } else {
+        } else if (content instanceof Node) {
             contentElm.appendChild(content);
         }
+        console.log(content);
 
         switch (importancy) {
         case 0:
@@ -104,7 +105,6 @@ function c_Utils(DT) {
             // create close button
             var button = document.createElement("img");
             button.src = "close-button.svg";
-            button.type = "image/svg+xml";
 
             button.classList.add("close");
 
@@ -133,7 +133,7 @@ function c_Utils(DT) {
         prompta.appendChild(contentElm);
 
         originalHeight = prompta.clientHeight;
-        prompta.style.height = 0;
+        prompta.style.height = "0";
         D.reqreqanf(function () {
             prompta.classList.add("show");
             prompta.style.height = originalHeight + "px";

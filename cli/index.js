@@ -1,18 +1,25 @@
 "use strict";
 
-const $input = document.getElementById("input"),
-    $output = document.getElementById("output");
+/** @type {HTMLTextAreaElement} */
+// @ts-ignore
+const $input = document.getElementById("input");
+/** @type {HTMLDivElement} */
+// @ts-ignore
+const $output = document.getElementById("output");
 
+// @ts-ignore
 function cmd_echo(str, strargs) {
     println(strargs);
     return 0;
 }
 
+// @ts-ignore
 function cmd_eval(str, strargs, ...args) {
     var returnvalue;
 
     if (parent === window) {
         try {
+            // @ts-ignore
             returnvalue = window.eval(strargs);
         } catch (err) {
             println(err.toString(), "err");
@@ -20,6 +27,7 @@ function cmd_eval(str, strargs, ...args) {
         }
     } else {
         try {
+            // @ts-ignore
             returnvalue = parent.eval(strargs);
         } catch (err) {
             println(err.toString(), "err");
@@ -78,6 +86,7 @@ const moreHelp = {
     "exit": "Syntax: exit\nCloses the console. (Only works when attached to parent)"
 };
 
+// @ts-ignore
 function cmd_help(str, strargs, command) {
     if (command) {
         let helpStr = moreHelp[command];
@@ -229,6 +238,7 @@ addEventListener("load", function() {
 // connection to parent
 // -----------------------------------------------------------------------------
 
+// @ts-ignore
 let parent = null;
 
 function setupParentCommands(key) {
@@ -244,11 +254,13 @@ function setupParentCommands(key) {
     println("Received parent APIs!", "suc");
 }
 
+// @ts-ignore
 function msg_parentSet(e, args) {
     parent = e.source;
     println("Attached to parent!", "suc");
 }
 
+// @ts-ignore
 function msg_exposeKey(e, args) {
     setupParentCommands(args);
 }

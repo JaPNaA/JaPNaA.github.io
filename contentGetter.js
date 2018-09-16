@@ -132,6 +132,7 @@ function c_ContentGetter(DT) {
         } else {
             x.open("GET", this.url);
         }
+        // @ts-ignore
         x.responseType = this.responseType;
 
         if (!this.addedListeners) {

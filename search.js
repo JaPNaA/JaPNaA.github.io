@@ -297,7 +297,7 @@ function c_Search(DT) {
     }
     
     function button_click() {
-        D.buttonData.active ^= true;
+        D.buttonData.active = !D.buttonData.active;
 
         button_updState();
 

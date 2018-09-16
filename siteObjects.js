@@ -20,16 +20,16 @@ function c_SiteObjects(DT) {
     Image.prototype.aload = function () {
         if (this.src) return false;
         DT.ContentGetter.networkTracker.newRequest();
-        
-        this.addEventListener("load", function() {
-            DT.ContentGetter.networkTracker.loadedRequest();
-        });
-        
-        this.addEventListener("error", function() {
+
+        this.addEventListener("load", function () {
             DT.ContentGetter.networkTracker.loadedRequest();
         });
 
-        this.src = this.dataSrc;
+        this.addEventListener("error", function () {
+            DT.ContentGetter.networkTracker.loadedRequest();
+        });
+
+        this.src = this.dataset.src;
         this.classList.add("load");
         return true;
     };
@@ -78,7 +78,7 @@ function c_SiteObjects(DT) {
             get: function () {
                 return this.bodyElm.innerHTML;
             },
-            
+
             set: function (e) {
                 this.bodyElm.innerHTML = e;
             }
@@ -98,11 +98,11 @@ function c_SiteObjects(DT) {
             }
         },
         parent: {
-            get: function() {
+            get: function () {
                 return this.elmP.parentElement;
             },
 
-            set: function(s) {
+            set: function (s) {
                 this.appendTo(s);
             }
         },
@@ -110,8 +110,8 @@ function c_SiteObjects(DT) {
             get: function () {
                 return this.elmP.href;
             },
-            
-            set: function(e) {
+
+            set: function (e) {
                 this.elmP.href = e;
             }
         },
@@ -125,7 +125,7 @@ function c_SiteObjects(DT) {
             }
         }
     });
-    
+
     Item.prototype.appendTo = function (parent) {
         parent.appendChild(this.elmP);
     };
@@ -134,7 +134,7 @@ function c_SiteObjects(DT) {
         this.events[t].push(f);
     };
 
-    Item.prototype.dispatchEvent = function(t) {
+    Item.prototype.dispatchEvent = function (t) {
         var handlers = this.events[t],
             hl = handlers.length;
 
@@ -143,7 +143,7 @@ function c_SiteObjects(DT) {
         }
     };
 
-    Item.prototype.prepAdd = function() {
+    Item.prototype.prepAdd = function () {
         if (this.added) return;
         var requiredDep = this.imgs.length,
             loadedDep = 0;
@@ -156,7 +156,7 @@ function c_SiteObjects(DT) {
                 var img = this.imgs[i];
 
                 img.aload();
-                img.addEventListener("load", function() {
+                img.addEventListener("load", function () {
                     loadedDep++;
 
                     if (loadedDep >= requiredDep) {
@@ -178,7 +178,7 @@ function c_SiteObjects(DT) {
      */
     function ResultItem(timestamp, style) { // doesn't have as much as Item, because card and text have different DOM structures
         var that = this;
-    
+
         this.elmP = document.createElement("div");
         this.elm = document.createElement("div");
         this.expandedElm = document.createElement("div");
@@ -198,23 +198,23 @@ function c_SiteObjects(DT) {
 
         this.elmP.appendChild(this.elm);
         this.elmP.appendChild(this.expandedElm);
-        this.elmP.addEventListener("click", function() {
+        this.elmP.addEventListener("click", function () {
             that.expand();
         });
     }
 
     Object.defineProperties(ResultItem.prototype, {
         parent: {
-            get: function() {
+            get: function () {
                 return this.elmP.parentElement;
             },
-            set: function(s) {
+            set: function (s) {
                 this.appendTo(s);
             }
         }
     });
 
-    ResultItem.prototype.appendTo = function(parent) {
+    ResultItem.prototype.appendTo = function (parent) {
         parent.appendChild(this.elmP);
 
         // when changing parents, unexpand, if expanded
@@ -237,16 +237,16 @@ function c_SiteObjects(DT) {
         this.added = true;
     };
 
-    ResultItem.prototype.createExpandItem = function() {};
+    ResultItem.prototype.createExpandItem = function () { };
 
-    ResultItem.prototype.unexpand = function() {
+    ResultItem.prototype.unexpand = function () {
         this.expandedElm.removeChild(this.expandItem.elmP);
         this.elmP.style.height = "auto";
         this.elmP.classList.remove("expanded");
         this.isExpanded = false;
     };
 
-    ResultItem.prototype.expand = function() {
+    ResultItem.prototype.expand = function () {
         if (this.isExpanded) return;
 
         if (this.loadedExpantion) {
@@ -256,7 +256,7 @@ function c_SiteObjects(DT) {
         } else {
             var that = this;
             this.createExpandItem();
-            this.expandItem.addEventListener("load", function() {
+            this.expandItem.addEventListener("load", function () {
                 that.expandItem.appendTo(that.expandedElm);
                 that.elmP.style.height = that.expandItem.elmP.clientHeight + "px";
             });
@@ -279,6 +279,7 @@ function c_SiteObjects(DT) {
      * @param {Number} timestamp time of posting text
      * @param {String} style cssString of style to apply to text
      */
+    // @ts-ignore, false positive //*
     D.Text = function (title, content, timestamp, style) {
         Item.call(this, title, timestamp, style);
 
@@ -302,7 +303,8 @@ function c_SiteObjects(DT) {
      * @param {Number} no card number
      * @param {String} style cssString of style to apply to card
      */
-    D.Card = function (title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {    
+    // @ts-ignore, false positive //*
+    D.Card = function (title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {
         Item.call(this, title, timestamp, style);
 
         {
@@ -328,10 +330,11 @@ function c_SiteObjects(DT) {
      * @class
      * @extends ResultItem
      * @param {String} title title of item
-     * @param {String} content content of item
+     * @param {HTMLDivElement} content content of item
      * @param {Number} timestamp time of posting item
      * @param {String} style cssString of card style
      */
+    // @ts-ignore, false positive //*
     D.ResultText = function (title, content, timestamp, style) {
         ResultItem.call(this, timestamp, style);
 
@@ -348,7 +351,7 @@ function c_SiteObjects(DT) {
         this.titleElm.innerHTML = title;
         this.bodyElm.innerHTML = content.innerText.substr(0, 200); // cut off at 200 characters
 
-        if (content.length > 200) {
+        if (content.innerText.length > 200) {
             this.bodyElm.innerHTML += "...";
         }
 
@@ -360,10 +363,11 @@ function c_SiteObjects(DT) {
     D.ResultText.prototype = Object.create(ResultItem.prototype);
     D.ResultText.prototype.constructor = D.ResultText;
 
-    D.ResultText.prototype.createExpandItem = function() {
+    D.ResultText.prototype.createExpandItem = function () {
         var arglist = this.args.slice();
 
         arglist.unshift(D.Text);
+        // @ts-ignore, false positive //*
         this.expandItem = new (D.Text.bind.apply(D.Text, arglist))();
     };
 
@@ -373,7 +377,7 @@ function c_SiteObjects(DT) {
      * @extends ResultItem
      * @param {String} title title of card
      * @param {String} link link of card
-     * @param {String} content content of card
+     * @param {Object} content content of card
      * @param {Boolean} shouldFormatDescription if description should be formatted for ${{}}
      * @param {Number} timestamp time card was posted
      * @param {String[]} tags tags of card
@@ -381,6 +385,7 @@ function c_SiteObjects(DT) {
      * @param {Number} no card number
      * @param {String} style cssString of style applied to card
      */
+    // @ts-ignore, false positive //*
     D.ResultCard = function (title, link, content, shouldFormatDescription, timestamp, tags, author, no, style) {
         ResultItem.call(this, timestamp, style);
 
@@ -437,6 +442,7 @@ function c_SiteObjects(DT) {
         var arglist = this.args.slice();
 
         arglist.unshift(D.Card);
+        // @ts-ignore, false positive //*
         this.expandItem = new (D.Card.bind.apply(D.Card, arglist))();
     };
 
@@ -465,20 +471,20 @@ function c_SiteObjects(DT) {
 
     Object.defineProperties(D.ErrorCard.prototype, {
         content: {
-            get: function() {
+            get: function () {
                 return this.bodyElm.innerHTML;
             },
-            
-            set: function(e) {
+
+            set: function (e) {
                 this.bodyElm.innerHTML = e;
             }
         },
         title: {
-            get: function() {
+            get: function () {
                 return this.titleElm.innerHTML;
             },
-            
-            set: function(e) {
+
+            set: function (e) {
                 if (e) {
                     this.titleElm.innerHTML = e;
                 } else {
@@ -488,17 +494,21 @@ function c_SiteObjects(DT) {
             }
         },
         parent: {
-            get: function() {
+            get: function () {
                 return this._parent;
             },
 
-            set: function(e) {
-                this.appendTo(s);
+            set: function (e) {
+                this.appendTo(e);
             }
         }
     });
 
-    D.ErrorCard.prototype.appendTo = function () {
+    /**
+     * Apppend to parent
+     * @param {Node} parent parent to append to
+     */
+    D.ErrorCard.prototype.appendTo = function (parent) {
         this._parent = parent;
         parent.appendChild(this.elm);
     };
@@ -510,7 +520,7 @@ function c_SiteObjects(DT) {
         switch (dt.type) {
         case "img": {
             r = document.createElement("img");
-            r.dataSrc = parseURIPath(dt.src);
+            r.dataset.src = parseURIPath(dt.src);
             r.title = dt.caption;
             imgs.push(r);
             return r;
@@ -566,9 +576,16 @@ function c_SiteObjects(DT) {
         }
     };
 
+    /**
+     * parse text
+     * @param {Object} dt data
+     * @returns {D.Text} Text element parsed
+     */
     D.parseText = function (dt) {
+        // @ts-ignore
         return new D.Text(
             dt.title,
+            // @ts-ignore, false positive //*
             D.parseDescriptionContent(dt.content, dt.jsformat), // format string for ${{js}}, if required
             dt.timestamp,
             dt.style
@@ -590,8 +607,10 @@ function c_SiteObjects(DT) {
 
     // parseResult is for a result from search.js
     D.parseResultText = function (dt) {
+        // @ts-ignore
         return new D.ResultText(
             dt.title,
+            // @ts-ignore
             D.parseDescriptionContent(dt.content, dt.jsformat), // format string for ${{js}}, if required
             dt.timestamp,
             dt.style
@@ -635,6 +654,12 @@ function c_SiteObjects(DT) {
         }
     };
 
+    /**
+     * Parse description
+     * @param {String} content string to parse
+     * @param {Boolean} formatjs use formatjs
+     * @returns {HTMLDivElement} result content
+     */
     D.parseDescriptionContent = function (content, formatjs) {
         var formatted = document.createElement("div");
 
@@ -642,10 +667,12 @@ function c_SiteObjects(DT) {
         // --------------------------------------------------------------------------------
         if (formatjs) { // if requires formatting
             var regex = /\${{(.+?)}}/g, // matches ${{ anything }}
+                // @ts-ignore
                 matches = [], // list of all matches
                 formattedTo = 0, // index of how far the string has formatted to
                 formattedStr = ""; // formatted string to return
 
+            // eslint-disable-next-line no-constant-condition
             while (true) { // push match to matches until there're no more matches
                 var match = regex.exec(content);
 
@@ -736,7 +763,6 @@ function c_SiteObjects(DT) {
         return e;
     };
 
-
     D.yearList = function () {
         var group = document.createElement("group"),
             first = 0,
@@ -746,8 +772,10 @@ function c_SiteObjects(DT) {
             var event = document.createEvent("Event");
 
             for (var i = last; i >= first; i--) {
-                var a = document.createElement("div");
-                a.innerHTML = i;
+                var a = document.createElement("div"),
+                    istr = i.toString();
+                // a.dataIndex = i; //* disabled, not used yet
+                a.innerHTML = istr;
                 group.appendChild(a);
             }
 
@@ -771,7 +799,7 @@ function c_SiteObjects(DT) {
             _checkLoad();
         }
 
-        DT.ContentGetter.siteContent.addEventListener("index", function() {
+        DT.ContentGetter.siteContent.addEventListener("index", function () {
             DT.ContentGetter.siteContent.lastReq.addEventListener("load", onGetLast);
             DT.ContentGetter.siteContent.firstReq.addEventListener("load", onGetFirst);
         });

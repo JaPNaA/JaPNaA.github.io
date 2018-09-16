@@ -38,6 +38,8 @@ function c_Site(DT) {
 
         // states
         // --------------------------------------------------------------------------------
+        ready: false,               // has all dependencies been loaded?
+
         menuCollapsed: false,       // if the menu was collapsed
         isDesktop: false,           // if the item 'pops' on mouse hover
         showingHeadHint: false,
@@ -95,7 +97,7 @@ function c_Site(DT) {
         return frag;
     }
 
-    function onLoadedContent(e) {
+    function onLoadedLatestContent(e) {
         var d = e.data;
         for (var i = d.length - 1; i >= 0; i--) { // loop backwards: newest first
             var j = d[i];
@@ -107,6 +109,7 @@ function c_Site(DT) {
         }
 
         D.oldestAddedFile = e.meta.index;
+        D.ready = true;
 
         buildBodyFrags();
     }
@@ -115,7 +118,7 @@ function c_Site(DT) {
         if (DT.ContentGetter.siteContent.content[D.oldestAddedFile - 1]) {
             // already loaded, like the last file
             D.oldestAddedFile--;
-            onLoadedContent(DT.ContentGetter.siteContent.content[D.oldestAddedFile]);
+            onLoadedLatestContent(DT.ContentGetter.siteContent.content[D.oldestAddedFile]);
         } else {
             // not yet loaded
             D.requestedForMore = true;
@@ -123,7 +126,7 @@ function c_Site(DT) {
             req.addEventListener("load", function (e) {
                 D.requestedForMore = false;
                 D.oldestAddedFile--;
-                onLoadedContent(e);
+                onLoadedLatestContent(e);
             });
             req.addEventListener("error", function () {
                 DT.Utils.prompta("Failed to load content before " + DT.ContentGetter.siteContent.content[D.oldestAddedFile].meta.range, 2, null, false);
@@ -138,7 +141,7 @@ function c_Site(DT) {
 
         // wait for index to load, then wait for content
         DT.ContentGetter.siteContent.addEventListener("index", function() {
-            DT.ContentGetter.siteContent.lastReq.addEventListener("load", onLoadedContent);
+            DT.ContentGetter.siteContent.lastReq.addEventListener("load", onLoadedLatestContent);
         });
 
         DT.ContentGetter.siteContent.addEventListener("error", function () { // alerts the user if the request failed
@@ -301,6 +304,7 @@ function c_Site(DT) {
     // --------------------------------------------------------------------------------
 
     function resize() {
+        if (!D.ready) return;
         buildBodyFrags();
     }
 
@@ -323,6 +327,8 @@ function c_Site(DT) {
 
     // lazy loading
     function scroll() {
+        if (!D.ready) return; // in case user invokes scroll
+
         var childrenl = D.children.length,
             hasMore = false;
 
@@ -348,6 +354,13 @@ function c_Site(DT) {
         }
 
         if (!hasMore) {
+            if (!DT.ContentGetter.siteContent.first) { // last guaranteed to load, first is not
+                DT.ContentGetter.siteContent.firstReq.addEventListener("load", function() {
+                    loadNextContentFile();
+                });
+                return;
+            }
+
             if (
                 D.oldestAddedFile > DT.ContentGetter.siteContent.first.meta.index && 
                 !D.requestedForMore

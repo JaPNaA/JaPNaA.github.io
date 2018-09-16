@@ -26,7 +26,7 @@ window.onerror = function (e) {
 
 // polyfills n' stuff
 if (!location.origin) {
-    location.origin = location.protocol + "//" + location.host;
+    Object.defineProperty(location, "origin", { value: location.protocol + "//" + location.host});
 }
 
 // from: https://gist.github.com/paulirish/1579671

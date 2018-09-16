@@ -147,7 +147,7 @@ function c_Menu(DT) {
             copyright.innerHTML = "Copyright (c) 2018 JaPNaA";
             copyright.title = "Not registered tho";
             copyright.style.fontSize = "0.8rem";
-            copyright.style.opacity = 0.5;
+            copyright.style.opacity = "0.5";
             sub.appendChild(copyright);
         }
 

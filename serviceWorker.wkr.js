@@ -73,7 +73,7 @@ function createCaches(e) {
                 });
             });
         }
-    }).then(function() {
+    }).then(function () {
         vercheck = caches.open(CACHE_NAME)
             .then(function (cache) {
                 fetch(cachedVersionPath, fetchInit).then(function (r) {
@@ -90,7 +90,7 @@ function createCaches(e) {
                     });
                 }
                 return;
-            }); 
+            });
 
         if (e) {
             e.waitUntil(cache);
@@ -127,7 +127,7 @@ function checkVersion(e) {
             } else {
                 console.log("new version availble, current: " + cachedVersion + ", new: " + newestVersion);
                 console.log("updating caches");
-                
+
                 createCaches();
             }
         });
@@ -141,92 +141,97 @@ addEventListener("activate", function (e) {
     createCaches(e);
 });
 
-addEventListener("fetch", function (e) {
-    if (!hasCheckedVersion && !isCheckingVersion) {
-        isCheckingVersion = true;
-        checkVersion(e);
-    }
+addEventListener("fetch",
+    /**
+    // @ts-ignore
+     * @param {FetchEvent} e fetch event data
+     */
+    function (e) {
+        if (!hasCheckedVersion && !isCheckingVersion) {
+            isCheckingVersion = true;
+            checkVersion(e);
+        }
 
-    if (e.request.cache === "only-if-cached" && e.request.mode !== "same-origin") {
-        return;
-    }
-    
-    if (e.request.url.startsWith(location.origin + "/content/")) {
-        // cache information from content
-        var url = e.request.url,
-            ixNoCache = url.lastIndexOf("?nocache="),
-            cUrl = ixNoCache < 0 ? url : url.slice(0, ixNoCache); // if nocache exists, use removed, else, use normal
+        if (e.request.cache === "only-if-cached" && e.request.mode !== "same-origin") {
+            return;
+        }
 
-        //e.respondWith(
-        //    caches.match(cUrl)
-        //        .then(function (r) {
-        //            if (r) {
-        //                console.log("return cache: " + cUrl);
-        //                return r;
-        //            } else {
-        //                console.log("return fetch: " + cUrl);
-        //                return fetch(e.request);
-        //            }
-        //        })
-        //);
+        if (e.request.url.startsWith(location.origin + "/content/")) {
+            // cache information from content
+            var url = e.request.url,
+                ixNoCache = url.lastIndexOf("?nocache="),
+                cUrl = ixNoCache < 0 ? url : url.slice(0, ixNoCache); // if nocache exists, use removed, else, use normal
 
-        e.respondWith(fetch(e.request)
-            .then(function (response) {
-                if (!response || response.status !== 200 || response.type !== "basic") {
+            //e.respondWith(
+            //    caches.match(cUrl)
+            //        .then(function (r) {
+            //            if (r) {
+            //                console.log("return cache: " + cUrl);
+            //                return r;
+            //            } else {
+            //                console.log("return fetch: " + cUrl);
+            //                return fetch(e.request);
+            //            }
+            //        })
+            //);
+
+            e.respondWith(fetch(e.request)
+                .then(function (response) {
+                    if (!response || response.status !== 200 || response.type !== "basic") {
+                        return caches.match(cUrl)
+                            .then(function (r) {
+                                if (r) {
+                                    console.log("return cache: " + e.request.url);
+                                    return r;
+                                } else {
+                                    return response;
+                                }
+                            });
+                    }
+
+                    var responseToCache = response.clone();
+
+                    caches.open(CONTENT_CACHE_NAME)
+                        .then(function (cache) {
+                            console.log("cache: " + cUrl);
+                            cache.put(cUrl, responseToCache);
+                        });
+
+                    return response;
+                })
+                .catch(function () {
                     return caches.match(cUrl)
                         .then(function (r) {
-                            if (r) {
-                                console.log("return cache: " + e.request.url);
-                                return r;
-                            } else {
-                                return response;
-                            }
+                            console.log("return cache: " + e.request.url);
+                            return r;
                         });
-                }
+                }));
+        } else if (e.request.url === location.origin + "/reloadCache") {
+            hasCached = false;
 
-                var responseToCache = response.clone();
-
-                caches.open(CONTENT_CACHE_NAME)
-                    .then(function (cache) {
-                        console.log("cache: " + cUrl);
-                        cache.put(cUrl, responseToCache);
-                    });
-
-                return response;
-            })
-            .catch(function () {
-                return caches.match(cUrl)
-                    .then(function (r) {
-                        console.log("return cache: " + e.request.url);
-                        return r;
-                    });
-            }));
-    } else if (e.request.url === location.origin + "/reloadCache") {
-        hasCached = false;
-
-        e.respondWith(
-            new Response("ok", {
-                headers: { "Content-Type": "text/plain" }
-            })
-        );
-
-        createCaches(e)
-            .then(function () {
-                console.log("reloaded caches");
-            });
-        console.log("reloading caches");
-    } else {
-        e.respondWith(
-            caches.match(e.request)
-                .then(function (r) {
-                    if (r) {
-                        console.log("return cache: " + e.request.url);
-                        return r;
-                    } else {
-                        console.log("return fetch: " + e.request.url);
-                        return fetch(e.request);
-                    }
+            e.respondWith(
+                new Response("ok", {
+                    headers: { "Content-Type": "text/plain" }
                 })
-        );
-    }
-});
+            );
+
+            createCaches(e)
+                .then(function () {
+                    console.log("reloaded caches");
+                });
+            console.log("reloading caches");
+        } else {
+            e.respondWith(
+                caches.match(e.request)
+                    .then(function (r) {
+                        if (r) {
+                            console.log("return cache: " + e.request.url);
+                            return r;
+                        } else {
+                            console.log("return fetch: " + e.request.url);
+                            return fetch(e.request);
+                        }
+                    })
+            );
+        }
+    });
