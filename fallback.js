@@ -26,7 +26,19 @@ window.onerror = function (e) {
 
 // polyfills n' stuff
 if (!location.origin) {
-    Object.defineProperty(location, "origin", { value: location.protocol + "//" + location.host});
+    // @ts-ignore
+    location.origin = location.protocol + "//" + location.host;
+}
+
+if (!HTMLImageElement.prototype.dataset) {
+    Object.defineProperty(HTMLImageElement.prototype, "dataset", {
+        get: function() {
+            if (!this._dataset) {
+                this._dataset = {};
+            }
+            return this._dataset;
+        }
+    });
 }
 
 // from: https://gist.github.com/paulirish/1579671
