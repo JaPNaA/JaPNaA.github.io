@@ -30,7 +30,7 @@ if (!location.origin) {
     location.origin = location.protocol + "//" + location.host;
 }
 
-if (!HTMLImageElement.prototype.dataset) {
+if (!("dataset" in HTMLImageElement.prototype)) {
     Object.defineProperty(HTMLImageElement.prototype, "dataset", {
         get: function() {
             if (!this._dataset) {

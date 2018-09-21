@@ -1,4 +1,4 @@
-// version 0.3.5
+// version 0.3.6.1
 
 "use strict";
 
@@ -162,18 +162,7 @@ addEventListener("fetch",
                 ixNoCache = url.lastIndexOf("?nocache="),
                 cUrl = ixNoCache < 0 ? url : url.slice(0, ixNoCache); // if nocache exists, use removed, else, use normal
 
-            //e.respondWith(
-            //    caches.match(cUrl)
-            //        .then(function (r) {
-            //            if (r) {
-            //                console.log("return cache: " + cUrl);
-            //                return r;
-            //            } else {
-            //                console.log("return fetch: " + cUrl);
-            //                return fetch(e.request);
-            //            }
-            //        })
-            //);
+            //* should check for latest content.json file, and prevent caching of that
 
             e.respondWith(fetch(e.request)
                 .then(function (response) {
@@ -193,7 +182,7 @@ addEventListener("fetch",
 
                     caches.open(CONTENT_CACHE_NAME)
                         .then(function (cache) {
-                            console.log("cache: " + cUrl);
+                            console.log("fetch and cache: " + cUrl);
                             cache.put(cUrl, responseToCache);
                         });
 
