@@ -2,6 +2,8 @@
 
 function c_Search(DT) {
     var D = {
+        // Search button
+        // -----------------------------------------------------------------------------
         button: null, // search button
         buttonData: {
             active: false, // is searching
@@ -13,9 +15,11 @@ function c_Search(DT) {
             aniactive: false
         },
 
-        content: null, // content/0.json
+        // Data
+        // -----------------------------------------------------------------------------
+        content: null,          // content/0.json
 
-        searchConfig: { // config to pass through search library
+        searchConfig: {         // config to pass through search library
             fields: {
                 "title": {boost: 2},
                 "body": {boost: 1},
@@ -28,15 +32,20 @@ function c_Search(DT) {
             expand: true
         },
         
-        sI: -1, // timer to prevent searching every key
-        timeout: 250, // time to wait before searching
-        inputElm: null, // <input> in head for user input
-        active: false, // if searching is active, equiv. of "active"
-        results: [], // search results from library
-        parsedItems: {}, // elements already created from a search result
-        index: null, // index outputed from search library
-        linput: null // last input
-        // input: inputElm.value
+        // States and variables
+        // -----------------------------------------------------------------------------
+        active: false,          // if searching is active
+        hasOninput: false,      // can attach 'input' event listener
+
+        sI: -1,                 // timer to prevent searching every key
+        timeout: 250,           // time to wait before searching
+
+        inputElm: null,         // <input> in head for user input
+        index: null,            // index outputed from search library
+        linput: null,           // last input
+
+        results: [],            // search results from library
+        parsedItems: {}         // elements already created from a search result
     };
     DT.Search = D;
 
@@ -112,7 +121,6 @@ function c_Search(DT) {
 
         for (var i = 0; i < rl; i++) {
             addResult(results[i]);
-            // console.log(new DT.SiteObjects.ResultCard(i));
         }
 
         if (!results.length) {
@@ -124,6 +132,9 @@ function c_Search(DT) {
         DT.Utils.writeUrl(location.origin + "/?search=" + encodeURIComponent(D.input));
     };
 
+    /**
+     * Handler for when the value in search changes
+     */
     function changeHandler() {
         if (D.input === D.linput) return;
         D.linput = D.input;
@@ -138,6 +149,10 @@ function c_Search(DT) {
         }
     }
 
+    /**
+     * Keydown handler for search input
+     * @param {KeyboardEvent} e event
+     */
     function keydownHandler(e) {
         if (e.keyCode === 13) {
             // activates secret cli, for experiments
@@ -169,9 +184,29 @@ function c_Search(DT) {
         changeHandler();
     }
 
+    /**
+     * Global keydown handler (only when active)
+     * @param {KeyboardEvent} e event
+     */
+    function gActiveKeydownHandler(e) {
+        if (!D.active) return;
+
+        D.inputElm.focus();
+
+        if (e.keyCode === 27) {
+            DT.Site.clearHeadHint();
+            D.setActive(false);
+        }
+    }
+
+    /**
+     * Global keydown handler (also runs while not active)
+     * @param {KeyboardEvent} e event
+     */
     function gKeydownHandler(e) {
-        if (D.active) {
-            D.inputElm.focus();
+        if (e.ctrlKey && e.keyCode === 70) {
+            e.preventDefault();
+            D.setActive(true);
         }
     }
 
@@ -181,17 +216,32 @@ function c_Search(DT) {
         }
     }
 
+    /**
+     * Registers all event event listeners
+     */
     function registerHandlers() {
+        if ("oninput" in D.inputElm) {
+            D.hasOninput = true;
+            D.inputElm.addEventListener("input", changeHandler);
+        } else {
+            D.inputElm.addEventListener("keyup", changeHandler);
+            D.inputElm.addEventListener("change", changeHandler);
+        }
+
         D.inputElm.addEventListener("keydown", keydownHandler);
-        D.inputElm.addEventListener("keyup", changeHandler);
-        D.inputElm.addEventListener("change", changeHandler);
-        addEventListener("keydown", gKeydownHandler);
+        addEventListener("keydown", gActiveKeydownHandler);
     }
+
     function unregisterHandlers() {
+        if (D.hasOninput) {
+            D.inputElm.removeEventListener("input", changeHandler);
+        } else {
+            D.inputElm.removeEventListener("keyup", changeHandler);
+            D.inputElm.removeEventListener("change", changeHandler);
+        }
+
         D.inputElm.removeEventListener("keydown", keydownHandler);
-        D.inputElm.removeEventListener("keyup", changeHandler);
-        D.inputElm.removeEventListener("change", changeHandler);
-        removeEventListener("keydown", gKeydownHandler);        
+        removeEventListener("keydown", gActiveKeydownHandler);        
     }
 
     function load() {
@@ -399,6 +449,8 @@ function c_Search(DT) {
                 DT.Search.updateResults();
             });
         }
+
+        addEventListener("keydown", gKeydownHandler);
     };
 
     return D;

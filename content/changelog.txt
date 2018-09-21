@@ -1,6 +1,7 @@
-Version 0.3.6:
-  - Split content into different files by year
-  - Added see changes when update occurs
+Version 0.3.6.2:
+  - Add keybinds for search
+    - ctrl+f to enter search
+    - esc to exit search
 
 [TODO]
   - Optimizing for mobile
@@ -9,7 +10,10 @@ Version 0.3.6:
   - Optimize site by using display: none on hidden overlays
   - Closing a prompta should result in next prompta's close button to appear, 
     unless user has moved mouse out of notifications div
-  - Add 'see changes' button on the update notification
+
+Version 0.3.6:
+  - Split content into different files by year
+  - Added see changes when update occurs
 
 Version 0.3.5:
   - Almost full support for browsers back to IE 10 (2012)
