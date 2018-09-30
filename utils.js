@@ -34,7 +34,7 @@ function c_Utils(DT) {
     };
 
     /**
-     * Creates a popup on the site
+     * Creates a popup (or notification) on the site
      * @param {Element|String} content popup content
      * @param {Number} [importancy] how important the prompt is
      * @param {Number} [ttl] how long before the notification automatically closes, leave null for forever

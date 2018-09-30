@@ -242,7 +242,8 @@ function c_Menu(DT) {
                 D.collapse();
                 for (var i = 0; i < a.children.length; i++) {
                     a.children[i].addEventListener("click", function () {
-                        DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+                        // DT.Utils.prompta("Error: not implemented <br> This feature has not been added yet.", 2, 5000, false);
+                        DT.Site.gotoYear(parseInt(this.dataset.index));
                     });
                 }
             });

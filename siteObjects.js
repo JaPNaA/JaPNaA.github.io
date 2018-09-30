@@ -63,6 +63,9 @@ function c_SiteObjects(DT) {
             load: []
         };
 
+        this.timestamp = timestamp;
+        this.year = new Date(timestamp).getFullYear();
+
         this.elmP.target = "_blank";
         this.elmP.rel = "noopener";
         this.elm.classList.add("item");
@@ -774,7 +777,7 @@ function c_SiteObjects(DT) {
             for (var i = last; i >= first; i--) {
                 var a = document.createElement("div"),
                     istr = i.toString();
-                // a.dataIndex = i; //* disabled, not used yet
+                a.dataset.index = (i - first).toString();
                 a.innerHTML = istr;
                 group.appendChild(a);
             }

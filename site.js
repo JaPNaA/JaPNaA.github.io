@@ -34,6 +34,8 @@ function c_Site(DT) {
         allowedDeviation: 32,       // how far an item can be in the wrong column if it follows left to right
         scrollBuffer: 640,          // how far to load elements in the body
 
+        gotoOffset: -74,            // offset for scrollTo
+
         path: location.origin === "http://localhost:8080" ? "http://localhost:8081" : location.origin, // path of images and links (automatically changes)
 
         // states
@@ -52,7 +54,9 @@ function c_Site(DT) {
         requestedForMore: false,    // if has requested for more content, used to prevent loading same content twice
         loadedAll: false,           // if has reached end of content
 
-        search: DT.Utils.parseSearch(location.search), // parsed object of location.search
+        alertedGotoYearNotImplemented: false,           // has alerted that the gotoYear function isn't fully implemented?
+
+        search: DT.Utils.parseSearch(location.search),  // parsed object of location.search
 
         headHintD: {                // data for headHint
             ttl: {}                     // time to live for headhint's elements
@@ -429,6 +433,44 @@ function c_Site(DT) {
         if (D.showingHeadHint) {
             D.headHint.classList.remove("show");
             D.showingHeadHint = false;
+        }
+    };
+
+    /**
+     * shows posts of the year
+     * @param {Number} e file index
+     */
+    D.gotoYear = function(e) {
+        // console.log(e);
+        var oldestYear = DT.ContentGetter.siteContent.first.meta.range,
+            toYear = oldestYear + e;
+        
+        if (this.children[D.lastAddedChildrenIx].year <= toYear) { 
+            // if already loaded
+
+            for (var child of this.children) {
+                if (toYear >= child.year) {
+                    D.body.scrollBy({
+                        left: 0, 
+                        top: child.elm.getBoundingClientRect().y + D.gotoOffset,
+                        behavior: "smooth" //* use something more supported by browsers
+                    });
+                    break;
+                }
+            }
+        } else {
+            // if not yet loaded
+
+            if (!D.alertedGotoYearNotImplemented) {
+                DT.Utils.prompta("This feature isn't fully implemented, so erm... hey, it's better than nothing!", 1, 5000, false);
+                D.alertedGotoYearNotImplemented = true;
+            }
+
+            D.body.scrollBy({
+                left: 0,
+                top: this.children[D.lastAddedChildrenIx].elm.getBoundingClientRect().y + D.gotoOffset,
+                behavior: "smooth" //* use something more supported by browsers
+            });
         }
     };
 
