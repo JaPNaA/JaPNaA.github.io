@@ -1,203 +1,226 @@
 {
-    "$schema": "./schema/info.schema.json",
-    "data": [
-        {
-            "type": "card",
-            "tags": [
-                "visualizer",
-                "sound",
-                "music",
-                "graphics"
-            ],
-            "author": [
-                "JaPNaA"
-            ],
-            "name": "Sound Visualizer",
-            "timestamp": 1514955600000,
-            "no": 13,
-            "content": {
-                "link": "/Thingy_2018/soundVisualizer/",
-                "description": "SEE your SOUNDS.... yea... First project of 2018!",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "Dots and circles",
-                        "src": "/Thingy_2018/0p/soundVisualizer.png"
-                    }
-                ]
-            },
-            "style": "background-color: #000; color: #FFF;"
-        },
-        {
-            "type": "card",
-            "tags": [
-                "Cpp",
-                "C++",
-                "binary",
-                "exe",
-                "first",
-                "Minesweeper"
-            ],
-            "author": [
-                "JaPNaA"
-            ],
-            "name": "C++Sweeper",
-            "timestamp": 1515474000000,
-            "no": 14,
-            "content": {
-                "link": "/Thingy_2018/CppSweeper/",
-                "notMobileCompatible": true,
-                "description": "My first C++ project that has exceeded 400 lines of code... But I don't know how to post my project on here, so... this might be the last C++ project you'll see on this site for a while.",
-                "display": []
-            }
-        },
-        {
-            "type": "card",
-            "tags": [
-                "typeracer",
-                "clone",
-                "typing",
-                "speed"
-            ],
-            "author": [
-                "JaPNaA"
-            ],
-            "name": "Typeracer Clone",
-            "timestamp": 1516558652603,
-            "no": 15,
-            "content": {
-                "link": "/Thingy_2018/typeracerClone/",
-                "description": "Measure how fast you can type, with some random texts I wrote",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "staged typing on typeracer clone",
-                        "src": "/Thingy_2018/0p/typeracer.png"
-                    }
-                ]
-            }
-        },
-        {
-            "type": "card",
-            "tags": [
-                "3d",
-                "threejs",
-                "WebGL",
-                "open"
-            ],
-            "author": [
-                "JaPNaA"
-            ],
-            "name": "Open3dThing",
-            "timestamp": 1517451840996,
-            "no": 16,
-            "content": {
-                "link": "/Thingy_2018/Open3dThing/",
-                "description": "The collision is broken, but is functioning enough for it to be playable. Hopefully I learn how to collision detect gooder in the future.",
-                "notMobileCompatible": true,
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "i'm terrible at captioning",
-                        "src": "/Thingy_2018/0p/open3dThing.png"
-                    }
-                ]
-            },
-            "style": "background-color: #000; color: #FFF;"
-        },
-        {
-            "type": "card",
-            "tags": [
-                "translator",
-                "1337",
-                "speak"
-            ],
-            "author": [
-                "JaPNaA"
-            ],
-            "name": "1337Speak",
-            "timestamp": 1521233943753,
-            "no": 17,
-            "content": {
-                "link": "/Thingy_2018/1337Speak/",
-                "description": "Have you ever wanted to speak in 1337? Probably not. BUT NOW YOU CAN!... This project didn't get 400 lines, but I haven't posted in a while...",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "I bet you can't read that",
-                        "src": "/Thingy_2018/0p/1337Speak.png"
-                    }
-                ]
-            }
-        },
-        {
-            "type": "card",
-            "tags": [
-                "game",
-                "block",
-                "invasion",
-                "ball",
-                "ballz"
-            ],
-            "author": [
-                "JaPNaA"
-            ],
-            "name": "BlockInvasion",
-            "timestamp": 1523062868844,
-            "no": 18,
-            "content": {
-                "link": "/Thingy_2018/blockInvasion/",
-                "description": "Shoot balls at squares a number of times.",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "i took this screenshot on my ipad",
-                        "src": "/Thingy_2018/0p/blockInvasion.png"
-                    }
-                ]
-            },
-            "style": "background-color: #000; color: #FFF;"
-        },
-        {
-            "type": "text",
-            "title": "This website looks a little different...",
-            "content": "yea. i think so to.\nMaybe it's because this site has gone through a re-design... idk\nMaybe you can see everything that's changed in the <a href=\"/content/changelog.txt\">changelog</a>. idk.",
-            "timestamp": 1526239901042
-        },
-        {
-            "type": "card",
-            "tags": [
-                "scrapper",
-                "google",
-                "sheets",
-                "forms",
-                "\"database\"",
-                "user input"
-            ],
-            "author": [
-                "JaPNaA"
-            ],
-            "name": "Your* Site™",
-            "timestamp": 1535400333069,
-            "no": 19,
-            "content": {
-                "link": "/Thingy_2018/GSheetScrapper/",
-                "description": "This projects uses Google Forms and Google Sheets to gather user input and display them on a static site.",
-                "display": [
-                    {
-                        "type": "img",
-                        "caption": "teh start screen of ur site",
-                        "src": "/Thingy_2018/0p/yourSite.png"
-                    }
-                ]
-            },
-            "style": "background-color: #72ffa1;"
-        }
-    ],
-    "meta": {
-        "previous": "2017.json",
-        "after": null,
-        "index": 2,
-        "range": 2018
-    }
+	"$schema": "./schema/info.schema.json",
+	"data": [
+		{
+			"type": "card",
+			"tags": [
+				"visualizer",
+				"sound",
+				"music",
+				"graphics"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "Sound Visualizer",
+			"timestamp": 1514955600000,
+			"no": 13,
+			"content": {
+				"link": "/Thingy_2018/soundVisualizer/",
+				"description": "SEE your SOUNDS.... yea... First project of 2018!",
+				"display": [
+					{
+						"type": "img",
+						"caption": "Dots and circles",
+						"src": "/Thingy_2018/0p/soundVisualizer.png"
+					}
+				]
+			},
+			"style": "background-color: #000; color: #FFF;"
+		},
+		{
+			"type": "card",
+			"tags": [
+				"Cpp",
+				"C++",
+				"binary",
+				"exe",
+				"first",
+				"Minesweeper"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "C++Sweeper",
+			"timestamp": 1515474000000,
+			"no": 14,
+			"content": {
+				"link": "/Thingy_2018/CppSweeper/",
+				"notMobileCompatible": true,
+				"description": "My first C++ project that has exceeded 400 lines of code... But I don't know how to post my project on here, so... this might be the last C++ project you'll see on this site for a while.",
+				"display": []
+			}
+		},
+		{
+			"type": "card",
+			"tags": [
+				"typeracer",
+				"clone",
+				"typing",
+				"speed"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "Typeracer Clone",
+			"timestamp": 1516558652603,
+			"no": 15,
+			"content": {
+				"link": "/Thingy_2018/typeracerClone/",
+				"description": "Measure how fast you can type, with some random texts I wrote",
+				"display": [
+					{
+						"type": "img",
+						"caption": "staged typing on typeracer clone",
+						"src": "/Thingy_2018/0p/typeracer.png"
+					}
+				]
+			}
+		},
+		{
+			"type": "card",
+			"tags": [
+				"3d",
+				"threejs",
+				"WebGL",
+				"open"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "Open3dThing",
+			"timestamp": 1517451840996,
+			"no": 16,
+			"content": {
+				"link": "/Thingy_2018/Open3dThing/",
+				"description": "The collision is broken, but is functioning enough for it to be playable. Hopefully I learn how to collision detect gooder in the future.",
+				"notMobileCompatible": true,
+				"display": [
+					{
+						"type": "img",
+						"caption": "i'm terrible at captioning",
+						"src": "/Thingy_2018/0p/open3dThing.png"
+					}
+				]
+			},
+			"style": "background-color: #000; color: #FFF;"
+		},
+		{
+			"type": "card",
+			"tags": [
+				"translator",
+				"1337",
+				"speak"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "1337Speak",
+			"timestamp": 1521233943753,
+			"no": 17,
+			"content": {
+				"link": "/Thingy_2018/1337Speak/",
+				"description": "Have you ever wanted to speak in 1337? Probably not. BUT NOW YOU CAN!... This project didn't get 400 lines, but I haven't posted in a while...",
+				"display": [
+					{
+						"type": "img",
+						"caption": "I bet you can't read that",
+						"src": "/Thingy_2018/0p/1337Speak.png"
+					}
+				]
+			}
+		},
+		{
+			"type": "card",
+			"tags": [
+				"game",
+				"block",
+				"invasion",
+				"ball",
+				"ballz"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "BlockInvasion",
+			"timestamp": 1523062868844,
+			"no": 18,
+			"content": {
+				"link": "/Thingy_2018/blockInvasion/",
+				"description": "Shoot balls at squares a number of times.",
+				"display": [
+					{
+						"type": "img",
+						"caption": "i took this screenshot on my ipad",
+						"src": "/Thingy_2018/0p/blockInvasion.png"
+					}
+				]
+			},
+			"style": "background-color: #000; color: #FFF;"
+		},
+		{
+			"type": "text",
+			"title": "This website looks a little different...",
+			"content": "yea. i think so to.\nMaybe it's because this site has gone through a re-design... idk\nMaybe you can see everything that's changed in the <a href=\"/content/changelog.txt\">changelog</a>. idk.",
+			"timestamp": 1526239901042
+		},
+		{
+			"type": "card",
+			"tags": [
+				"scrapper",
+				"google",
+				"sheets",
+				"forms",
+				"\"database\"",
+				"user input"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "Your* Site™",
+			"timestamp": 1535400333069,
+			"no": 19,
+			"content": {
+				"link": "/Thingy_2018/GSheetScrapper/",
+				"description": "This projects uses Google Forms and Google Sheets to gather user input and display them on a static site.",
+				"display": [
+					{
+						"type": "img",
+						"caption": "teh start screen of ur site",
+						"src": "/Thingy_2018/0p/yourSite.png"
+					}
+				]
+			},
+			"style": "background-color: #72ffa1;"
+		},
+		{
+			"type": "card",
+			"tags": [
+				"discord",
+				"bot",
+				"japnaa",
+				"gitlab",
+				"nodejs",
+				"server"
+			],
+			"author": [
+				"JaPNaA"
+			],
+			"name": "JaPNaABot Discord",
+			"timestamp": 1543612827885,
+			"no": 20,
+			"content": {
+				"link": "https://gitlab.com/JaPNaA/japnaabotdiscord",
+				"description": "JaPNaABot on Discord. It's a good bot. You should <a href=\"https://discordapp.com/api/oauth2/authorize?client_id=501862082334031883&permissions=8&scope=bot\">add it</a>.",
+				"display": []
+			},
+			"style": "background-color: #ff9d9d;"
+		}
+	],
+	"meta": {
+		"previous": "2017.json",
+		"after": null,
+		"index": 2,
+		"range": 2018
+	}
 }
