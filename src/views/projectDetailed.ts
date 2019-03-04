@@ -2,6 +2,7 @@ import "../../styles/views/projectDetailed.less";
 
 import View from "./view";
 import ICard from "../interfaces/project/card";
+import SiteConfig from "../siteConfig";
 
 class ProjectDetailedView extends View {
     public sceneName = "ProjectDetailed";
@@ -21,7 +22,7 @@ class ProjectDetailedView extends View {
 
         const background = document.createElement("div");
         background.classList.add("background");
-        background.style.backgroundImage = "url(http://localhost:8081" + this.project.content.display[0].src + ")";
+        background.style.backgroundImage = `url(${SiteConfig.thingyLink}${this.project.content.display[0].src})`;
         this.elm.appendChild(background);
     }
 }
