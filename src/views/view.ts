@@ -1,4 +1,4 @@
-abstract class Scene {
+abstract class View {
     protected abstract elm: HTMLElement;
     protected sceneName?: string;
 
@@ -28,4 +28,4 @@ abstract class Scene {
     }
 }
 
-export default Scene;
+export default View;

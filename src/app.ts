@@ -1,15 +1,16 @@
 import "../styles/index.less";
 
-import SplashScreen from "./scenes/splashScreen";
-import Scene from "./scenes/scene";
+import SplashScreen from "./views/splashScreen";
+import View from "./views/view";
 import SceneClass from "./types/SceneClass";
-import Overview from "./scenes/overview";
+import Overview from "./views/overview";
+import ProjectDetailedView from "./views/projectDetailed";
 
 class App {
     /** Main element app lives in */
     private mainElm: HTMLDivElement;
     /** All active scenes in app */
-    private activeScenes: Scene[];
+    private activeScenes: View[];
 
     constructor() {
         this.mainElm = document.createElement("div");
@@ -27,6 +28,13 @@ class App {
         this.closeScene(splashScreen);
 
         this.openScene(Overview);
+
+        // test
+        // ----------------------------------------------------------------------------------------
+        const proj = await fetch("./content/2018.json").then(e => e.json());
+        const projectScene = new ProjectDetailedView(proj.data[0]);
+        projectScene.setup();
+        projectScene.appendTo(this.mainElm);
     }
 
     private async loadResources(): Promise<void> {
@@ -34,18 +42,18 @@ class App {
         await new Promise(function(res) {
             setTimeout(function() {
                 res();
-            }, 1000);
+            }, 100);
         });
     }
 
-    private openScene(sceneClass: SceneClass): Scene {
+    private openScene(sceneClass: SceneClass): View {
         const scene = new sceneClass();
         scene.setup();
         scene.appendTo(this.mainElm);
         return scene;
     }
 
-    private closeScene(scene: Scene): void {
+    private closeScene(scene: View): void {
         scene.destory().then(() => scene.removeFrom(this.mainElm));
     }
 }

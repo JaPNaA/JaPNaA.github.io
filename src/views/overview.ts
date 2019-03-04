@@ -1,6 +1,6 @@
-import Scene from "./scene";
+import View from "./view";
 
-class Overview extends Scene {
+class Overview extends View {
     protected sceneName = "Overview";
     protected elm: HTMLDivElement;
 

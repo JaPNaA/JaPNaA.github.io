@@ -1,8 +1,8 @@
-import "../../styles/scenes/splashScreen.less";
+import "../../styles/views/splashScreen.less";
 
-import Scene from "./scene";
+import View from "./view";
 
-class SplashScreen extends Scene {
+class SplashScreen extends View {
     protected sceneName = "SplashScreen";
     protected elm: HTMLDivElement;
 
