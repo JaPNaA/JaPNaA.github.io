@@ -24,6 +24,10 @@
   "homepage": "https://github.com/JaPNaA/JaPNaA.github.io#readme",
   "dependencies": {
     "@types/node": "^11.10.4",
+    "css-loader": "^2.1.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333",
     "webpack": "^4.29.6",

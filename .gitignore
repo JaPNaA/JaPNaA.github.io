@@ -2,3 +2,4 @@ quickstart.bat
 .vscode
 others
 /node_modules
+/docs/bundle.js
