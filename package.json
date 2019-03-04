@@ -10,6 +10,7 @@
     "build": "webpack --config webpack.config.js",
     "build-dev": "webpack --config webpack.dev.config.js",
     "serve": "http-server docs",
+    "serve2": "http-server ../../../Thingy",
     "clean": "rm docs/bundle.js"
   },
   "repository": {
