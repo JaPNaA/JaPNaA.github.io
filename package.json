@@ -1,0 +1,32 @@
+{
+  "name": "japnaa.github.io",
+  "version": "4.0.0",
+  "description": "A site for my things",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js",
+    "build-dev": "webpack --config webpack.dev.config.js",
+    "serve": "http-server docs",
+    "clean": "rm docs/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JaPNaA/JaPNaA.github.io.git"
+  },
+  "author": "JaPNaA",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/JaPNaA/JaPNaA.github.io/issues"
+  },
+  "homepage": "https://github.com/JaPNaA/JaPNaA.github.io#readme",
+  "dependencies": {
+    "@types/node": "^11.10.4",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
+  }
+}
