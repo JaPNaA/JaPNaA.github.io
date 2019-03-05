@@ -2,7 +2,7 @@ import "../styles/index.less";
 
 import SplashScreen from "./views/splashScreen";
 import View from "./views/view";
-import SceneClass from "./types/SceneClass";
+import ViewClass from "./types/ViewClass";
 import Overview from "./views/overview";
 import ProjectDetailedView from "./views/projectDetailed";
 
@@ -22,12 +22,12 @@ class App {
     public async setup(): Promise<void> {
         document.body.appendChild(this.mainElm);
 
-        const splashScreen = this.openScene(SplashScreen);
+        const splashScreen = this.openView(SplashScreen);
         
         await this.loadResources();
-        this.closeScene(splashScreen);
+        this.closeView(splashScreen);
 
-        this.openScene(Overview);
+        this.openView(Overview);
 
         // test
         // ----------------------------------------------------------------------------------------
@@ -46,15 +46,19 @@ class App {
         });
     }
 
-    private openScene(sceneClass: SceneClass): View {
-        const scene = new sceneClass();
+    private openView(viewClass: ViewClass): View {
+        const scene = new viewClass();
         scene.setup();
         scene.appendTo(this.mainElm);
         return scene;
     }
 
-    private closeScene(scene: View): void {
+    private closeView(scene: View): void {
         scene.destory().then(() => scene.removeFrom(this.mainElm));
+    }
+
+    private switchView(scene: View) {
+        //
     }
 }
 
