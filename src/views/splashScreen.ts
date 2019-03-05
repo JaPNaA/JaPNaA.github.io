@@ -3,7 +3,7 @@ import "../../styles/views/splashScreen.less";
 import View from "./view";
 
 class SplashScreen extends View {
-    protected sceneName = "SplashScreen";
+    public viewName = "SplashScreen";
     protected elm: HTMLDivElement;
 
     constructor() {

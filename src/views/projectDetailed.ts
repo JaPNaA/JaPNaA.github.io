@@ -5,7 +5,7 @@ import ICard from "../interfaces/project/card";
 import CardJSONv1ToElm from "../components/jsonToElm/cardV1";
 
 class ProjectDetailedView extends View {
-    public sceneName = "ProjectDetailed";
+    public viewName = "ProjectDetailed";
 
     protected elm: HTMLDivElement;
 

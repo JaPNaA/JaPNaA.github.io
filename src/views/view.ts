@@ -1,10 +1,10 @@
 abstract class View {
     protected abstract elm: HTMLElement;
-    protected sceneName?: string;
+    public viewName?: string;
 
     public setup(): void {
         this.elm.classList.add("scene");
-        this.elm.classList.add(this.sceneName || this.constructor.name);
+        this.elm.classList.add(this.viewName || this.constructor.name);
     }
 
     /**

@@ -1,7 +1,7 @@
 import View from "./view";
 
 class Overview extends View {
-    protected sceneName = "Overview";
+    public viewName = "Overview";
     protected elm: HTMLDivElement;
 
     constructor() {
