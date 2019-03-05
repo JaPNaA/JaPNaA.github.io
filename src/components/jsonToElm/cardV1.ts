@@ -3,8 +3,34 @@ import "../../../styles/components/jsonToElm/cardV1.less";
 import ICard from "../../interfaces/project/card";
 import SiteConfig from "../../siteConfig";
 
-class CardJSONv1ToElm {
-    public static parse(project: ICard): HTMLDivElement {
+class CardJSONv1Elm {
+    private static transitionSpeed: number = 3000;
+    private elm: HTMLDivElement;
+
+    public constructor(project: ICard) {
+        this.elm = this.parse(project);
+    }
+
+    public appendTo(parent: HTMLElement): void {
+        parent.append(this.elm);
+    }
+
+    public animateTransitionIn() {
+        this.elm.classList.add("beforeTransitionIn");
+
+        requestAnimationFrame(() =>
+            requestAnimationFrame(() =>
+                this.elm.classList.add("afterTransitionIn")
+            )
+        );
+
+        setTimeout(() => {
+            this.elm.classList.remove("beforeTransitionIn");
+            this.elm.classList.remove("afterTransitionIn");
+        }, CardJSONv1Elm.transitionSpeed);
+    }
+
+    private parse(project: ICard): HTMLDivElement {
         const div = document.createElement("div");
         div.classList.add("card", "v1");
 
@@ -13,7 +39,7 @@ class CardJSONv1ToElm {
         return div;
     }
 
-    private static createBackground(project: ICard, parent: HTMLDivElement): void {
+    private createBackground(project: ICard, parent: HTMLDivElement): void {
         const bgImage = this.createBackgroundImage(project);
         if (bgImage) {
             parent.appendChild(bgImage);
@@ -23,7 +49,7 @@ class CardJSONv1ToElm {
         parent.appendChild(bgGradient);
     }
 
-    private static createBackgroundImage(project: ICard): HTMLDivElement | undefined {
+    private createBackgroundImage(project: ICard): HTMLDivElement | undefined {
         const display = project.content.display;
         if (!display[0]) { return; }
         const src = display[0].src;
@@ -41,14 +67,14 @@ class CardJSONv1ToElm {
         return background;
     }
 
-    private static createBackgroundGradient(): HTMLDivElement {
+    private createBackgroundGradient(): HTMLDivElement {
         const gradient = document.createElement("div");
         gradient.classList.add("backgroundGradient");
         return gradient;
     }
 
-    private static createInformationBlock(project: ICard, parent: HTMLDivElement): void {
-        // jsformat
+    private createInformationBlock(project: ICard, parent: HTMLDivElement): void {
+        // TODO: jsformat
         const block = document.createElement("div");
         block.classList.add("infoBlock");
 
@@ -121,4 +147,4 @@ class CardJSONv1ToElm {
     }
 }
 
-export default CardJSONv1ToElm;
+export default CardJSONv1Elm;

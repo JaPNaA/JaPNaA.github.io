@@ -2,7 +2,7 @@ import "../../styles/views/projectDetailed.less";
 
 import View from "./view";
 import ICard from "../interfaces/project/card";
-import CardJSONv1ToElm from "../components/jsonToElm/cardV1";
+import CardJSONv1Elm from "../components/jsonToElm/cardV1";
 
 class ProjectDetailedView extends View {
     public viewName = "ProjectDetailed";
@@ -21,7 +21,9 @@ class ProjectDetailedView extends View {
         super.setup();
 
         // FOR VERSION 1
-        this.elm.appendChild(CardJSONv1ToElm.parse(this.project));
+        const elm = new CardJSONv1Elm(this.project);
+        elm.appendTo(this.elm);
+        elm.animateTransitionIn();
     }
 
 }
