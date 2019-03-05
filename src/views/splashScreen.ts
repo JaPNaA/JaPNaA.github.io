@@ -1,6 +1,7 @@
 import "../../styles/views/splashScreen.less";
 
 import View from "./view";
+import wait from "../utils/wait";
 
 class SplashScreen extends View {
     public viewName = "SplashScreen";
@@ -13,7 +14,17 @@ class SplashScreen extends View {
 
     public setup() {
         super.setup();
-        this.elm.innerText = "Loading...";
+
+        const child = document.createElement("div");
+        child.innerText = "Loading...\n:)";
+        child.classList.add("child");
+        this.elm.appendChild(child);
+    }
+
+    public async destory(): Promise<void> {
+        this.elm.classList.add("destory");
+
+        await wait(1000);
     }
 }
 

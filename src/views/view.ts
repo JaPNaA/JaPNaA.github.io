@@ -22,6 +22,10 @@ abstract class View {
         elm.appendChild(this.elm);
     }
 
+    public appendAtStartTo(elm: HTMLElement) {
+        elm.insertBefore(this.elm, elm.firstChild);
+    }
+
     /** Removes scene element from element */
     public removeFrom(elm: HTMLElement) {
         elm.removeChild(this.elm);

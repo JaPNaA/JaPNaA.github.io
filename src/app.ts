@@ -34,7 +34,7 @@ class App {
         // const proj = await fetch("./content/2017.json").then(e => e.json());
         // const projectScene = new ProjectDetailedView(proj.data[6]);
         const proj = await fetch("./content/2017.json").then(e => e.json());
-        const projectScene = new ProjectDetailedView(proj.data[7]);
+        const projectScene = new ProjectDetailedView(proj.data[6]);
         // const proj = await fetch("./content/2018.json").then(e => e.json());
         // const projectScene = new ProjectDetailedView(proj.data[8]);
         projectScene.setup();
@@ -46,7 +46,7 @@ class App {
         await new Promise(function (res) {
             setTimeout(function () {
                 res();
-            }, 100);
+            }, 1000);
         });
     }
 
@@ -61,13 +61,13 @@ class App {
         for (const activeView of this.activeViews) {
             this.closeView(activeView);
         }
-        view.appendTo(this.mainElm);
+        view.appendAtStartTo(this.mainElm);
     }
 
     private openView(viewClass: ViewClass): View {
         const view = new viewClass();
         view.setup();
-        view.appendTo(this.mainElm);
+        view.appendAtStartTo(this.mainElm);
         this.activeViews.push(view);
         return view;
     }
