@@ -1,0 +1,100 @@
+.card.v1 {
+    .background {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    .backgroundGradient {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 66%;
+        height: 100%;
+
+        background-image: linear-gradient(90deg, #fff, #fff0);
+    }
+
+    .infoBlock {
+        position: relative;
+        top: 0px;
+        left: 0px;
+        width: 66%;
+        height: 100%;
+
+        padding: 8px 8px 8px 24px;
+        box-sizing: border-box;
+    }
+
+    img {
+        width: 66%;
+        display: block;
+    }
+
+    .link {
+        &::before {
+            content: 'View Project';
+        }
+
+        display: inline-block;
+        text-decoration: none;
+        
+        width: auto;
+
+        padding: 8px 16px;
+        border-radius: 2px;
+        margin: 8px 0px;
+        
+        color: #000;
+        background-color: #00ff74;
+        box-shadow: 1px 2px 8px #00000035;
+    }
+
+    h1 {
+        margin: 16px 0px 0px 0px;
+        display: inline-block;
+    }
+
+    .no {
+        &::before {
+            content: '#';
+        }
+
+        display: inline-block;
+    }
+
+    .tags {
+        display: block;
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: inline-block;
+            margin: 4px 8px 4px 0px;
+            padding: 4px 8px;
+            background-color: #1fb8ff;
+        }
+    }
+
+    .author {
+        &:extend(.card.v1 .tags li);
+
+        &::before {
+            content: 'by ';
+        }
+    }
+
+    .description {
+        margin: 24px 0;
+    }
+
+    .display {
+        margin: 32px 0px;
+    }
+}

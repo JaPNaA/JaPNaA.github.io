@@ -2,7 +2,7 @@ import "../../styles/views/projectDetailed.less";
 
 import View from "./view";
 import ICard from "../interfaces/project/card";
-import SiteConfig from "../siteConfig";
+import CardJSONv1ToElm from "../components/jsonToElm/cardV1";
 
 class ProjectDetailedView extends View {
     public sceneName = "ProjectDetailed";
@@ -20,11 +20,10 @@ class ProjectDetailedView extends View {
     public setup(): void {
         super.setup();
 
-        const background = document.createElement("div");
-        background.classList.add("background");
-        background.style.backgroundImage = `url(${SiteConfig.thingyLink}${this.project.content.display[0].src})`;
-        this.elm.appendChild(background);
+        // FOR VERSION 1
+        this.elm.appendChild(CardJSONv1ToElm.parse(this.project));
     }
+
 }
 
 export default ProjectDetailedView;
