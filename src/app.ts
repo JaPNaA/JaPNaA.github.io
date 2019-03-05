@@ -31,8 +31,12 @@ class App {
 
         // test
         // ----------------------------------------------------------------------------------------
-        const proj = await fetch("./content/2018.json").then(e => e.json());
-        const projectScene = new ProjectDetailedView(proj.data[0]);
+        // const proj = await fetch("./content/2017.json").then(e => e.json());
+        // const projectScene = new ProjectDetailedView(proj.data[6]);
+        const proj = await fetch("./content/2017.json").then(e => e.json());
+        const projectScene = new ProjectDetailedView(proj.data[7]);
+        // const proj = await fetch("./content/2018.json").then(e => e.json());
+        // const projectScene = new ProjectDetailedView(proj.data[8]);
         projectScene.setup();
         this.switchView(projectScene);
     }

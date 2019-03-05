@@ -24,6 +24,7 @@ class ProjectDetailedView extends View {
         const elm = new CardJSONv1Elm(this.project);
         elm.appendTo(this.elm);
         elm.animateTransitionIn();
+        elm.addEventListeners();
     }
 
 }

@@ -2,13 +2,21 @@ import "../../../styles/components/jsonToElm/cardV1.less";
 
 import ICard from "../../interfaces/project/card";
 import SiteConfig from "../../siteConfig";
+import Display from "../../interfaces/project/display";
+import DisplayImg from "../../interfaces/project/displayImg";
 
 class CardJSONv1Elm {
     private static transitionSpeed: number = 3000;
-    private elm: HTMLDivElement;
 
-    public constructor(project: ICard) {
-        this.elm = this.parse(project);
+    private elm: HTMLDivElement;
+    private card: ICard;
+    private backgroundImageExists: boolean;
+
+    public constructor(card: ICard) {
+        this.card = card;
+        this.elm = document.createElement("div");
+        this.backgroundImageExists = false;
+        this.parse();
     }
 
     public appendTo(parent: HTMLElement): void {
@@ -30,39 +38,51 @@ class CardJSONv1Elm {
         }, CardJSONv1Elm.transitionSpeed);
     }
 
-    private parse(project: ICard): HTMLDivElement {
-        const div = document.createElement("div");
-        div.classList.add("card", "v1");
-
-        this.createBackground(project, div);
-        this.createInformationBlock(project, div);
-        return div;
+    public addEventListeners() {
+        // TODO: when image clicked, pop out, show
     }
 
-    private createBackground(project: ICard, parent: HTMLDivElement): void {
-        const bgImage = this.createBackgroundImage(project);
+    private parse(): void {
+        this.elm.classList.add("card", "v1");
+
+        this.createBackground();
+        this.createInformationBlock();
+    }
+
+    private createBackground(): void {
+        const bgImage = this.createBackgroundImage();
         if (bgImage) {
-            parent.appendChild(bgImage);
+            this.elm.appendChild(bgImage);
         }
 
         const bgGradient = this.createBackgroundGradient();
-        parent.appendChild(bgGradient);
+        this.elm.appendChild(bgGradient);
     }
 
-    private createBackgroundImage(project: ICard): HTMLDivElement | undefined {
-        const display = project.content.display;
-        if (!display[0]) { return; }
-        const src = display[0].src;
-        if (!src) { return; }
-
+    private createBackgroundImage(): HTMLDivElement {
         const background = document.createElement("div");
         background.classList.add("background");
 
-        if (project.style) {
-            background.style.cssText = project.style;
+        if (this.card.style) {
+            background.style.cssText = this.card.style;
         }
 
-        background.style.backgroundImage = `url(${SiteConfig.thingyLink}${src})`;
+
+        const displays = this.card.content.display;
+
+        if (displays[0]) {
+            const display = displays[0];
+
+            if (display.type === "img") {
+                const src = displays[0].src;
+
+                if (src) {
+                    background.style.backgroundImage = `url(${SiteConfig.thingyLink}${src})`;
+                    this.elm.classList.add("backgroundImageExists");
+                    this.backgroundImageExists = true;
+                }
+            }
+        }
 
         return background;
     }
@@ -73,77 +93,123 @@ class CardJSONv1Elm {
         return gradient;
     }
 
-    private createInformationBlock(project: ICard, parent: HTMLDivElement): void {
+    private createInformationBlock(): void {
         // TODO: jsformat
         const block = document.createElement("div");
         block.classList.add("infoBlock");
 
-        {
-            const name = document.createElement("h1");
-            name.classList.add("name");
-            name.innerText = project.name;
-            block.appendChild(name);
-        } {
-            const no = document.createElement("span");
-            no.innerText = project.no.toString();
-            no.classList.add("no");
-            block.appendChild(no);
-        } {
-            const tagsElm = document.createElement("ul");
-            tagsElm.classList.add("tags");
-            for (const tag of project.tags) {
-                const tagElm = document.createElement("li");
-                tagElm.innerText = tag;
-                tagsElm.appendChild(tagElm);
-            }
-            block.appendChild(tagsElm);
-        } {
-            const author = document.createElement("div");
-            author.innerText = project.author.join(", ");
-            author.classList.add("author");
-            block.appendChild(author);
-        } {
-            const description = document.createElement("div");
-            description.classList.add("description");
-            description.innerText = project.content.description;
-            block.appendChild(description);
-        } {
-            // TODO: slice(1) instead
-            const displays = project.content.display.slice(0);
-            for (const display of displays) {
-                const displayElm = document.createElement("div");
-                displayElm.classList.add("display");
-                if (display.type === "img") {
-                    if (display.src) {
-                        const img = document.createElement("img");
-                        img.classList.add("img");
-                        // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
-                        img.src = SiteConfig.thingyLink + display.src;
-                        displayElm.appendChild(img);
-                    }
-                    if (display.caption) {
-                        const caption = document.createElement("small");
-                        caption.innerText = display.caption;
-                        caption.classList.add("caption");
-                        displayElm.appendChild(caption);
-                    }
-                }
-                block.appendChild(displayElm);
-            }
-        } {
-            const link = document.createElement("a");
-            link.classList.add("link");
-            link.href = SiteConfig.thingyLink + project.content.link;
-            block.appendChild(link);
-        } {
-            if (project.timestamp) {
-                const time = document.createElement("div");
-                time.classList.add("timestamp");
-                time.innerText = new Date(project.timestamp).toLocaleDateString();
-                block.appendChild(time);
-            }
+        if (!this.backgroundImageExists && this.card.style) {
+            block.style.cssText = this.card.style;
         }
-        parent.appendChild(block);
+
+        this.createNameIn(block);
+        this.createNoIn(block);
+        this.createTagsIn(block);
+        this.createAuthorIn(block);
+        this.createDescriptionIn(block);
+        this.createDisplaysIn(block);
+        this.createLinkIn(block);
+        this.createTimestampIn(block);
+
+        this.elm.appendChild(block);
+    }
+
+    private createNameIn(block: HTMLElement) {
+        const name = document.createElement("h1");
+        name.classList.add("name");
+        name.innerText = this.card.name;
+        block.appendChild(name);
+    }
+
+    private createNoIn(block: HTMLElement) {
+        const no = document.createElement("span");
+        no.innerText = this.card.no.toString();
+        no.classList.add("no");
+        block.appendChild(no);
+    }
+
+    private createTagsIn(block: HTMLElement) {
+        const tagsElm = document.createElement("ul");
+        tagsElm.classList.add("tags");
+
+        for (const tag of this.card.tags) {
+            const tagElm = document.createElement("li");
+            tagElm.innerText = tag;
+            tagsElm.appendChild(tagElm);
+        }
+
+        block.appendChild(tagsElm);
+    }
+
+    private createAuthorIn(block: HTMLElement) {
+        const author = document.createElement("div");
+        author.classList.add("author");
+        author.innerText = this.card.author.join(", ");
+        block.appendChild(author);
+    }
+
+    private createDescriptionIn(block: HTMLElement) {
+        const description = document.createElement("div");
+        description.classList.add("description");
+        description.innerHTML = this.card.content.description;
+        block.appendChild(description);
+    }
+
+    private createDisplaysIn(block: HTMLElement) {
+        // TODO: slice(1) instead
+        const displays = this.card.content.display.slice(0);
+        for (const display of displays) {
+            this.createDisplayIn(display, block);
+        }
+    }
+
+    private createDisplayIn(display: Display, block: HTMLElement) {
+        const displayElm = document.createElement("div");
+        displayElm.classList.add("display");
+
+        this.createDisplayTypeIn(displayElm, display);
+
+        block.appendChild(displayElm);
+    }
+
+    private createDisplayTypeIn(parent: HTMLElement, display: Display) {
+        if (display.type === "img") {
+            this.createDisplayImgIn(parent, display);
+        } else if (display.type === "iframe") {
+            this.createDisplayTypeIn(parent, display.alt);
+        }
+    }
+
+    private createDisplayImgIn(parent: HTMLElement, display: DisplayImg) {
+        if (display.src) {
+            const img = document.createElement("img");
+            img.classList.add("img");
+            // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
+            img.src = SiteConfig.thingyLink + display.src;
+            parent.appendChild(img);
+        }
+        if (display.caption) {
+            const caption = document.createElement("small");
+            caption.innerText = display.caption;
+            caption.classList.add("caption");
+            parent.appendChild(caption);
+        }
+    }
+
+    private createLinkIn(block: HTMLElement) {
+        const link = document.createElement("a");
+        link.classList.add("link");
+        link.href = SiteConfig.thingyLink + this.card.content.link;
+        block.appendChild(link);
+    }
+
+    private createTimestampIn(block: HTMLElement) {
+        if (!this.card.timestamp) { return; }
+
+        const time = document.createElement("div");
+        time.classList.add("timestamp");
+        time.innerText = new Date(this.card.timestamp).toLocaleDateString();
+        block.appendChild(time);
     }
 }
 
