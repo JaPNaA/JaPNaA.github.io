@@ -29,9 +29,11 @@ class App {
         await this.loadResources();
         this.closeView(splashScreen);
 
-        // URLManager
+        URLManager.restoreIfShould(this);
 
-        this.openView(Overview);
+        if (!URLManager.restoredFromRedirect) {
+            this.openView(Overview);
+        }
 
         // test
         // ----------------------------------------------------------------------------------------
