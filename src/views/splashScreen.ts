@@ -2,13 +2,14 @@ import "../../styles/views/splashScreen.less";
 
 import View from "./view";
 import wait from "../utils/wait";
+import App from "../app";
 
 class SplashScreen extends View {
     public viewName = "SplashScreen";
     protected elm: HTMLDivElement;
 
-    constructor() {
-        super();
+    constructor(app: App) {
+        super(app);
         this.elm = document.createElement("div");
     }
 

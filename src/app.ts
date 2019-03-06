@@ -32,13 +32,43 @@ class App {
         // test
         // ----------------------------------------------------------------------------------------
         // const proj = await fetch("./content/2017.json").then(e => e.json());
-        // const projectScene = new ProjectDetailedView(proj.data[6]);
-        const proj = await fetch("./content/2017.json").then(e => e.json());
-        const projectScene = new ProjectDetailedView(proj.data[6]);
-        // const proj = await fetch("./content/2018.json").then(e => e.json());
         // const projectScene = new ProjectDetailedView(proj.data[8]);
-        projectScene.setup();
-        this.switchView(projectScene);
+        // // const proj = await fetch("./content/2017.json").then(e => e.json());
+        // // const projectScene = new ProjectDetailedView(proj.data[7]);
+        // // const proj = await fetch("./content/2018.json").then(e => e.json());
+        // // const projectScene = new ProjectDetailedView(proj.data[8]);
+        // projectScene.setup();
+        // this.switchView(projectScene);
+    }
+
+    public switchAndInitView(viewClass: ViewClass): View {
+        const view = new viewClass(this);
+        view.setup();
+        this.switchView(view);
+        return view;
+    }
+
+    public switchView(view: View) {
+        for (const activeView of this.activeViews) {
+            this.closeView(activeView);
+        }
+        view.appendAtStartTo(this.mainElm);
+    }
+
+    public openView(viewClass: ViewClass): View {
+        const view = new viewClass(this);
+        view.setup();
+        view.appendAtStartTo(this.mainElm);
+        this.activeViews.push(view);
+        return view;
+    }
+
+    public closeView(view: View): void {
+        const i = this.activeViews.indexOf(view);
+        if (i < 0) { throw new Error("Attempt to remove view not in activeViews"); }
+        this.activeViews.splice(i, 1);
+
+        view.destory().then(() => view.removeFrom(this.mainElm));
     }
 
     private async loadResources(): Promise<void> {
@@ -48,36 +78,6 @@ class App {
                 res();
             }, 1000);
         });
-    }
-
-    private switchAndInitView(viewClass: ViewClass): View {
-        const view = new viewClass();
-        view.setup();
-        this.switchView(view);
-        return view;
-    }
-
-    private switchView(view: View) {
-        for (const activeView of this.activeViews) {
-            this.closeView(activeView);
-        }
-        view.appendAtStartTo(this.mainElm);
-    }
-
-    private openView(viewClass: ViewClass): View {
-        const view = new viewClass();
-        view.setup();
-        view.appendAtStartTo(this.mainElm);
-        this.activeViews.push(view);
-        return view;
-    }
-
-    private closeView(view: View): void {
-        const i = this.activeViews.indexOf(view);
-        if (i < 0) { throw new Error("Attempt to remove view not in activeViews"); }
-        this.activeViews.splice(i, 1);
-
-        view.destory().then(() => view.removeFrom(this.mainElm));
     }
 }
 

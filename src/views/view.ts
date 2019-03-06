@@ -1,6 +1,16 @@
+import App from "../app";
+
 abstract class View {
     protected abstract elm: HTMLElement;
+
+    protected app: App;
+    
     public viewName?: string;
+
+
+    constructor(app: App) {
+        this.app = app;
+    }
 
     public setup(): void {
         this.elm.classList.add("scene");

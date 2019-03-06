@@ -3,6 +3,7 @@ import "../../styles/views/projectDetailed.less";
 import View from "./view";
 import ICard from "../interfaces/project/card";
 import CardJSONv1Elm from "../components/jsonToElm/cardV1";
+import App from "../app";
 
 class ProjectDetailedView extends View {
     public viewName = "ProjectDetailed";
@@ -11,8 +12,8 @@ class ProjectDetailedView extends View {
 
     private project: ICard;
 
-    constructor(project: ICard) {
-        super();
+    constructor(app: App, project: ICard) {
+        super(app);
         this.elm = document.createElement("div");
         this.project = project;
     }
