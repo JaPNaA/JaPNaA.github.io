@@ -5,6 +5,7 @@ import View from "./views/view";
 import ViewClass from "./types/ViewClass";
 import Overview from "./views/overview";
 import ProjectDetailedView from "./views/projectDetailed";
+import View404 from "./views/404";
 
 class App {
     /** Main element app lives in */
@@ -39,6 +40,7 @@ class App {
         // // const projectScene = new ProjectDetailedView(proj.data[8]);
         // projectScene.setup();
         // this.switchView(projectScene);
+        this.switchAndInitView(View404);
     }
 
     public switchAndInitView(viewClass: ViewClass): View {

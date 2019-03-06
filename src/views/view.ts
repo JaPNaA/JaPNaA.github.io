@@ -18,7 +18,7 @@ abstract class View {
     public setup(): void {
         const viewName = this.viewName || this.constructor.name;
 
-        this.elm.classList.add("scene");
+        this.elm.classList.add("view");
         this.elm.classList.add(viewName);
 
         if (this.isFullPage) {
