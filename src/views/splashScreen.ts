@@ -1,11 +1,13 @@
 import "../../styles/views/splashScreen.less";
 
-import View from "./view";
+import View from "./_view";
 import wait from "../utils/wait";
 import App from "../app";
+import ViewMap from "./_list";
 
 class SplashScreen extends View {
-    public viewName = "SplashScreen";
+    public static viewName = "SplashScreen";
+    public viewName = SplashScreen.viewName;
     protected elm: HTMLDivElement;
 
     constructor(app: App) {
@@ -28,5 +30,7 @@ class SplashScreen extends View {
         await wait(1000);
     }
 }
+
+ViewMap.add(SplashScreen);
 
 export default SplashScreen;

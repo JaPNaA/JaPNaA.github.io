@@ -1,10 +1,12 @@
 import "../../styles/views/404.less";
 
-import View from "./view";
+import View from "./_view";
 import App from "../app";
+import ViewMap from "./_list";
 
 class View404 extends View {
-    public viewName = "View404";
+    public static viewName = "View404";
+    public viewName = View404.viewName;
 
     protected elm: HTMLDivElement;
     protected canvas: HTMLCanvasElement;
@@ -79,10 +81,12 @@ class View404 extends View {
         this.X.textBaseline = "middle";
         this.X.textAlign = "center";
         this.X.fillStyle = "#000000";
-        this.X.font = "128px monospace";
+        this.X.font = "128px Consolas, monospace";
         this.X.globalCompositeOperation = "destination-atop";
         this.X.fillText("404", this.width / 2, this.height / 2);
     }
 }
+
+ViewMap.add(View404);
 
 export default View404;

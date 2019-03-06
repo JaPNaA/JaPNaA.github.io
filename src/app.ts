@@ -1,11 +1,12 @@
 import "../styles/index.less";
 
 import SplashScreen from "./views/splashScreen";
-import View from "./views/view";
+import View from "./views/_view";
 import ViewClass from "./types/ViewClass";
 import Overview from "./views/overview";
 import ProjectDetailedView from "./views/projectDetailed";
 import View404 from "./views/404";
+import URLManager from "./components/url/urlMan";
 
 class App {
     /** Main element app lives in */
@@ -28,6 +29,8 @@ class App {
         await this.loadResources();
         this.closeView(splashScreen);
 
+        // URLManager
+
         this.openView(Overview);
 
         // test
@@ -40,7 +43,7 @@ class App {
         // // const projectScene = new ProjectDetailedView(proj.data[8]);
         // projectScene.setup();
         // this.switchView(projectScene);
-        this.switchAndInitView(View404);
+        // this.switchAndInitView(View404);
     }
 
     public switchAndInitView(viewClass: ViewClass): View {

@@ -1,6 +1,10 @@
-import Scene from "../views/view";
+import Scene from "../views/_view";
 import App from "../app";
 
-type ViewClass = new (app: App) => Scene;
+interface ViewClass {
+    viewName: string;
+
+    new(app: App): Scene;
+}
 
 export default ViewClass;
