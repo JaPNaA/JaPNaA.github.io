@@ -22,7 +22,7 @@ abstract class View {
         this.elm.classList.add(viewName);
 
         if (this.isFullPage) {
-            URLManager.setState(viewName);
+            URLManager.pushState(viewName);
         }
     }
 

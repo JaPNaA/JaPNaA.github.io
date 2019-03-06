@@ -9,6 +9,7 @@ class ProjectDetailedView extends View {
     public viewName = "ProjectDetailed";
 
     protected elm: HTMLDivElement;
+    protected isFullPage: boolean = true;
 
     private project: ICard;
 
