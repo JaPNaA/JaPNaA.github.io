@@ -1,20 +1,29 @@
 import App from "../app";
+import URLManager from "../components/url/urlMan";
 
 abstract class View {
     protected abstract elm: HTMLElement;
 
     protected app: App;
+    protected isFullPage: boolean;
     
     public viewName?: string;
 
 
     constructor(app: App) {
         this.app = app;
+        this.isFullPage = false;
     }
 
     public setup(): void {
+        const viewName = this.viewName || this.constructor.name;
+
         this.elm.classList.add("scene");
-        this.elm.classList.add(this.viewName || this.constructor.name);
+        this.elm.classList.add(viewName);
+
+        if (this.isFullPage) {
+            URLManager.setState(viewName);
+        }
     }
 
     /**

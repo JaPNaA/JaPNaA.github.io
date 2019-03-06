@@ -1,5 +1,6 @@
 class SiteConfig {
     static thingyLink: string;
+    static title: string = "JaPNaA";
 }
 
 if (location.href.includes("localhost")) {
