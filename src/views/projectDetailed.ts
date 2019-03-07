@@ -50,6 +50,14 @@ class ProjectDetailedView extends View {
         this.loading = undefined;
     }
 
+    protected updateStateURL(): void {
+        if (this.projectIndex !== undefined && this.projectYear !== undefined) {
+            URLManager.setState(this.viewName, `${this.projectYear}.${this.projectIndex}`);
+        } else {
+            URLManager.setState(this.viewName);
+        }
+    }
+
     public async setup(): Promise<void> {
         super.setup();
 
@@ -61,7 +69,7 @@ class ProjectDetailedView extends View {
             throw new Error("Project not set");
         }
 
-        URLManager.setState(this.viewName, `${this.projectYear}.${this.projectIndex}`);
+        this.updateStateURL();
 
         // FOR VERSION 1 CARD
         const elm = new CardJSONv1Elm(this.project);

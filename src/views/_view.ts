@@ -23,6 +23,7 @@ abstract class View {
 
         if (this.isFullPage) {
             URLManager.pushState(viewName);
+            this.updateStateURL();
         }
     }
 
@@ -48,6 +49,13 @@ abstract class View {
     /** Removes scene element from element */
     public removeFrom(elm: HTMLElement) {
         elm.removeChild(this.elm);
+    }
+
+    /** Updates the URL state */
+    protected updateStateURL(): void {
+        if (this.isFullPage) {
+            URLManager.setState(this.viewName as string);
+        }
     }
 }
 
