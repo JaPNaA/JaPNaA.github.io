@@ -4,7 +4,7 @@ import App from "../app";
 interface ViewClass {
     viewName: string;
 
-    new(app: App): Scene;
+    new(app: App, stateData?: string): Scene;
 }
 
 export default ViewClass;

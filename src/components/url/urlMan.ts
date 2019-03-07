@@ -48,7 +48,7 @@ class URLManager {
 
         const viewClass = ViewMap.get(urlParsed.viewName);
         if (viewClass) {
-            const view = new viewClass(app);
+            const view = new viewClass(app, urlParsed.viewStateData);
             view.setup();
             app.switchView(view);
         } else {

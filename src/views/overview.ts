@@ -31,7 +31,7 @@ class Overview extends View {
         button.addEventListener("click", async function (this: Overview) {
             const proj = await fetch("./content/" + year.value + ".json").then(e => e.json());
             const projectScene = new ProjectDetailedView(this.app);
-            projectScene.setProject(proj.data[num.value]);
+            projectScene.setProject(proj.data[num.value], parseInt(year.value), parseInt(num.value));
             projectScene.setup();
             this.app.switchView(projectScene);
         }.bind(this));
