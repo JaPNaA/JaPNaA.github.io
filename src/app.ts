@@ -34,18 +34,6 @@ class App {
         if (!URLManager.restoredFromRedirect) {
             this.openView(Overview);
         }
-
-        // test
-        // ----------------------------------------------------------------------------------------
-        // const proj = await fetch("./content/2017.json").then(e => e.json());
-        // const projectScene = new ProjectDetailedView(proj.data[8]);
-        // // const proj = await fetch("./content/2017.json").then(e => e.json());
-        // // const projectScene = new ProjectDetailedView(proj.data[7]);
-        // // const proj = await fetch("./content/2018.json").then(e => e.json());
-        // // const projectScene = new ProjectDetailedView(proj.data[8]);
-        // projectScene.setup();
-        // this.switchView(projectScene);
-        // this.switchAndInitView(View404);
     }
 
     public switchAndInitView(viewClass: ViewClass): View {
