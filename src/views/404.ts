@@ -43,6 +43,9 @@ class View404 extends View {
             this.canvas.addEventListener("mousemove", this.mouseMoveHandler);
             this.draw();
         }
+
+        this.resizeHandler = this.resizeHandler.bind(this);
+        addEventListener("resize", this.resizeHandler);
     }
 
     public async destory(): Promise<void> {
@@ -51,8 +54,10 @@ class View404 extends View {
         if (this.X) {
             this.canvas.removeEventListener("mousemove", this.mouseMoveHandler);
         }
+
+        removeEventListener("resize", this.resizeHandler);
     }
-    
+
     private createCanvas(): HTMLCanvasElement {
         const canvas = document.createElement("canvas");
         canvas.width = innerWidth;
@@ -63,6 +68,12 @@ class View404 extends View {
     private mouseMoveHandler(e: MouseEvent): void {
         this.mouseX = e.layerX;
         this.mouseY = e.layerY;
+        this.draw();
+    }
+
+    private resizeHandler(): void {
+        this.canvas.width = this.width = innerWidth;
+        this.canvas.height = this.height = innerHeight;
         this.draw();
     }
 
