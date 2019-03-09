@@ -48,6 +48,7 @@ class App {
             this.closeView(activeView);
         }
         view.appendAtStartTo(this.mainElm);
+        this.activeViews.push(view);
     }
 
     public openView(viewClass: ViewClass): View {
