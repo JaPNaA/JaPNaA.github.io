@@ -1,3 +1,5 @@
+import "../../../styles/components/hexagonsTitle/hexagonsTitle.less";
+
 import HexagonsLayer from "./hexagonsLayer";
 import SiteConfig from "../../siteConfig";
 
@@ -9,6 +11,7 @@ class HexagonsTitle {
 
     private static logo: HTMLImageElement = HexagonsTitle.createLogoImg();
 
+    private elm: HTMLDivElement;
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
     private layers: HexagonsLayer[];
@@ -17,6 +20,9 @@ class HexagonsTitle {
     private registeredEventHandlers: boolean;
 
     constructor() {
+        this.elm = document.createElement("div");
+        this.elm.classList.add("hexagonsTitle");
+
         this.width = 1280;
         this.height = 720;
         this.overSizeHeight = 0;
@@ -28,6 +34,8 @@ class HexagonsTitle {
         this.gradient = this.createGradient();
 
         this.registeredEventHandlers = false;
+
+        this.elm.appendChild(this.canvas);
     }
 
     public registerEventHandlers() {
@@ -49,6 +57,9 @@ class HexagonsTitle {
     public setSize(width: number, height: number): void {
         this.width = width;
         this.height = height;
+
+        this.elm.style.width = width + "px";
+        this.elm.style.height = height + "px";
 
         this.canvas.width = this.width + this.overSizeWidth;
         this.canvas.height = this.height + this.overSizeHeight;
@@ -77,7 +88,7 @@ class HexagonsTitle {
     }
 
     public appendTo(parent: HTMLElement): void {
-        parent.appendChild(this.canvas);
+        parent.appendChild(this.elm);
     }
 
     private static createLogoImg(): HTMLImageElement {
@@ -88,7 +99,6 @@ class HexagonsTitle {
 
     private createCanvas(): HTMLCanvasElement {
         const canvas = document.createElement("canvas");
-        canvas.classList.add("hexagonsTitle");
         canvas.width = this.width;
         canvas.height = this.height;
         return canvas;

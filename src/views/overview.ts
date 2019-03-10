@@ -4,6 +4,7 @@ import View from "./_view";
 import App from "../app";
 import ViewMap from "./_list";
 import HexagonsTitle from "../components/hexagonsTitle/hexagonsTitle";
+import StickyBar from "../components/stickyBar/stickyBar";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -27,6 +28,11 @@ class Overview extends View {
         this.hexagonsTitle.appendTo(this.elm);
         this.hexagonsTitle.setOverSize(0, 128);
         this.hexagonsTitle.registerEventHandlers();
+
+        const stickyBar = new StickyBar();
+        stickyBar.appendTo(this.elm);
+
+        this.elm.appendChild(document.createTextNode("asdf ".repeat(10000)));
     }
 
     public async destory(): Promise<void> {
