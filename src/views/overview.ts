@@ -25,7 +25,7 @@ class Overview extends View {
         super.setup();
 
         this.hexagonsTitle.appendTo(this.elm);
-        this.hexagonsTitle.draw();
+        this.hexagonsTitle.setOverSize(0, 128);
         this.hexagonsTitle.registerEventHandlers();
     }
 

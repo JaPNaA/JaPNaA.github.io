@@ -4,6 +4,8 @@ import SiteConfig from "../../siteConfig";
 class HexagonsTitle {
     public width: number;
     public height: number;
+    public overSizeWidth: number;
+    public overSizeHeight: number;
 
     private static logo: HTMLImageElement = HexagonsTitle.createLogoImg();
 
@@ -17,6 +19,8 @@ class HexagonsTitle {
     constructor() {
         this.width = 1280;
         this.height = 720;
+        this.overSizeHeight = 0;
+        this.overSizeWidth = 0;
 
         this.canvas = this.createCanvas();
         this.X = this.createX();
@@ -43,11 +47,18 @@ class HexagonsTitle {
     }
 
     public setSize(width: number, height: number): void {
-        this.canvas.width = this.width = width;
-        this.canvas.height = this.height = height;
-        this.gradient = this.createGradient();
+        this.width = width;
+        this.height = height;
 
-        this.draw();
+        this.canvas.width = this.width + this.overSizeWidth;
+        this.canvas.height = this.height + this.overSizeHeight;
+
+        this.gradient = this.createGradient();
+    }
+
+    public setOverSize(overSizeWidth: number, overSizeHeight: number): void {
+        this.overSizeHeight = overSizeHeight;
+        this.overSizeWidth = overSizeWidth;
     }
 
     public draw() {
@@ -112,6 +123,7 @@ class HexagonsTitle {
 
     private resizeHandler(): void {
         this.setSize(innerWidth, innerHeight);
+        this.draw();
     }
 }
 
