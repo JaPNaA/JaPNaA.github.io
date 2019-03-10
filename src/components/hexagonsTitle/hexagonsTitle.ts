@@ -12,6 +12,7 @@ class HexagonsTitle {
     private layers: HexagonsLayer[];
 
     private gradient: CanvasGradient;
+    private registeredEventHandlers: boolean;
 
     constructor() {
         this.width = 1280;
@@ -21,13 +22,32 @@ class HexagonsTitle {
         this.X = this.createX();
         this.layers = this.createLayers();
         this.gradient = this.createGradient();
+
+        this.registeredEventHandlers = false;
+    }
+
+    public registerEventHandlers() {
+        if (this.registeredEventHandlers) { return; }
+
+        this.resizeHandler = this.resizeHandler.bind(this);
+        addEventListener("resize", this.resizeHandler);
+        this.resizeHandler();
+
+        this.registeredEventHandlers = true;
+    }
+
+    public destory() {
+        if (this.registeredEventHandlers) {
+            removeEventListener("resize", this.resizeHandler);
+        }
     }
 
     public setSize(width: number, height: number): void {
-        this.width = width;
-        this.height = height;
-
+        this.canvas.width = this.width = width;
+        this.canvas.height = this.height = height;
         this.gradient = this.createGradient();
+
+        this.draw();
     }
 
     public draw() {
@@ -57,6 +77,7 @@ class HexagonsTitle {
 
     private createCanvas(): HTMLCanvasElement {
         const canvas = document.createElement("canvas");
+        canvas.classList.add("hexagonsTitle");
         canvas.width = this.width;
         canvas.height = this.height;
         return canvas;
@@ -87,6 +108,10 @@ class HexagonsTitle {
         gradient.addColorStop(0, "#c2ffe3");
         gradient.addColorStop(1, "#ffffff");
         return gradient;
+    }
+
+    private resizeHandler(): void {
+        this.setSize(innerWidth, innerHeight);
     }
 }
 

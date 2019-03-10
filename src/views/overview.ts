@@ -1,3 +1,5 @@
+import "../../styles/views/overview.less";
+
 import View from "./_view";
 import App from "../app";
 import ViewMap from "./_list";
@@ -7,20 +9,29 @@ class Overview extends View {
     public static viewName = "Overview";
     public viewName = Overview.viewName;
 
-    protected elm: HTMLDivElement;
     public isFullPage = true;
+    
+    protected elm: HTMLDivElement;
+
+    private hexagonsTitle: HexagonsTitle;
 
     constructor(app: App) {
         super(app);
         this.elm = document.createElement("div");
+        this.hexagonsTitle = new HexagonsTitle();
     }
 
     public setup() {
         super.setup();
 
-        const hexagonsTitle = new HexagonsTitle();
-        hexagonsTitle.appendTo(this.elm);
-        hexagonsTitle.draw();
+        this.hexagonsTitle.appendTo(this.elm);
+        this.hexagonsTitle.draw();
+        this.hexagonsTitle.registerEventHandlers();
+    }
+
+    public async destory(): Promise<void> {
+        super.destory();
+        this.hexagonsTitle.destory();
     }
 }
 
