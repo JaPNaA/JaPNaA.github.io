@@ -13,10 +13,10 @@ class SplashScreen extends View {
         this.elm = document.createElement("div");
     }
 
-    public setup() {
+    public setup(): void {
         super.setup();
 
-        const child = document.createElement("div");
+        const child: HTMLDivElement = document.createElement("div");
         child.innerText = "Loading...\n:)";
         child.classList.add("child");
         this.elm.appendChild(child);

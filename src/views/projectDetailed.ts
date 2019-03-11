@@ -35,8 +35,8 @@ class ProjectDetailedView extends View {
 
     private async loadProjectFromStateData(stateData: string): Promise<void> {
         const [year, index] = stateData.split(".");
-        const yearInt = parseInt(year);
-        const indexInt = parseInt(index);
+        const yearInt: number = parseInt(year);
+        const indexInt: number = parseInt(index);
 
         if (!yearInt || !indexInt) {
             throw new Error("Invalid stateData format");
@@ -70,7 +70,7 @@ class ProjectDetailedView extends View {
         this.updateStateURL();
 
         // FOR VERSION 1 CARD
-        const elm = new CardJSONv1Elm(this.project);
+        const elm: CardJSONv1Elm = new CardJSONv1Elm(this.project);
         elm.appendTo(this.elm);
         elm.animateTransitionIn();
         elm.addEventListeners();

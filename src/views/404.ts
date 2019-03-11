@@ -17,7 +17,7 @@ class View404 extends View {
     private height: number;
 
     constructor(app: App) {
-        super(app)
+        super(app);
 
         this.elm = document.createElement("div");
 
@@ -33,7 +33,7 @@ class View404 extends View {
         this.elm.appendChild(this.canvas);
     }
 
-    public setup() {
+    public setup(): void {
         super.setup();
 
         if (this.X) {
@@ -57,7 +57,7 @@ class View404 extends View {
     }
 
     private createCanvas(): HTMLCanvasElement {
-        const canvas = document.createElement("canvas");
+        const canvas: HTMLCanvasElement = document.createElement("canvas");
         canvas.width = innerWidth;
         canvas.height = innerHeight;
         return canvas;
@@ -75,12 +75,12 @@ class View404 extends View {
         this.draw();
     }
 
-    private draw() {
+    private draw(): void {
         this.X.globalCompositeOperation = "source-over";
         this.X.fillStyle = "#242424";
         this.X.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        var GRA = this.X.createRadialGradient(this.mouseX, this.mouseY, 84, this.width / 2, 0, 0);
+        var GRA: CanvasGradient = this.X.createRadialGradient(this.mouseX, this.mouseY, 84, this.width / 2, 0, 0);
         GRA.addColorStop(0, "#4F4F4F");
         GRA.addColorStop(1, "#FFFFFF");
 
