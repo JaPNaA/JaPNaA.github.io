@@ -1,5 +1,3 @@
-import "../../../styles/components/jsonToElm/cardV1.less";
-
 import ICard from "../../interfaces/project/card";
 import SiteConfig from "../../siteConfig";
 import Display from "../../interfaces/project/display";

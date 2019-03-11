@@ -1,4 +1,3 @@
-import "../../../styles/components/stickyBar/stickyBar.less";
 import removeChildren from "../../utils/removeChildren";
 
 class StickyBar {

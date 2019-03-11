@@ -4,8 +4,6 @@ import SplashScreen from "./views/splashScreen";
 import View from "./views/_view";
 import ViewClass from "./types/ViewClass";
 import Overview from "./views/overview";
-import ProjectDetailedView from "./views/projectDetailed";
-import View404 from "./views/404";
 import URLManager from "./components/url/urlMan";
 import SiteResources from "./siteResources";
 

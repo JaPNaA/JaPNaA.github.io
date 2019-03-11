@@ -1,5 +1,3 @@
-import "../../../styles/components/hexagonsTitle/hexagonsTitle.less";
-
 import HexagonsLayer from "./hexagonsLayer";
 import SiteConfig from "../../siteConfig";
 

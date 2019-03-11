@@ -1,5 +1,3 @@
-import "../../styles/views/overview.less";
-
 import View from "./_view";
 import App from "../app";
 import ViewMap from "./_list";

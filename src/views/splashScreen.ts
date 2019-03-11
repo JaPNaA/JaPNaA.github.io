@@ -1,5 +1,3 @@
-import "../../styles/views/splashScreen.less";
-
 import View from "./_view";
 import wait from "../utils/wait";
 import App from "../app";
