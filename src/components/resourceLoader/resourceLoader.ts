@@ -39,6 +39,11 @@ class ResourceLoader {
     }
 
     public loadImage(path: string): ImageResource {
+        const existingResource: Resource | undefined = this.resources.get(path);
+        if (existingResource) {
+            return existingResource as ImageResource;
+        }
+
         const resource: ImageResource = new ImageResource(this.hooks, path);
         this.resources.set(path, resource);
         this.toBeLoaded++;
