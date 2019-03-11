@@ -6,6 +6,8 @@ import ViewMap from "./_list";
 import HexagonsTitle from "../components/hexagonsTitle/hexagonsTitle";
 import StickyBar from "../components/stickyBar/stickyBar";
 import SiteConfig from "../siteConfig";
+import SiteResources from "../siteResources";
+import ImageResource from "../components/resourceLoader/resources/image";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -31,8 +33,10 @@ class Overview extends View {
         this.hexagonsTitle.registerEventHandlers();
 
         const stickyBar: StickyBar = new StickyBar();
+        const logoResource: ImageResource = SiteResources.loadImage(SiteConfig.paths.logo);
+
         stickyBar.appendTo(this.elm);
-        stickyBar.setText(SiteConfig.title);
+        stickyBar.setText(logoResource.image);
 
         this.elm.appendChild(document.createTextNode("asdf ".repeat(10000)));
     }

@@ -1,4 +1,5 @@
 import "../../../styles/components/stickyBar/stickyBar.less";
+import removeChildren from "../../utils/removeChildren";
 
 class StickyBar {
     private elm: HTMLDivElement;
@@ -19,8 +20,9 @@ class StickyBar {
         parent.appendChild(this.elm);
     }
 
-    public setText(text: string): void {
-        this.text.innerHTML = text;
+    public setText(elm: HTMLElement): void {
+        removeChildren(this.text);
+        this.text.appendChild(elm);
     }
 }
 
