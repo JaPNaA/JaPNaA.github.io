@@ -7,6 +7,7 @@ import Overview from "./views/overview";
 import ProjectDetailedView from "./views/projectDetailed";
 import View404 from "./views/404";
 import URLManager from "./components/url/urlMan";
+import SiteResources from "./siteResources";
 
 class App {
     /** Main element app lives in */
@@ -24,7 +25,7 @@ class App {
     public async setup(): Promise<void> {
         document.body.appendChild(this.mainElm);
 
-        const splashScreen = this.openView(SplashScreen);
+        const splashScreen: View = this.openView(SplashScreen);
 
         await this.loadResources();
         this.closeView(splashScreen);
@@ -37,13 +38,13 @@ class App {
     }
 
     public switchAndInitView(viewClass: ViewClass): View {
-        const view = new viewClass(this);
+        const view: View = new viewClass(this);
         view.setup();
         this.switchView(view);
         return view;
     }
 
-    public switchView(view: View) {
+    public switchView(view: View): void {
         for (const activeView of this.activeViews) {
             this.closeView(activeView);
         }
@@ -52,7 +53,7 @@ class App {
     }
 
     public openView(viewClass: ViewClass): View {
-        const view = new viewClass(this);
+        const view: View = new viewClass(this);
         view.setup();
         view.appendAtStartTo(this.mainElm);
         this.activeViews.push(view);
@@ -60,7 +61,7 @@ class App {
     }
 
     public closeView(view: View): void {
-        const i = this.activeViews.indexOf(view);
+        const i: number = this.activeViews.indexOf(view);
         if (i < 0) { throw new Error("Attempt to remove view not in activeViews"); }
         this.activeViews.splice(i, 1);
 
@@ -69,12 +70,14 @@ class App {
 
     private async loadResources(): Promise<void> {
         // TODO: remove simulated wait
-        await new Promise(function (res) {
-            setTimeout(function () {
+        await new Promise(function (res: () => void): void {
+            setTimeout(function (): void {
                 res();
             }, 1000);
         });
     }
 }
+
+SiteResources.onDone(() => console.log("done"));
 
 export default App;

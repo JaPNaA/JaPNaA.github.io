@@ -5,13 +5,14 @@ import App from "../app";
 import ViewMap from "./_list";
 import HexagonsTitle from "../components/hexagonsTitle/hexagonsTitle";
 import StickyBar from "../components/stickyBar/stickyBar";
+import SiteConfig from "../siteConfig";
 
 class Overview extends View {
     public static viewName = "Overview";
     public viewName = Overview.viewName;
 
     public isFullPage = true;
-    
+
     protected elm: HTMLDivElement;
 
     private hexagonsTitle: HexagonsTitle;
@@ -22,15 +23,16 @@ class Overview extends View {
         this.hexagonsTitle = new HexagonsTitle();
     }
 
-    public setup() {
+    public setup(): void {
         super.setup();
 
         this.hexagonsTitle.appendTo(this.elm);
         this.hexagonsTitle.setOverSize(0, 128);
         this.hexagonsTitle.registerEventHandlers();
 
-        const stickyBar = new StickyBar();
+        const stickyBar: StickyBar = new StickyBar();
         stickyBar.appendTo(this.elm);
+        stickyBar.setText(SiteConfig.title);
 
         this.elm.appendChild(document.createTextNode("asdf ".repeat(10000)));
     }

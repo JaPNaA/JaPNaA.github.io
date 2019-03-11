@@ -1,5 +1,7 @@
 import SiteConfig from "../../siteConfig";
 import HexagonsTitle from "./hexagonsTitle";
+import SiteResources from "../../siteResources";
+import ImageResource from "../resourceLoader/resources/image";
 
 class Hexagon {
     private static img: HTMLImageElement = Hexagon.createImg();
@@ -41,10 +43,13 @@ class Hexagon {
     }
 
     private static createImg(): HTMLImageElement {
-        const img = document.createElement("img");
-        img.src = SiteConfig.paths.hexagon;
+        // const img = document.createElement("img");
+        // img.src = SiteConfig.paths.hexagon;
 
-        img.addEventListener("load", () => {
+        const resource: ImageResource = SiteResources.loadImage(SiteConfig.paths.hexagon);
+        const img: HTMLImageElement = resource.image;
+
+        resource.onLoad(() => {
             this.negativeHalfImgWidth = -img.width / 2;
             this.negativeHalfImgHeight = -img.height / 2;
         });
@@ -52,10 +57,10 @@ class Hexagon {
         return img;
     }
 
-    private moveIfInRadius() {
-        const dx = this.x - 0.5;
-        const dy = this.y - 0.5;
-        const ang = Math.atan2(dy, dx);
+    private moveIfInRadius(): void {
+        const dx: number = this.x - 0.5;
+        const dy: number = this.y - 0.5;
+        const ang: number = Math.atan2(dy, dx);
 
         if (Math.sqrt(dx * dx + dy * dy) < 0.2) {
             this.x += Math.cos(ang) * 0.2;

@@ -38,7 +38,7 @@ class HexagonsTitle {
         this.elm.appendChild(this.canvas);
     }
 
-    public registerEventHandlers() {
+    public registerEventHandlers(): void {
         if (this.registeredEventHandlers) { return; }
 
         this.resizeHandler = this.resizeHandler.bind(this);
@@ -48,7 +48,7 @@ class HexagonsTitle {
         this.registeredEventHandlers = true;
     }
 
-    public destory() {
+    public destory(): void {
         if (this.registeredEventHandlers) {
             removeEventListener("resize", this.resizeHandler);
         }
@@ -72,7 +72,7 @@ class HexagonsTitle {
         this.overSizeWidth = overSizeWidth;
     }
 
-    public draw() {
+    public draw(): void {
         this.X.fillStyle = this.gradient;
         this.X.fillRect(0, 0, this.width, this.height);
 
@@ -92,20 +92,20 @@ class HexagonsTitle {
     }
 
     private static createLogoImg(): HTMLImageElement {
-        const img = document.createElement("img");
+        const img: HTMLImageElement = document.createElement("img");
         img.src = SiteConfig.paths.logo;
         return img;
     }
 
     private createCanvas(): HTMLCanvasElement {
-        const canvas = document.createElement("canvas");
+        const canvas: HTMLCanvasElement = document.createElement("canvas");
         canvas.width = this.width;
         canvas.height = this.height;
         return canvas;
     }
 
     private createX(): CanvasRenderingContext2D {
-        const X = this.canvas.getContext('2d');
+        const X: CanvasRenderingContext2D | null = this.canvas.getContext("2d");
 
         if (X) {
             return X;
@@ -115,9 +115,9 @@ class HexagonsTitle {
     }
 
     private createLayers(): HexagonsLayer[] {
-        const layers = [];
+        const layers: HexagonsLayer[] = [];
 
-        for (let i = 0; i < SiteConfig.hexagonsTitle.layers; i++) {
+        for (let i: number = 0; i < SiteConfig.hexagonsTitle.layers; i++) {
             layers.push(new HexagonsLayer(this));
         }
 
@@ -125,7 +125,7 @@ class HexagonsTitle {
     }
 
     private createGradient(): CanvasGradient {
-        const gradient = this.X.createLinearGradient(0, 0, 0, this.height);
+        const gradient: CanvasGradient = this.X.createLinearGradient(0, 0, 0, this.height);
         gradient.addColorStop(0, "#c2ffe3");
         gradient.addColorStop(1, "#ffffff");
         return gradient;
