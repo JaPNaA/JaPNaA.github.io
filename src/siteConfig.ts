@@ -1,3 +1,6 @@
+import isHandheld from "./utils/isHandheld";
+import isMobile from "./utils/isMobile";
+
 class SiteConfig {
     static thingyLink: string;
     static title: string = "JaPNaA";
@@ -11,6 +14,9 @@ class SiteConfig {
         hexagonsPerLayer: 50,
         layers: 4
     };
+
+    static isHandheld: boolean;
+    static isMobile: boolean;
 }
 
 if (location.href.includes("localhost")) {
@@ -21,5 +27,8 @@ if (location.href.includes("localhost")) {
 } else {
     SiteConfig.thingyLink = "";
 }
+
+SiteConfig.isHandheld = isHandheld();
+SiteConfig.isMobile = isMobile();
 
 export default SiteConfig;

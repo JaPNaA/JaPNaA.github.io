@@ -4,9 +4,16 @@ import SiteResources from "../../siteResources";
 import ImageResource from "../resourceLoader/resources/image";
 
 class Hexagon {
-    private static img: HTMLImageElement = Hexagon.createImg();
+    private static initalizedStatic: boolean;
+    private static img: HTMLImageElement;
+    private static imgLoaded: boolean;
     private static negativeHalfImgWidth: number;
     private static negativeHalfImgHeight: number;
+
+    private static expectedHexagonSize: number = 1080;
+    private static expectedHexagonColor: string = "rgba(0,189,114,0.65)";
+    private static expectedNegativeHalfImgWidth: number = -540;
+    private static expectedNegativeHalfImgHeight: number = -540;
 
     private hexagonsTitle: HexagonsTitle;
 
@@ -16,6 +23,7 @@ class Hexagon {
     private rotation: number;
 
     constructor(hexagonsTitle: HexagonsTitle) {
+        Hexagon.initalizeStatic();
         this.hexagonsTitle = hexagonsTitle;
 
         this.scale = Math.random() * 0.3 + 0.3;
@@ -30,28 +38,54 @@ class Hexagon {
     }
 
     public draw(X: CanvasRenderingContext2D): void {
-        // TODO: If image not loaded, render squre instead
+        if (Hexagon.imgLoaded) {
+            this.drawHexagonImage(X);
+        } else {
+            this.drawSquare(X);
+        }
+    }
+
+    private drawHexagonImage(X: CanvasRenderingContext2D): void {
         X.save();
-
-        X.translate(this.x * this.hexagonsTitle.width, this.y * this.hexagonsTitle.height);
-        X.rotate(this.rotation);
-        X.scale(this.scale, this.scale);
-
+        this.transformCanvas(X);
         X.drawImage(Hexagon.img, Hexagon.negativeHalfImgWidth, Hexagon.negativeHalfImgHeight);
-
         X.restore();
     }
 
-    private static createImg(): HTMLImageElement {
-        // const img = document.createElement("img");
-        // img.src = SiteConfig.paths.hexagon;
+    private drawSquare(X: CanvasRenderingContext2D): void {
+        X.save();
+        this.transformCanvas(X);
+        X.fillStyle = Hexagon.expectedHexagonColor;
+        X.fillRect(
+            Hexagon.expectedNegativeHalfImgWidth,
+            Hexagon.expectedNegativeHalfImgHeight,
+            Hexagon.expectedHexagonSize,
+            Hexagon.expectedHexagonSize
+        );
+        X.restore();
+    }
 
+    private transformCanvas(X: CanvasRenderingContext2D): void {
+        X.translate(this.x * this.hexagonsTitle.width, this.y * this.hexagonsTitle.height);
+        X.rotate(this.rotation);
+        X.scale(this.scale, this.scale);
+    }
+
+    private static initalizeStatic(): void {
+        if (this.initalizedStatic) { return; }
+        this.img = Hexagon.createImg();
+        this.initalizedStatic = true;
+    }
+
+    private static createImg(): HTMLImageElement {
         const resource: ImageResource = SiteResources.loadImage(SiteConfig.paths.hexagon);
         const img: HTMLImageElement = resource.image;
 
+        this.imgLoaded = false;
         resource.onLoad(() => {
             this.negativeHalfImgWidth = -img.width / 2;
             this.negativeHalfImgHeight = -img.height / 2;
+            this.imgLoaded = true;
         });
 
         return img;

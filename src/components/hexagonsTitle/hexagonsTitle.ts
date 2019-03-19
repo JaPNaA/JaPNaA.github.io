@@ -7,7 +7,8 @@ class HexagonsTitle {
     public overSizeWidth: number;
     public overSizeHeight: number;
 
-    private static logo: HTMLImageElement = HexagonsTitle.createLogoImg();
+    private static initalizedStatic: boolean = false;
+    private static logo: HTMLImageElement;
 
     private parentElm: HTMLElement;
 
@@ -24,6 +25,7 @@ class HexagonsTitle {
     private totalHeight: number;
 
     constructor(parentElm: HTMLElement) {
+        HexagonsTitle.initalizeStatic();
         this.parentElm = parentElm;
 
         this.elm = document.createElement("div");
@@ -86,6 +88,7 @@ class HexagonsTitle {
     }
 
     public draw(): void {
+        // TODO: start fade-in when loaded
         const scrollFactor = -this.scrollDist / this.layers.length;
 
         this.X.clearRect(0, 0, this.totalWidth, this.totalHeight);
@@ -110,6 +113,12 @@ class HexagonsTitle {
 
     public appendToParent(): void {
         this.parentElm.appendChild(this.elm);
+    }
+
+    private static initalizeStatic(): void {
+        if (this.initalizedStatic) { return; }
+        this.logo = HexagonsTitle.createLogoImg();
+        this.initalizedStatic = true;
     }
 
     private static createLogoImg(): HTMLImageElement {
@@ -158,6 +167,7 @@ class HexagonsTitle {
     }
 
     private scrollHandler(): void {
+        if (SiteConfig.isHandheld) { return; }
         this.scrollDist = this.parentElm.scrollTop;
         this.draw();
     }
