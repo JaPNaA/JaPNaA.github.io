@@ -3,8 +3,8 @@ class SiteConfig {
     static title: string = "JaPNaA";
 
     static paths = {
-        hexagon: "./img/hexagon.svg",
-        logo: "./img/japnaa-logo.svg"
+        hexagon: "/img/hexagon.svg",
+        logo: "/img/japnaa-logo.svg"
     };
 
     static hexagonsTitle = {
@@ -14,7 +14,10 @@ class SiteConfig {
 }
 
 if (location.href.includes("localhost")) {
-    SiteConfig.thingyLink = "http://localhost:8081";
+    const port = parseInt(location.port);
+    if (!isNaN(port)) {
+        SiteConfig.thingyLink = "http://localhost:" + (port + 1);
+    }
 } else {
     SiteConfig.thingyLink = "";
 }

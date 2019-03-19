@@ -91,17 +91,13 @@ class HexagonsTitle {
         this.X.clearRect(0, 0, this.totalWidth, this.totalHeight);
         this.X.fillStyle = this.gradient;
         this.X.fillRect(0, 0, this.width, this.height);
-        
-        // this.X.translate(0, this.scrollDist / this.layers.length);
-        
+
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
 
             this.X.save();
             this.X.translate(0, i * scrollFactor);
-
             layer.draw(this.X);
-
             this.X.restore();
         }
 
