@@ -9,15 +9,23 @@ class HexagonsTitle {
 
     private static logo: HTMLImageElement = HexagonsTitle.createLogoImg();
 
+    private parentElm: HTMLElement;
+
     private elm: HTMLDivElement;
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
     private layers: HexagonsLayer[];
 
+    private scrollDist: number;
     private gradient: CanvasGradient;
     private registeredEventHandlers: boolean;
 
-    constructor() {
+    private totalWidth: number;
+    private totalHeight: number;
+
+    constructor(parentElm: HTMLElement) {
+        this.parentElm = parentElm;
+
         this.elm = document.createElement("div");
         this.elm.classList.add("hexagonsTitle");
 
@@ -25,12 +33,15 @@ class HexagonsTitle {
         this.height = 720;
         this.overSizeHeight = 0;
         this.overSizeWidth = 0;
+        this.totalWidth = this.width + this.overSizeWidth;
+        this.totalHeight = this.height + this.overSizeHeight;
 
         this.canvas = this.createCanvas();
         this.X = this.createX();
         this.layers = this.createLayers();
         this.gradient = this.createGradient();
 
+        this.scrollDist = 0;
         this.registeredEventHandlers = false;
 
         this.elm.appendChild(this.canvas);
@@ -38,6 +49,9 @@ class HexagonsTitle {
 
     public registerEventHandlers(): void {
         if (this.registeredEventHandlers) { return; }
+
+        this.scrollHandler = this.scrollHandler.bind(this);
+        this.parentElm.addEventListener("scroll", this.scrollHandler, { passive: true });
 
         this.resizeHandler = this.resizeHandler.bind(this);
         addEventListener("resize", this.resizeHandler);
@@ -49,6 +63,7 @@ class HexagonsTitle {
     public destory(): void {
         if (this.registeredEventHandlers) {
             removeEventListener("resize", this.resizeHandler);
+            this.parentElm.removeEventListener("scroll", this.scrollHandler);
         }
     }
 
@@ -59,8 +74,8 @@ class HexagonsTitle {
         this.elm.style.width = width + "px";
         this.elm.style.height = height + "px";
 
-        this.canvas.width = this.width + this.overSizeWidth;
-        this.canvas.height = this.height + this.overSizeHeight;
+        this.totalWidth = this.canvas.width = this.width + this.overSizeWidth;
+        this.totalHeight = this.canvas.height = this.height + this.overSizeHeight;
 
         this.gradient = this.createGradient();
     }
@@ -71,11 +86,23 @@ class HexagonsTitle {
     }
 
     public draw(): void {
+        const scrollFactor = -this.scrollDist / this.layers.length;
+
+        this.X.clearRect(0, 0, this.totalWidth, this.totalHeight);
         this.X.fillStyle = this.gradient;
         this.X.fillRect(0, 0, this.width, this.height);
+        
+        // this.X.translate(0, this.scrollDist / this.layers.length);
+        
+        for (let i = 0; i < this.layers.length; i++) {
+            const layer = this.layers[i];
 
-        for (const layer of this.layers) {
+            this.X.save();
+            this.X.translate(0, i * scrollFactor);
+
             layer.draw(this.X);
+
+            this.X.restore();
         }
 
         this.X.drawImage(
@@ -85,8 +112,8 @@ class HexagonsTitle {
         );
     }
 
-    public appendTo(parent: HTMLElement): void {
-        parent.appendChild(this.elm);
+    public appendToParent(): void {
+        this.parentElm.appendChild(this.elm);
     }
 
     private static createLogoImg(): HTMLImageElement {
@@ -131,6 +158,11 @@ class HexagonsTitle {
 
     private resizeHandler(): void {
         this.setSize(innerWidth, innerHeight);
+        this.draw();
+    }
+
+    private scrollHandler(): void {
+        this.scrollDist = this.parentElm.scrollTop;
         this.draw();
     }
 }

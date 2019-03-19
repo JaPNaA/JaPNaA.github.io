@@ -20,13 +20,13 @@ class Overview extends View {
     constructor(app: App) {
         super(app);
         this.elm = document.createElement("div");
-        this.hexagonsTitle = new HexagonsTitle();
+        this.hexagonsTitle = new HexagonsTitle(this.elm);
     }
 
     public setup(): void {
         super.setup();
 
-        this.hexagonsTitle.appendTo(this.elm);
+        this.hexagonsTitle.appendToParent();
         this.hexagonsTitle.setOverSize(0, 128);
         this.hexagonsTitle.registerEventHandlers();
 

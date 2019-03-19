@@ -8,8 +8,8 @@ class SiteConfig {
     };
 
     static hexagonsTitle = {
-        hexagonsPerLayer: 100,
-        layers: 2
+        hexagonsPerLayer: 50,
+        layers: 4
     };
 }
 
