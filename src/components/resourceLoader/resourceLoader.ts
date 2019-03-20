@@ -12,6 +12,7 @@ class ResourceLoader {
     private hooks: ResourceLoaderHooks;
 
     private doneEventListeners: Callback[];
+    private doneOnceEventListeners: Callback[];
 
     constructor() {
         this.toBeLoaded = 0;
@@ -19,7 +20,9 @@ class ResourceLoader {
 
         this.resources = new Map();
         this.hooks = new ResourceLoaderHooks(this.onLoadHandler.bind(this), this.onErrorHandler.bind(this));
+
         this.doneEventListeners = [];
+        this.doneOnceEventListeners = [];
     }
 
     public getResource(name: string): Resource | undefined {
@@ -36,6 +39,16 @@ class ResourceLoader {
 
     public onDone(handler: Callback): void {
         this.doneEventListeners.push(handler);
+    }
+
+    public async nextDone(): Promise<void> {
+        if (!this.isDone()) {
+            await new Promise((res) => this.doneOnceEventListeners.push(res));
+        }
+    }
+
+    public onDoneOnce(handler: Callback): void {
+        this.doneOnceEventListeners.push(handler);
     }
 
     public loadImage(path: string): ImageResource {
@@ -68,6 +81,11 @@ class ResourceLoader {
 
     private onDoneHandler(): void {
         for (const handler of this.doneEventListeners) {
+            handler();
+        }
+
+        let handler: Callback | undefined;
+        while (handler = this.doneOnceEventListeners.shift()) {
             handler();
         }
     }

@@ -68,14 +68,8 @@ class App {
 
     private async loadResources(): Promise<void> {
         // TODO: remove simulated wait
-        await new Promise(function (res: () => void): void {
-            setTimeout(function (): void {
-                res();
-            }, 1000);
-        });
+        await SiteResources.nextDone();
     }
 }
-
-SiteResources.onDone(() => console.log("done"));
 
 export default App;
