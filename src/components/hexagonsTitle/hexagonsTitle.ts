@@ -23,6 +23,7 @@ class HexagonsTitle {
 
     private totalWidth: number;
     private totalHeight: number;
+    private isVertical: boolean;
 
     constructor(parentElm: HTMLElement) {
         HexagonsTitle.initalizeStatic();
@@ -37,6 +38,7 @@ class HexagonsTitle {
         this.overSizeWidth = 0;
         this.totalWidth = this.width + this.overSizeWidth;
         this.totalHeight = this.height + this.overSizeHeight;
+        this.isVertical = false;
 
         this.canvas = this.createCanvas();
         this.X = this.createX();
@@ -73,6 +75,8 @@ class HexagonsTitle {
         this.width = width;
         this.height = height;
 
+        this.isVertical = height > width;
+
         this.elm.style.width = width + "px";
         this.elm.style.height = height + "px";
 
@@ -95,6 +99,10 @@ class HexagonsTitle {
         this.X.fillStyle = this.gradient;
         this.X.fillRect(0, 0, this.width, this.height);
 
+        if (!this.isVertical) {
+            this.drawLogo();
+        }
+
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
 
@@ -104,11 +112,9 @@ class HexagonsTitle {
             this.X.restore();
         }
 
-        this.X.drawImage(
-            HexagonsTitle.logo,
-            (this.width - HexagonsTitle.logo.width) / 2,
-            (this.height - HexagonsTitle.logo.height) / 2
-        );
+        if (this.isVertical) {
+            this.drawLogo();
+        }
     }
 
     public appendToParent(): void {
@@ -159,6 +165,14 @@ class HexagonsTitle {
         gradient.addColorStop(0, "#c2ffe3");
         gradient.addColorStop(1, "#ffffff");
         return gradient;
+    }
+
+    private drawLogo(): void {
+        this.X.drawImage(
+            HexagonsTitle.logo,
+            (this.width - HexagonsTitle.logo.width) / 2,
+            (this.height - HexagonsTitle.logo.height) / 2
+        );
     }
 
     private resizeHandler(): void {
