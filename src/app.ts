@@ -7,20 +7,26 @@ import Overview from "./elm/views/views/overview";
 import URLManager from "./components/url/urlMan";
 import SiteResources from "./siteResources";
 import GlobalWidget from "./elm/widgets/global/global";
+import EventHandlers from "./utils/events/eventHandlers";
+import Handler from "./utils/events/handler";
 
 class App {
     /** Main element app lives in */
     private mainElm: HTMLDivElement;
     /** All active scenes in app */
     private activeViews: View[];
+    /** The global widget */
     private globalWidget: GlobalWidget;
+
+    private viewChangeHandlers: EventHandlers;
 
     constructor() {
         this.mainElm = document.createElement("div");
         this.mainElm.classList.add("main");
-        this.globalWidget = new GlobalWidget();
+        this.globalWidget = new GlobalWidget(this);
 
         this.activeViews = [];
+        this.viewChangeHandlers = new EventHandlers();
     }
 
     public async setup(): Promise<void> {
@@ -70,11 +76,13 @@ class App {
     public addView(view: View): void {
         view.appendAtStartTo(this.mainElm);
         this.activeViews.push(view);
+        this.dispatchViewChange();
     }
 
     public addViewBehind(view: View): void {
         view.appendTo(this.mainElm);
         this.activeViews.push(view);
+        this.dispatchViewChange();
     }
 
     public closeView(view: View): void {
@@ -83,6 +91,15 @@ class App {
         this.activeViews.splice(i, 1);
 
         view.destory().then(() => view.removeFrom(this.mainElm));
+        this.dispatchViewChange();
+    }
+
+    public onViewChange(handler: Handler<void>) {
+        this.viewChangeHandlers.add(handler);
+    }
+
+    private dispatchViewChange() {
+        this.viewChangeHandlers.dispatch();
     }
 }
 

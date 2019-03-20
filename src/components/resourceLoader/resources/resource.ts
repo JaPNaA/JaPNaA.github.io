@@ -1,5 +1,6 @@
 import ResourceLoaderHooks from "../resourceLoaderHooks";
-import ResourceCallback from "../resourceCallback";
+import EventHandlers from "../../../utils/events/eventHandlers";
+import Handler from "../../../utils/events/handler";
 
 class Resource {
     public error?: Error;
@@ -7,23 +8,23 @@ class Resource {
 
     private hooks: ResourceLoaderHooks;
 
-    private loadHandlers: ResourceCallback[];
-    private errorHandlers: ResourceCallback[];
+    private loadHandlers: EventHandlers<Resource>;
+    private errorHandlers: EventHandlers<Resource>;
 
     constructor(hooks: ResourceLoaderHooks) {
         this.hooks = hooks;
         this.loaded = false;
 
-        this.loadHandlers = [];
-        this.errorHandlers = [];
+        this.loadHandlers = new EventHandlers();
+        this.errorHandlers = new EventHandlers();
     }
 
-    public onLoad(handler: ResourceCallback): void {
-        this.loadHandlers.push(handler);
+    public onLoad(handler: Handler<Resource>): void {
+        this.loadHandlers.add(handler);
     }
 
-    public onError(handler: ResourceCallback): void {
-        this.errorHandlers.push(handler);
+    public onError(handler: Handler<Resource>): void {
+        this.errorHandlers.add(handler);
     }
 
     protected onLoadHandler(): void {
@@ -41,22 +42,18 @@ class Resource {
     }
 
     private dispatchLoadEvent(): void {
-        for (const handler of this.loadHandlers) {
-            handler(this);
-        }
+        this.loadHandlers.dispatch(this);
     }
 
     private dispathErrorEvent(): void {
-        if (this.errorHandlers.length === 0) {
+        if (!this.errorHandlers.hasAny()) {
             console.error("Throwing resource load error", this);
             throw new Error("Unhandled resource load error");
         }
 
         console.warn("Failed to load resource", this);
 
-        for (const handler of this.errorHandlers) {
-            handler(this);
-        }
+        this.errorHandlers.dispatch(this);
     }
 }
 

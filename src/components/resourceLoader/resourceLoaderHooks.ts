@@ -1,9 +1,10 @@
-import ResourceCallback from "./resourceCallback";
+import Resource from "./resources/resource";
+import Handler from "../../utils/events/handler";
 
 class ResourceLoaderHooks {
     constructor(
-        public onLoad: ResourceCallback,
-        public onError: ResourceCallback
+        public onLoad: Handler<Resource>,
+        public onError: Handler<Resource>
     ) { }
 }
 

@@ -1,8 +1,9 @@
 import Resource from "./resources/resource";
 import ImageResource from "./resources/image";
 import ResourceLoaderHooks from "./resourceLoaderHooks";
-
-type Callback = () => void;
+import EventHandlers from "../../utils/events/eventHandlers";
+import OnceHandlers from "../../utils/events/onceHandlers";
+import Handler from "../../utils/events/handler";
 
 class ResourceLoader {
     private toBeLoaded: number;
@@ -11,8 +12,8 @@ class ResourceLoader {
     private resources: Map<string, Resource>;
     private hooks: ResourceLoaderHooks;
 
-    private doneEventListeners: Callback[];
-    private doneOnceEventListeners: Callback[];
+    private doneHandlers: EventHandlers;
+    private doneEventOnceHandlers: OnceHandlers;
 
     constructor() {
         this.toBeLoaded = 0;
@@ -21,8 +22,8 @@ class ResourceLoader {
         this.resources = new Map();
         this.hooks = new ResourceLoaderHooks(this.onLoadHandler.bind(this), this.onErrorHandler.bind(this));
 
-        this.doneEventListeners = [];
-        this.doneOnceEventListeners = [];
+        this.doneHandlers = new EventHandlers();
+        this.doneEventOnceHandlers = new OnceHandlers();
     }
 
     public getResource(name: string): Resource | undefined {
@@ -37,18 +38,18 @@ class ResourceLoader {
         return this.toBeLoaded <= this.loaded;
     }
 
-    public onDone(handler: Callback): void {
-        this.doneEventListeners.push(handler);
+    public onDone(handler: Handler): void {
+        this.doneHandlers.add(handler);
     }
 
     public async nextDone(): Promise<void> {
         if (!this.isDone()) {
-            await new Promise((res) => this.doneOnceEventListeners.push(res));
+            await new Promise((res) => this.doneEventOnceHandlers.add(() => res()));
         }
     }
 
-    public onDoneOnce(handler: Callback): void {
-        this.doneOnceEventListeners.push(handler);
+    public onDoneOnce(handler: Handler): void {
+        this.doneEventOnceHandlers.add(handler);
     }
 
     public loadImage(path: string): ImageResource {
@@ -80,14 +81,8 @@ class ResourceLoader {
     }
 
     private onDoneHandler(): void {
-        for (const handler of this.doneEventListeners) {
-            handler();
-        }
-
-        let handler: Callback | undefined;
-        while (handler = this.doneOnceEventListeners.shift()) {
-            handler();
-        }
+        this.doneHandlers.dispatch();
+        this.doneEventOnceHandlers.dispatch();
     }
 }
 

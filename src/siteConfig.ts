@@ -7,7 +7,8 @@ class SiteConfig {
 
     static paths = {
         hexagon: "/img/hexagon.svg",
-        logo: "/img/japnaa-logo.svg"
+        logo: "/img/japnaa-logo.svg",
+        hamburger: "/img/hamburger.svg"
     };
 
     static hexagonsTitle = {
