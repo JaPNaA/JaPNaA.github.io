@@ -1,6 +1,7 @@
 import Widget from "../widget";
 
 class GlobalWidget extends Widget {
+    public widgetName: string = "GlobalWidget";
     protected elm: HTMLDivElement;
 
     constructor() {

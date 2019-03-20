@@ -1,5 +1,5 @@
 quickstart.bat
 .vscode
-others
+/others
 /node_modules
 /docs/bundle.js
