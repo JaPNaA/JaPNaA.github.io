@@ -34,7 +34,7 @@ class ResourceLoader {
     }
 
     public isDone(): boolean {
-        return this.toBeLoaded === this.loaded;
+        return this.toBeLoaded <= this.loaded;
     }
 
     public onDone(handler: Callback): void {

@@ -50,9 +50,9 @@ class URLManager {
         if (viewClass) {
             const view = new viewClass(app, urlParsed.viewStateData);
             view.setup();
-            app.switchView(view);
+            app.addViewBehind(view);
         } else {
-            app.switchAndInitView(View404);
+            app.openViewBehind(View404);
         }
 
         this.restoredFromRedirect = true;

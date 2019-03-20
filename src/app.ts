@@ -25,14 +25,13 @@ class App {
 
         const splashScreen: View = this.openView(SplashScreen);
 
-        await this.loadResources();
-        this.closeView(splashScreen);
-
         URLManager.restoreIfShould(this);
-
         if (!URLManager.restoredFromRedirect) {
             this.openView(Overview);
         }
+
+        await SiteResources.nextDone();
+        this.closeView(splashScreen);
     }
 
     public switchAndInitView(viewClass: ViewClass): View {
@@ -46,16 +45,31 @@ class App {
         for (const activeView of this.activeViews) {
             this.closeView(activeView);
         }
-        view.appendAtStartTo(this.mainElm);
-        this.activeViews.push(view);
+        this.addView(view);
     }
 
     public openView(viewClass: ViewClass): View {
         const view: View = new viewClass(this);
         view.setup();
+        this.addView(view);
+        return view;
+    }
+
+    public openViewBehind(viewClass: ViewClass): View {
+        const view: View = new viewClass(this);
+        view.setup();
+        this.addViewBehind(view);
+        return view;
+    }
+
+    public addView(view: View): void {
         view.appendAtStartTo(this.mainElm);
         this.activeViews.push(view);
-        return view;
+    }
+
+    public addViewBehind(view: View): void {
+        view.appendTo(this.mainElm);
+        this.activeViews.push(view);
     }
 
     public closeView(view: View): void {
@@ -64,11 +78,6 @@ class App {
         this.activeViews.splice(i, 1);
 
         view.destory().then(() => view.removeFrom(this.mainElm));
-    }
-
-    private async loadResources(): Promise<void> {
-        // TODO: remove simulated wait
-        await SiteResources.nextDone();
     }
 }
 

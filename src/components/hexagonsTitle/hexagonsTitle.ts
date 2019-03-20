@@ -1,5 +1,6 @@
 import HexagonsLayer from "./hexagonsLayer";
 import SiteConfig from "../../siteConfig";
+import SiteResources from "../../siteResources";
 
 class HexagonsTitle {
     public width: number;
@@ -60,6 +61,9 @@ class HexagonsTitle {
         this.resizeHandler = this.resizeHandler.bind(this);
         addEventListener("resize", this.resizeHandler);
         this.resizeHandler();
+
+        // POSSIBLE BUG: destory before nextDone
+        SiteResources.nextDone().then(() => this.draw());
 
         this.registeredEventHandlers = true;
     }
