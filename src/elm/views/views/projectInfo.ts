@@ -5,9 +5,9 @@ import App from "../../../app";
 import ViewMap from "../list";
 import URLManager from "../../../components/url/urlMan";
 
-class ProjectDetailedView extends View {
-    public static viewName = "ProjectDetailed";
-    public viewName = ProjectDetailedView.viewName;
+class ProjectInfoView extends View {
+    public static viewName = "ProjectInfo";
+    public viewName = ProjectInfoView.viewName;
 
     protected elm: HTMLDivElement;
     protected isFullPage: boolean = true;
@@ -77,6 +77,6 @@ class ProjectDetailedView extends View {
     }
 }
 
-ViewMap.add(ProjectDetailedView);
+ViewMap.add(ProjectInfoView);
 
-export default ProjectDetailedView;
+export default ProjectInfoView;
