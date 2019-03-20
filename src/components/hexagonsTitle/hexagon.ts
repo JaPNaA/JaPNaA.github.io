@@ -4,16 +4,16 @@ import SiteResources from "../../siteResources";
 import ImageResource from "../resourceLoader/resources/image";
 
 class Hexagon {
+    private static size: number = 1080;
+    private static expectedNegativeHalfImgWidth: number = -Hexagon.size / 2;
+    private static expectedNegativeHalfImgHeight: number = -Hexagon.size / 2;
+    private static expectedHexagonColor: string = "rgba(0,189,114,0.65)";
+
     private static initalizedStatic: boolean;
     private static img: HTMLImageElement;
     private static imgLoaded: boolean;
     private static negativeHalfImgWidth: number;
     private static negativeHalfImgHeight: number;
-
-    private static expectedHexagonSize: number = 1080;
-    private static expectedHexagonColor: string = "rgba(0,189,114,0.65)";
-    private static expectedNegativeHalfImgWidth: number = -540;
-    private static expectedNegativeHalfImgHeight: number = -540;
 
     private hexagonsTitle: HexagonsTitle;
 
@@ -48,7 +48,7 @@ class Hexagon {
     private drawHexagonImage(X: CanvasRenderingContext2D): void {
         X.save();
         this.transformCanvas(X);
-        X.drawImage(Hexagon.img, Hexagon.negativeHalfImgWidth, Hexagon.negativeHalfImgHeight);
+        X.drawImage(Hexagon.img, Hexagon.negativeHalfImgWidth, Hexagon.negativeHalfImgHeight, Hexagon.size, Hexagon.size);
         X.restore();
     }
 
@@ -59,8 +59,8 @@ class Hexagon {
         X.fillRect(
             Hexagon.expectedNegativeHalfImgWidth,
             Hexagon.expectedNegativeHalfImgHeight,
-            Hexagon.expectedHexagonSize,
-            Hexagon.expectedHexagonSize
+            Hexagon.size,
+            Hexagon.size
         );
         X.restore();
     }
