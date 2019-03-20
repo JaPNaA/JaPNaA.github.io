@@ -1,7 +1,9 @@
-import ICard from "../../interfaces/project/card";
+import ICard from "../../types/project/card";
 import SiteConfig from "../../siteConfig";
-import Display from "../../interfaces/project/display";
-import DisplayImg from "../../interfaces/project/displayImg";
+import Display from "../../types/project/display";
+import DisplayImg from "../../types/project/displayImg";
+
+// TODO: refactor, along with it's .less companion
 
 class CardJSONv1Elm {
     private static transitionSpeed: number = 3000;

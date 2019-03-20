@@ -1,7 +1,7 @@
-import SiteConfig from "../../siteConfig";
+import SiteConfig from "../../../siteConfig";
 import HexagonsTitle from "./hexagonsTitle";
-import SiteResources from "../../siteResources";
-import ImageResource from "../resourceLoader/resources/image";
+import SiteResources from "../../../siteResources";
+import ImageResource from "../../../components/resourceLoader/resources/image";
 
 class Hexagon {
     private static size: number = 1080;

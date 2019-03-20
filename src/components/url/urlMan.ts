@@ -1,9 +1,9 @@
 import SiteConfig from "../../siteConfig";
-import ViewMap from "../../views/_list";
+import ViewMap from "../../elm/views/list";
 
 import url from "url";
 import App from "../../app";
-import View404 from "../../views/404";
+import View404 from "../../elm/views/views/404";
 
 class URLManager {
     public static restoredFromRedirect: boolean;

@@ -1,4 +1,4 @@
-import ViewClass from "../types/ViewClass";
+import ViewClass from "../../types/ViewClass";
 
 class ViewMap {
     private static viewMap = new Map<string, ViewClass>();

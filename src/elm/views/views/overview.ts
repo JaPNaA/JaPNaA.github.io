@@ -1,11 +1,11 @@
-import View from "./_view";
-import App from "../app";
-import ViewMap from "./_list";
-import HexagonsTitle from "../components/hexagonsTitle/hexagonsTitle";
-import StickyBar from "../components/stickyBar/stickyBar";
-import SiteConfig from "../siteConfig";
-import SiteResources from "../siteResources";
-import ImageResource from "../components/resourceLoader/resources/image";
+import View from "../view";
+import App from "../../../app";
+import ViewMap from "../list";
+import HexagonsTitle from "../../widgets/hexagonsTitle/hexagonsTitle";
+import StickyBar from "../../widgets/stickyBar/stickyBar";
+import SiteConfig from "../../../siteConfig";
+import SiteResources from "../../../siteResources";
+import ImageResource from "../../../components/resourceLoader/resources/image";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -26,17 +26,26 @@ class Overview extends View {
     public setup(): void {
         super.setup();
 
+        this.hexagonsTitle.setup();
         this.hexagonsTitle.appendToParent();
         this.hexagonsTitle.setOverSize(0, 128);
         this.hexagonsTitle.registerEventHandlers();
 
         const stickyBar: StickyBar = new StickyBar();
         const logoResource: ImageResource = SiteResources.loadImage(SiteConfig.paths.logo);
-
+        
+        stickyBar.setup();
         stickyBar.appendTo(this.elm);
         stickyBar.setText(logoResource.image);
 
-        this.elm.appendChild(document.createTextNode("asdf ".repeat(10000)));
+        this.createContent();
+    }
+
+    private createContent() {
+        const content = document.createElement("div");
+        content.classList.add("content");
+        content.appendChild(document.createTextNode("asdf ".repeat(2000)));
+        this.elm.appendChild(content);
     }
 
     public async destory(): Promise<void> {

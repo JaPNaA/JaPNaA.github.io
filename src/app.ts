@@ -1,26 +1,31 @@
 import "../styles/index.less";
 
-import SplashScreen from "./views/splashScreen";
-import View from "./views/_view";
+import SplashScreen from "./elm/views/views/splashScreen";
+import View from "./elm/views/view";
 import ViewClass from "./types/ViewClass";
-import Overview from "./views/overview";
+import Overview from "./elm/views/views/overview";
 import URLManager from "./components/url/urlMan";
 import SiteResources from "./siteResources";
+import GlobalWidget from "./elm/widgets/global/global";
 
 class App {
     /** Main element app lives in */
     private mainElm: HTMLDivElement;
     /** All active scenes in app */
     private activeViews: View[];
+    private globalWidget: GlobalWidget;
 
     constructor() {
         this.mainElm = document.createElement("div");
         this.mainElm.classList.add("main");
+        this.globalWidget = new GlobalWidget();
 
         this.activeViews = [];
     }
 
     public async setup(): Promise<void> {
+        this.globalWidget.setup();
+        this.globalWidget.appendTo(this.mainElm);
         document.body.appendChild(this.mainElm);
 
         const splashScreen: View = this.openView(SplashScreen);

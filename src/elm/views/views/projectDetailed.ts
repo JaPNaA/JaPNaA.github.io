@@ -1,9 +1,9 @@
-import View from "./_view";
-import ICard from "../interfaces/project/card";
-import CardJSONv1Elm from "../components/jsonToElm/cardV1";
-import App from "../app";
-import ViewMap from "./_list";
-import URLManager from "../components/url/urlMan";
+import View from "../view";
+import ICard from "../../../types/project/card";
+import CardJSONv1Elm from "../../../components/jsonToElm/cardV1";
+import App from "../../../app";
+import ViewMap from "../list";
+import URLManager from "../../../components/url/urlMan";
 
 class ProjectDetailedView extends View {
     public static viewName = "ProjectDetailed";

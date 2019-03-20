@@ -1,4 +1,4 @@
-import SiteConfig from "../../siteConfig";
+import SiteConfig from "../../../siteConfig";
 import Hexagon from "./hexagon";
 import HexagonsTitle from "./hexagonsTitle";
 

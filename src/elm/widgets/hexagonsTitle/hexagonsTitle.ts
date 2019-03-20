@@ -1,19 +1,22 @@
 import HexagonsLayer from "./hexagonsLayer";
-import SiteConfig from "../../siteConfig";
-import SiteResources from "../../siteResources";
+import SiteConfig from "../../../siteConfig";
+import SiteResources from "../../../siteResources";
+import Widget from "../widget";
 
-class HexagonsTitle {
+class HexagonsTitle extends Widget {
+    public widgetName = "hexagonsTitle";
+
     public width: number;
     public height: number;
     public overSizeWidth: number;
     public overSizeHeight: number;
 
+    protected elm: HTMLDivElement;
+
     private static initalizedStatic: boolean = false;
     private static logo: HTMLImageElement;
 
     private parentElm: HTMLElement;
-
-    private elm: HTMLDivElement;
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
     private layers: HexagonsLayer[];
@@ -27,11 +30,12 @@ class HexagonsTitle {
     private isVertical: boolean;
 
     constructor(parentElm: HTMLElement) {
+        super();
+
         HexagonsTitle.initalizeStatic();
         this.parentElm = parentElm;
 
         this.elm = document.createElement("div");
-        this.elm.classList.add("hexagonsTitle");
 
         this.width = 1280;
         this.height = 720;
@@ -48,6 +52,10 @@ class HexagonsTitle {
 
         this.scrollDist = 0;
         this.registeredEventHandlers = false;
+    }
+
+    public setup(): void {
+        super.setup();
 
         this.elm.appendChild(this.canvas);
     }

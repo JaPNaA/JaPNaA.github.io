@@ -1,4 +1,4 @@
-import Scene from "../views/_view";
+import Scene from "../elm/views/view";
 import App from "../app";
 
 interface ViewClass {

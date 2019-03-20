@@ -1,5 +1,5 @@
-import App from "../app";
-import URLManager from "../components/url/urlMan";
+import App from "../../app";
+import URLManager from "../../components/url/urlMan";
 
 abstract class View {
     protected abstract elm: HTMLElement;

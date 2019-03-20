@@ -1,7 +1,7 @@
-import View from "./_view";
-import wait from "../utils/wait";
-import App from "../app";
-import ViewMap from "./_list";
+import View from "../view";
+import wait from "../../../utils/wait";
+import App from "../../../app";
+import ViewMap from "../list";
 
 class SplashScreen extends View {
     public static viewName = "SplashScreen";
