@@ -60,7 +60,7 @@ class App {
         for (const activeView of this.activeViews) {
             this.closeView(activeView);
         }
-        this.addView(view);
+        this.addViewBehind(view);
     }
 
     public openView(viewClass: ViewClass): View {
@@ -73,17 +73,17 @@ class App {
     public openViewBehind(viewClass: ViewClass): View {
         const view: View = new viewClass(this);
         view.setup();
-        this.addViewBehind(view);
+        this.addView(view);
         return view;
     }
 
-    public addView(view: View): void {
+    public addViewBehind(view: View): void {
         view.appendAtStartTo(this.mainElm);
         this.activeViews.push(view);
         this.dispatchViewChange();
     }
 
-    public addViewBehind(view: View): void {
+    public addView(view: View): void {
         view.appendTo(this.mainElm);
         this.activeViews.unshift(view);
         this.dispatchViewChange();

@@ -2,6 +2,7 @@ import Widget from "../widget";
 import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
 import App from "../../../app";
+import Menu from "../../views/views/menu";
 
 /** Initalized at start of page */
 class GlobalWidget extends Widget {
@@ -31,6 +32,10 @@ class GlobalWidget extends Widget {
     private addEventHandlers(): void {
         this.viewChangeHandler = this.viewChangeHandler.bind(this);
         this.app.onViewChange(this.viewChangeHandler);
+
+        this.elm.addEventListener("click", () => {
+            this.app.openView(Menu);
+        });
     }
 
     private removeEventHandlers(): void {
