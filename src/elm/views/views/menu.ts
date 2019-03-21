@@ -11,7 +11,7 @@ class Menu extends View {
     protected isFullPage: boolean = false;
 
     private static transitionInTimeout: number = 600;
-    private static transitionOutTimeout: number = 600;
+    private static transitionOutTimeout: number = 300;
 
     private contents: HTMLDivElement;
     private background: HTMLDivElement;
