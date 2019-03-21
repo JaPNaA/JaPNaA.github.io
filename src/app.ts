@@ -79,14 +79,12 @@ class App {
 
     public addView(view: View): void {
         view.appendAtStartTo(this.mainElm);
-        console.log("add");
         this.activeViews.push(view);
         this.dispatchViewChange();
     }
 
     public addViewBehind(view: View): void {
         view.appendTo(this.mainElm);
-        console.log("addbehind");
         this.activeViews.unshift(view);
         this.dispatchViewChange();
     }

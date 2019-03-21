@@ -12,11 +12,11 @@ class HexagonsTitle extends Widget {
     public overSizeHeight: number;
 
     protected elm: HTMLDivElement;
+    protected parent: HTMLElement;
 
     private static initalizedStatic: boolean = false;
     private static logo: HTMLImageElement;
 
-    private parentElm: HTMLElement;
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
     private layers: HexagonsLayer[];
@@ -33,7 +33,7 @@ class HexagonsTitle extends Widget {
         super();
 
         HexagonsTitle.initalizeStatic();
-        this.parentElm = parentElm;
+        this.parent = parentElm;
 
         this.elm = document.createElement("div");
 
@@ -64,7 +64,7 @@ class HexagonsTitle extends Widget {
         if (this.registeredEventHandlers) { return; }
 
         this.scrollHandler = this.scrollHandler.bind(this);
-        this.parentElm.addEventListener("scroll", this.scrollHandler, { passive: true });
+        this.parent.addEventListener("scroll", this.scrollHandler, { passive: true });
 
         this.resizeHandler = this.resizeHandler.bind(this);
         addEventListener("resize", this.resizeHandler);
@@ -77,9 +77,10 @@ class HexagonsTitle extends Widget {
     }
 
     public destory(): void {
+        super.destory();
         if (this.registeredEventHandlers) {
             removeEventListener("resize", this.resizeHandler);
-            this.parentElm.removeEventListener("scroll", this.scrollHandler);
+            this.parent.removeEventListener("scroll", this.scrollHandler);
         }
     }
 
@@ -130,7 +131,7 @@ class HexagonsTitle extends Widget {
     }
 
     public appendToParent(): void {
-        this.parentElm.appendChild(this.elm);
+        this.parent.appendChild(this.elm);
     }
 
     private static initalizeStatic(): void {
@@ -194,7 +195,7 @@ class HexagonsTitle extends Widget {
 
     private scrollHandler(): void {
         if (SiteConfig.isHandheld) { return; }
-        this.scrollDist = this.parentElm.scrollTop;
+        this.scrollDist = this.parent.scrollTop;
         this.draw();
     }
 }

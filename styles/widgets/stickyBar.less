@@ -3,7 +3,7 @@
 .widget.stickyBar {
     @height: 64px;
 
-    // position: -webkit-sticky;
+    position: -webkit-sticky;
     position: sticky;
     top: 0px;
     left: 0px;
@@ -27,6 +27,14 @@
         img {
             height: @text-height;
             width: auto;
+        }
+    }
+
+    &.poly {
+        position: relative;
+
+        &.polyFixed {
+            position: fixed;
         }
     }
 }
