@@ -34,7 +34,10 @@ class GlobalWidget extends Widget {
         this.app.onViewChange(this.viewChangeHandler);
 
         this.elm.addEventListener("click", () => {
-            this.app.openView(Menu);
+            const menu = new Menu(this.app);
+            menu.setup();
+            menu.animateTransitionIn();
+            this.app.addView(menu);
         });
     }
 

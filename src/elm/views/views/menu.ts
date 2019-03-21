@@ -1,5 +1,7 @@
 import View from "../view";
 import App from "../../../app";
+import triggerTransitionIn from "../../../utils/triggerTransitionIn";
+import wait from "../../../utils/wait";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -8,24 +10,62 @@ class Menu extends View {
     protected elm: HTMLDivElement;
     protected isFullPage: boolean = false;
 
+    private static transitionInTimeout: number = 600;
+    private static transitionOutTimeout: number = 600;
+
     private contents: HTMLDivElement;
+    private background: HTMLDivElement;
 
     constructor(app: App) {
         super(app);
         this.elm = document.createElement("div");
-        this.contents = document.createElement("div");
+        this.background = this.createBackground();
+        this.contents = this.createContents();
     }
 
-    public setup() {
+    public setup(): void {
         super.setup();
 
-        this.contents.classList.add("contents");
-        this.contents.innerText = "Menu [WIP]";
-        this.elm.appendChild(this.contents);
+        this.addEventHandlers();
     }
 
-    public async destory() {
+    public async destory(): Promise<void> {
         await super.destory();
+
+        this.background.removeEventListener("click", this.backgroundClickHandler);
+
+        this.elm.classList.add("destory");
+        await wait(Menu.transitionOutTimeout);
+    }
+
+    public animateTransitionIn(): void {
+        triggerTransitionIn(this.elm, Menu.transitionInTimeout)
+    }
+
+    private createBackground(): HTMLDivElement {
+        const background = document.createElement("div");
+        background.classList.add("background");
+
+        this.elm.appendChild(background);
+        return background;
+    }
+
+    private createContents(): HTMLDivElement {
+        const contents = document.createElement("div");
+        contents.classList.add("contents");
+        contents.innerText = "This the menu! Close button should be there -->\nBut I haven't added that, you can still close by clicking\n<-- over there";
+
+        this.elm.appendChild(contents);
+        return contents;
+    }
+
+    private addEventHandlers() {
+        this.backgroundClickHandler = this.backgroundClickHandler.bind(this);
+        this.background.addEventListener("click", this.backgroundClickHandler);
+    }
+
+    private backgroundClickHandler() {
+        this.app.closeView(this);
     }
 }
 

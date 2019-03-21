@@ -2,11 +2,12 @@ import ICard from "../../types/project/card";
 import SiteConfig from "../../siteConfig";
 import Display from "../../types/project/display";
 import DisplayImg from "../../types/project/displayImg";
+import triggerTransitionIn from "../../utils/triggerTransitionIn";
 
 // TODO: refactor, along with it's .less companion
 
 class CardJSONv1Elm {
-    private static transitionSpeed: number = 3000;
+    private static transitionInTimeout: number = 3000;
 
     private elm: HTMLDivElement;
     private card: ICard;
@@ -23,22 +24,11 @@ class CardJSONv1Elm {
         parent.append(this.elm);
     }
 
-    public animateTransitionIn() {
-        this.elm.classList.add("beforeTransitionIn");
-
-        requestAnimationFrame(() =>
-            requestAnimationFrame(() =>
-                this.elm.classList.add("afterTransitionIn")
-            )
-        );
-
-        setTimeout(() => {
-            this.elm.classList.remove("beforeTransitionIn");
-            this.elm.classList.remove("afterTransitionIn");
-        }, CardJSONv1Elm.transitionSpeed);
+    public animateTransitionIn(): void {
+        triggerTransitionIn(this.elm, CardJSONv1Elm.transitionInTimeout);
     }
 
-    public addEventListeners() {
+    public addEventListeners(): void {
         // TODO: when image clicked, pop out, show
     }
 
@@ -114,21 +104,21 @@ class CardJSONv1Elm {
         this.elm.appendChild(block);
     }
 
-    private createNameIn(block: HTMLElement) {
+    private createNameIn(block: HTMLElement): void {
         const name = document.createElement("h1");
         name.classList.add("name");
         name.innerText = this.card.name;
         block.appendChild(name);
     }
 
-    private createNoIn(block: HTMLElement) {
+    private createNoIn(block: HTMLElement): void {
         const no = document.createElement("span");
         no.innerText = this.card.no.toString();
         no.classList.add("no");
         block.appendChild(no);
     }
 
-    private createTagsIn(block: HTMLElement) {
+    private createTagsIn(block: HTMLElement): void {
         const tagsElm = document.createElement("ul");
         tagsElm.classList.add("tags");
 
@@ -141,21 +131,21 @@ class CardJSONv1Elm {
         block.appendChild(tagsElm);
     }
 
-    private createAuthorIn(block: HTMLElement) {
+    private createAuthorIn(block: HTMLElement): void {
         const author = document.createElement("div");
         author.classList.add("author");
         author.innerText = this.card.author.join(", ");
         block.appendChild(author);
     }
 
-    private createDescriptionIn(block: HTMLElement) {
+    private createDescriptionIn(block: HTMLElement): void {
         const description = document.createElement("div");
         description.classList.add("description");
         description.innerHTML = this.card.content.description;
         block.appendChild(description);
     }
 
-    private createDisplaysIn(block: HTMLElement) {
+    private createDisplaysIn(block: HTMLElement): void {
         // TODO: slice(1) instead
         const displays = this.card.content.display.slice(0);
         for (const display of displays) {
@@ -163,7 +153,7 @@ class CardJSONv1Elm {
         }
     }
 
-    private createDisplayIn(display: Display, block: HTMLElement) {
+    private createDisplayIn(display: Display, block: HTMLElement): void {
         const displayElm = document.createElement("div");
         displayElm.classList.add("display");
 
@@ -172,7 +162,7 @@ class CardJSONv1Elm {
         block.appendChild(displayElm);
     }
 
-    private createDisplayTypeIn(parent: HTMLElement, display: Display) {
+    private createDisplayTypeIn(parent: HTMLElement, display: Display): void {
         if (display.type === "img") {
             this.createDisplayImgIn(parent, display);
         } else if (display.type === "iframe") {
@@ -180,7 +170,7 @@ class CardJSONv1Elm {
         }
     }
 
-    private createDisplayImgIn(parent: HTMLElement, display: DisplayImg) {
+    private createDisplayImgIn(parent: HTMLElement, display: DisplayImg): void {
         if (display.src) {
             const img = document.createElement("img");
             img.classList.add("img");
@@ -196,14 +186,14 @@ class CardJSONv1Elm {
         }
     }
 
-    private createLinkIn(block: HTMLElement) {
+    private createLinkIn(block: HTMLElement): void {
         const link = document.createElement("a");
         link.classList.add("link");
         link.href = SiteConfig.thingyLink + this.card.content.link;
         block.appendChild(link);
     }
 
-    private createTimestampIn(block: HTMLElement) {
+    private createTimestampIn(block: HTMLElement): void {
         if (!this.card.timestamp) { return; }
 
         const time = document.createElement("div");
