@@ -11,6 +11,8 @@ abstract class Widget {
         this.elm.classList.add(widgetName);
     }
 
+    public destory(): void { }
+
     public appendTo(parent: HTMLElement): void {
         parent.appendChild(this.elm);
     }

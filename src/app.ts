@@ -45,6 +45,10 @@ class App {
         this.closeView(splashScreen);
     }
 
+    public getTopView(): View | undefined {
+        return this.activeViews[this.activeViews.length - 1];
+    }
+
     public switchAndInitView(viewClass: ViewClass): View {
         const view: View = new viewClass(this);
         view.setup();
@@ -75,13 +79,15 @@ class App {
 
     public addView(view: View): void {
         view.appendAtStartTo(this.mainElm);
+        console.log("add");
         this.activeViews.push(view);
         this.dispatchViewChange();
     }
 
     public addViewBehind(view: View): void {
         view.appendTo(this.mainElm);
-        this.activeViews.push(view);
+        console.log("addbehind");
+        this.activeViews.unshift(view);
         this.dispatchViewChange();
     }
 
@@ -94,8 +100,12 @@ class App {
         this.dispatchViewChange();
     }
 
-    public onViewChange(handler: Handler<void>) {
+    public onViewChange(handler: Handler) {
         this.viewChangeHandlers.add(handler);
+    }
+
+    public offViewChange(handler: Handler) {
+        this.viewChangeHandlers.remove(handler);
     }
 
     private dispatchViewChange() {

@@ -38,17 +38,23 @@ abstract class View {
     }
 
     /** Appends scene element to element */
-    public appendTo(elm: HTMLElement) {
-        elm.appendChild(this.elm);
+    public appendTo(parent: HTMLElement) {
+        parent.appendChild(this.elm);
     }
 
-    public appendAtStartTo(elm: HTMLElement) {
-        elm.insertBefore(this.elm, elm.firstChild);
+    /** Appends scene to element as first child */
+    public appendAtStartTo(parent: HTMLElement) {
+        parent.insertBefore(this.elm, parent.firstChild);
     }
 
     /** Removes scene element from element */
-    public removeFrom(elm: HTMLElement) {
-        elm.removeChild(this.elm);
+    public removeFrom(parent: HTMLElement) {
+        parent.removeChild(this.elm);
+    }
+
+    /** Returns if the view can be scrolled */
+    public canScroll(): boolean {
+        return this.elm.scrollHeight > this.elm.clientHeight;
     }
 
     /** Updates the URL state */
