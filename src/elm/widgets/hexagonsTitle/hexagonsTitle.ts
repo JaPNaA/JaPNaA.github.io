@@ -107,7 +107,8 @@ class HexagonsTitle extends Widget {
     }
 
     public draw(): void {
-        // TODO: start fade-in when loaded
+        if (!this.isVisible()) { return; }
+
         const scrollFactor = -this.scrollDist / this.layers.length;
 
         this.X.clearRect(0, 0, this.totalWidth, this.totalHeight);
@@ -188,6 +189,15 @@ class HexagonsTitle extends Widget {
             (this.width - HexagonsTitle.logo.width) / 2,
             (this.height - HexagonsTitle.logo.height) / 2
         );
+    }
+
+    private isVisible(): boolean {
+        const bbox = this.elm.getBoundingClientRect();
+        if (bbox.top + bbox.height > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private resizeHandler(): void {
