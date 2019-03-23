@@ -5,7 +5,6 @@ import HexagonsTitle from "../../widgets/hexagonsTitle/hexagonsTitle";
 import StickyBar from "../../widgets/stickyBar/stickyBar";
 import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../siteResources";
-import ImageResource from "../../../components/resourceLoader/resources/image";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -31,14 +30,24 @@ class Overview extends View {
         this.hexagonsTitle.setOverSize(0, 128);
         this.hexagonsTitle.registerEventHandlers();
 
+        this.createStickyBar();
+        this.createContent();
+    }
+
+    private createStickyBar() {
         const stickyBar: StickyBar = new StickyBar();
-        const logoResource: ImageResource = SiteResources.loadImage(SiteConfig.paths.logo);
-        
+        const logoImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.paths.logo).copyImage();
+        const hexagonImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.paths.hexagon).copyImage();
+        const titleElm: HTMLDivElement = document.createElement("div");
+
+        hexagonImg.classList.add("hexagon");
+
+        titleElm.appendChild(hexagonImg);
+        titleElm.appendChild(logoImg);
+
         stickyBar.setup();
         stickyBar.appendTo(this.elm);
-        stickyBar.setText(logoResource.image);
-
-        this.createContent();
+        stickyBar.setTitle(titleElm);
     }
 
     private createContent() {

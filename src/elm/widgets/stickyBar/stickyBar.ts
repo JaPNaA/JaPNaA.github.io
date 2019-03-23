@@ -37,7 +37,7 @@ class StickyBar extends Widget {
         }
     }
 
-    public setText(elm: HTMLElement): void {
+    public setTitle(elm: HTMLElement): void {
         removeChildren(this.text);
         this.text.appendChild(elm);
     }

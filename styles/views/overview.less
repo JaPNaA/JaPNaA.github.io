@@ -5,4 +5,27 @@
     .content {
         margin: 8px;
     }
+
+    .widget.stickyBar {
+        .text {
+            img.hexagon {
+                will-change: transform;
+                transform: scale(1.6);
+                margin-right: 18px;
+                animation: rotateAnimation 1.7s ease-in-out 0s infinite normal forwards;
+            }
+
+            @keyframes rotateAnimation {
+                0% {
+                    transform: scale(1.6) rotate(0deg);
+                }
+                50% {
+                    transform: scale(1.6) rotate(20deg);
+                }
+                100% {
+                    transform: scale(1.6) rotate(0deg);
+                }
+            }
+        }
+    }
 }
