@@ -1,14 +1,14 @@
 import View from "../view";
 import wait from "../../../utils/wait";
-import App from "../../../app";
 import ViewMap from "../list";
+import IApp from "../../../types/app";
 
 class SplashScreen extends View {
     public static viewName = "SplashScreen";
     public viewName = SplashScreen.viewName;
     protected elm: HTMLDivElement;
 
-    constructor(app: App) {
+    constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
     }

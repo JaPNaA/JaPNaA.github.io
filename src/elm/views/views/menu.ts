@@ -1,7 +1,7 @@
 import View from "../view";
-import App from "../../../app";
 import triggerTransitionIn from "../../../utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
+import IApp from "../../../types/app";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -16,7 +16,7 @@ class Menu extends View {
     private contents: HTMLDivElement;
     private background: HTMLDivElement;
 
-    constructor(app: App) {
+    constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
         this.background = this.createBackground();

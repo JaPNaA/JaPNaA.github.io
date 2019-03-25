@@ -1,10 +1,10 @@
 import View from "../view";
 import ICard from "../../../types/project/card";
 import CardJSONv1Elm from "../../../components/jsonToElm/cardV1";
-import App from "../../../app";
 import ViewMap from "../list";
 import URLManager from "../../../components/url/urlMan";
 import SiteConfig from "../../../siteConfig";
+import IApp from "../../../types/app";
 
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
@@ -19,7 +19,7 @@ class ProjectInfoView extends View {
     private projectYear?: number;
     private projectIndex?: number;
 
-    constructor(app: App, stateData?: string) {
+    constructor(app: IApp, stateData?: string) {
         super(app);
         this.elm = document.createElement("div");
 

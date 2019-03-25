@@ -1,16 +1,16 @@
-import App from "../../app";
+import IApp from "../../types/app";
 import URLManager from "../../components/url/urlMan";
 
 abstract class View {
     protected abstract elm: HTMLElement;
 
-    protected app: App;
+    protected app: IApp;
     protected isFullPage: boolean;
     
     public viewName?: string;
 
 
-    constructor(app: App) {
+    constructor(app: IApp) {
         this.app = app;
         this.isFullPage = false;
     }

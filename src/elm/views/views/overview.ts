@@ -1,11 +1,11 @@
 import View from "../view";
-import App from "../../../app";
 import ViewMap from "../list";
 import HexagonsTitle from "../../widgets/hexagonsTitle/hexagonsTitle";
 import StickyBar from "../../widgets/stickyBar/stickyBar";
 import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../siteResources";
 import htmlViewParse from "../../../components/htmlViewParser/htmlViewParser";
+import IApp from "../../../types/app";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -17,7 +17,7 @@ class Overview extends View {
 
     private hexagonsTitle: HexagonsTitle;
 
-    constructor(app: App) {
+    constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
         this.hexagonsTitle = new HexagonsTitle(this.elm);

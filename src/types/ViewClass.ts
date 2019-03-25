@@ -1,10 +1,10 @@
 import Scene from "../elm/views/view";
-import App from "../app";
+import IApp from "../types/app";
 
 interface ViewClass {
     viewName: string;
 
-    new(app: App, stateData?: string): Scene;
+    new(app: IApp, stateData?: string): Scene;
 }
 
 export default ViewClass;

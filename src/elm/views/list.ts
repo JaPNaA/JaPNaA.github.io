@@ -10,6 +10,12 @@ class ViewMap {
     public static get(viewName: string): ViewClass | undefined {
         return this.viewMap.get(viewName.toLowerCase());
     }
+
+    public static *[Symbol.iterator](): IterableIterator<[string, ViewClass]> {
+        for (const i of this.viewMap) {
+            yield i;
+        }
+    }
 }
 
 export default ViewMap;

@@ -1,3 +1,6 @@
+import ViewMap from "../../elm/views/list";
+import ViewClass from "../../types/ViewClass";
+
 export default function htmlViewParse(text_: string, options: {
     scripts?: boolean,
     inlineJS?: boolean
@@ -14,6 +17,8 @@ export default function htmlViewParse(text_: string, options: {
     if (options && options.scripts) {
         runScripts(div);
     }
+
+    replaceElements(div);
 
     return div;
 }
@@ -58,4 +63,22 @@ function getElementIdMap(div: HTMLDivElement) {
         idElementMap.set(elm.id, elm);
     }
     return idElementMap;
+}
+
+function replaceElements(div: HTMLDivElement) {
+    for (const [name, view] of ViewMap) {
+        const tagName = "japnaa:view:" + name;
+        const tags = div.getElementsByTagName(tagName);
+
+        for (let i = 0; i < tags.length; i++) {
+            const tag = tags[i];
+            replaceViewElement(tag, view);
+        }
+    }
+}
+
+function replaceViewElement(tag: Element, viewClass: ViewClass) {
+    console.log(tag, viewClass);
+
+    // const view = new viewClass()
 }

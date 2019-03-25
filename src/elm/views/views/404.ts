@@ -1,5 +1,5 @@
 import View from "../view";
-import App from "../../../app";
+import IApp from "../../../types/app";
 import ViewMap from "../list";
 
 class View404 extends View {
@@ -16,7 +16,7 @@ class View404 extends View {
     private width: number;
     private height: number;
 
-    constructor(app: App) {
+    constructor(app: IApp) {
         super(app);
 
         this.elm = document.createElement("div");
