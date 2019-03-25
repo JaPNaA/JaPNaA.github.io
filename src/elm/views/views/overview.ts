@@ -34,16 +34,21 @@ class Overview extends View {
         this.createContent();
     }
 
+    public async destory(): Promise<void> {
+        super.destory();
+        this.hexagonsTitle.destory();
+    }
+
     private createStickyBar() {
         const stickyBar: StickyBar = new StickyBar();
-        const logoImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.paths.logo).copyImage();
-        const hexagonImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.paths.hexagon).copyImage();
+        const logoImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.path.img.logo).copyImage();
+        const hexagonImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.path.img.hexagon).copyImage();
         const titleElm: HTMLDivElement = document.createElement("div");
 
         hexagonImg.classList.add("hexagon");
 
         titleElm.appendChild(hexagonImg);
-        titleElm.appendChild(logoImg);
+        titleElm.appendChild(logoImg);  
 
         stickyBar.setup();
         stickyBar.appendTo(this.elm);
@@ -51,16 +56,18 @@ class Overview extends View {
     }
 
     private createContent() {
+        const container = document.createElement("div");
+        container.classList.add("contentContainer");
+
         const content = document.createElement("div");
         content.classList.add("content");
         content.appendChild(document.createTextNode("asdf ".repeat(2000)));
-        this.elm.appendChild(content);
+        
+        container.appendChild(content);
+        this.elm.appendChild(container);
     }
 
-    public async destory(): Promise<void> {
-        super.destory();
-        this.hexagonsTitle.destory();
-    }
+    //
 }
 
 ViewMap.add(Overview);

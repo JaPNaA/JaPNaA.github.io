@@ -18,7 +18,7 @@ class GlobalWidget extends Widget {
     }
 
     public setup(): void {
-        const img = SiteResources.loadImage(SiteConfig.paths.hamburger).image;
+        const img = SiteResources.loadImage(SiteConfig.path.img.hamburger).image;
         this.elm.appendChild(img);
         super.setup();
         

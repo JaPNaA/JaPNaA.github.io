@@ -2,8 +2,16 @@
     padding: 0;
     overflow-x: hidden;
 
-    .content {
-        margin: 8px;
+    .contentContainer {
+        text-align: center;
+
+        .content {
+            display: inline-block;
+            margin: 8px;
+            max-width: 760px;
+
+            text-align: left;
+        }
     }
 
     .widget.stickyBar {
@@ -12,7 +20,8 @@
                 will-change: transform;
                 transform: scale(1.6);
                 margin-right: 18px;
-                animation: rotateAnimation 12s ease-in-out 0s infinite normal forwards;
+                animation: rotateAnimation 12s ease-in-out 0s infinite normal
+                    forwards;
             }
 
             @keyframes rotateAnimation {

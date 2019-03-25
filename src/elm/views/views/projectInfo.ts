@@ -4,6 +4,7 @@ import CardJSONv1Elm from "../../../components/jsonToElm/cardV1";
 import App from "../../../app";
 import ViewMap from "../list";
 import URLManager from "../../../components/url/urlMan";
+import SiteConfig from "../../../siteConfig";
 
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
@@ -42,7 +43,7 @@ class ProjectInfoView extends View {
             throw new Error("Invalid stateData format");
         }
 
-        this.setProject((await fetch("/content/" + year + ".json")
+        this.setProject((await fetch(SiteConfig.path.content + year + ".json")
             .then(e => e.json())).data[index], yearInt, indexInt);
 
         this.loading = undefined;

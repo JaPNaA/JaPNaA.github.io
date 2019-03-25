@@ -143,7 +143,7 @@ class HexagonsTitle extends Widget {
 
     private static createLogoImg(): HTMLImageElement {
         const img: HTMLImageElement = document.createElement("img");
-        img.src = SiteConfig.paths.logo;
+        img.src = SiteConfig.path.img.logo;
         return img;
     }
 
