@@ -8,3 +8,6 @@
 
 # Remember to add back
   - shortURL
+
+# Remember to change
+  - the icons
