@@ -61,13 +61,15 @@ class Overview extends View {
 
         const content = document.createElement("div");
         content.classList.add("content");
-        content.appendChild(document.createTextNode("asdf ".repeat(2000)));
-        
+        content.appendChild(document.createTextNode("Loading..."));
+
+        SiteResources.loadText(SiteConfig.path.view.overview)
+            .onLoad(e => content.innerHTML = e.text || "Failed to load")
+            .onError(() => content.innerHTML = "Failed to load");
+
         container.appendChild(content);
         this.elm.appendChild(container);
     }
-
-    //
 }
 
 ViewMap.add(Overview);
