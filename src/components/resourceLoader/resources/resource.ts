@@ -2,14 +2,15 @@ import ResourceLoaderHooks from "../resourceLoaderHooks";
 import EventHandlers from "../../../utils/events/eventHandlers";
 import Handler from "../../../utils/events/handler";
 
-class Resource {
+abstract class Resource {
+    public abstract path: string;
     public error?: Error;
     public loaded: boolean;
 
     private hooks: ResourceLoaderHooks;
 
-    private loadHandlers: EventHandlers<Resource>;
-    private errorHandlers: EventHandlers<Resource>;
+    private loadHandlers: EventHandlers<this>;
+    private errorHandlers: EventHandlers<this>;
 
     constructor(hooks: ResourceLoaderHooks) {
         this.hooks = hooks;
@@ -19,12 +20,14 @@ class Resource {
         this.errorHandlers = new EventHandlers();
     }
 
-    public onLoad(handler: Handler<Resource>): void {
+    public onLoad(handler: Handler<this>): this {
         this.loadHandlers.add(handler);
+        return this;
     }
 
-    public onError(handler: Handler<Resource>): void {
+    public onError(handler: Handler<this>): this {
         this.errorHandlers.add(handler);
+        return this;
     }
 
     protected onLoadHandler(): void {

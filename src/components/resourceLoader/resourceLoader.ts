@@ -4,6 +4,7 @@ import ResourceLoaderHooks from "./resourceLoaderHooks";
 import EventHandlers from "../../utils/events/eventHandlers";
 import OnceHandlers from "../../utils/events/onceHandlers";
 import Handler from "../../utils/events/handler";
+import TextResource from "./resources/text";
 
 class ResourceLoader {
     private toBeLoaded: number;
@@ -55,11 +56,27 @@ class ResourceLoader {
     public loadImage(path: string): ImageResource {
         const existingResource: Resource | undefined = this.resources.get(path);
         if (existingResource) {
-            return existingResource as ImageResource;
+            // converting to unkown because of bug in typescript with returning 'this type
+            return existingResource as unknown as ImageResource;
         }
 
         const resource: ImageResource = new ImageResource(this.hooks, path);
-        this.resources.set(path, resource);
+        // converting to unkown because of bug in typescript with returning 'this type
+        this.resources.set(path, resource as unknown as Resource);
+        this.toBeLoaded++;
+        return resource;
+    }
+
+    public loadText(path: string): TextResource {
+        const existingResource: Resource | undefined = this.resources.get(path);
+        if (existingResource) {
+            // converting to unkown because of bug in typescript with returning 'this type
+            return existingResource as unknown as TextResource;
+        }
+
+        const resource: TextResource = new TextResource(this.hooks, path);
+        // converting to unkown because of bug in typescript with returning 'this type
+        this.resources.set(path, resource as unknown as Resource);
         this.toBeLoaded++;
         return resource;
     }
