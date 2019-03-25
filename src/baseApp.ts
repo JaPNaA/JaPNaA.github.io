@@ -1,5 +1,5 @@
 import View from "./elm/views/view";
-import ViewClass from "./types/ViewClass";
+import ViewClass from "./types/viewClass";
 import EventHandlers from "./utils/events/eventHandlers";
 import Handler from "./utils/events/handler";
 import IApp from "./types/app";

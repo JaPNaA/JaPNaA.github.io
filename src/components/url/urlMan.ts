@@ -1,5 +1,5 @@
 import SiteConfig from "../../siteConfig";
-import ViewMap from "../../elm/views/list";
+import ViewMap from "../../elm/views/viewMap";
 
 import url from "url";
 import App from "../../app";

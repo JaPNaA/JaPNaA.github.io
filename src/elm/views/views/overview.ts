@@ -1,5 +1,5 @@
 import View from "../view";
-import ViewMap from "../list";
+import ViewMap from "../viewMap";
 import HexagonsTitle from "../../widgets/hexagonsTitle/hexagonsTitle";
 import StickyBar from "../../widgets/stickyBar/stickyBar";
 import SiteConfig from "../../../siteConfig";

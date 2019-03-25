@@ -1,6 +1,6 @@
 import View from "../view";
 import IApp from "../../../types/app";
-import ViewMap from "../list";
+import ViewMap from "../viewMap";
 
 class View404 extends View {
     public static viewName = "View404";

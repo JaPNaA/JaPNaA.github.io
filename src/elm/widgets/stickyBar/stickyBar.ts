@@ -1,8 +1,10 @@
 import removeChildren from "../../../utils/removeChildren";
 import Widget from "../widget";
+import WidgetMap from "../widgetMap";
 
 class StickyBar extends Widget {
-    public widgetName = "stickyBar";
+    public static widgetName = "stickyBar";
+    public widgetName = StickyBar.widgetName;
     protected elm: HTMLDivElement;
     private text: HTMLDivElement;
     private polyOffset: number;
@@ -79,5 +81,7 @@ class StickyBar extends Widget {
             CSS.supports("position", "-webkit-sticky");
     }
 }
+
+WidgetMap.add(StickyBar);
 
 export default StickyBar;

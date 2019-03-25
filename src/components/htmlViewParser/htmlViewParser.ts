@@ -1,5 +1,5 @@
-import ViewMap from "../../elm/views/list";
-import ViewClass from "../../types/ViewClass";
+import ViewMap from "../../elm/views/viewMap";
+import ViewClass from "../../types/viewClass";
 import EmbededApp from "../../embededApp";
 
 export default function htmlViewParse(text_: string, options: {

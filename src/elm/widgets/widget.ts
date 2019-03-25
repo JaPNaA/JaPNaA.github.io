@@ -10,6 +10,8 @@ abstract class Widget {
 
         this.elm.classList.add("widget");
         this.elm.classList.add(widgetName);
+
+        this.widgetName = widgetName;
     }
 
     public destory(): void { }

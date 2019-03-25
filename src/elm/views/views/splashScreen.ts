@@ -1,6 +1,6 @@
 import View from "../view";
 import wait from "../../../utils/wait";
-import ViewMap from "../list";
+import ViewMap from "../viewMap";
 import IApp from "../../../types/app";
 
 class SplashScreen extends View {

@@ -3,10 +3,12 @@ import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
 import App from "../../../app";
 import Menu from "../../views/views/menu";
+import WidgetMap from "../widgetMap";
 
 /** Initalized at start of page */
 class GlobalWidget extends Widget {
-    public widgetName: string = "GlobalWidget";
+    public static widgetName: string = "GlobalWidget"
+    public widgetName: string = GlobalWidget.widgetName;
     protected elm: HTMLDivElement;
     private app: App;
 
@@ -54,5 +56,7 @@ class GlobalWidget extends Widget {
         }
     }
 }
+
+WidgetMap.add(GlobalWidget);
 
 export default GlobalWidget;

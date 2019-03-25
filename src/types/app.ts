@@ -1,4 +1,4 @@
-import ViewClass from "./ViewClass";
+import ViewClass from "./viewClass";
 import View from "../elm/views/view";
 import Handler from "../utils/events/handler";
 import IURLMan from "../components/url/iUrlMan";

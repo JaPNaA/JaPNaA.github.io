@@ -2,9 +2,11 @@ import HexagonsLayer from "./hexagonsLayer";
 import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../siteResources";
 import Widget from "../widget";
+import WidgetMap from "../widgetMap";
 
 class HexagonsTitle extends Widget {
-    public widgetName = "hexagonsTitle";
+    public static widgetName = "hexagonsTitle";
+    public widgetName = HexagonsTitle.widgetName;
 
     public width: number;
     public height: number;
@@ -209,5 +211,7 @@ class HexagonsTitle extends Widget {
         this.draw();
     }
 }
+
+WidgetMap.add(HexagonsTitle);
 
 export default HexagonsTitle;
