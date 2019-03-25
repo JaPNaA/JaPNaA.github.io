@@ -33,9 +33,7 @@ abstract class View {
      * destruction animation finishes, signifying that 
      * it's safe to remove the element.
      */
-    public async destory(): Promise<void> {
-        //
-    }
+    public async destory(): Promise<void> { }
 
     /** Appends scene element to element */
     public appendTo(parent: HTMLElement) {

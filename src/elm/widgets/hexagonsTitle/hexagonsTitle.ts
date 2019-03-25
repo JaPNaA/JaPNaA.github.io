@@ -3,8 +3,6 @@ import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../siteResources";
 import Widget from "../widget";
 
-// TODO: Check if title is visible, only draw if visible
-
 class HexagonsTitle extends Widget {
     public widgetName = "hexagonsTitle";
 
