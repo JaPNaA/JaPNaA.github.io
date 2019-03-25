@@ -6,13 +6,15 @@ import Overview from "./elm/views/views/overview";
 import URLManager from "./components/url/urlMan";
 import SiteResources from "./siteResources";
 import GlobalWidget from "./elm/widgets/global/global";
-import BaseApp from "./lightApp";
+import BaseApp from "./baseApp";
 
 class App extends BaseApp {
+    public url: URLManager;
     private globalWidget: GlobalWidget;
 
     constructor() {
         super();
+        this.url = new URLManager();
         this.globalWidget = new GlobalWidget(this);
     }
 
@@ -24,8 +26,8 @@ class App extends BaseApp {
 
         const splashScreen: View = this.openView(SplashScreen);
 
-        URLManager.restoreIfShould(this);
-        if (!URLManager.restoredFromRedirect) {
+        this.url.restoreIfShould(this);
+        if (!this.url.restoredFromRedirect) {
             this.openView(Overview);
         }
 

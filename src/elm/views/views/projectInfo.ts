@@ -51,9 +51,9 @@ class ProjectInfoView extends View {
 
     protected updateStateURL(): void {
         if (this.projectIndex !== undefined && this.projectYear !== undefined) {
-            URLManager.setState(this.viewName, `${this.projectYear}.${this.projectIndex}`);
+            this.app.url.setState(this.viewName, `${this.projectYear}.${this.projectIndex}`);
         } else {
-            URLManager.setState(this.viewName);
+            this.app.url.setState(this.viewName);
         }
     }
 

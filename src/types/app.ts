@@ -1,8 +1,11 @@
 import ViewClass from "./ViewClass";
 import View from "../elm/views/view";
 import Handler from "../utils/events/handler";
+import IURLMan from "../components/url/iUrlMan";
 
 interface IApp {
+    url: IURLMan;
+
     setup(): Promise<void>;
     getTopView(): View | undefined;
     switchAndInitView(viewClass: ViewClass): void;

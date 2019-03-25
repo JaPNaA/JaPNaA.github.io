@@ -1,5 +1,6 @@
 import ViewMap from "../../elm/views/list";
 import ViewClass from "../../types/ViewClass";
+import EmbededApp from "../../embededApp";
 
 export default function htmlViewParse(text_: string, options: {
     scripts?: boolean,
@@ -68,17 +69,24 @@ function getElementIdMap(div: HTMLDivElement) {
 function replaceElements(div: HTMLDivElement) {
     for (const [name, view] of ViewMap) {
         const tagName = "japnaa:view:" + name;
-        const tags = div.getElementsByTagName(tagName);
+        const elms = div.getElementsByTagName(tagName);
 
-        for (let i = 0; i < tags.length; i++) {
-            const tag = tags[i];
-            replaceViewElement(tag, view);
+        for (let i = 0; i < elms.length; i++) {
+            const elm = elms[i];
+            replaceViewElement(elm, view);
         }
     }
 }
 
-function replaceViewElement(tag: Element, viewClass: ViewClass) {
-    console.log(tag, viewClass);
+function replaceViewElement(elm: Element, viewClass: ViewClass) {
+    console.log(elm, viewClass);
 
-    // const view = new viewClass()
+    const embededApp = new EmbededApp(elm);
+    const stateData = elm.getAttribute("statedata");
+    embededApp.setup();
+    elm.classList.add("embededView");
+
+    const view = new viewClass(embededApp, stateData || undefined);
+    view.setup();
+    embededApp.addView(view);
 }

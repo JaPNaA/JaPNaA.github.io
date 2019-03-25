@@ -4,24 +4,29 @@ import ViewMap from "../../elm/views/list";
 import url from "url";
 import App from "../../app";
 import View404 from "../../elm/views/views/404";
+import IURLMan from "./iUrlMan";
 
-class URLManager {
-    public static restoredFromRedirect: boolean;
+class URLManager implements IURLMan {
+    public restoredFromRedirect: boolean;
 
-    private static fromRedirect: boolean;
-    private static initalSearch: string;
-    private static initalURL: string;
+    private fromRedirect: boolean;
+    private initalSearch: string;
+    private initalURL: string;
 
-    private static stateEmpty: boolean;
+    private stateEmpty: boolean;
 
-    public static setup() {
+    constructor() {
+        this.initalURL = location.href;
         this.initalSearch = location.search;
+
+        this.fromRedirect = false;
         this.stateEmpty = true;
         this.restoredFromRedirect = false;
+
         this.setToOldURL();
     }
 
-    public static setState(viewName: string, viewStateData?: string): void {
+    public setState(viewName: string, viewStateData?: string): void {
         const { title, url } = this.getTitleAndURLFromViewState(viewName, viewStateData);
 
         history.replaceState(null, title, url);
@@ -29,7 +34,7 @@ class URLManager {
         this.stateEmpty = false;
     }
 
-    public static pushState(viewName: string, viewStateData?: string): void {
+    public pushState(viewName: string, viewStateData?: string): void {
         if (this.stateEmpty) {
             return this.setState(viewName, viewStateData);
         }
@@ -40,7 +45,7 @@ class URLManager {
         document.title = title;
     }
 
-    public static restoreIfShould(app: App) {
+    public restoreIfShould(app: App) {
         if (!this.fromRedirect) { return; }
 
         const urlParsed = this.parseInitalURL();
@@ -58,7 +63,7 @@ class URLManager {
         this.restoredFromRedirect = true;
     }
 
-    private static getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
+    private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
         const viewNameEnc = encodeURIComponent(viewName.toLowerCase());
         const title = SiteConfig.title + "." + viewNameEnc;
 
@@ -72,13 +77,13 @@ class URLManager {
         return { url, title };
     }
 
-    public static clearState(): void {
+    public clearState(): void {
         history.replaceState(
             null, SiteConfig.title
         )
     }
 
-    private static setToOldURL() {
+    private setToOldURL() {
         const urlparams = new URLSearchParams(this.initalSearch);
         const initalURL = urlparams.get("u");
 
@@ -89,7 +94,7 @@ class URLManager {
         }
     }
 
-    private static parseInitalURL(): { viewName: string, viewStateData?: string } | undefined {
+    private parseInitalURL(): { viewName: string, viewStateData?: string } | undefined {
         const cleanURL = url.parse(this.initalURL);
         if (!cleanURL.path) return;
         const cleanPath = cleanURL.path.slice(1);
@@ -105,7 +110,5 @@ class URLManager {
         }
     }
 }
-
-URLManager.setup();
 
 export default URLManager;

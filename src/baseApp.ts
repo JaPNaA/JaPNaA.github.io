@@ -3,8 +3,11 @@ import ViewClass from "./types/ViewClass";
 import EventHandlers from "./utils/events/eventHandlers";
 import Handler from "./utils/events/handler";
 import IApp from "./types/app";
+import IURLMan from "./components/url/iUrlMan";
 
-class BaseApp implements IApp {
+abstract class BaseApp implements IApp {
+    /** Url manager for app */
+    public abstract url: IURLMan;
     /** Main element app lives in */
     protected mainElm: HTMLDivElement;
     /** All active scenes in app */
