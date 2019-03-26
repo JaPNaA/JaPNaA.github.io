@@ -1,16 +1,24 @@
 import Widget from "../widget";
 import WidgetMap from "../widgetMap";
+import wait from "../../../utils/wait";
+import EventHandlers from "../../../utils/events/eventHandlers";
+import Handler from "../../../utils/events/handler";
 
 class IFrame extends Widget {
     public static widgetName = "iframe";
     public widgetName = IFrame.widgetName;
     protected elm: HTMLIFrameElement;
 
+    private eventHandlers: EventHandlers;
+
     constructor(src: string) {
         super();
 
         this.elm = document.createElement("iframe");
+        this.eventHandlers = new EventHandlers();
+
         this.setSrc(src);
+        this.addEventHandlers();
     }
 
     public setSrc(src: string): void {
@@ -21,12 +29,10 @@ class IFrame extends Widget {
         if (this.elm.parentElement) {
             this.elm.parentElement.removeChild(this.elm);
         }
-        this.tryClose();
     }
 
-    public tryClose(): boolean {
+    public tryClose(): void {
         this.elm.src = "about:blank";
-        return this.isClosed();
     }
 
     public isClosed(): boolean {
@@ -39,6 +45,23 @@ class IFrame extends Widget {
                 throw err;
             }
         }
+    }
+
+    public onClose(handler: Handler) {
+        this.eventHandlers.add(handler);
+    }
+
+    public offClose(handler: Handler) {
+        this.eventHandlers.remove(handler);
+    }
+
+    private addEventHandlers() {
+        this.elm.addEventListener("load", () => {
+            if (this.isClosed()) {
+                this.eventHandlers.dispatch();
+                console.log("close");
+            }
+        });
     }
 }
 
