@@ -1,6 +1,6 @@
 abstract class Widget {
-    protected abstract elm: HTMLElement;
-    protected parent?: HTMLElement;
+    protected abstract elm: Element;
+    protected parent?: Element;
     public widgetName?: string;
 
     constructor() { }
@@ -16,7 +16,7 @@ abstract class Widget {
 
     public destory(): void { }
 
-    public appendTo(parent: HTMLElement): void {
+    public appendTo(parent: Element): void {
         this.parent = parent;
         parent.appendChild(this.elm);
     }

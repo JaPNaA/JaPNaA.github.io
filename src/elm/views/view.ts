@@ -1,5 +1,4 @@
 import IApp from "../../types/app";
-import URLManager from "../../components/url/urlMan";
 
 abstract class View {
     protected abstract elm: HTMLElement;

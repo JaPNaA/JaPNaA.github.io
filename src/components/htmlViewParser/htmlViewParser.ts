@@ -1,6 +1,8 @@
 import ViewMap from "../../elm/views/viewMap";
 import ViewClass from "../../types/viewClass";
 import EmbededApp from "../../embededApp";
+import WidgetMap from "../../elm/widgets/widgetMap";
+import WidgetClass from "../../types/widgetClass";
 
 export default function htmlViewParse(text_: string, options: {
     scripts?: boolean,
@@ -67,6 +69,11 @@ function getElementIdMap(div: HTMLDivElement) {
 }
 
 function replaceElements(div: HTMLDivElement) {
+    replaceViewElements(div);
+    replaceWidgetElements(div);
+}
+
+function replaceViewElements(div: HTMLDivElement) {
     for (const [name, view] of ViewMap) {
         const tagName = "japnaa:view:" + name;
         const elms = div.getElementsByTagName(tagName);
@@ -79,8 +86,6 @@ function replaceElements(div: HTMLDivElement) {
 }
 
 function replaceViewElement(elm: Element, viewClass: ViewClass) {
-    console.log(elm, viewClass);
-
     const embededApp = new EmbededApp(elm);
     const stateData = elm.getAttribute("statedata");
     embededApp.setup();
@@ -89,4 +94,35 @@ function replaceViewElement(elm: Element, viewClass: ViewClass) {
     const view = new viewClass(embededApp, stateData || undefined);
     view.setup();
     embededApp.addView(view);
+}
+
+function replaceWidgetElements(div: HTMLDivElement) {
+    for (const [name, view] of WidgetMap) {
+        const tagName = "japnaa:widget:" + name;
+        const elms = div.getElementsByTagName(tagName);
+
+        for (let i = 0; i < elms.length; i++) {
+            const elm = elms[i];
+            replaceWidgetElement(elm, view);
+        }
+    }
+}
+
+function replaceWidgetElement(elm: Element, widgetClass: WidgetClass) {
+    const widget = new widgetClass(...getWidgetArguments(elm));
+    widget.setup();
+    widget.appendTo(elm);
+    elm.classList.add("embededWidget");
+    console.log(widget);
+}
+
+function getWidgetArguments(elm: Element): any[] {
+    const args = elm.getAttribute("args");
+    if (!args) { return []; }
+
+    try {
+        return JSON.parse("[" + args + "]");
+    } catch {
+        return [args];
+    }
 }
