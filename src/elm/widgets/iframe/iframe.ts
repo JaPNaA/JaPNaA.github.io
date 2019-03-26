@@ -1,6 +1,5 @@
 import Widget from "../widget";
 import WidgetMap from "../widgetMap";
-import wait from "../../../utils/wait";
 import EventHandlers from "../../../utils/events/eventHandlers";
 import Handler from "../../../utils/events/handler";
 

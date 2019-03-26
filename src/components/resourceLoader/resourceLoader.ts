@@ -5,6 +5,7 @@ import EventHandlers from "../../utils/events/eventHandlers";
 import OnceHandlers from "../../utils/events/onceHandlers";
 import Handler from "../../utils/events/handler";
 import TextResource from "./resources/text";
+import JSONResource from "./resources/json";
 
 class ResourceLoader {
     private toBeLoaded: number;
@@ -75,6 +76,20 @@ class ResourceLoader {
         }
 
         const resource: TextResource = new TextResource(this.hooks, path);
+        // converting to unkown because of bug in typescript with returning 'this type
+        this.resources.set(path, resource as unknown as Resource);
+        this.toBeLoaded++;
+        return resource;
+    }
+
+    public loadJSON(path: string): JSONResource {
+        const existingResource: Resource | undefined = this.resources.get(path);
+        if (existingResource) {
+            // converting to unkown because of bug in typescript with returning 'this type
+            return existingResource as unknown as JSONResource;
+        }
+
+        const resource: JSONResource = new JSONResource(this.hooks, path);
         // converting to unkown because of bug in typescript with returning 'this type
         this.resources.set(path, resource as unknown as Resource);
         this.toBeLoaded++;

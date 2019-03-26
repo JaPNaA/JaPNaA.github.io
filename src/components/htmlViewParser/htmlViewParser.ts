@@ -30,7 +30,7 @@ const inlineJSMatcher: RegExp = /\${{([^]+?)}}/g;
 
 function runInlineJS(text: string): string {
     return text.replace(inlineJSMatcher, function (match: string, evalStr: string): string {
-        const result = global.eval(evalStr);
+        const result = new Function(evalStr)();
 
         if (result === undefined) {
             return "";

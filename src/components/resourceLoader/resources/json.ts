@@ -1,24 +1,25 @@
 import Resource from "./resource";
 import ResourceLoaderHooks from "../resourceLoaderHooks";
+import { JSONObject } from "../../../types/jsonObject";
 
-class TextResource extends Resource {
+class JSONResource extends Resource {
     public path: string;
-    public text?: string;
+    public data?: any;
 
     constructor(hooks: ResourceLoaderHooks, path: string) {
         super(hooks);
         this.path = path;
 
-        this.getText(path);
+        this.getJSON(path);
     }
 
-    private getText(path: string): void {
+    private getJSON(path: string): void {
         const req = new XMLHttpRequest();
         req.open("GET", path);
         req.responseType = "text";
 
         req.addEventListener("load", () => {
-            this.text = req.responseText;
+            this.data = JSON.parse(req.responseText);
 
             if (req.status >= 400) {
                 this.onErrorHandler(new Error(
@@ -38,4 +39,4 @@ class TextResource extends Resource {
     }
 }
 
-export default TextResource;
+export default JSONResource;

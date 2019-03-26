@@ -21,12 +21,22 @@ abstract class Resource {
     }
 
     public onLoad(handler: Handler<this>): this {
-        this.loadHandlers.add(handler);
+        if (this.loaded) {
+            handler(this);
+        } else {
+            this.loadHandlers.add(handler);
+        }
+
         return this;
     }
 
     public onError(handler: Handler<this>): this {
-        this.errorHandlers.add(handler);
+        if (this.loaded) {
+            handler(this);
+        } else {
+            this.errorHandlers.add(handler);
+        }
+
         return this;
     }
 
@@ -39,6 +49,7 @@ abstract class Resource {
 
     protected onErrorHandler(error: Error): void {
         this.error = error;
+        this.loaded = true;
         this.dispathErrorEvent();
 
         this.hooks.onError(this);

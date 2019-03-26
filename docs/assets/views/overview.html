@@ -3,7 +3,13 @@
 It's currently <span id="time"> ... </span>
 or ${{ Date.now() }} milliseconds since epoch
 
-<japnaa:widget:iframe args="https://japnaa.github.io/"></japnaa:widget:iframe>
+<div>
+    According to your system clock, I am
+    ${{var e=new Date,t=e.getFullYear(),n=e.getMonth(),a=e.getDate(),r=t-2003-1;return(n>10||10==n&&a>=28)&&r++,r}}
+    years old!
+</div>
+
+<!-- <japnaa:widget:iframe args="https://japnaa.github.io/"></japnaa:widget:iframe> -->
 <japnaa:view:projectinfo statedata="2018.4"></japnaa:view:projectinfo>
 <japnaa:view:view404></japnaa:view:view404>
 

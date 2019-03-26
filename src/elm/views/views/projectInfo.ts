@@ -5,6 +5,8 @@ import ViewMap from "../viewMap";
 import URLManager from "../../../components/url/urlMan";
 import SiteConfig from "../../../siteConfig";
 import IApp from "../../../types/app";
+import SiteResources from "../../../siteResources";
+import IInfoJSON from "../../../types/infojson";
 
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
@@ -14,7 +16,7 @@ class ProjectInfoView extends View {
     protected isFullPage: boolean = true;
 
     private project?: ICard;
-    private loading?: Promise<void>;
+    private loadingPromise?: Promise<void>;
 
     private projectYear?: number;
     private projectIndex?: number;
@@ -24,7 +26,7 @@ class ProjectInfoView extends View {
         this.elm = document.createElement("div");
 
         if (stateData) {
-            this.loading = this.loadProjectFromStateData(stateData);
+            this.loadingPromise = this.loadProjectFromStateData(stateData);
         }
     }
 
@@ -43,10 +45,9 @@ class ProjectInfoView extends View {
             throw new Error("Invalid stateData format");
         }
 
-        this.setProject((await fetch(SiteConfig.path.content + year + ".json")
-            .then(e => e.json())).data[index], yearInt, indexInt);
+        this.setProject(await this.getCard(year, indexInt), yearInt, indexInt);
 
-        this.loading = undefined;
+        this.loadingPromise = undefined;
     }
 
     protected updateStateURL(): void {
@@ -60,8 +61,8 @@ class ProjectInfoView extends View {
     public async setup(): Promise<void> {
         super.setup();
 
-        if (this.loading) {
-            await this.loading;
+        if (this.loadingPromise) {
+            await this.loadingPromise;
         }
 
         if (!this.project) {
@@ -75,6 +76,15 @@ class ProjectInfoView extends View {
         elm.appendTo(this.elm);
         elm.animateTransitionIn();
         elm.addEventListeners();
+    }
+
+    private async getCard(year: string, index: number): Promise<ICard> {
+        const resource = SiteResources.loadJSON(SiteConfig.path.content + year + ".json");
+        const promise = new Promise<IInfoJSON>(res =>
+            resource.onLoad(e => res(e.data as IInfoJSON))
+        );
+
+        return (await promise).data[index] as ICard;
     }
 }
 
