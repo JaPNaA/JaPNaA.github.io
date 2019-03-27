@@ -15,6 +15,8 @@ class CardJSONv1Elm {
     private card: ICard;
     private backgroundImageExists: boolean;
 
+    private container: HTMLDivElement = null as unknown as HTMLDivElement;
+
     public constructor(card: ICard) {
         this.card = card;
         this.elm = document.createElement("div");
@@ -37,18 +39,16 @@ class CardJSONv1Elm {
     private parse(): void {
         this.elm.classList.add("card", "v1");
 
-        this.createBackground();
+        this.container = this.createBackgroundContainer();
         this.createInformationBlock();
     }
 
-    private createBackground(): void {
+    private createBackgroundContainer(): HTMLDivElement {
         const bgImage = this.createBackgroundImage();
-        if (bgImage) {
-            this.elm.appendChild(bgImage);
-        }
-
         const bgGradient = this.createBackgroundGradient();
-        this.elm.appendChild(bgGradient);
+        bgImage.appendChild(bgGradient);
+        this.elm.appendChild(bgImage);
+        return bgGradient;
     }
 
     private createBackgroundImage(): HTMLDivElement {
@@ -103,7 +103,7 @@ class CardJSONv1Elm {
         this.createLinkIn(block);
         this.createTimestampIn(block);
 
-        this.elm.appendChild(block);
+        this.container.appendChild(block);
     }
 
     private createNameIn(block: HTMLElement): void {

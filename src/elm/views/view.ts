@@ -36,6 +36,7 @@ abstract class View {
      */
     public async destory(): Promise<void> {
         console.log("destory " + this.viewName);
+        this.elm.classList.add("destory");
     }
 
     /** Appends scene element to element */

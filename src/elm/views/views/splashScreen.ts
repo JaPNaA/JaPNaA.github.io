@@ -24,7 +24,6 @@ class SplashScreen extends View {
 
     public async destory(): Promise<void> {
         super.destory();
-        this.elm.classList.add("destory");
         await wait(1000);
     }
 }

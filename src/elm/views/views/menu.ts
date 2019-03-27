@@ -33,8 +33,6 @@ class Menu extends View {
         await super.destory();
 
         this.background.removeEventListener("click", this.backgroundClickHandler);
-
-        this.elm.classList.add("destory");
         await wait(Menu.transitionOutTimeout);
     }
 

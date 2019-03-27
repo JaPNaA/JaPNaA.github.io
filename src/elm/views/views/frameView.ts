@@ -4,8 +4,12 @@ import IFrame from "../../widgets/iframe/iframe";
 import ViewMap from "../viewMap";
 import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
+import wait from "../../../utils/wait";
+import triggerTransitionIn from "../../../utils/triggerTransitionIn";
 
 class FrameView extends View {
+    public static destoryTime = 400;
+    public static transitionInTime = 400;
     public static viewName = "FrameView";
     public viewName = FrameView.viewName;
     public showGlobalWidget = false;
@@ -49,6 +53,10 @@ class FrameView extends View {
         this.redirect = false;
     }
 
+    public animateTransitionIn(): void {
+        triggerTransitionIn(this.elm, FrameView.transitionInTime);
+    }
+
     public async setup(): Promise<void> {
         if (!this.path) { throw new Error("Path not set"); }
 
@@ -71,6 +79,11 @@ class FrameView extends View {
 
         this.app.url.setState(this.viewName, this.path);
         this.addEventHandlers();
+    }
+
+    public async destory(): Promise<void> {
+        await super.destory();
+        await wait(FrameView.destoryTime);
     }
 
     private addEventHandlers() {

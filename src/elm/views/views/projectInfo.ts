@@ -99,6 +99,7 @@ class ProjectInfoView extends View {
         const view = new FrameView(this.app, link);
         view.preventRedirection();
         view.setup();
+        view.animateTransitionIn();
         this.app.addView(view);
 
         event.preventDefault();
