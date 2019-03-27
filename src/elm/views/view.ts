@@ -5,7 +5,7 @@ abstract class View {
 
     protected app: IApp;
     protected isFullPage: boolean;
-    
+
     public viewName?: string;
 
 
@@ -24,6 +24,8 @@ abstract class View {
             this.app.url.pushState(viewName);
             this.updateStateURL();
         }
+
+        console.log("setup " + this.viewName);
     }
 
     /**
@@ -32,7 +34,9 @@ abstract class View {
      * destruction animation finishes, signifying that 
      * it's safe to remove the element.
      */
-    public async destory(): Promise<void> { }
+    public async destory(): Promise<void> {
+        console.log("destory " + this.viewName);
+    }
 
     /** Appends scene element to element */
     public appendTo(parent: HTMLElement) {
@@ -52,6 +56,11 @@ abstract class View {
     /** Returns if the view can be scrolled */
     public canScroll(): boolean {
         return this.elm.scrollHeight > this.elm.clientHeight;
+    }
+
+    /** Resizes the view */
+    public resize(width: number, height: number): void {
+        //
     }
 
     /** Updates the URL state */

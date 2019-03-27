@@ -6,8 +6,13 @@ import IApp from "./types/app";
 import IURLMan from "./components/url/iUrlMan";
 
 abstract class BaseApp implements IApp {
+    public width: number;
+    public height: number;
+
     /** Url manager for app */
     public abstract url: IURLMan;
+    /** EventHandlers for resize */
+    protected abstract resizeHandlers: EventHandlers;
     /** Main element app lives in */
     protected mainElm: HTMLDivElement;
     /** All active scenes in app */
@@ -16,28 +21,22 @@ abstract class BaseApp implements IApp {
     private viewChangeHandlers: EventHandlers;
 
     constructor() {
+        this.width = innerWidth;
+        this.height = innerHeight;
+
         this.mainElm = document.createElement("div");
         this.mainElm.classList.add("main");
-        // this.globalWidget = new GlobalWidget(this);
 
         this.activeViews = [];
         this.viewChangeHandlers = new EventHandlers();
     }
 
     public async setup(): Promise<void> {
-        // this.globalWidget.setup();
-        // this.globalWidget.appendTo(this.mainElm);
-        // document.body.appendChild(this.mainElm);
+        console.log("setup BaseApp");
+    }
 
-        // const splashScreen: View = this.openView(SplashScreen);
-
-        // URLManager.restoreIfShould(this);
-        // if (!URLManager.restoredFromRedirect) {
-        //     this.openView(Overview);
-        // }
-
-        // await SiteResources.nextDone();
-        // this.closeView(splashScreen);
+    public async destory(): Promise<void> {
+        console.log("destory BaseApp");
     }
 
     public getTopView(): View | undefined {
@@ -101,9 +100,17 @@ abstract class BaseApp implements IApp {
         this.viewChangeHandlers.remove(handler);
     }
 
+    public onResize(handler: Handler): void {
+        this.resizeHandlers.add(handler);
+    }
+
+    public offResize(handler: Handler): void {
+        this.resizeHandlers.remove(handler);
+    }
+
     private dispatchViewChange(): void {
         this.viewChangeHandlers.dispatch();
-    } 
+    }
 }
 
 export default BaseApp;

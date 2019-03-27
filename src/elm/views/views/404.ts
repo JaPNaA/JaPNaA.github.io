@@ -43,7 +43,8 @@ class View404 extends View {
         }
 
         this.resizeHandler = this.resizeHandler.bind(this);
-        addEventListener("resize", this.resizeHandler);
+        this.app.onResize(this.resizeHandler);
+        this.resizeHandler();
     }
 
     public async destory(): Promise<void> {
@@ -52,6 +53,7 @@ class View404 extends View {
         if (this.X) {
             this.canvas.removeEventListener("mousemove", this.mouseMoveHandler);
         }
+        this.app.offResize(this.resizeHandler);
 
         removeEventListener("resize", this.resizeHandler);
     }
@@ -70,8 +72,8 @@ class View404 extends View {
     }
 
     private resizeHandler(): void {
-        this.canvas.width = this.width = innerWidth;
-        this.canvas.height = this.height = innerHeight;
+        this.width = this.canvas.width = this.app.width;
+        this.height = this.canvas.height = this.app.height
         this.draw();
     }
 

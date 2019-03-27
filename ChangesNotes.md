@@ -11,3 +11,6 @@
 
 # Remember to change
   - the icons
+
+# TODO
+  - Make console.log not appear in production

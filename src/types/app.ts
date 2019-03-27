@@ -6,7 +6,11 @@ import IURLMan from "../components/url/iUrlMan";
 interface IApp {
     url: IURLMan;
 
+    width: number;
+    height: number;
+
     setup(): Promise<void>;
+    destory(): Promise<void>;
     getTopView(): View | undefined;
     switchAndInitView(viewClass: ViewClass): void;
     switchView(view: View): void;
@@ -17,6 +21,8 @@ interface IApp {
     closeView(view: View): void;
     onViewChange(handler: Handler): void;
     offViewChange(handler: Handler): void;
+    onResize(handler: Handler): void;
+    offResize(handler: Handler): void;
 }
 
 export default IApp;
