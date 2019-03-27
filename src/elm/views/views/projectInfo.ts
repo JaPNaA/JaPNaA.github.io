@@ -73,7 +73,8 @@ class ProjectInfoView extends View {
         this.updateStateURL();
 
         // FOR VERSION 1 CARD
-        const elm: CardJSONv1Elm = new CardJSONv1Elm(this.project);
+        const elm: CardJSONv1Elm = new CardJSONv1Elm(this.app, this.project);
+        elm.setup();
         elm.appendTo(this.elm);
         elm.animateTransitionIn();
         elm.addEventListeners();

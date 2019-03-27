@@ -3,6 +3,8 @@ import SiteConfig from "../../siteConfig";
 import Display from "../../types/project/display";
 import DisplayImg from "../../types/project/displayImg";
 import triggerTransitionIn from "../../utils/triggerTransitionIn";
+import SiteResources from "../../siteResources";
+import IApp from "../../types/app";
 
 // TODO: refactor, along with it's .less companion
 
@@ -11,17 +13,29 @@ class CardJSONv1Elm {
 
     public viewProjectButton: HTMLAnchorElement = null as unknown as HTMLAnchorElement;
 
+    private app: IApp;
     private elm: HTMLDivElement;
     private card: ICard;
     private backgroundImageExists: boolean;
 
     private container: HTMLDivElement = null as unknown as HTMLDivElement;
 
-    public constructor(card: ICard) {
+    public constructor(app: IApp, card: ICard) {
+        this.app = app;
         this.card = card;
         this.elm = document.createElement("div");
         this.backgroundImageExists = false;
+    }
+
+    public setup() {
+        this.resizeHandler = this.resizeHandler.bind(this);
+        this.app.onResize(this.resizeHandler);
         this.parse();
+        this.resizeHandler();
+    }
+
+    public destory() {
+        this.app.offResize(this.resizeHandler);
     }
 
     public appendTo(parent: HTMLElement): void {
@@ -174,12 +188,13 @@ class CardJSONv1Elm {
 
     private createDisplayImgIn(parent: HTMLElement, display: DisplayImg): void {
         if (display.src) {
-            const img = document.createElement("img");
-            img.classList.add("img");
             // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
-            img.src = SiteConfig.thingyLink + display.src;
+            const src = SiteConfig.thingyLink + display.src;
+            const img = SiteResources.loadImage(src).copyImage();
+            img.classList.add("img");
             parent.appendChild(img);
         }
+
         if (display.caption) {
             const caption = document.createElement("small");
             caption.innerText = display.caption;
@@ -203,6 +218,10 @@ class CardJSONv1Elm {
         time.classList.add("timestamp");
         time.innerText = new Date(this.card.timestamp).toLocaleDateString();
         block.appendChild(time);
+    }
+
+    private resizeHandler(): void {
+        this.container.style.minHeight = this.app.height + "px";
     }
 }
 

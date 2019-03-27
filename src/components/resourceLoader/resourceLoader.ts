@@ -44,6 +44,10 @@ class ResourceLoader {
         this.doneHandlers.add(handler);
     }
 
+    public offDone(handler: Handler): void {
+        this.doneHandlers.remove(handler);
+    }
+
     public async nextDone(): Promise<void> {
         if (!this.isDone()) {
             await new Promise((res) => this.doneEventOnceHandlers.add(() => res()));

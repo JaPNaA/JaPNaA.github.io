@@ -38,6 +38,8 @@ class GlobalWidget extends Widget {
     private addEventHandlers(): void {
         this.viewChangeHandler = this.viewChangeHandler.bind(this);
         this.app.onViewChange(this.viewChangeHandler);
+        this.app.onResize(this.viewChangeHandler);
+        SiteResources.onDone(this.viewChangeHandler);
 
         this.elm.addEventListener("click", () => {
             const menu = new Menu(this.app);
@@ -49,9 +51,15 @@ class GlobalWidget extends Widget {
 
     private removeEventHandlers(): void {
         this.app.offViewChange(this.viewChangeHandler);
+        this.app.offResize(this.viewChangeHandler);
+        SiteResources.offDone(this.viewChangeHandler);
     }
 
-    private viewChangeHandler(): void {
+    private viewChangeHandler() {
+        this.updateState();
+    }
+
+    private updateState(): void {
         const topView = this.app.getTopView();
 
         if (topView) {
