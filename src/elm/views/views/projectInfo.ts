@@ -97,6 +97,7 @@ class ProjectInfoView extends View {
     private linkClickHandler(elm: HTMLAnchorElement, event: MouseEvent) {
         const link = elm.href;
         const view = new FrameView(this.app, link);
+        view.preventRedirection();
         view.setup();
         this.app.addView(view);
 

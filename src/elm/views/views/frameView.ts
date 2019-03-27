@@ -17,11 +17,14 @@ class FrameView extends View {
     private header: HTMLDivElement;
     private closeButton: HTMLDivElement;
     private urlElm: HTMLDivElement;
+    
     private path?: string;
+    private redirect: boolean;
 
     constructor(app: IApp, path?: string) {
         super(app);
         this.path = path;
+        this.redirect = true;
 
         this.elm = document.createElement("div");
 
@@ -42,10 +45,19 @@ class FrameView extends View {
         this.app.url.pushState(this.viewName, this.path);
     }
 
+    public preventRedirection(): void {
+        this.redirect = false;
+    }
+
     public async setup(): Promise<void> {
         if (!this.path) { throw new Error("Path not set"); }
 
         await super.setup();
+
+        if (this.redirect) {
+            location.replace(this.path);
+            return;
+        }
 
         this.iframe = new IFrame(this.path);
 
