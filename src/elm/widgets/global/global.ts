@@ -7,9 +7,13 @@ import WidgetMap from "../widgetMap";
 
 /** Initalized at start of page */
 class GlobalWidget extends Widget {
-    public static widgetName: string = "GlobalWidget"
+    public static widgetName: string = "GlobalWidget";
     public widgetName: string = GlobalWidget.widgetName;
+
     protected elm: HTMLDivElement;
+
+    private static hiddenClass = "hidden";
+    private static scrollBarExistsClass = "scrollBarExists";
     private app: App;
 
     constructor(app: App) {
@@ -23,7 +27,7 @@ class GlobalWidget extends Widget {
         const img = SiteResources.loadImage(SiteConfig.path.img.hamburger).image;
         this.elm.appendChild(img);
         super.setup();
-        
+
         this.addEventHandlers();
     }
 
@@ -49,10 +53,22 @@ class GlobalWidget extends Widget {
 
     private viewChangeHandler(): void {
         const topView = this.app.getTopView();
-        if (topView && topView.canScroll()) {
-            this.elm.classList.add("scrollBarExists");
+
+        if (topView) {
+            if (topView.canScroll()) {
+                this.elm.classList.add(GlobalWidget.scrollBarExistsClass);
+            } else {
+                this.elm.classList.remove(GlobalWidget.scrollBarExistsClass);
+            }
+
+            if (topView.showGlobalWidget) {
+                this.elm.classList.remove(GlobalWidget.hiddenClass);
+            } else {
+                this.elm.classList.add(GlobalWidget.hiddenClass);
+            }
         } else {
-            this.elm.classList.remove("scrollBarExists");
+            this.elm.classList.remove(GlobalWidget.scrollBarExistsClass);
+            this.elm.classList.remove(GlobalWidget.hiddenClass);
         }
     }
 }

@@ -9,6 +9,8 @@ import triggerTransitionIn from "../../utils/triggerTransitionIn";
 class CardJSONv1Elm {
     private static transitionInTimeout: number = 3000;
 
+    public viewProjectButton: HTMLAnchorElement = null as unknown as HTMLAnchorElement;
+
     private elm: HTMLDivElement;
     private card: ICard;
     private backgroundImageExists: boolean;
@@ -191,6 +193,7 @@ class CardJSONv1Elm {
         link.classList.add("link");
         link.href = SiteConfig.thingyLink + this.card.content.link;
         block.appendChild(link);
+        this.viewProjectButton = link;
     }
 
     private createTimestampIn(block: HTMLElement): void {

@@ -24,6 +24,10 @@ class IFrame extends Widget {
         this.elm.src = src;
     }
 
+    public focus(): void {
+        this.elm.focus();
+    }
+
     public close(): void {
         if (this.elm.parentElement) {
             this.elm.parentElement.removeChild(this.elm);

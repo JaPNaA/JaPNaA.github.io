@@ -7,7 +7,7 @@ abstract class View {
     protected isFullPage: boolean;
 
     public viewName?: string;
-
+    public showGlobalWidget: boolean = true;
 
     constructor(app: IApp) {
         this.app = app;

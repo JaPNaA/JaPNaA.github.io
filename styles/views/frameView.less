@@ -1,0 +1,56 @@
+.main .FrameView {
+    background: white;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    .header {
+        @header-height: 32px;
+
+        flex: 0 0 @header-height;
+        background-color: @theme-color;
+        background-image: @header-gradient;
+        height: @header-height;
+
+        display: flex;
+
+        .close {
+            flex: 0 0 @header-height;
+            height: @header-height;
+            width: @header-height;
+            padding: 6px;
+            box-sizing: border-box;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+
+            cursor: pointer;
+        }
+
+        .url {
+            flex: 1 0 auto;
+            height: @header-height;
+            width: auto;
+            text-align: center;
+            line-height: @header-height;
+        }
+
+        .padRight {
+            flex: 0 0 @header-height;
+            width: 100%;
+        }
+    }
+
+    .widget.iframe {
+        flex: 1 1 auto;
+
+        // position: absolute;
+        width: 100%;
+        height: 100%;
+        // top: 0;
+        // left: 0;
+    }
+}

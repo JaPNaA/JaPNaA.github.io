@@ -2,11 +2,12 @@ import View from "../view";
 import ICard from "../../../types/project/card";
 import CardJSONv1Elm from "../../../components/jsonToElm/cardV1";
 import ViewMap from "../viewMap";
-import URLManager from "../../../components/url/urlMan";
 import SiteConfig from "../../../siteConfig";
 import IApp from "../../../types/app";
 import SiteResources from "../../../siteResources";
 import IInfoJSON from "../../../types/infojson";
+import IFrame from "../../widgets/iframe/iframe";
+import FrameView from "./frameView";
 
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
@@ -76,6 +77,8 @@ class ProjectInfoView extends View {
         elm.appendTo(this.elm);
         elm.animateTransitionIn();
         elm.addEventListeners();
+
+        this.attachLinkClickHandler(elm.viewProjectButton);
     }
 
     private async getCard(year: string, index: number): Promise<ICard> {
@@ -85,6 +88,19 @@ class ProjectInfoView extends View {
         );
 
         return (await promise).data[index] as ICard;
+    }
+
+    private attachLinkClickHandler(elm: HTMLAnchorElement) {
+        elm.addEventListener("click", this.linkClickHandler.bind(this, elm));
+    }
+
+    private linkClickHandler(elm: HTMLAnchorElement, event: MouseEvent) {
+        const link = elm.href;
+        const view = new FrameView(this.app, link);
+        view.setup();
+        this.app.addView(view);
+
+        event.preventDefault();
     }
 }
 

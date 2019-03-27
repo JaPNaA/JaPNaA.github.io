@@ -73,13 +73,13 @@ abstract class BaseApp implements IApp {
 
     public addViewBehind(view: View): void {
         view.appendAtStartTo(this.mainElm);
-        this.activeViews.push(view);
+        this.activeViews.unshift(view);
         this.dispatchViewChange();
     }
 
     public addView(view: View): void {
         view.appendTo(this.mainElm);
-        this.activeViews.unshift(view);
+        this.activeViews.push(view);
         this.dispatchViewChange();
     }
 

@@ -104,7 +104,7 @@ class URLManager implements IURLMan {
             return { viewName: cleanPath };
         } else {
             const viewName = cleanPath.slice(0, divisorIndex);
-            const viewStateData = cleanPath.slice(divisorIndex + 1);
+            const viewStateData = decodeURIComponent(cleanPath.slice(divisorIndex + 1));
 
             return { viewName, viewStateData };
         }
