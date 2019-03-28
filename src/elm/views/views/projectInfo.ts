@@ -6,7 +6,6 @@ import SiteConfig from "../../../siteConfig";
 import IApp from "../../../types/app";
 import SiteResources from "../../../siteResources";
 import IInfoJSON from "../../../types/infojson";
-import IFrame from "../../widgets/iframe/iframe";
 import FrameView from "./frameView";
 
 class ProjectInfoView extends View {

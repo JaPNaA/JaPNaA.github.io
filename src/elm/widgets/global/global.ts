@@ -63,7 +63,7 @@ class GlobalWidget extends Widget {
         const topView = this.app.getTopView();
 
         if (topView) {
-            if (topView.canScroll()) {
+            if (topView.canScroll() && !SiteConfig.isMobile) {
                 this.elm.classList.add(GlobalWidget.scrollBarExistsClass);
             } else {
                 this.elm.classList.remove(GlobalWidget.scrollBarExistsClass);

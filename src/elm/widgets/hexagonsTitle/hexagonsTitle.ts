@@ -206,7 +206,7 @@ class HexagonsTitle extends Widget {
     }
 
     private scrollHandler(): void {
-        if (SiteConfig.isHandheld) { return; }
+        if (SiteConfig.isMobile) { return; }
         this.scrollDist = this.parent.scrollTop;
         this.draw();
     }

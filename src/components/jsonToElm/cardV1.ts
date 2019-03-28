@@ -6,7 +6,7 @@ import triggerTransitionIn from "../../utils/triggerTransitionIn";
 import SiteResources from "../../siteResources";
 import IApp from "../../types/app";
 
-// TODO: refactor, along with it's .less companion
+// TODO: refactor, along with it's .less companion!
 
 class CardJSONv1Elm {
     private static transitionInTimeout: number = 3000;

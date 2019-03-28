@@ -1,5 +1,6 @@
 import isHandheld from "./utils/isHandheld";
 import isMobile from "./utils/isMobile";
+import isIOS from "./utils/isIOS";
 
 class SiteConfig {
     static thingyLink: string;
@@ -27,12 +28,15 @@ class SiteConfig {
 
     static isHandheld: boolean;
     static isMobile: boolean;
+    static isIOS: boolean;
 }
 
-if (location.href.includes("localhost")) {
+// matches localhost and ips, for debugging
+const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
+if (match) {
     const port = parseInt(location.port);
     if (!isNaN(port)) {
-        SiteConfig.thingyLink = "http://localhost:" + (port + 1);
+        SiteConfig.thingyLink = match[0] + (port + 1);
     }
 } else {
     SiteConfig.thingyLink = "";
@@ -40,5 +44,6 @@ if (location.href.includes("localhost")) {
 
 SiteConfig.isHandheld = isHandheld();
 SiteConfig.isMobile = isMobile();
+SiteConfig.isIOS = isIOS();
 
 export default SiteConfig;

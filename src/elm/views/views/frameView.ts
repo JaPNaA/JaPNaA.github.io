@@ -62,7 +62,9 @@ class FrameView extends View {
 
         await super.setup();
 
-        if (this.redirect) {
+        // tests for iOS: prevent bug where you can't scroll in an iframe
+        // Apple, fix your browser!
+        if (this.redirect || SiteConfig.isIOS) {
             location.replace(this.path);
             return;
         }
