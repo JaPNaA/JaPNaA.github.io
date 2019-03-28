@@ -1,9 +1,9 @@
-import View from "./elm/views/view";
-import ViewClass from "./types/viewClass";
-import EventHandlers from "./utils/events/eventHandlers";
-import Handler from "./utils/events/handler";
-import IApp from "./types/app";
-import IURLMan from "./components/url/iUrlMan";
+import View from "../elm/views/view";
+import ViewClass from "../types/viewClass";
+import EventHandlers from "../utils/events/eventHandlers";
+import Handler from "../utils/events/handler";
+import IApp from "../types/app";
+import IURLMan from "../components/url/iUrlMan";
 
 abstract class BaseApp implements IApp {
     public width: number;

@@ -1,5 +1,5 @@
 import IURLMan from "./iUrlMan";
-import App from "../../app";
+import App from "../../app/app";
 
 class FakeURLMan implements IURLMan {
     public restoredFromRedirect: boolean = false;

@@ -1,6 +1,6 @@
 import ViewMap from "../../elm/views/viewMap";
 import ViewClass from "../../types/viewClass";
-import EmbededApp from "../../embededApp";
+import EmbededApp from "../../app/embededApp";
 import WidgetMap from "../../elm/widgets/widgetMap";
 import WidgetClass from "../../types/widgetClass";
 

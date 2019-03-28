@@ -1,13 +1,13 @@
-import "../styles/index.less";
+import "../../styles/index.less";
 
-import SplashScreen from "./elm/views/views/splashScreen";
-import View from "./elm/views/view";
-import Overview from "./elm/views/views/overview";
-import URLManager from "./components/url/urlMan";
-import SiteResources from "./siteResources";
-import GlobalWidget from "./elm/widgets/global/global";
+import SplashScreen from "../elm/views/views/splashScreen";
+import View from "../elm/views/view";
+import Overview from "../elm/views/views/overview";
+import URLManager from "../components/url/urlMan";
+import SiteResources from "../siteResources";
+import GlobalWidget from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
-import EventHandlers from "./utils/events/eventHandlers";
+import EventHandlers from "../utils/events/eventHandlers";
 
 class App extends BaseApp {
     public url: URLManager;

@@ -2,7 +2,7 @@ import SiteConfig from "../../siteConfig";
 import ViewMap from "../../elm/views/viewMap";
 
 import url from "url";
-import App from "../../app";
+import App from "../../app/app";
 import View404 from "../../elm/views/views/404";
 import IURLMan from "./iUrlMan";
 

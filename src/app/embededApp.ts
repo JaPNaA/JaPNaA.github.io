@@ -1,6 +1,6 @@
 import BaseApp from "./baseApp";
-import FakeURLMan from "./components/url/fakeUrlMan";
-import EventHandlers from "./utils/events/eventHandlers";
+import FakeURLMan from "../components/url/fakeUrlMan";
+import EventHandlers from "../utils/events/eventHandlers";
 
 class EmbededApp extends BaseApp {
     public url: FakeURLMan;

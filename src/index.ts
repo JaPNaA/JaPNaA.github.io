@@ -1,7 +1,7 @@
 import "./elm/views/loader";
 import "./elm/widgets/loader";
 
-import App from "./app";
+import App from "./app/app";
 
 const app = new App();
 

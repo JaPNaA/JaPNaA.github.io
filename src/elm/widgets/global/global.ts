@@ -1,7 +1,7 @@
 import Widget from "../widget";
 import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
-import App from "../../../app";
+import App from "../../../app/app";
 import Menu from "../../views/views/menu";
 import WidgetMap from "../widgetMap";
 
