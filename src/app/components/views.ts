@@ -9,6 +9,7 @@ import IAppViews from "../../types/app/iAppViews";
 class AppViews implements IAppViews {
     /** All active scenes in app */
     private activeViews: View[];
+
     private app: BaseApp;
     private appEvents: AppEvents;
     private mainElm: HTMLElement;

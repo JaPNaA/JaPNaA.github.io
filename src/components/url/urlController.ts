@@ -2,11 +2,10 @@ import SiteConfig from "../../siteConfig";
 import ViewMap from "../../elm/views/viewMap";
 
 import url from "url";
-import App from "../../app/app";
 import View404 from "../../elm/views/views/404";
-import IURLMan from "./iUrlMan";
+import IApp from "../../types/app/iApp";
 
-class URLManager implements IURLMan {
+class URLController {
     public restoredFromRedirect: boolean;
 
     private fromRedirect: boolean;
@@ -45,7 +44,7 @@ class URLManager implements IURLMan {
         document.title = title;
     }
 
-    public restoreIfShould(app: App) {
+    public restoreIfShould(app: IApp) {
         if (!this.fromRedirect) { return; }
 
         const urlParsed = this.parseInitalURL();
@@ -111,4 +110,4 @@ class URLManager implements IURLMan {
     }
 }
 
-export default URLManager;
+export default URLController;

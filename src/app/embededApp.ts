@@ -1,6 +1,4 @@
 import BaseApp from "./baseApp";
-import FakeURLMan from "../components/url/fakeUrlMan";
-import EventHandlers from "../utils/events/eventHandlers";
 
 class EmbededApp extends BaseApp {
     private parentElm: Element;
@@ -15,7 +13,7 @@ class EmbededApp extends BaseApp {
         super.setup();
         this.addEventHandlers();
         this.parentElm.appendChild(this.mainElm);
-        
+
         this.resizeNextFrame();
     }
 

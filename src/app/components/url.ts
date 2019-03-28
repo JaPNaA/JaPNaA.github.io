@@ -1,31 +1,40 @@
 import AppEvents from "./events";
 import IAppURL from "../../types/app/iAppURL";
+import URLController from "../../components/url/urlController";
+import BaseApp from "../baseApp";
 
 class AppURL implements IAppURL {
     public restoredFromRedirect: boolean = false;
+
+    private app: BaseApp;
+    private appEvents: AppEvents;
+
+    private controller: URLController;
     private isFake: boolean = false;
 
-    constructor(appEvents: AppEvents) {
-        //
+    constructor(app: BaseApp, appEvents: AppEvents) {
+        this.app = app;
+        this.appEvents = appEvents;
+        this.controller = new URLController();
     }
 
     public setFake() {
         this.isFake = true;
     }
 
-    public restoreIfShould(arg0: any): any {
+    public restoreIfShould(): void {
         if (this.isFake) { return; }
-        console.error("restore if should not impelemented")
+        this.controller.restoreIfShould(this.app);
     }
 
-    public setState() {
+    public setState(viewName: string, stateData: string) {
         if (this.isFake) { return; }
-        console.error("set state not implemented");
+        this.controller.setState(viewName, stateData);
     }
 
-    public pushState() {
+    public pushState(viewName: string, stateData: string) {
         if (this.isFake) { return; }
-        console.error("push state not implemented");
+        this.controller.pushState(viewName, stateData);
     }
 }
 

@@ -3,7 +3,6 @@ import "../../styles/index.less";
 import SplashScreen from "../elm/views/views/splashScreen";
 import View from "../elm/views/view";
 import Overview from "../elm/views/views/overview";
-import URLManager from "../components/url/urlMan";
 import SiteResources from "../siteResources";
 import GlobalWidget from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
@@ -30,7 +29,7 @@ class App extends BaseApp {
 
         const splashScreen: View = this.views.open(SplashScreen);
 
-        this.url.restoreIfShould(this);
+        this.url.restoreIfShould();
         if (!this.url.restoredFromRedirect) {
             this.views.open(Overview);
         }

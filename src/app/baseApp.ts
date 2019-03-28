@@ -21,7 +21,7 @@ abstract class BaseApp implements IApp {
         this.mainElm.classList.add("main");
 
         this.events = new AppEvents(this);
-        this.url = new AppURL(this.events);
+        this.url = new AppURL(this, this.events);
         this.views = new AppViews(this, this.events, this.mainElm);
     }
 
