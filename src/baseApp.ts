@@ -51,7 +51,8 @@ abstract class BaseApp implements IApp {
     }
 
     public switchView(view: View): void {
-        for (const activeView of this.activeViews) {
+        for (let i = this.activeViews.length - 1; i >= 0; i--) {
+            const activeView = this.activeViews[i];
             this.closeView(activeView);
         }
         this.addViewBehind(view);
