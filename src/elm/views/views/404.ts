@@ -43,7 +43,7 @@ class View404 extends View {
         }
 
         this.resizeHandler = this.resizeHandler.bind(this);
-        this.app.events.onResize(this.resizeHandler);
+        this.events.onResize(this.resizeHandler);
         this.resizeHandler();
     }
 
@@ -53,7 +53,7 @@ class View404 extends View {
         if (this.X) {
             this.canvas.removeEventListener("mousemove", this.mouseMoveHandler);
         }
-        this.app.events.offResize(this.resizeHandler);
+        this.events.offResize(this.resizeHandler);
 
         removeEventListener("resize", this.resizeHandler);
     }

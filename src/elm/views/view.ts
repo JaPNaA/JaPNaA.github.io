@@ -1,9 +1,11 @@
 import IApp from "../../types/app/iApp";
+import EventManager from "../../components/view/eventManager";
 
 abstract class View {
     protected abstract elm: HTMLElement;
 
     protected app: IApp;
+    protected events: EventManager;
     protected isFullPage: boolean;
 
     public viewName?: string;
@@ -11,6 +13,7 @@ abstract class View {
 
     constructor(app: IApp) {
         this.app = app;
+        this.events = new EventManager(app.events);
         this.isFullPage = false;
     }
 
@@ -36,6 +39,7 @@ abstract class View {
      */
     public async destory(): Promise<void> {
         console.log("destory " + this.viewName);
+        this.events.destory();
         this.elm.classList.add("destory");
     }
 
