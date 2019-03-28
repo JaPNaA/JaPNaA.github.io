@@ -1,5 +1,5 @@
 import View from "../view";
-import IApp from "../../../types/app";
+import IApp from "../../../types/app/iApp";
 import IFrame from "../../widgets/iframe/iframe";
 import ViewMap from "../viewMap";
 import SiteResources from "../../../siteResources";
@@ -129,7 +129,7 @@ class FrameView extends View {
     }
 
     private closeSelf() {
-        this.app.closeView(this);
+        this.app.views.close(this);
     }
 }
 

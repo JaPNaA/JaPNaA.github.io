@@ -93,7 +93,7 @@ function replaceViewElement(elm: Element, viewClass: ViewClass) {
 
     const view = new viewClass(embededApp, stateData || undefined);
     view.setup();
-    embededApp.addView(view);
+    embededApp.views.add(view);
 }
 
 function replaceWidgetElements(div: HTMLDivElement) {

@@ -1,4 +1,4 @@
-import IApp from "../../types/app";
+import IApp from "../../types/app/iApp";
 
 abstract class View {
     protected abstract elm: HTMLElement;

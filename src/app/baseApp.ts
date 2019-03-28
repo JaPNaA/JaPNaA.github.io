@@ -1,24 +1,17 @@
-import View from "../elm/views/view";
-import ViewClass from "../types/viewClass";
-import EventHandlers from "../utils/events/eventHandlers";
-import Handler from "../utils/events/handler";
-import IApp from "../types/app";
-import IURLMan from "../components/url/iUrlMan";
+import IApp from "../types/app/iApp";
+import AppURL from "./components/url";
+import AppEvents from "./components/events";
+import AppViews from "./components/views";
 
 abstract class BaseApp implements IApp {
     public width: number;
     public height: number;
 
-    /** Url manager for app */
-    public abstract url: IURLMan;
-    /** EventHandlers for resize */
-    protected abstract resizeHandlers: EventHandlers;
-    /** Main element app lives in */
     protected mainElm: HTMLDivElement;
-    /** All active scenes in app */
-    private activeViews: View[];
 
-    private viewChangeHandlers: EventHandlers;
+    public url: AppURL;
+    public events: AppEvents;
+    public views: AppViews;
 
     constructor() {
         this.width = innerWidth;
@@ -27,8 +20,9 @@ abstract class BaseApp implements IApp {
         this.mainElm = document.createElement("div");
         this.mainElm.classList.add("main");
 
-        this.activeViews = [];
-        this.viewChangeHandlers = new EventHandlers();
+        this.events = new AppEvents(this);
+        this.url = new AppURL(this.events);
+        this.views = new AppViews(this, this.events, this.mainElm);
     }
 
     public async setup(): Promise<void> {
@@ -37,80 +31,6 @@ abstract class BaseApp implements IApp {
 
     public async destory(): Promise<void> {
         console.log("destory BaseApp");
-    }
-
-    public getTopView(): View | undefined {
-        return this.activeViews[this.activeViews.length - 1];
-    }
-
-    public switchAndInitView(viewClass: ViewClass): View {
-        const view: View = new viewClass(this);
-        view.setup();
-        this.switchView(view);
-        return view;
-    }
-
-    public switchView(view: View): void {
-        for (let i = this.activeViews.length - 1; i >= 0; i--) {
-            const activeView = this.activeViews[i];
-            this.closeView(activeView);
-        }
-        this.addViewBehind(view);
-    }
-
-    public openView(viewClass: ViewClass): View {
-        const view: View = new viewClass(this);
-        view.setup();
-        this.addView(view);
-        return view;
-    }
-
-    public openViewBehind(viewClass: ViewClass): View {
-        const view: View = new viewClass(this);
-        view.setup();
-        this.addView(view);
-        return view;
-    }
-
-    public addViewBehind(view: View): void {
-        view.appendAtStartTo(this.mainElm);
-        this.activeViews.unshift(view);
-        this.dispatchViewChange();
-    }
-
-    public addView(view: View): void {
-        view.appendTo(this.mainElm);
-        this.activeViews.push(view);
-        this.dispatchViewChange();
-    }
-
-    public closeView(view: View): void {
-        const i: number = this.activeViews.indexOf(view);
-        if (i < 0) { throw new Error("Attempt to remove view not in activeViews"); }
-        this.activeViews.splice(i, 1);
-
-        view.destory().then(() => view.removeFrom(this.mainElm));
-        this.dispatchViewChange();
-    }
-
-    public onViewChange(handler: Handler): void {
-        this.viewChangeHandlers.add(handler);
-    }
-
-    public offViewChange(handler: Handler): void {
-        this.viewChangeHandlers.remove(handler);
-    }
-
-    public onResize(handler: Handler): void {
-        this.resizeHandlers.add(handler);
-    }
-
-    public offResize(handler: Handler): void {
-        this.resizeHandlers.remove(handler);
-    }
-
-    private dispatchViewChange(): void {
-        this.viewChangeHandlers.dispatch();
     }
 }
 

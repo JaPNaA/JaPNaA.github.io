@@ -4,7 +4,7 @@ import Display from "../../types/project/display";
 import DisplayImg from "../../types/project/displayImg";
 import triggerTransitionIn from "../../utils/triggerTransitionIn";
 import SiteResources from "../../siteResources";
-import IApp from "../../types/app";
+import IApp from "../../types/app/iApp";
 
 // TODO: refactor, along with it's .less companion!
 
@@ -29,13 +29,13 @@ class CardJSONv1Elm {
 
     public setup() {
         this.resizeHandler = this.resizeHandler.bind(this);
-        this.app.onResize(this.resizeHandler);
+        this.app.events.onResize(this.resizeHandler);
         this.parse();
         this.resizeHandler();
     }
 
     public destory() {
-        this.app.offResize(this.resizeHandler);
+        this.app.events.offResize(this.resizeHandler);
     }
 
     public appendTo(parent: HTMLElement): void {

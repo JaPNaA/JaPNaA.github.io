@@ -3,7 +3,7 @@ import ICard from "../../../types/project/card";
 import CardJSONv1Elm from "../../../components/jsonToElm/cardV1";
 import ViewMap from "../viewMap";
 import SiteConfig from "../../../siteConfig";
-import IApp from "../../../types/app";
+import IApp from "../../../types/app/iApp";
 import SiteResources from "../../../siteResources";
 import IInfoJSON from "../../../types/infojson";
 import FrameView from "./frameView";
@@ -100,7 +100,7 @@ class ProjectInfoView extends View {
         view.preventRedirection();
         view.setup();
         view.animateTransitionIn();
-        this.app.addView(view);
+        this.app.views.add(view);
 
         event.preventDefault();
     }

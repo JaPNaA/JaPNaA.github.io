@@ -5,7 +5,7 @@ import StickyBar from "../../widgets/stickyBar/stickyBar";
 import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../siteResources";
 import htmlViewParse from "../../../components/htmlViewParser/htmlViewParser";
-import IApp from "../../../types/app";
+import IApp from "../../../types/app/iApp";
 
 class Overview extends View {
     public static viewName = "Overview";

@@ -1,5 +1,5 @@
 import View from "../view";
-import IApp from "../../../types/app";
+import IApp from "../../../types/app/iApp";
 import ViewMap from "../viewMap";
 
 class View404 extends View {
@@ -43,7 +43,7 @@ class View404 extends View {
         }
 
         this.resizeHandler = this.resizeHandler.bind(this);
-        this.app.onResize(this.resizeHandler);
+        this.app.events.onResize(this.resizeHandler);
         this.resizeHandler();
     }
 
@@ -53,7 +53,7 @@ class View404 extends View {
         if (this.X) {
             this.canvas.removeEventListener("mousemove", this.mouseMoveHandler);
         }
-        this.app.offResize(this.resizeHandler);
+        this.app.events.offResize(this.resizeHandler);
 
         removeEventListener("resize", this.resizeHandler);
     }

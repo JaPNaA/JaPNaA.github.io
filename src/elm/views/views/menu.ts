@@ -1,7 +1,7 @@
 import View from "../view";
 import triggerTransitionIn from "../../../utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
-import IApp from "../../../types/app";
+import IApp from "../../../types/app/iApp";
 import AllProjects from "./allProjects";
 
 class Menu extends View {
@@ -57,7 +57,7 @@ class Menu extends View {
         const button = document.createElement("button");
         button.innerText = "All projects";
         button.addEventListener("click", () => {
-            this.app.switchAndInitView(AllProjects);
+            this.app.views.switchAndInit(AllProjects);
         });
         contents.appendChild(button);
 
@@ -71,7 +71,7 @@ class Menu extends View {
     }
 
     private backgroundClickHandler() {
-        this.app.closeView(this);
+        this.app.views.close(this);
     }
 }
 

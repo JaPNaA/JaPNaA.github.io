@@ -10,13 +10,11 @@ import BaseApp from "./baseApp";
 import EventHandlers from "../utils/events/eventHandlers";
 
 class App extends BaseApp {
-    public url: URLManager;
     protected resizeHandlers: EventHandlers;
     private globalWidget: GlobalWidget;
 
     constructor() {
         super();
-        this.url = new URLManager();
         this.resizeHandlers = new EventHandlers();
         this.globalWidget = new GlobalWidget(this);
     }
@@ -30,15 +28,15 @@ class App extends BaseApp {
         this.globalWidget.appendTo(this.mainElm);
         document.body.appendChild(this.mainElm);
 
-        const splashScreen: View = this.openView(SplashScreen);
+        const splashScreen: View = this.views.open(SplashScreen);
 
         this.url.restoreIfShould(this);
         if (!this.url.restoredFromRedirect) {
-            this.openView(Overview);
+            this.views.open(Overview);
         }
 
         await SiteResources.nextDone();
-        this.closeView(splashScreen);
+        this.views.close(splashScreen);
     }
 
     private addEventHandlers() {

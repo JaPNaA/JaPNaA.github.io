@@ -37,21 +37,21 @@ class GlobalWidget extends Widget {
 
     private addEventHandlers(): void {
         this.viewChangeHandler = this.viewChangeHandler.bind(this);
-        this.app.onViewChange(this.viewChangeHandler);
-        this.app.onResize(this.viewChangeHandler);
+        this.app.events.onViewChange(this.viewChangeHandler);
+        this.app.events.onResize(this.viewChangeHandler);
         SiteResources.onDone(this.viewChangeHandler);
 
         this.elm.addEventListener("click", () => {
             const menu = new Menu(this.app);
             menu.setup();
             menu.animateTransitionIn();
-            this.app.addView(menu);
+            this.app.views.add(menu);
         });
     }
 
     private removeEventHandlers(): void {
-        this.app.offViewChange(this.viewChangeHandler);
-        this.app.offResize(this.viewChangeHandler);
+        this.app.events.offViewChange(this.viewChangeHandler);
+        this.app.events.offResize(this.viewChangeHandler);
         SiteResources.offDone(this.viewChangeHandler);
     }
 
@@ -60,7 +60,7 @@ class GlobalWidget extends Widget {
     }
 
     private updateState(): void {
-        const topView = this.app.getTopView();
+        const topView = this.app.views.top();
 
         if (topView) {
             if (topView.canScroll() && !SiteConfig.isMobile) {

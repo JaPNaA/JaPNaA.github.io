@@ -1,5 +1,5 @@
 import View from "../view";
-import IApp from "../../../types/app";
+import IApp from "../../../types/app/iApp";
 import ViewMap from "../viewMap";
 
 class AllProjects extends View {

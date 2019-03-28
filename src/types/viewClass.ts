@@ -1,5 +1,5 @@
 import Scene from "../elm/views/view";
-import IApp from "./app";
+import IApp from "./app/iApp";
 
 interface ViewClass {
     viewName: string;

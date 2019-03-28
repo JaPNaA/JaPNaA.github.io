@@ -55,9 +55,9 @@ class URLManager implements IURLMan {
         if (viewClass) {
             const view = new viewClass(app, urlParsed.viewStateData);
             view.setup();
-            app.addViewBehind(view);
+            app.views.addBehind(view);
         } else {
-            app.openViewBehind(View404);
+            app.views.openBehind(View404);
         }
 
         this.restoredFromRedirect = true;
