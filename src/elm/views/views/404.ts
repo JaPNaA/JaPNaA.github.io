@@ -5,10 +5,10 @@ import ViewMap from "../viewMap";
 class View404 extends View {
     public static viewName = "View404";
     public viewName = View404.viewName;
+    public isFullPage = false;
 
     protected elm: HTMLDivElement;
     protected canvas: HTMLCanvasElement;
-    protected isFullPage = false;
 
     private X: CanvasRenderingContext2D;
     private mouseX: number;

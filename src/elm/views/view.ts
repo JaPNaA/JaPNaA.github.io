@@ -4,12 +4,12 @@ import EventManager from "../../components/view/eventManager";
 abstract class View {
     protected abstract elm: HTMLElement;
 
+    public isFullPage: boolean;
+    public viewName: string = null as any as string;
+    public showGlobalWidget: boolean = true;
+
     protected app: IApp;
     protected events: EventManager;
-    protected isFullPage: boolean;
-
-    public viewName?: string;
-    public showGlobalWidget: boolean = true;
 
     constructor(app: IApp) {
         this.app = app;
@@ -24,8 +24,7 @@ abstract class View {
         this.elm.classList.add(viewName);
 
         if (this.isFullPage) {
-            this.app.url.pushState(viewName);
-            this.updateStateURL();
+            this.app.url.register(this);
         }
 
         console.log("setup " + this.viewName);
@@ -41,6 +40,10 @@ abstract class View {
         console.log("destory " + this.viewName);
         this.events.destory();
         this.elm.classList.add("destory");
+
+        if (this.isFullPage) {
+            this.app.url.unregister(this);
+        }
     }
 
     /** Appends scene element to element */
@@ -63,16 +66,12 @@ abstract class View {
         return this.elm.scrollHeight > this.elm.clientHeight;
     }
 
-    /** Resizes the view */
-    public resize(width: number, height: number): void {
-        //
-    }
+    /** Gets the view state for the URL */
+    public getState(): string | undefined { return; }
 
     /** Updates the URL state */
     protected updateStateURL(): void {
-        if (this.isFullPage) {
-            this.app.url.setState(this.viewName as string);
-        }
+        this.app.url.update();
     }
 }
 

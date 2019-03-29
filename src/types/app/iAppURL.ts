@@ -1,4 +1,7 @@
+import View from "../../elm/views/view";
+
 export default interface IAppURL {
-    pushState(...x: string[]): any;
-    setState(...x: string[]): void;
+    register(view: View): void;
+    unregister(view: View): void;
+    update(): void;
 }

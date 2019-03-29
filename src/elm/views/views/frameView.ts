@@ -46,7 +46,7 @@ class FrameView extends View {
             this.setPath(path);
         }
 
-        this.app.url.pushState(this.viewName, this.path);
+        // POSSIBLE BUG: State not pushed
     }
 
     public preventRedirection(): void {
@@ -79,13 +79,17 @@ class FrameView extends View {
         this.iframe.appendTo(this.elm);
         this.iframe.focus();
 
-        this.app.url.setState(this.viewName, this.path);
+        // this.app.url.setState(this.viewName, this.path);
         this.addEventHandlers();
     }
 
     public async destory(): Promise<void> {
         await super.destory();
         await wait(FrameView.destoryTime);
+    }
+
+    public getState(): string | undefined {
+        return this.path;
     }
 
     private addEventHandlers() {

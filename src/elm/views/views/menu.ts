@@ -7,9 +7,9 @@ import AllProjects from "./allProjects";
 class Menu extends View {
     public static viewName: string = "Menu";
     public viewName: string = Menu.viewName;
+    public isFullPage: boolean = false;
 
     protected elm: HTMLDivElement;
-    protected isFullPage: boolean = false;
 
     private static transitionInTimeout: number = 600;
     private static transitionOutTimeout: number = 300;

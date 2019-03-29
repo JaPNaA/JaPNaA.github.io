@@ -25,6 +25,15 @@ class AppViews implements IAppViews {
         return this.activeViews[this.activeViews.length - 1];
     }
 
+    public firstFullTop(): View | undefined {
+        for (let i = this.activeViews.length - 1; i >= 0; i--) {
+            const view = this.activeViews[i];
+            if (view.isFullPage) {
+                return view;
+            }
+        }
+    }
+
     public switchAndInit(viewClass: ViewClass): View {
         const view: View = new viewClass(this.app);
         view.setup();

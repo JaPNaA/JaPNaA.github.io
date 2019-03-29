@@ -7,6 +7,7 @@ import SiteResources from "../siteResources";
 import GlobalWidget from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
 import EventHandlers from "../utils/events/eventHandlers";
+import wait from "../utils/wait";
 
 class App extends BaseApp {
     protected resizeHandlers: EventHandlers;

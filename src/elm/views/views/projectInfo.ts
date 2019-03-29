@@ -11,9 +11,9 @@ import FrameView from "./frameView";
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
     public viewName = ProjectInfoView.viewName;
+    public isFullPage: boolean = true;
 
     protected elm: HTMLDivElement;
-    protected isFullPage: boolean = true;
 
     private project?: ICard;
     private loadingPromise?: Promise<void>;
@@ -50,11 +50,11 @@ class ProjectInfoView extends View {
         this.loadingPromise = undefined;
     }
 
-    protected updateStateURL(): void {
+    public getState(): string | undefined {
         if (this.projectIndex !== undefined && this.projectYear !== undefined) {
-            this.app.url.setState(this.viewName, `${this.projectYear}.${this.projectIndex}`);
+            return `${this.projectYear}.${this.projectIndex}`;
         } else {
-            this.app.url.setState(this.viewName);
+            return;
         }
     }
 
