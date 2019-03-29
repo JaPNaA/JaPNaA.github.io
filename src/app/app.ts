@@ -31,7 +31,7 @@ class App extends BaseApp {
         const splashScreen: View = this.views.open(SplashScreen);
 
         this.url.restoreIfShould();
-        if (!this.url.restoredFromRedirect) {
+        if (!this.url.restored) {
             this.views.open(Overview);
         }
 

@@ -6,7 +6,7 @@ import View from "../../elm/views/view";
 import AppState from "../../types/appState";
 
 class AppURL implements IAppURL {
-    public restoredFromRedirect: boolean = false;
+    public restored: boolean = false;
 
     private app: BaseApp;
     private appEvents: AppEvents;
@@ -21,7 +21,7 @@ class AppURL implements IAppURL {
         this.controller = new URLController();
         this.history = [];
 
-        this.attachViewChangeHandler();
+        this.attachEventHandlers();
     }
 
     public setFake() {
@@ -30,17 +30,8 @@ class AppURL implements IAppURL {
 
     public restoreIfShould(): void {
         if (this.isFake) { return; }
-        this.controller.restoreIfShould(this.app);
-        this.restoredFromRedirect = this.controller.restoredFromRedirect;
-    }
-
-    private attachViewChangeHandler(): void {
-        this.viewChangeHandler = this.viewChangeHandler.bind(this);
-        this.appEvents.onViewChange(this.viewChangeHandler);
-    }
-
-    private viewChangeHandler(): void {
-        this.update();
+        this.controller.restoreFromRedirect(this.app);
+        this.restored = this.controller.restored;
     }
 
     public register(view: View): void {
@@ -72,6 +63,25 @@ class AppURL implements IAppURL {
         } else {
             this.clearState();
         }
+    }
+
+    private attachEventHandlers(): void {
+        this.viewChangeHandler = this.viewChangeHandler.bind(this);
+        this.appEvents.onViewChange(this.viewChangeHandler);
+
+        this.popStateHandler = this.popStateHandler.bind(this);
+        addEventListener("popstate", this.popStateHandler);
+    }
+
+    private viewChangeHandler(): void {
+        this.update();
+    }
+
+    private popStateHandler(event: PopStateEvent): void {
+        console.log("popstate", event);
+        this.history = [];
+        this.app.views.closeAllViews();
+        this.controller.restoreFromURL(this.app, location.href);
     }
 
     private setState(viewName: string, stateData?: string) {

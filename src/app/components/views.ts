@@ -42,10 +42,7 @@ class AppViews implements IAppViews {
     }
 
     public switch(view: View): void {
-        for (let i = this.activeViews.length - 1; i >= 0; i--) {
-            const activeView = this.activeViews[i];
-            this.close(activeView);
-        }
+        this.closeAllViews();
         this.addBehind(view);
     }
 
@@ -73,6 +70,13 @@ class AppViews implements IAppViews {
         view.appendTo(this.mainElm);
         this.activeViews.push(view);
         this.appEvents.dispatchViewChange();
+    }
+
+    public closeAllViews(): void {
+        for (let i = this.activeViews.length - 1; i >= 0; i--) {
+            const activeView = this.activeViews[i];
+            this.close(activeView);
+        }
     }
 
     public close(view: View): void {

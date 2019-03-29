@@ -4,9 +4,10 @@ import ViewMap from "../../elm/views/viewMap";
 import url from "url";
 import View404 from "../../elm/views/views/404";
 import IApp from "../../types/app/iApp";
+import AppState from "../../types/appState";
 
 class URLController {
-    public restoredFromRedirect: boolean;
+    public restored: boolean;
 
     private fromRedirect: boolean;
     private initalSearch: string;
@@ -20,7 +21,7 @@ class URLController {
 
         this.fromRedirect = false;
         this.stateEmpty = true;
-        this.restoredFromRedirect = false;
+        this.restored = false;
 
         this.setToOldURL();
     }
@@ -44,22 +45,34 @@ class URLController {
         document.title = title;
     }
 
-    public restoreIfShould(app: IApp) {
+    public restoreFromRedirect(app: IApp): void {
         if (!this.fromRedirect) { return; }
+        this.restoreFromURL(app, this.initalURL);
+    }
 
-        const urlParsed = this.parseInitalURL();
+    public restoreFromURL(app: IApp, url: string): void {
+        const urlParsed = this.parseURL(url);
         if (!urlParsed) { return; }
 
-        const viewClass = ViewMap.get(urlParsed.viewName);
-        if (viewClass) {
-            const view = new viewClass(app, urlParsed.viewStateData);
-            view.setup();
-            app.views.addBehind(view);
-        } else {
+        this.restore(app, urlParsed);
+
+        if (!this.restored) {
             app.views.openBehind(View404);
         }
 
-        this.restoredFromRedirect = true;
+        this.restored = true;
+    }
+
+    public restore(app: IApp, state: AppState) {
+        const viewClass = ViewMap.get(state.viewName);
+        if (viewClass) {
+            const view = new viewClass(app, state.stateData);
+            view.setup();
+            app.views.addBehind(view);
+            this.restored = true;
+        } else {
+            this.restored = false;
+        }
     }
 
     private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
@@ -93,8 +106,8 @@ class URLController {
         }
     }
 
-    private parseInitalURL(): { viewName: string, viewStateData?: string } | undefined {
-        const cleanURL = url.parse(this.initalURL);
+    private parseURL(href: string): AppState | undefined {
+        const cleanURL = url.parse(href);
         if (!cleanURL.path) return;
         const cleanPath = cleanURL.path.slice(1);
 
@@ -103,9 +116,9 @@ class URLController {
             return { viewName: cleanPath };
         } else {
             const viewName = cleanPath.slice(0, divisorIndex);
-            const viewStateData = decodeURIComponent(cleanPath.slice(divisorIndex + 1));
+            const stateData = decodeURIComponent(cleanPath.slice(divisorIndex + 1));
 
-            return { viewName, viewStateData };
+            return { viewName, stateData };
         }
     }
 }

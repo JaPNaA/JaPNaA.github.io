@@ -1,6 +1,6 @@
 interface AppState {
     viewName: string,
-    stateData: string | undefined
+    stateData?: string
 };
 
 export default AppState;
