@@ -2,6 +2,7 @@ import IApp from "../types/app/iApp";
 import AppURL from "./components/url";
 import AppEvents from "./components/events";
 import AppViews from "./components/views";
+import IAppURL from "../types/app/iAppURL";
 
 abstract class BaseApp implements IApp {
     public width: number;
@@ -9,7 +10,7 @@ abstract class BaseApp implements IApp {
 
     protected mainElm: HTMLDivElement;
 
-    public url: AppURL;
+    public abstract url: IAppURL;
     public events: AppEvents;
     public views: AppViews;
 
@@ -21,7 +22,6 @@ abstract class BaseApp implements IApp {
         this.mainElm.classList.add("main");
 
         this.events = new AppEvents(this);
-        this.url = new AppURL(this, this.events);
         this.views = new AppViews(this, this.events, this.mainElm);
     }
 

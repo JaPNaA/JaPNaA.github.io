@@ -1,12 +1,14 @@
 import BaseApp from "./baseApp";
+import FakeAppURL from "./components/fakeUrl";
 
 class EmbededApp extends BaseApp {
     private parentElm: Element;
+    public url: FakeAppURL;
 
     constructor(parentElm: Element) {
         super();
         this.parentElm = parentElm;
-        this.url.setFake();
+        this.url = new FakeAppURL();
     }
 
     public async setup(): Promise<void> {

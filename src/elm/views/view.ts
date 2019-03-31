@@ -1,19 +1,26 @@
 import IApp from "../../types/app/iApp";
 import EventManager from "../../components/view/eventManager";
+import EventHandlers from "../../utils/events/eventHandlers";
+import Handler from "../../utils/events/handler";
 
 abstract class View {
+    private static vidCounter = 0;
+
     protected abstract elm: HTMLElement;
 
+    public id: number = View.vidCounter++;
     public isFullPage: boolean;
     public viewName: string = null as any as string;
     public showGlobalWidget: boolean = true;
 
     protected app: IApp;
     protected events: EventManager;
+    private destoryHandlers: EventHandlers;
 
     constructor(app: IApp) {
         this.app = app;
         this.events = new EventManager(app.events);
+        this.destoryHandlers = new EventHandlers();
         this.isFullPage = false;
     }
 
@@ -24,7 +31,8 @@ abstract class View {
         this.elm.classList.add(viewName);
 
         if (this.isFullPage) {
-            this.app.url.register(this);
+            console.log("register page", this.viewName);
+            this.app.url.pushHistory(this);
         }
 
         console.log("setup " + this.viewName);
@@ -38,12 +46,9 @@ abstract class View {
      */
     public async destory(): Promise<void> {
         console.log("destory " + this.viewName);
+        this.destoryHandlers.dispatch();
         this.events.destory();
         this.elm.classList.add("destory");
-
-        if (this.isFullPage) {
-            this.app.url.unregister(this);
-        }
     }
 
     /** Appends scene element to element */
@@ -68,6 +73,16 @@ abstract class View {
 
     /** Gets the view state for the URL */
     public getState(): string | undefined { return; }
+
+    /** Add destory handler */
+    public onDestory(handler: Handler): void { 
+        this.destoryHandlers.add(handler);
+    }
+
+    /** Remove destory handler */
+    public offDestory(handler: Handler): void {
+        this.destoryHandlers.remove(handler);
+    }
 
     /** Updates the URL state */
     protected updateStateURL(): void {

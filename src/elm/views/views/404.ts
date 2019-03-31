@@ -50,10 +50,11 @@ class View404 extends View {
     public async destory(): Promise<void> {
         await super.destory();
 
+        console.log("DESTORY VIEW 404 #" + this.id);
+
         if (this.X) {
             this.canvas.removeEventListener("mousemove", this.mouseMoveHandler);
         }
-        this.events.offResize(this.resizeHandler);
 
         removeEventListener("resize", this.resizeHandler);
     }

@@ -8,13 +8,16 @@ import GlobalWidget from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
 import EventHandlers from "../utils/events/eventHandlers";
 import wait from "../utils/wait";
+import AppURL from "./components/url";
 
 class App extends BaseApp {
     protected resizeHandlers: EventHandlers;
     private globalWidget: GlobalWidget;
+    public url: AppURL;
 
     constructor() {
         super();
+        this.url = new AppURL(this, this.events);
         this.resizeHandlers = new EventHandlers();
         this.globalWidget = new GlobalWidget(this);
     }

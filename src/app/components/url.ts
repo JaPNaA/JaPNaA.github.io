@@ -13,7 +13,7 @@ class AppURL implements IAppURL {
 
     private controller: URLController;
     private history: AppState[];
-    private isFake: boolean = false;
+    private frozen: boolean;
 
     constructor(app: BaseApp, appEvents: AppEvents) {
         this.app = app;
@@ -21,45 +21,35 @@ class AppURL implements IAppURL {
         this.controller = new URLController();
         this.history = [];
 
+        this.frozen = false;
+
         this.attachEventHandlers();
     }
 
-    public setFake() {
-        this.isFake = true;
-    }
-
     public restoreIfShould(): void {
-        if (this.isFake) { return; }
         this.controller.restoreFromRedirect(this.app);
         this.restored = this.controller.restored;
     }
 
-    public register(view: View): void {
+    public pushHistory(view: View): void {
         const viewState = view.getState();
         this.history.push({
             viewName: view.viewName,
+            id: view.id,
             stateData: viewState
         });
         this.pushState(view.viewName, viewState);
     }
 
-    public unregister(view: View): void {
-        const lastEntry = this.history[this.history.length - 1];
-        if (lastEntry && lastEntry.viewName === view.viewName) {
-            history.back();
-            this.history.pop();
-        } else {
-            console.warn("Failed to unregister a view.", lastEntry, view);
-        }
-    }
-
     public update(): void {
-        if (this.isFake) { return; }
         const topView = this.app.views.firstFullTop();
         if (topView) {
             const viewState = topView.getState();
-            this.setState(topView.viewName, viewState);
-            this.history[this.history.length - 1].stateData = viewState;
+            const historyEntry = this.history.find((v) => v.id == topView.id);
+
+            if (!historyEntry) { throw new Error("Cannot update state with unregistered view"); }
+            this.setURLState(topView.viewName, viewState);
+            historyEntry.stateData = viewState;
         } else {
             this.clearState();
         }
@@ -78,24 +68,32 @@ class AppURL implements IAppURL {
     }
 
     private popStateHandler(event: PopStateEvent): void {
+        // TODO: Temporary fix
         console.log("popstate", event);
-        this.history = [];
+
+        const newURL = location.href;
+
+        this.frozen = true;
+
         this.app.views.closeAllViews();
-        this.controller.restoreFromURL(this.app, location.href);
+        this.history = [];
+        this.controller.restoreFromURL(this.app, newURL);
+
+        this.frozen = false;
     }
 
-    private setState(viewName: string, stateData?: string) {
-        if (this.isFake) { return; }
+    private setURLState(viewName: string, stateData?: string) {
+        if (this.frozen) { return; }
         this.controller.setState(viewName, stateData);
     }
 
     private pushState(viewName: string, stateData?: string) {
-        if (this.isFake) { return; }
+        if (this.frozen) { return; }
         this.controller.pushState(viewName, stateData);
     }
 
     private clearState() {
-        if (this.isFake) { return; }
+        if (this.frozen) { return; }
         this.controller.clearState();
     }
 }

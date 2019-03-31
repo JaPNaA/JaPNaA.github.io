@@ -54,6 +54,8 @@ class URLController {
         const urlParsed = this.parseURL(url);
         if (!urlParsed) { return; }
 
+        console.log('restore url', url);
+
         this.restore(app, urlParsed);
 
         if (!this.restored) {
@@ -69,6 +71,7 @@ class URLController {
             const view = new viewClass(app, state.stateData);
             view.setup();
             app.views.addBehind(view);
+            console.log("RESTORE", view);
             this.restored = true;
         } else {
             this.restored = false;

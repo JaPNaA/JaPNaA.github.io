@@ -1,5 +1,6 @@
 interface AppState {
     viewName: string,
+    id?: number,
     stateData?: string
 };
 

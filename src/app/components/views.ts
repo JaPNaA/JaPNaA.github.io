@@ -73,18 +73,25 @@ class AppViews implements IAppViews {
     }
 
     public closeAllViews(): void {
-        for (let i = this.activeViews.length - 1; i >= 0; i--) {
-            const activeView = this.activeViews[i];
-            this.close(activeView);
+        for (const view of this.activeViews) {
+            this.triggerClose(view);
         }
+        this.activeViews.length = 0;
+        console.log("close all views");
     }
 
     public close(view: View): void {
         const i: number = this.activeViews.indexOf(view);
         if (i < 0) { throw new Error("Attempt to remove view not in activeViews"); }
         this.activeViews.splice(i, 1);
+        this.triggerClose(view);
+    }
 
-        view.destory().then(() => view.removeFrom(this.mainElm));
+    private triggerClose(view: View) {
+        view.destory().then(() => {
+            view.removeFrom(this.mainElm);
+            console.log("remove view", view);
+        });
         this.appEvents.dispatchViewChange();
     }
 }
