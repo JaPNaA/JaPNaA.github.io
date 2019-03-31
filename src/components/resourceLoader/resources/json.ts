@@ -1,6 +1,5 @@
 import Resource from "./resource";
 import ResourceLoaderHooks from "../resourceLoaderHooks";
-import { JSONObject } from "../../../types/jsonObject";
 
 class JSONResource extends Resource {
     public path: string;
@@ -19,16 +18,21 @@ class JSONResource extends Resource {
         req.responseType = "text";
 
         req.addEventListener("load", () => {
-            this.data = JSON.parse(req.responseText);
-
             if (req.status >= 400) {
                 this.onErrorHandler(new Error(
                     "Failed to load " + this.path + ": " +
                     req.status + " (" + req.statusText + ")"
                 ));
-            } else {
-                this.onLoadHandler();
+                return;
             }
+
+            try {
+                this.data = JSON.parse(req.responseText);
+            } catch (err) {
+                this.onErrorHandler(err);
+                return;
+            }
+            this.onLoadHandler();
         });
 
         req.addEventListener("error", () => {
