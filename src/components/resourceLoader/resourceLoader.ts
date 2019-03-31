@@ -7,6 +7,8 @@ import Handler from "../../utils/events/handler";
 import TextResource from "./resources/text";
 import JSONResource from "./resources/json";
 
+type ResourceClass<T> = new (hooks: ResourceLoaderHooks, path: string) => T;
+
 class ResourceLoader {
     private toBeLoaded: number;
     private loaded: number;
@@ -59,43 +61,27 @@ class ResourceLoader {
     }
 
     public loadImage(path: string): ImageResource {
-        const existingResource: Resource | undefined = this.resources.get(path);
-        if (existingResource) {
-            // converting to unkown because of bug in typescript with returning 'this type
-            return existingResource as unknown as ImageResource;
-        }
-
-        const resource: ImageResource = new ImageResource(this.hooks, path);
-        // converting to unkown because of bug in typescript with returning 'this type
-        this.resources.set(path, resource as unknown as Resource);
-        this.toBeLoaded++;
-        return resource;
+        return this.loadResource<ImageResource>(path, ImageResource);
     }
 
     public loadText(path: string): TextResource {
-        const existingResource: Resource | undefined = this.resources.get(path);
-        if (existingResource) {
-            // converting to unkown because of bug in typescript with returning 'this type
-            return existingResource as unknown as TextResource;
-        }
-
-        const resource: TextResource = new TextResource(this.hooks, path);
-        // converting to unkown because of bug in typescript with returning 'this type
-        this.resources.set(path, resource as unknown as Resource);
-        this.toBeLoaded++;
-        return resource;
+        return this.loadResource<TextResource>(path, TextResource);
     }
 
     public loadJSON(path: string): JSONResource {
+        return this.loadResource<JSONResource>(path, JSONResource);
+    }
+
+    private loadResource<T>(path: string, tconstructor: ResourceClass<T>): T {
         const existingResource: Resource | undefined = this.resources.get(path);
         if (existingResource) {
             // converting to unkown because of bug in typescript with returning 'this type
-            return existingResource as unknown as JSONResource;
+            return existingResource as any as T;
         }
 
-        const resource: JSONResource = new JSONResource(this.hooks, path);
+        const resource: T = new tconstructor(this.hooks, path);
         // converting to unkown because of bug in typescript with returning 'this type
-        this.resources.set(path, resource as unknown as Resource);
+        this.resources.set(path, resource as any as Resource);
         this.toBeLoaded++;
         return resource;
     }

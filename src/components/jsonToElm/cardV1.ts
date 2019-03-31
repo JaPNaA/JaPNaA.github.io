@@ -83,7 +83,7 @@ class CardJSONv1Elm {
                 const src = displays[0].src;
 
                 if (src) {
-                    background.style.backgroundImage = `url(${SiteConfig.thingyLink}${src})`;
+                    background.style.backgroundImage = `url(${SiteConfig.path.thingy}${src})`;
                     this.elm.classList.add("backgroundImageExists");
                     this.backgroundImageExists = true;
                 }
@@ -189,7 +189,7 @@ class CardJSONv1Elm {
     private createDisplayImgIn(parent: HTMLElement, display: DisplayImg): void {
         if (display.src) {
             // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
-            const src = SiteConfig.thingyLink + display.src;
+            const src = SiteConfig.path.thingy + display.src;
             const img = SiteResources.loadImage(src).copyImage();
             img.classList.add("img");
             parent.appendChild(img);
@@ -206,7 +206,7 @@ class CardJSONv1Elm {
     private createLinkIn(block: HTMLElement): void {
         const link = document.createElement("a");
         link.classList.add("link");
-        link.href = SiteConfig.thingyLink + this.card.content.link;
+        link.href = SiteConfig.path.thingy + this.card.content.link;
         block.appendChild(link);
         this.viewProjectButton = link;
     }

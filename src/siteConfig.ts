@@ -3,7 +3,6 @@ import isMobile from "./utils/isMobile";
 import isIOS from "./utils/isIOS";
 
 class SiteConfig {
-    static thingyLink: string;
     static title: string = "JaPNaA";
 
     static path = {
@@ -16,6 +15,13 @@ class SiteConfig {
     
         view: {
             overview: "/assets/views/overview.html"
+        },
+
+        thingy: "",
+
+        repo: {
+            thingy: "/Thingy/",
+            thingy_: "/Thingy_"
         },
     
         content: "/assets/content/"
@@ -36,10 +42,8 @@ const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
 if (match) {
     const port = parseInt(location.port);
     if (!isNaN(port)) {
-        SiteConfig.thingyLink = match[0] + (port + 1);
+        SiteConfig.path.thingy = match[0] + (port + 1);
     }
-} else {
-    SiteConfig.thingyLink = "";
 }
 
 SiteConfig.isHandheld = isHandheld();

@@ -9,8 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
     "build-dev": "webpack --config webpack.dev.config.js",
-    "serve": "http-server docs",
-    "serve2": "http-server ../../../Thingy",
+    "serve": "http-server docs -p 8080",
+    "serve2": "http-server ../../../Thingy -p 8081 --cors=\"*\"",
     "clean": "rm docs/bundle.js"
   },
   "repository": {
