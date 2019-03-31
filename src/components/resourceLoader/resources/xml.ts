@@ -1,18 +1,21 @@
 import Resource from "./resource";
 import ResourceLoaderHooks from "../resourceLoaderHooks";
 
-class JSONResource extends Resource {
+class XMLResource extends Resource {
     public path: string;
-    public data?: any;
+    public document: Document = null as any as Document;
+    
+    private type: SupportedType;
 
-    constructor(hooks: ResourceLoaderHooks, path: string) {
+    constructor(hooks: ResourceLoaderHooks, path: string, type?: SupportedType) {
         super(hooks);
         this.path = path;
+        this.type = type || "text/xml";
 
-        this.getJSON(path);
+        this.getXML(path);
     }
 
-    private getJSON(path: string): void {
+    private getXML(path: string): void {
         const req = new XMLHttpRequest();
         req.open("GET", path);
         req.responseType = "text";
@@ -26,12 +29,8 @@ class JSONResource extends Resource {
                 return;
             }
 
-            try {
-                this.data = JSON.parse(req.responseText);
-            } catch (err) {
-                this.onErrorHandler(err);
-                return;
-            }
+            const parser = new DOMParser();
+            this.document = parser.parseFromString(req.responseText, this.type);
 
             this.onLoadHandler();
         });
@@ -44,4 +43,4 @@ class JSONResource extends Resource {
     }
 }
 
-export default JSONResource;
+export default XMLResource;

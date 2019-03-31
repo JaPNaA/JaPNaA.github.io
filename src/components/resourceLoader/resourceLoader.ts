@@ -6,8 +6,9 @@ import OnceHandlers from "../../utils/events/onceHandlers";
 import Handler from "../../utils/events/handler";
 import TextResource from "./resources/text";
 import JSONResource from "./resources/json";
+import XMLResource from "./resources/xml";
 
-type ResourceClass<T> = new (hooks: ResourceLoaderHooks, path: string) => T;
+type ResourceClass<T> = new (hooks: ResourceLoaderHooks, path: string, ...additionalArgs: any[]) => T;
 
 class ResourceLoader {
     private toBeLoaded: number;
@@ -72,14 +73,18 @@ class ResourceLoader {
         return this.loadResource<JSONResource>(path, JSONResource);
     }
 
-    private loadResource<T>(path: string, tconstructor: ResourceClass<T>): T {
+    public loadXML(path: string, type?: SupportedType): XMLResource {
+        return this.loadResource<XMLResource>(path, XMLResource, type);
+    }
+
+    private loadResource<T>(path: string, tconstructor: ResourceClass<T>, ...additionalArgs: any[]): T {
         const existingResource: Resource | undefined = this.resources.get(path);
         if (existingResource) {
             // converting to unkown because of bug in typescript with returning 'this type
             return existingResource as any as T;
         }
 
-        const resource: T = new tconstructor(this.hooks, path);
+        const resource: T = new tconstructor(this.hooks, path, ...additionalArgs);
         // converting to unkown because of bug in typescript with returning 'this type
         this.resources.set(path, resource as any as Resource);
         this.toBeLoaded++;

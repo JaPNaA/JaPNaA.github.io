@@ -20,8 +20,10 @@ class AllProjects extends View {
         super.setup();
         this.elm.innerText = "All my projects";
 
-        // SiteResources.loadXML(SiteConfig.path.thingy + SiteConfig.path.repo.thingy)
-        //     .onLoad(e => this.elm.innerText += e.text);
+        SiteResources.loadXML(
+            SiteConfig.path.thingy + SiteConfig.path.repo.thingy,
+            "text/html"
+        ).onLoad(e => this.elm.innerHTML += e.document.body.innerHTML);
     }
 }
 
