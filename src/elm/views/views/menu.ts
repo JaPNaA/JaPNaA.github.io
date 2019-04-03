@@ -2,7 +2,7 @@ import View from "../view";
 import triggerTransitionIn from "../../../utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
 import IApp from "../../../types/app/iApp";
-import AllProjects from "./allProjects";
+import AllThingies from "./allThingies";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -55,9 +55,9 @@ class Menu extends View {
         contents.innerText = "This the menu! Close button should be there -->\nBut I haven't added that, you can still close by clicking\n<-- over there";
 
         const button = document.createElement("button");
-        button.innerText = "All projects";
+        button.innerText = "All thingies";
         button.addEventListener("click", () => {
-            this.app.views.switchAndInit(AllProjects);
+            this.app.views.switchAndInit(AllThingies);
         });
         contents.appendChild(button);
 

@@ -4,9 +4,9 @@ import ViewMap from "../viewMap";
 import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
 
-class AllProjects extends View {
-    public static viewName = "AllProjects";
-    public viewName = AllProjects.viewName;
+class AllThingies extends View {
+    public static viewName = "AllThingies";
+    public viewName = AllThingies.viewName;
     protected elm: HTMLDivElement;
 
     public isFullPage = true;
@@ -18,15 +18,23 @@ class AllProjects extends View {
 
     public async setup() {
         super.setup();
-        this.elm.innerText = "All my projects";
+        const title = this.createTitle();
+        this.elm.appendChild(title);
 
         SiteResources.loadXML(
             SiteConfig.path.thingy + SiteConfig.path.repo.thingy,
             "text/html"
         ).onLoad(e => this.elm.innerHTML += e.document.body.innerHTML);
     }
+
+    private createTitle(): HTMLHeadingElement {
+        const title = document.createElement("h1");
+        title.classList.add("title");
+        title.innerText = "All my thingies";
+        return title;
+    }
 }
 
-ViewMap.add(AllProjects);
+ViewMap.add(AllThingies);
 
-export default AllProjects;
+export default AllThingies;
