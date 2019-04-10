@@ -5,7 +5,9 @@ import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
 import getLink from "../../../utils/isLink";
 import removeChildren from "../../../utils/removeChildren";
-import { resolve } from "url";
+import { resolve, parse } from "url";
+import IFrame from "../../widgets/iframe/iframe";
+import openPopup from "../../../utils/openPopup";
 
 class AllThingies extends View {
     public static viewName = "AllThingies";
@@ -66,9 +68,16 @@ class AllThingies extends View {
     }
 
     private navigate(link: string) {
-        this.contentHref = link;
-        SiteResources.loadXML(link, "text/html")
-            .onLoad(e => this.setPageContent(e.document));
+        const isSameHost = parse(link).hostname === location.hostname;
+
+        if (isSameHost) {
+            this.contentHref = link;
+            SiteResources.loadXML(link, "text/html")
+                .onLoad(e => this.setPageContent(e.document));
+        } else {
+            openPopup(link);
+        }
+
     }
 
     private setPageContent(doc: Document) {
