@@ -3,6 +3,8 @@ import triggerTransitionIn from "../../../utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
 import IApp from "../../../types/app/iApp";
 import AllThingies from "./allThingies";
+import ViewClass from "../../../types/viewClass";
+import Overview from "./overview";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -52,17 +54,52 @@ class Menu extends View {
     private createContents(): HTMLDivElement {
         const contents = document.createElement("div");
         contents.classList.add("contents");
-        contents.innerText = "This the menu! Close button should be there -->\nBut I haven't added that, you can still close by clicking\n<-- over there";
 
-        const button = document.createElement("button");
-        button.innerText = "All thingies";
-        button.addEventListener("click", () => {
-            this.app.views.switchAndInit(AllThingies);
-        });
-        contents.appendChild(button);
+        const children: HTMLElement[] = [
+            this.createTitle(),
+            this.createHeading("Navigate"),
+            this.createButtonThatOpens(Overview, "Title page"),
+            this.createButtonThatOpens(AllThingies, "All thingies"),
+            this.createCopyright()
+        ];
+
+        for (const child of children) {
+            contents.appendChild(child);
+        }
 
         this.elm.appendChild(contents);
         return contents;
+    }
+
+    private createTitle(): HTMLHeadingElement {
+        const title = document.createElement("h1");
+        title.classList.add("title");
+        title.innerText = "Menu";
+        return title;
+    }
+
+    private createHeading(label: string): HTMLHeadElement {
+        const heading = document.createElement("h2");
+        heading.classList.add("heading");
+        heading.innerText = label;
+        return heading;
+    }
+
+    private createButtonThatOpens(viewClass: ViewClass, label: string): HTMLDivElement {
+        const button = document.createElement("div");
+        button.innerText = label;
+        button.classList.add("viewButton");
+        button.addEventListener("click", () => {
+            this.app.views.switchAndInit(viewClass);
+        });
+        return button;
+    }
+
+    private createCopyright(): HTMLDivElement {
+        const copyright = document.createElement("div");
+        copyright.classList.add("copy");
+        copyright.innerHTML = "Copyright &copy; 2019 JaPNaA"
+        return copyright;
     }
 
     private addEventHandlers() {

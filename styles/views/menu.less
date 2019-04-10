@@ -21,18 +21,58 @@
 
         height: 100%;
         width: 33vw;
-        padding: 16px;
+        padding: 16px 0;
         box-sizing: border-box;
-        
+
         background-color: #000000;
         color: #d4d4d4;
 
         overflow: auto;
+
+        .title,
+        .heading {
+            margin-top: 8px;
+            margin-left: 16px;
+            margin-right: 16px;
+        }
+
+        .title {
+            font-size: 2em;
+            color: #ececec;
+            margin-bottom: 16px;
+        }
+
+        .heading {
+            color: #ececec;
+            margin-bottom: 8px;
+        }
+
+        .copy {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            color: #5c5c5c;
+        }
+
+        .viewButton {
+            border: none;
+            background-color: rgba(255, 255, 255, 0);
+            color: #fff;
+            width: 100%;
+            text-align: left;
+            padding: 8px 16px;
+            cursor: pointer;
+            box-sizing: border-box;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+        }
     }
 
     &.beforeTransitionIn {
         overflow: hidden;
-        
+
         .background {
             opacity: 0;
             will-change: opacity;
@@ -59,7 +99,7 @@
     &.destory {
         overflow: hidden;
         pointer-events: none;
-        
+
         .background {
             transition: 0.15s ease opacity;
             opacity: 0;
