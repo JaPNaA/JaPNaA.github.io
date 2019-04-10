@@ -6,8 +6,9 @@ import SiteConfig from "../../../siteConfig";
 import getLink from "../../../utils/isLink";
 import removeChildren from "../../../utils/removeChildren";
 import { resolve, parse } from "url";
-import IFrame from "../../widgets/iframe/iframe";
 import openPopup from "../../../utils/openPopup";
+
+// TODO: Match links with those in content/*.json and open projectinfo
 
 class AllThingies extends View {
     public static viewName = "AllThingies";
@@ -16,6 +17,7 @@ class AllThingies extends View {
 
     public isFullPage = true;
 
+    private static defaultTitle = "All my thingies";
     private title: HTMLDivElement;
     private pageContent: HTMLDivElement;
     private contentHref: string;
@@ -42,7 +44,7 @@ class AllThingies extends View {
     private createTitle(): HTMLHeadingElement {
         const title = document.createElement("h1");
         title.classList.add("title");
-        title.innerText = "All my thingies";
+        title.innerText = AllThingies.defaultTitle;
         this.elm.appendChild(title);
         return title;
     }
@@ -68,23 +70,44 @@ class AllThingies extends View {
     }
 
     private navigate(link: string) {
-        const isSameHost = parse(link).hostname === location.hostname;
+        const linkParsed = parse(link);
+        const isSameHost = linkParsed.hostname === location.hostname;
+        const depth = this.getLinkDepth(linkParsed.path);
 
-        if (isSameHost) {
+        console.log(depth);
+
+        if (isSameHost && depth <= 1) {
             this.contentHref = link;
             SiteResources.loadXML(link, "text/html")
                 .onLoad(e => this.setPageContent(e.document));
         } else {
             openPopup(link);
         }
+    }
 
+    private getLinkDepth(path?: string) {
+        if (!path) { return 0; }
+        const chunks = path.split("/");
+        let count = 0;
+        for (const chunk of chunks) {
+            if (chunk) { count++; }
+        }
+
+        console.log(chunks);
+
+        return count;
     }
 
     private setPageContent(doc: Document) {
         const elm = doc.body.children[0].cloneNode(true) as HTMLElement;
         removeChildren(this.pageContent);
         this.pageContent.appendChild(elm);
+        this.setTitle(doc.title);
         this.makeLinksAbsolute(elm);
+    }
+
+    private setTitle(title: string) {
+        this.title.innerText = title || AllThingies.defaultTitle;
     }
 
     private makeLinksAbsolute(elm: HTMLElement) {
