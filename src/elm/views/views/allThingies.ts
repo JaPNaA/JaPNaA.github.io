@@ -7,8 +7,21 @@ import getLink from "../../../utils/isLink";
 import removeChildren from "../../../utils/removeChildren";
 import { resolve, parse } from "url";
 import openPopup from "../../../utils/openPopup";
+import FrameView from "./frameView";
+import contentJSONPath from "../../../utils/paths/contentJson";
+import IInfoJSON from "../../../types/project/infojson";
+import isProjectCard from "../../../utils/isProjectCard";
+import ICard from "../../../types/project/card";
+import JSONResource from "../../../components/resourceLoader/resources/json";
+import ProjectInfoView from "./projectInfo";
 
 // TODO: Match links with those in content/*.json and open projectinfo
+
+type LinkMatch = {
+    year: number,
+    index: number,
+    data: ICard
+};
 
 class AllThingies extends View {
     public static viewName = "AllThingies";
@@ -21,15 +34,17 @@ class AllThingies extends View {
     private title: HTMLDivElement;
     private pageContent: HTMLDivElement;
     private contentHref: string;
+    private linkProjectMatchMap: Map<string, LinkMatch | null>;
 
     constructor(app: IApp, stateData?: string) {
         super(app)
         this.elm = document.createElement("div");
         this.title = this.createTitle();
         this.pageContent = this.createPageContent();
+        this.linkProjectMatchMap = new Map();
 
         if (stateData) {
-            this.contentHref = SiteConfig.path.thingy + "/" + stateData;
+            this.contentHref = SiteConfig.path.thingy + "/" + stateData + "/";
             console.log(this.contentHref);
         } else {
             this.contentHref = SiteConfig.path.thingy + SiteConfig.path.repo.thingy;
@@ -49,23 +64,6 @@ class AllThingies extends View {
 
     public getState(): string {
         return this.cleanPath();
-    }
-
-    private cleanPath(): string {
-        const urlParsed = parse(this.contentHref);
-        let path = urlParsed.path;
-
-        if (path) {
-            if (path.startsWith("/")) {
-                path = path.slice(1);
-            }
-            if (path.endsWith("/")) {
-                path = path.slice(0, path.length - 1);
-            }
-            return path;
-        } else {
-            return "";
-        }
     }
 
     private createTitle(): HTMLHeadingElement {
@@ -88,6 +86,23 @@ class AllThingies extends View {
         this.elm.addEventListener("click", this.linkClickHandler);
     }
 
+    private cleanPath(): string {
+        const urlParsed = parse(this.contentHref);
+        let path = urlParsed.path;
+
+        if (path) {
+            if (path.startsWith("/")) {
+                path = path.slice(1);
+            }
+            if (path.endsWith("/")) {
+                path = path.slice(0, path.length - 1);
+            }
+            return path;
+        } else {
+            return "";
+        }
+    }
+
     private linkClickHandler(event: MouseEvent) {
         const link = getLink(event.target);
         if (link) {
@@ -100,29 +115,39 @@ class AllThingies extends View {
         }
     }
 
+    private markAsLoading(elm: HTMLElement) {
+        elm.classList.add("loading");
+    }
+
     private navigate(link: string): boolean {
         const linkParsed = parse(link);
         const isSameHost = linkParsed.hostname === location.hostname;
-        const depth = this.getLinkDepth(linkParsed.path);
+        const depth = this.getPathDepth(linkParsed.path);
 
-        if (isSameHost && depth <= 1) {
-            this.app.url.pushHistory(this);
-            this.contentHref = link;
-            SiteResources.loadXML(link, "text/html")
-                .onLoad(e => this.setPageContent(e.document));
-            // this.updateStateURL();
-            return true;
+        if (isSameHost) {
+            if (depth <= 1) {
+                this.changeContentToView(link);
+                return true;
+            } else {
+                this.handleNavigateProjectLink(link);
+                return false;
+            }
         } else {
             openPopup(link);
             return false;
         }
     }
 
-    private markAsLoading(elm: HTMLElement) {
-        elm.classList.add("loading");
+    private handleNavigateProjectLink(link: string): void {
+        const match = this.linkProjectMatchMap.get(link);
+        if (match) {
+            this.openProjectView(match);
+        } else {
+            this.openFrameView(link);
+        }
     }
 
-    private getLinkDepth(path?: string) {
+    private getPathDepth(path?: string) {
         if (!path) { return 0; }
         const chunks = path.split("/");
         let count = 0;
@@ -133,12 +158,33 @@ class AllThingies extends View {
         return count;
     }
 
+    private changeContentToView(link: string): void {
+        this.app.url.pushHistory(this);
+        this.contentHref = link;
+        SiteResources.loadXML(link, "text/html")
+            .onLoad(e => this.setPageContent(e.document));
+    }
+
+    private openProjectView(match: LinkMatch): void {
+        const view = new ProjectInfoView(this.app);
+        view.setProject(match.data, match.year, match.index);
+        view.setup();
+        this.app.views.add(view);
+    }
+
+    private openFrameView(link: string): void {
+        const frameView = new FrameView(this.app, link);
+        frameView.preventRedirection();
+        frameView.setup();
+        this.app.views.add(frameView);
+    }
+
     private setPageContent(doc: Document) {
         const elm = doc.body.children[0].cloneNode(true) as HTMLElement;
         removeChildren(this.pageContent);
         this.pageContent.appendChild(elm);
         this.setTitle(doc.title);
-        this.makeLinksAbsolute(elm);
+        this.transformLinks(elm);
         this.app.events.dispatchViewChange();
     }
 
@@ -146,7 +192,7 @@ class AllThingies extends View {
         this.title.innerText = title || AllThingies.defaultTitle;
     }
 
-    private makeLinksAbsolute(elm: HTMLElement) {
+    private transformLinks(elm: HTMLElement) {
         const anchors = elm.getElementsByTagName("a");
 
         for (let i = 0; i < anchors.length; i++) {
@@ -154,8 +200,58 @@ class AllThingies extends View {
             const hrefAttrib = anchor.getAttribute("href");
 
             if (hrefAttrib) {
-                anchor.href = resolve(this.contentHref, hrefAttrib);
+                const href = resolve(this.contentHref, hrefAttrib);
+                anchor.href = href;
+                this.mapLinkToProject(href);
             }
+        }
+    }
+
+    private mapLinkToProject(href: string) {
+        const path = parse(href).path;
+        const depth = this.getPathDepth(path);
+
+        if (depth === 2) {
+            this.findMatchingEntry(href)
+                .then(e => this.linkProjectMatchMap.set(href, e));
+        }
+    }
+
+    private async findMatchingEntry(link: string): Promise<LinkMatch | null> {
+        const year = this.getYear(link);
+
+        if (!year) { return null; }
+
+        const data: JSONResource | null = await new Promise((res, rej) =>
+            SiteResources.loadJSON(contentJSONPath(year))
+                .onLoad(e => res(e))
+                .onError(e => res(null))
+        );
+        if (!data) { return null; }
+        const content = data.data as IInfoJSON;
+
+        for (let i = 0; i < content.data.length; i++) {
+            const entry = content.data[i];
+            if (!isProjectCard(entry)) { continue; }
+            const entryLink = resolve(SiteConfig.path.thingy, entry.content.link);
+            if (entryLink === link) {
+                return {
+                    year: parseInt(year),
+                    index: i,
+                    data: entry
+                };
+            }
+        }
+
+        return null;
+    }
+
+    private getYear(link: string): string | null {
+        const year = link.match(/Thingy_(\d+)/);
+        if (year) {
+            return year[1];
+        } else {
+            return null;
         }
     }
 }

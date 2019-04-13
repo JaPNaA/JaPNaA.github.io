@@ -3,10 +3,10 @@ import ViewClass from "../viewClass";
 
 export default interface IAppViews {
     top(): View | undefined;
-    switchAndInit(viewClass: ViewClass): View;
+    switchAndInit(viewClass: ViewClass, stateData?: string): View;
+    open(viewClass: ViewClass, stateData?: string): View;
+    openBehind(viewClass: ViewClass, stateData?: string): View;
     switch(view: View): void;
-    open(viewClass: ViewClass): View;
-    openBehind(viewClass: ViewClass): View;
     addBehind(view: View): void;
     add(view: View): void;
     close(view: View): void;

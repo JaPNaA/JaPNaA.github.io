@@ -21,7 +21,7 @@ abstract class Resource {
     }
 
     public onLoad(handler: Handler<this>): this {
-        if (this.loaded) {
+        if (this.loaded && !this.error) {
             handler(this);
         } else {
             this.loadHandlers.add(handler);

@@ -5,7 +5,7 @@ import ViewMap from "../viewMap";
 import SiteConfig from "../../../siteConfig";
 import IApp from "../../../types/app/iApp";
 import SiteResources from "../../../siteResources";
-import IInfoJSON from "../../../types/infojson";
+import IInfoJSON from "../../../types/project/infojson";
 import FrameView from "./frameView";
 
 class ProjectInfoView extends View {

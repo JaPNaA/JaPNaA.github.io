@@ -1,4 +1,4 @@
-import IProject from "./project/project";
+import IProject from "./project";
 
 interface IInfoJSON {
     /** Where all the main data is stored */

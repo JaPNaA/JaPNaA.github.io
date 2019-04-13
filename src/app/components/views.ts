@@ -34,30 +34,30 @@ class AppViews implements IAppViews {
         }
     }
 
-    public switchAndInit(viewClass: ViewClass): View {
-        const view: View = new viewClass(this.app);
+    public switchAndInit(viewClass: ViewClass, stateData?: string): View {
+        const view: View = new viewClass(this.app, stateData);
         view.setup();
         this.switch(view);
+        return view;
+    }
+
+    public open(viewClass: ViewClass, stateData?: string): View {
+        const view: View = new viewClass(this.app, stateData);
+        view.setup();
+        this.add(view);
+        return view;
+    }
+
+    public openBehind(viewClass: ViewClass, stateData?: string): View {
+        const view: View = new viewClass(this.app, stateData);
+        view.setup();
+        this.add(view);
         return view;
     }
 
     public switch(view: View): void {
         this.closeAllViews();
         this.addBehind(view);
-    }
-
-    public open(viewClass: ViewClass): View {
-        const view: View = new viewClass(this.app);
-        view.setup();
-        this.add(view);
-        return view;
-    }
-
-    public openBehind(viewClass: ViewClass): View {
-        const view: View = new viewClass(this.app);
-        view.setup();
-        this.add(view);
-        return view;
     }
 
     public addBehind(view: View): void {
