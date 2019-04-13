@@ -66,6 +66,7 @@ class AllThingies extends View {
         if (link) {
             event.preventDefault();
             this.navigate(link);
+            this.markAsLoading(event.target as HTMLElement);
         }
     }
 
@@ -83,6 +84,10 @@ class AllThingies extends View {
         } else {
             openPopup(link);
         }
+    }
+
+    private markAsLoading(elm: HTMLElement) {
+        elm.classList.add("loading");
     }
 
     private getLinkDepth(path?: string) {

@@ -1,9 +1,38 @@
 .view.AllThingies {
+    @link-color: #0045db;
+    @link-white: #abbce0;
+
     a {
+        color: @link-color;
         text-decoration: none;
         &::after {
             content: "\A";
             white-space: pre-wrap;
+        }
+    }
+
+    .loading {
+        background-color: @link-color;
+        background-image: linear-gradient(
+            90deg,
+            @link-color,
+            @link-white,
+            @link-color
+        );
+        background-size: 200%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        animation: loading 1s linear 0s infinite normal;
+    }
+
+    @keyframes loading {
+        0% {
+            background-position-x: -50%;
+        }
+        100% {
+            background-position-x: 150%;
         }
     }
 
