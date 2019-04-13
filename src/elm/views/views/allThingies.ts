@@ -64,13 +64,16 @@ class AllThingies extends View {
     private linkClickHandler(event: MouseEvent) {
         const link = getLink(event.target);
         if (link) {
+            const navigated = this.navigate(link);
             event.preventDefault();
-            this.navigate(link);
-            this.markAsLoading(event.target as HTMLElement);
+
+            if (navigated) {
+                this.markAsLoading(event.target as HTMLElement);
+            }
         }
     }
 
-    private navigate(link: string) {
+    private navigate(link: string): boolean {
         const linkParsed = parse(link);
         const isSameHost = linkParsed.hostname === location.hostname;
         const depth = this.getLinkDepth(linkParsed.path);
@@ -81,8 +84,10 @@ class AllThingies extends View {
             this.contentHref = link;
             SiteResources.loadXML(link, "text/html")
                 .onLoad(e => this.setPageContent(e.document));
+            return true;
         } else {
             openPopup(link);
+            return false;
         }
     }
 
