@@ -21,54 +21,72 @@
 
         height: 100%;
         width: 33vw;
-        padding: 16px 0;
         box-sizing: border-box;
 
         background-color: #000000;
         color: #d4d4d4;
+        overflow-y: auto;
+    }
 
-        overflow: auto;
+    .scrollContainer {
+        position: relative;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 16px;
+        padding-bottom: 64px;
 
-        .title,
-        .heading {
-            margin-top: 8px;
-            margin-left: 16px;
-            margin-right: 16px;
-        }
+        min-height: 100%;
+        height: auto;
 
-        .title {
-            font-size: 2em;
-            color: #ececec;
-            margin-bottom: 16px;
-        }
+        box-sizing: border-box;
+    }
 
-        .heading {
-            color: #ececec;
-            margin-bottom: 8px;
-        }
+    // --- Items in menu
 
-        .copy {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
-            color: #5c5c5c;
-        }
+    .title,
+    .heading {
+        margin-top: 8px;
+        margin-left: 16px;
+        margin-right: 16px;
+    }
 
-        .viewButton {
-            border: none;
-            background-color: rgba(255, 255, 255, 0);
-            color: #fff;
-            width: 100%;
-            text-align: left;
-            padding: 8px 16px;
-            cursor: pointer;
-            box-sizing: border-box;
+    .title {
+        font-size: 2em;
+        color: #ececec;
+        margin-bottom: 16px;
+    }
 
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.3);
-            }
+    .heading {
+        color: #ececec;
+        margin-bottom: 8px;
+    }
+
+    .copy {
+        position: absolute;
+        bottom: 16px;
+        left: 16px;
+        // margin: 16px;
+        color: #5c5c5c;
+    }
+
+    .viewButton {
+        border: none;
+        background-color: rgba(255, 255, 255, 0);
+        color: #fff;
+        width: 100%;
+        text-align: left;
+        padding: 8px 16px;
+        cursor: pointer;
+        box-sizing: border-box;
+        transition: 0.5s;
+
+        &:hover {
+            transition: none;
+            background-color: rgba(255, 255, 255, 0.3);
         }
     }
+
+    // --- Transitions
 
     &.beforeTransitionIn {
         overflow: hidden;

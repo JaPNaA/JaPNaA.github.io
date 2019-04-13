@@ -55,6 +55,9 @@ class Menu extends View {
         const contents = document.createElement("div");
         contents.classList.add("contents");
 
+        const scrollContainer = document.createElement("div");
+        scrollContainer.classList.add("scrollContainer");
+
         const children: HTMLElement[] = [
             this.createTitle(),
             this.createHeading("Navigate"),
@@ -64,9 +67,10 @@ class Menu extends View {
         ];
 
         for (const child of children) {
-            contents.appendChild(child);
+            scrollContainer.appendChild(child);
         }
 
+        contents.appendChild(scrollContainer);
         this.elm.appendChild(contents);
         return contents;
     }
