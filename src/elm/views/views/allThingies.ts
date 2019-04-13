@@ -15,8 +15,6 @@ import ICard from "../../../types/project/card";
 import JSONResource from "../../../components/resourceLoader/resources/json";
 import ProjectInfoView from "./projectInfo";
 
-// TODO: Match links with those in content/*.json and open projectinfo
-
 type LinkMatch = {
     year: number,
     index: number,
@@ -34,7 +32,7 @@ class AllThingies extends View {
     private title: HTMLDivElement;
     private pageContent: HTMLDivElement;
     private contentHref: string;
-    private linkProjectMatchMap: Map<string, LinkMatch | null>;
+    private linkProjectMatchMap: Map<string, LinkMatch | undefined>;
 
     constructor(app: IApp, stateData?: string) {
         super(app)
@@ -45,7 +43,6 @@ class AllThingies extends View {
 
         if (stateData) {
             this.contentHref = SiteConfig.path.thingy + "/" + stateData + "/";
-            console.log(this.contentHref);
         } else {
             this.contentHref = SiteConfig.path.thingy + SiteConfig.path.repo.thingy;
         }
@@ -176,6 +173,7 @@ class AllThingies extends View {
         const frameView = new FrameView(this.app, link);
         frameView.preventRedirection();
         frameView.setup();
+        frameView.animateTransitionIn();
         this.app.views.add(frameView);
     }
 
@@ -217,17 +215,17 @@ class AllThingies extends View {
         }
     }
 
-    private async findMatchingEntry(link: string): Promise<LinkMatch | null> {
+    private async findMatchingEntry(link: string): Promise<LinkMatch | undefined> {
         const year = this.getYear(link);
 
-        if (!year) { return null; }
+        if (!year) { return; }
 
         const data: JSONResource | null = await new Promise((res, rej) =>
             SiteResources.loadJSON(contentJSONPath(year))
                 .onLoad(e => res(e))
                 .onError(e => res(null))
         );
-        if (!data) { return null; }
+        if (!data) { return; }
         const content = data.data as IInfoJSON;
 
         for (let i = 0; i < content.data.length; i++) {
@@ -243,7 +241,7 @@ class AllThingies extends View {
             }
         }
 
-        return null;
+        return;
     }
 
     private getYear(link: string): string | null {
