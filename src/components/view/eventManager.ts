@@ -1,7 +1,8 @@
 import IAppEvents from "../../types/app/iAppEvents";
 import Handler from "../../utils/events/handler";
+import IAppEventsMan from "../../types/app/iAppEventsMan";
 
-class EventManager implements IAppEvents {
+class EventManager implements IAppEventsMan {
     private events: IAppEvents;
 
     private viewChangeHandlers: Handler[];

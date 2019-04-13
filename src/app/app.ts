@@ -7,7 +7,6 @@ import SiteResources from "../siteResources";
 import GlobalWidget from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
 import EventHandlers from "../utils/events/eventHandlers";
-import wait from "../utils/wait";
 import AppURL from "./components/url";
 
 class App extends BaseApp {

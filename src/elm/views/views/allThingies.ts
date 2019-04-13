@@ -78,8 +78,6 @@ class AllThingies extends View {
         const isSameHost = linkParsed.hostname === location.hostname;
         const depth = this.getLinkDepth(linkParsed.path);
 
-        console.log(depth);
-
         if (isSameHost && depth <= 1) {
             this.contentHref = link;
             SiteResources.loadXML(link, "text/html")
@@ -103,8 +101,6 @@ class AllThingies extends View {
             if (chunk) { count++; }
         }
 
-        console.log(chunks);
-
         return count;
     }
 
@@ -114,6 +110,7 @@ class AllThingies extends View {
         this.pageContent.appendChild(elm);
         this.setTitle(doc.title);
         this.makeLinksAbsolute(elm);
+        this.app.events.dispatchViewChange();
     }
 
     private setTitle(title: string) {

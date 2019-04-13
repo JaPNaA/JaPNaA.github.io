@@ -1,8 +1,5 @@
-import Handler from "../../utils/events/handler";
+import IAppEventsHandlers from "./iAppEventsMan";
 
-export default interface IAppEvents {
-    onViewChange(handler: Handler): void;
-    offViewChange(handler: Handler): void;
-    onResize(handler: Handler): void;
-    offResize(handler: Handler): void;
+export default interface IAppEvents extends IAppEventsHandlers {
+    dispatchViewChange(): void;
 }
