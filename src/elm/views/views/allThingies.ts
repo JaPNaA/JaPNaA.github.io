@@ -22,12 +22,18 @@ class AllThingies extends View {
     private pageContent: HTMLDivElement;
     private contentHref: string;
 
-    constructor(app: IApp) {
+    constructor(app: IApp, stateData?: string) {
         super(app)
         this.elm = document.createElement("div");
         this.title = this.createTitle();
         this.pageContent = this.createPageContent();
-        this.contentHref = SiteConfig.path.thingy + SiteConfig.path.repo.thingy;
+
+        if (stateData) {
+            this.contentHref = SiteConfig.path.thingy + "/" + stateData;
+            console.log(this.contentHref);
+        } else {
+            this.contentHref = SiteConfig.path.thingy + SiteConfig.path.repo.thingy;
+        }
     }
 
     public async setup() {
@@ -39,6 +45,27 @@ class AllThingies extends View {
         ).onLoad(e => this.setPageContent(e.document));
 
         this.addEventHandlers();
+    }
+
+    public getState(): string {
+        return this.cleanPath();
+    }
+
+    private cleanPath(): string {
+        const urlParsed = parse(this.contentHref);
+        let path = urlParsed.path;
+
+        if (path) {
+            if (path.startsWith("/")) {
+                path = path.slice(1);
+            }
+            if (path.endsWith("/")) {
+                path = path.slice(0, path.length - 1);
+            }
+            return path;
+        } else {
+            return "";
+        }
     }
 
     private createTitle(): HTMLHeadingElement {
@@ -79,9 +106,11 @@ class AllThingies extends View {
         const depth = this.getLinkDepth(linkParsed.path);
 
         if (isSameHost && depth <= 1) {
+            this.app.url.pushHistory(this);
             this.contentHref = link;
             SiteResources.loadXML(link, "text/html")
                 .onLoad(e => this.setPageContent(e.document));
+            // this.updateStateURL();
             return true;
         } else {
             openPopup(link);
