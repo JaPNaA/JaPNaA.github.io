@@ -6,18 +6,15 @@ import Overview from "../elm/views/views/overview";
 import SiteResources from "../siteResources";
 import GlobalWidget from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
-import EventHandlers from "../utils/events/eventHandlers";
 import AppURL from "./components/url";
 
 class App extends BaseApp {
-    protected resizeHandlers: EventHandlers;
     private globalWidget: GlobalWidget;
     public url: AppURL;
 
     constructor() {
         super();
         this.url = new AppURL(this, this.events);
-        this.resizeHandlers = new EventHandlers();
         this.globalWidget = new GlobalWidget(this);
     }
 
@@ -49,7 +46,7 @@ class App extends BaseApp {
     private resizeHandler() {
         this.width = innerWidth;
         this.height = innerHeight;
-        this.resizeHandlers.dispatch();
+        this.events.dispatchResize();
     }
 }
 

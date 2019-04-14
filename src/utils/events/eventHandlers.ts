@@ -11,7 +11,7 @@ class EventHandlers<T = void> {
         this.handlers.push(handler);
     }
 
-    public remove(handler: Handler<T>): void { 
+    public remove(handler: Handler<T>): void {
         const i = this.handlers.indexOf(handler);
         if (i < 0) { throw new Error("Removing handler that doesn't exist"); }
         this.handlers.splice(i, 1);
