@@ -1,5 +1,4 @@
 import IApp from "../types/app/iApp";
-import AppURL from "./components/url";
 import AppEvents from "./components/events";
 import AppViews from "./components/views";
 import IAppURL from "../types/app/iAppURL";

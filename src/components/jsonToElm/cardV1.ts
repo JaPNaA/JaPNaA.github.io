@@ -48,10 +48,6 @@ class CardJSONv1Elm {
     }
 
     public addEventListeners(): void {
-        this.elm.addEventListener("click", () => {
-            const imageView = this.app.views.open(ImageView) as ImageView;
-            imageView.setImageSrc("http://localhost:8081/Thingy_2018/0p/typeracer.png");
-        });
         // TODO: when image clicked, pop out, show
     }
 
@@ -197,6 +193,7 @@ class CardJSONv1Elm {
             const src = SiteConfig.path.thingy + display.src;
             const img = SiteResources.loadImage(src).copyImage();
             img.classList.add("img");
+            this.addImageClickHandler(img);
             parent.appendChild(img);
         }
 
@@ -227,6 +224,13 @@ class CardJSONv1Elm {
 
     private resizeHandler(): void {
         this.container.style.minHeight = this.app.height + "px";
+    }
+
+    private addImageClickHandler(image: HTMLImageElement): void {
+        image.addEventListener("click", () => {
+            const imageView = this.app.views.open(ImageView) as ImageView;
+            imageView.setImageSrc(image.src);
+        });
     }
 }
 

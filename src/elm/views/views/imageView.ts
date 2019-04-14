@@ -24,6 +24,7 @@ class ImageView extends View {
     private y: number;
     private scale: number;
     private dragging: boolean;
+    private userAdjusted: boolean;
 
     constructor(app: IApp, stateData?: string) {
         super(app);
@@ -43,6 +44,7 @@ class ImageView extends View {
         this.height = 0;
         this.scale = 1;
         this.dragging = false;
+        this.userAdjusted = false;
 
         // this.background = this.createBackground();
         if (stateData) {
@@ -51,6 +53,35 @@ class ImageView extends View {
         this.reqanfLoop();
         this.addEventHandlers();
         this.resizeHandler();
+        this.resetImagePosition();
+    }
+
+    public setImageSrc(src: string) {
+        SiteResources.loadImage(src)
+            .onLoad(e =>
+                this.setImage(e.copyImage())
+            );
+    }
+
+    private setImage(image: HTMLImageElement) {
+        this.image = image;
+        this.resetImagePosition();
+    }
+
+    private reqanfLoop(): void {
+        this.draw();
+        requestAnimationFrame(this.reqanfLoop.bind(this));
+    }
+
+    private draw() {
+        if (!this.image) { return; }
+        this.X.clearRect(0, 0, this.width, this.height);
+        this.X.drawImage(
+            this.image,
+            0, 0, this.image.width, this.image.height,
+            this.x, this.y, this.image.width * this.scale, this.image.height * this.scale
+        );
+        this.X.drawImage(this.closeButton, 0, 0);
     }
 
     private addEventHandlers(): void {
@@ -68,11 +99,21 @@ class ImageView extends View {
 
         this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
         this.elm.addEventListener("mousemove", this.mouseMoveHandler);
+
+        this.keyDownHandler = this.keyDownHandler.bind(this);
+        addEventListener("keydown", this.keyDownHandler);
     }
 
     private resizeHandler(): void {
+        this.x += (this.app.width - this.width) / 2;
+        this.y += (this.app.height - this.height) / 2;
+
         this.width = this.canvas.width = this.app.width;
         this.height = this.canvas.height = this.app.height;
+
+        if (!this.userAdjusted) {
+            this.resetImagePosition();
+        }
     }
 
     private wheelHandler(e: WheelEvent): void {
@@ -87,6 +128,14 @@ class ImageView extends View {
 
         this.x -= (e.clientX - this.x) * (factor - 1);
         this.y -= (e.clientY - this.y) * (factor - 1);
+        this.userAdjusted = true;
+    }
+
+    private mouseMoveHandler(e: MouseEvent): void {
+        if (!this.dragging) { return; }
+        this.x += e.movementX;
+        this.y += e.movementY;
+        this.userAdjusted = true;
     }
 
     private mouseDownHandler(): void {
@@ -97,37 +146,28 @@ class ImageView extends View {
         this.dragging = false;
     }
 
-    private mouseMoveHandler(e: MouseEvent): void {
-        if (!this.dragging) { return; }
-        this.x += e.movementX;
-        this.y += e.movementY;
+
+    private keyDownHandler(e: KeyboardEvent): void {
+        if (e.keyCode === 48) {
+            this.resetImagePosition();
+        }
     }
 
-    public reqanfLoop(): void {
-        this.draw();
-        requestAnimationFrame(this.reqanfLoop.bind(this));
-    }
-
-    private draw() {
+    private resetImagePosition(): void {
         if (!this.image) { return; }
-        this.X.clearRect(0, 0, this.width, this.height);
-        this.X.drawImage(
-            this.image,
-            0, 0, this.image.width, this.image.height,
-            this.x, this.y, this.image.width * this.scale, this.image.height * this.scale
-        );
-        this.X.drawImage(this.closeButton, 0, 0);
-    }
-
-    public setImageSrc(src: string) {
-        SiteResources.loadImage(src)
-            .onLoad(e =>
-                this.setImage(e.copyImage())
+        if (this.image.width <= this.width && this.image.height <= this.height) {
+            this.scale = 1;
+        } else {
+            this.scale = Math.min(
+                this.width / this.image.width,
+                this.height / this.image.height
             );
-    }
+        }
 
-    private setImage(image: HTMLImageElement) {
-        this.image = image;
+        this.x = (this.width - this.image.width * this.scale) / 2;
+        this.y = (this.height - this.image.height * this.scale) / 2;
+
+        this.userAdjusted = false;
     }
 }
 
