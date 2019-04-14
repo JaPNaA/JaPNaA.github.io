@@ -2,13 +2,17 @@ import View from "../view";
 import IApp from "../../../types/app/iApp";
 import ViewMap from "../viewMap";
 import SiteResources from "../../../siteResources";
-import removeChildren from "../../../utils/removeChildren";
 import SiteConfig from "../../../siteConfig";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
     public viewName = ImageView.viewName;
     public isFullPage: boolean = false;
+
+    private static targetTransitionSpeed: number = 0.25;
+    private static flickFriction: number = 0.93;
+    private static initFlickSmoothing: number = 0.3;
+    private static zoomFactor: number = 1.1;
 
     protected elm: HTMLDivElement;
 
@@ -26,12 +30,15 @@ class ImageView extends View {
     private lastX: number;
     private targetX: number;
     private velocityX: number;
+
     private y: number;
     private lastY: number;
     private targetY: number;
     private velocityY: number;
+
     private scale: number;
     private tscale: number;
+
     private dragging: boolean;
     private userAdjusted: boolean;
 
@@ -92,25 +99,28 @@ class ImageView extends View {
     }
 
     private reqanfLoop(): void {
-        this.x += (this.targetX - this.x) / 10;
-        this.y += (this.targetY - this.y) / 10;
-        this.scale += (this.tscale - this.scale) / 10;
+        this.tick();
+        this.draw();
+        requestAnimationFrame(this.reqanfLoop.bind(this));
+    }
+
+    private tick(): void {
+        this.x += (this.targetX - this.x) * ImageView.targetTransitionSpeed;
+        this.y += (this.targetY - this.y) * ImageView.targetTransitionSpeed;
+        this.scale += (this.tscale - this.scale) * ImageView.targetTransitionSpeed;
         if (this.dragging) {
-            this.velocityX = (this.x - this.lastX) * 0.7 + this.velocityX * 0.3;
-            this.velocityY = (this.y - this.lastY) * 0.7 + this.velocityY * 0.3;
+            this.velocityX = (this.x - this.lastX) * (1 - ImageView.initFlickSmoothing) + this.velocityX * ImageView.initFlickSmoothing;
+            this.velocityY = (this.y - this.lastY) * (1 - ImageView.initFlickSmoothing) + this.velocityY * ImageView.initFlickSmoothing;
             this.lastX = this.x;
             this.lastY = this.y;
         } else {
-            this.velocityX *= 0.93;
-            this.velocityY *= 0.93;
+            this.velocityX *= ImageView.flickFriction;
+            this.velocityY *= ImageView.flickFriction;
             this.x += this.velocityX;
             this.y += this.velocityY;
             this.targetX += this.velocityX;
             this.targetY += this.velocityY;
         }
-
-        this.draw();
-        requestAnimationFrame(this.reqanfLoop.bind(this));
     }
 
     private draw() {
@@ -168,7 +178,7 @@ class ImageView extends View {
     private wheelHandler(e: WheelEvent): void {
         e.preventDefault();
 
-        let factor = 1.1;
+        let factor = ImageView.zoomFactor;
         if (e.deltaY > 0) {
             factor = 1 / factor;
         }
@@ -198,7 +208,7 @@ class ImageView extends View {
     }
 
     private keyDownHandler(e: KeyboardEvent): void {
-        if (e.keyCode === 48) {
+        if (e.keyCode === 48) { // 0 key
             this.resetImagePosition();
         }
     }
