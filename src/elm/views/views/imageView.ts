@@ -13,6 +13,7 @@ class ImageView extends View {
     private static flickFriction: number = 0.93;
     private static initFlickSmoothing: number = 0.3;
     private static zoomFactor: number = 1.1;
+    private static redrawThreshold: number = 0.0001;
 
     protected elm: HTMLDivElement;
 
@@ -39,6 +40,8 @@ class ImageView extends View {
     private scale: number;
     private tscale: number;
 
+    private shouldRedraw: boolean;
+    private drawing: boolean;
     private dragging: boolean;
     private userAdjusted: boolean;
 
@@ -60,6 +63,8 @@ class ImageView extends View {
 
         this.dragging = false;
         this.userAdjusted = false;
+        this.drawing = false;
+        this.shouldRedraw = true;
 
         this.src = stateData;
     }
@@ -98,16 +103,35 @@ class ImageView extends View {
         return X;
     }
 
+    private redraw(): void {
+        if (this.drawing) { return; }
+        this.shouldRedraw = true;
+        this.reqanfLoop();
+    }
+
     private reqanfLoop(): void {
+        this.drawing = true;
         this.tick();
         this.draw();
-        requestAnimationFrame(this.reqanfLoop.bind(this));
+
+        console.log("draw");
+
+        if (this.shouldRedraw) {
+            requestAnimationFrame(this.reqanfLoop.bind(this));
+        } else {
+            this.drawing = false;
+        }
     }
 
     private tick(): void {
-        this.x += (this.targetX - this.x) * ImageView.targetTransitionSpeed;
-        this.y += (this.targetY - this.y) * ImageView.targetTransitionSpeed;
-        this.scale += (this.tscale - this.scale) * ImageView.targetTransitionSpeed;
+        const dx = this.targetX - this.x;
+        const dy = this.targetY - this.y;
+        const dscale = this.tscale - this.scale;
+
+        this.x += dx * ImageView.targetTransitionSpeed;
+        this.y += dy * ImageView.targetTransitionSpeed;
+        this.scale += dscale * ImageView.targetTransitionSpeed;
+
         if (this.dragging) {
             this.velocityX = (this.x - this.lastX) * (1 - ImageView.initFlickSmoothing) + this.velocityX * ImageView.initFlickSmoothing;
             this.velocityY = (this.y - this.lastY) * (1 - ImageView.initFlickSmoothing) + this.velocityY * ImageView.initFlickSmoothing;
@@ -121,21 +145,23 @@ class ImageView extends View {
             this.targetX += this.velocityX;
             this.targetY += this.velocityY;
         }
+
+        const totalDiff = Math.abs(dx) + Math.abs(dy) + Math.abs(dscale) + Math.abs(this.velocityX) + Math.abs(this.velocityY);
+        this.shouldRedraw = totalDiff > ImageView.redrawThreshold;
     }
 
     private draw() {
         if (!this.image) { return; }
         this.X.clearRect(0, 0, this.width, this.height);
+
+        this.X.imageSmoothingEnabled = this.scale < 3;
+
         this.X.drawImage(
             this.image,
             0, 0, this.image.width, this.image.height,
             this.x, this.y, this.image.width * this.scale, this.image.height * this.scale
         );
-        // this.X.drawImage(
-        //     this.image,
-        //     0, 0, this.image.width, this.image.height,
-        //     this.tx, this.ty, this.image.width * this.tscale, this.image.height * this.tscale
-        // );
+
         this.X.drawImage(this.closeButton, 0, 0);
     }
 
@@ -172,7 +198,9 @@ class ImageView extends View {
 
         if (!this.userAdjusted) {
             this.resetImagePosition();
+            this.stopAnimations();
         }
+        this.redraw();
     }
 
     private wheelHandler(e: WheelEvent): void {
@@ -188,6 +216,7 @@ class ImageView extends View {
         this.targetX -= (e.clientX - this.targetX) * (factor - 1);
         this.targetY -= (e.clientY - this.targetY) * (factor - 1);
         this.userAdjusted = true;
+        this.redraw();
     }
 
     private mouseMoveHandler(e: MouseEvent): void {
@@ -197,6 +226,7 @@ class ImageView extends View {
         this.x += e.movementX;
         this.y += e.movementY;
         this.userAdjusted = true;
+        this.redraw();
     }
 
     private mouseDownHandler(): void {
@@ -228,12 +258,14 @@ class ImageView extends View {
         this.targetY = (this.height - this.image.height * this.tscale) / 2;
 
         this.userAdjusted = false;
+        this.redraw();
     }
 
     private stopAnimations(): void {
         this.x = this.targetX;
         this.y = this.targetY;
         this.scale = this.tscale;
+        this.redraw();
     }
 }
 
