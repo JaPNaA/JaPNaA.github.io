@@ -23,6 +23,7 @@ class ImageView extends View {
     private closeButton: HTMLImageElement;
 
     private src?: string;
+    private hasInitalTransform: boolean;
 
     private width: number;
     private height: number;
@@ -51,6 +52,8 @@ class ImageView extends View {
         this.canvas = document.createElement("canvas");
         this.closeButton = SiteResources.loadImage(SiteConfig.path.img.close).image;
         this.X = this.getX();
+
+        this.hasInitalTransform = false;
 
         this.width = 0;
         this.height = 0;
@@ -90,11 +93,20 @@ class ImageView extends View {
             );
     }
 
+    public setInitalTransform(x: number, y: number, scale: number): void {
+        this.targetX = this.x = x;
+        this.targetY = this.y = y;
+        this.tscale = this.scale = scale;
+        this.hasInitalTransform = true;
+    }
 
     private setImage(image: HTMLImageElement) {
         this.image = image;
         this.resetImagePosition();
-        this.stopAnimations();
+
+        if (!this.hasInitalTransform) {
+            this.stopAnimations();
+        }
     }
 
     private getX(): CanvasRenderingContext2D {
@@ -113,8 +125,6 @@ class ImageView extends View {
         this.drawing = true;
         this.tick();
         this.draw();
-
-        console.log("draw");
 
         if (this.shouldRedraw) {
             requestAnimationFrame(this.reqanfLoop.bind(this));
@@ -156,11 +166,19 @@ class ImageView extends View {
 
         this.X.imageSmoothingEnabled = this.scale < 3;
 
+        this.X.save();
+
+        this.X.shadowColor = "rgba(0,0,0,0.35)";
+        this.X.shadowBlur = 8;
+        this.X.shadowOffsetX = 0;
+        this.X.shadowOffsetY = 4;
+
         this.X.drawImage(
             this.image,
             0, 0, this.image.width, this.image.height,
             this.x, this.y, this.image.width * this.scale, this.image.height * this.scale
         );
+        this.X.restore();
 
         this.X.drawImage(this.closeButton, 0, 0);
     }

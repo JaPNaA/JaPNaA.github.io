@@ -229,6 +229,9 @@ class CardJSONv1Elm {
     private addImageClickHandler(image: HTMLImageElement): void {
         image.addEventListener("click", () => {
             const imageView = this.app.views.open(ImageView) as ImageView;
+            const bbox = image.getBoundingClientRect();
+            console.log(bbox.left, bbox.top, bbox.width / image.width);
+            imageView.setInitalTransform(bbox.left, bbox.top, bbox.width / image.naturalWidth);
             imageView.setImageSrc(image.src);
         });
     }
