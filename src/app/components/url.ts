@@ -68,9 +68,6 @@ class AppURL implements IAppURL {
     }
 
     private popStateHandler(event: PopStateEvent): void {
-        // TODO: Temporary fix
-        console.log("popstate", event);
-
         const newURL = location.href;
 
         this.frozen = true;

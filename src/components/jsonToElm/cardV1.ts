@@ -5,6 +5,7 @@ import DisplayImg from "../../types/project/displayImg";
 import triggerTransitionIn from "../../utils/triggerTransitionIn";
 import SiteResources from "../../siteResources";
 import IApp from "../../types/app/iApp";
+import ImageView from "../../elm/views/views/imageView";
 
 // TODO: refactor, along with it's .less companion!
 
@@ -47,6 +48,10 @@ class CardJSONv1Elm {
     }
 
     public addEventListeners(): void {
+        this.elm.addEventListener("click", () => {
+            const imageView = this.app.views.open(ImageView) as ImageView;
+            imageView.setImageSrc("http://localhost:8081/Thingy_2018/0p/typeracer.png");
+        });
         // TODO: when image clicked, pop out, show
     }
 

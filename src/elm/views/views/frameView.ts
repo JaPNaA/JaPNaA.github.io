@@ -7,6 +7,8 @@ import SiteConfig from "../../../siteConfig";
 import wait from "../../../utils/wait";
 import triggerTransitionIn from "../../../utils/triggerTransitionIn";
 
+// TODO: Add loading bar
+
 class FrameView extends View {
     public static destoryTime = 400;
     public static transitionInTime = 400;
