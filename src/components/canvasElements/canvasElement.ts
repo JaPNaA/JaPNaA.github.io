@@ -1,19 +1,35 @@
+import CanvasElementPhysics from "./physics/physics";
+import Rect from "../../types/rect";
+
 abstract class CanvasElement {
-    protected x: number;
-    protected y: number;
-    protected width: number;
-    protected height: number;
+    protected rect: Rect;
+    protected physics?: CanvasElementPhysics;
 
     constructor(x: number, y: number, width: number, height: number) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.rect = {
+            x: x,
+            y: y,
+            width: width,
+            height: height
+        };
     }
 
-    public abstract tick(dt: number): void;
     public abstract draw(X: CanvasRenderingContext2D): void;
     public abstract shouldRedraw(): boolean;
+
+    public tick(dt: number): void {
+        this.applyPhysics(dt);
+    }
+
+    public applyPhysics(dt: number): void {
+        if (!this.physics) { return; }
+        this.physics.tick(dt);
+    }
+
+    public setPhysics(physics: CanvasElementPhysics) {
+        this.physics = physics;
+        this.physics.init(this.rect);
+    }
 }
 
 export default CanvasElement;
