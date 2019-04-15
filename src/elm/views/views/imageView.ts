@@ -3,6 +3,8 @@ import IApp from "../../../types/app/iApp";
 import ViewMap from "../viewMap";
 import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
+import absSum from "../../../utils/absSum";
+import CanvasButton from "../../../components/canvasElements/canvasButton";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -19,8 +21,12 @@ class ImageView extends View {
 
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
+    private closeButton: CanvasButton;
+
     private image?: HTMLImageElement;
-    private closeButton: HTMLImageElement;
+    private closeButtonImage: HTMLImageElement;
+
+    private then: number;
 
     private src?: string;
     private hasInitalTransform: boolean;
@@ -50,8 +56,9 @@ class ImageView extends View {
         super(app);
         this.elm = document.createElement("div");
         this.canvas = document.createElement("canvas");
-        this.closeButton = SiteResources.loadImage(SiteConfig.path.img.close).image;
+        this.closeButtonImage = SiteResources.loadImage(SiteConfig.path.img.close).image;
         this.X = this.getX();
+        this.closeButton = new CanvasButton(0, 0, 64, 64);
 
         this.hasInitalTransform = false;
 
@@ -70,6 +77,7 @@ class ImageView extends View {
         this.shouldRedraw = true;
 
         this.src = stateData;
+        this.then = performance.now();
     }
 
     public async setup(): Promise<void> {
@@ -122,8 +130,12 @@ class ImageView extends View {
     }
 
     private reqanfLoop(): void {
+        const now = performance.now();
+        const deltaTime = now - this.then;
+        this.then = now;
+
         this.drawing = true;
-        this.tick();
+        this.tick(deltaTime);
         this.draw();
 
         if (this.shouldRedraw) {
@@ -133,7 +145,7 @@ class ImageView extends View {
         }
     }
 
-    private tick(): void {
+    private tick(deltaTime: number): void {
         const dx = this.targetX - this.x;
         const dy = this.targetY - this.y;
         const dscale = this.tscale - this.scale;
@@ -156,8 +168,10 @@ class ImageView extends View {
             this.targetY += this.velocityY;
         }
 
-        const totalDiff = Math.abs(dx) + Math.abs(dy) + Math.abs(dscale) + Math.abs(this.velocityX) + Math.abs(this.velocityY);
+        const totalDiff = absSum([dx, dy, dscale, this.velocityX, this.velocityY]);
         this.shouldRedraw = totalDiff > ImageView.redrawThreshold;
+
+        this.closeButton.tick(deltaTime);
     }
 
     private draw() {
@@ -180,7 +194,13 @@ class ImageView extends View {
         );
         this.X.restore();
 
-        this.X.drawImage(this.closeButton, 0, 0);
+        // this.X.drawImage(this.closeButtonImage, 0, 0);
+        if (this.x < 0) {
+            this.closeButton.moveTo(0, 0);
+        } else {
+            this.closeButton.teleportTo(this.x - 64, this.y - 64);
+        }
+        this.closeButton.draw(this.X);
     }
 
     private addEventHandlers(): void {
