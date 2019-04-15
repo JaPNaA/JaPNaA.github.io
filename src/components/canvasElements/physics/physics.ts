@@ -5,7 +5,7 @@ abstract class CanvasElementPhysics {
 
     public abstract tick(dt: number): void;
     public abstract rectChanged(): boolean;
-    public abstract setup(): void;
+    protected abstract setup(): void;
 
     public init(rect: Rect): void {
         this.rect = rect;

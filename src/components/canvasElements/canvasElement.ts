@@ -21,14 +21,14 @@ abstract class CanvasElement {
         this.applyPhysics(dt);
     }
 
-    public applyPhysics(dt: number): void {
-        if (!this.physics) { return; }
-        this.physics.tick(dt);
-    }
-
     public setPhysics(physics: CanvasElementPhysics) {
         this.physics = physics;
         this.physics.init(this.rect);
+    }
+
+    protected applyPhysics(dt: number): void {
+        if (!this.physics) { return; }
+        this.physics.tick(dt);
     }
 }
 

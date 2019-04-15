@@ -17,9 +17,19 @@ class SimpleEasePhysics extends CanvasElementPhysics {
         this.totalDiff = 0;
     }
 
-    public setup(): void {
+    protected setup(): void {
         this.targetX = this.rect.x;
         this.targetY = this.rect.y;
+    }
+
+    public moveTo(x: number, y: number): void {
+        this.targetX = x;
+        this.targetY = y;
+    }
+
+    public teleportTo(x: number, y: number): void {
+        this.targetX = this.rect.x = x;
+        this.targetY = this.rect.y = y;
     }
 
     public rectChanged(): boolean {

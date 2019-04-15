@@ -5,6 +5,7 @@ import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
 import absSum from "../../../utils/absSum";
 import CanvasButton from "../../../components/canvasElements/canvasButton";
+import SimpleEasePhysics from "../../../components/canvasElements/physics/simpleEase";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -22,6 +23,7 @@ class ImageView extends View {
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
     private closeButton: CanvasButton;
+    private closeButtonPhysics: SimpleEasePhysics;
 
     private image?: HTMLImageElement;
     private closeButtonImage: HTMLImageElement;
@@ -58,7 +60,10 @@ class ImageView extends View {
         this.canvas = document.createElement("canvas");
         this.closeButtonImage = SiteResources.loadImage(SiteConfig.path.img.close).image;
         this.X = this.getX();
+
         this.closeButton = new CanvasButton(0, 0, 64, 64);
+        this.closeButtonPhysics = new SimpleEasePhysics(0.05);
+        this.closeButton.setPhysics(this.closeButtonPhysics);
 
         this.hasInitalTransform = false;
 
@@ -196,9 +201,9 @@ class ImageView extends View {
 
         // this.X.drawImage(this.closeButtonImage, 0, 0);
         if (this.x < 0) {
-            this.closeButton.moveTo(0, 0);
+            this.closeButtonPhysics.moveTo(0, 0);
         } else {
-            this.closeButton.teleportTo(this.x - 64, this.y - 64);
+            this.closeButtonPhysics.teleportTo(this.x - 64, this.y - 64);
         }
         this.closeButton.draw(this.X);
     }
