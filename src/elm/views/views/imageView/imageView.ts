@@ -1,11 +1,12 @@
-import View from "../view";
-import IApp from "../../../types/app/iApp";
-import ViewMap from "../viewMap";
-import SiteResources from "../../../siteResources";
-import SiteConfig from "../../../siteConfig";
-import absSum from "../../../utils/absSum";
-import CanvasButton from "../../../components/canvasElements/canvasButton";
-import SimpleEasePhysics from "../../../components/canvasElements/physics/simpleEase";
+import View from "../../view";
+import IApp from "../../../../types/app/iApp";
+import ViewMap from "../../viewMap";
+import SiteResources from "../../../../siteResources";
+import SiteConfig from "../../../../siteConfig";
+import absSum from "../../../../utils/absSum";
+import CanvasButton from "../../../../components/canvasElements/canvasButton";
+import SimpleEasePhysics from "../../../../components/canvasElements/physics/simpleEase";
+import CloseButton from "./closeButton";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -22,7 +23,7 @@ class ImageView extends View {
 
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
-    private closeButton: CanvasButton;
+    private closeButton: CloseButton;
     private closeButtonPhysics: SimpleEasePhysics;
 
     private image?: HTMLImageElement;
@@ -61,7 +62,7 @@ class ImageView extends View {
         this.closeButtonImage = SiteResources.loadImage(SiteConfig.path.img.close).image;
         this.X = this.getX();
 
-        this.closeButton = new CanvasButton(0, 0, 64, 64);
+        this.closeButton = new CloseButton();
         this.closeButtonPhysics = new SimpleEasePhysics(0.05);
         this.closeButton.setPhysics(this.closeButtonPhysics);
 
@@ -184,6 +185,7 @@ class ImageView extends View {
         this.X.clearRect(0, 0, this.width, this.height);
 
         this.X.imageSmoothingEnabled = this.scale < 3;
+        // at some point, when it's zoomed in enough, open the skyrim intro, if the meme is still relevant
 
         this.X.save();
 
@@ -203,7 +205,7 @@ class ImageView extends View {
         if (this.x < 0) {
             this.closeButtonPhysics.moveTo(0, 0);
         } else {
-            this.closeButtonPhysics.teleportTo(this.x - 64, this.y - 64);
+            this.closeButtonPhysics.teleportTo(this.x - CloseButton.width, this.y - CloseButton.height);
         }
         this.closeButton.draw(this.X);
     }
@@ -226,6 +228,9 @@ class ImageView extends View {
 
         this.keyDownHandler = this.keyDownHandler.bind(this);
         addEventListener("keydown", this.keyDownHandler);
+
+        this.closeButtonClickHandler = this.closeButtonClickHandler.bind(this);
+        this.closeButton.onClick(this.closeButtonClickHandler);
     }
 
     private resizeHandler(): void {
@@ -272,12 +277,17 @@ class ImageView extends View {
         this.redraw();
     }
 
-    private mouseDownHandler(): void {
+    private mouseDownHandler(e: MouseEvent): void {
         this.dragging = true;
+        this.closeButton.checkClick(e.clientX, e.clientY);
     }
 
     private mouseUpHandler(): void {
         this.dragging = false;
+    }
+
+    private closeButtonClickHandler(): void {
+        this.app.views.close(this);
     }
 
     private keyDownHandler(e: KeyboardEvent): void {
