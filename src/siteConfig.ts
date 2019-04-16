@@ -10,9 +10,10 @@ class SiteConfig {
             hexagon: "/assets/img/hexagon.svg",
             logo: "/assets/img/japnaa-logo.svg",
             hamburger: "/assets/img/hamburger.svg",
-            close: "/assets/img/close.svg"
+            close: "/assets/img/close.svg",
+            circle: "/assets/img/circle.svg"
         },
-    
+
         view: {
             overview: "/assets/views/overview.html"
         },
@@ -23,7 +24,7 @@ class SiteConfig {
             thingy: "/Thingy/",
             thingy_: "/Thingy_"
         },
-    
+
         content: "/assets/content/"
     }
 

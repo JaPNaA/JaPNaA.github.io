@@ -5,6 +5,8 @@ import IApp from "../../../types/app/iApp";
 import AllThingies from "./allThingies";
 import ViewClass from "../../../types/viewClass";
 import Overview from "./overview";
+import SiteResources from "../../../siteResources";
+import SiteConfig from "../../../siteConfig";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -91,12 +93,29 @@ class Menu extends View {
 
     private createButtonThatOpens(viewClass: ViewClass, label: string): HTMLDivElement {
         const button = document.createElement("div");
-        button.innerText = label;
         button.classList.add("viewButton");
+        const labelElm = document.createElement("div");
+        labelElm.classList.add("label");
+        labelElm.innerText = label;
+
+        if (this.isTopViewA(viewClass)) {
+            button.classList.add("active");
+            button.appendChild(this.createActiveCircle());
+        }
+
+        button.appendChild(labelElm);
+
         button.addEventListener("click", () => {
             this.app.views.switchAndInit(viewClass);
         });
+
         return button;
+    }
+
+    private createActiveCircle(): HTMLImageElement {
+        const image = SiteResources.loadImage(SiteConfig.path.img.circle).copyImage();
+        image.classList.add("circle");
+        return image;
     }
 
     private createCopyright(): HTMLDivElement {
@@ -113,6 +132,12 @@ class Menu extends View {
 
     private backgroundClickHandler() {
         this.app.views.close(this);
+    }
+
+    private isTopViewA(viewClass: ViewClass): boolean {
+        const top = this.app.views.top();
+        if (!top) { return false; }
+        return top.constructor === viewClass;
     }
 }
 
