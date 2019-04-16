@@ -3,6 +3,7 @@ import ViewClass from "../viewClass";
 
 export default interface IAppViews {
     top(): View | undefined;
+    firstFullTop(): View | undefined;
     switchAndInit(viewClass: ViewClass, stateData?: string): View;
     open(viewClass: ViewClass, stateData?: string): View;
     openBehind(viewClass: ViewClass, stateData?: string): View;
