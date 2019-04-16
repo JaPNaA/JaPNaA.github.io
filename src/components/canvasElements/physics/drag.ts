@@ -1,6 +1,5 @@
 import CanvasElementPhysics from "./physics";
 import absSum from "../../../utils/absSum";
-import Rect from "../../../types/math/rect";
 import Dim from "../../../types/math/dim";
 
 class DragPhysics extends CanvasElementPhysics {
@@ -108,8 +107,8 @@ class DragPhysics extends CanvasElementPhysics {
             );
         }
 
-        this.tx = (this.rect.width - this.originalDim.width * this.tscale) / 2;
-        this.ty = (this.rect.height - this.originalDim.height * this.tscale) / 2;
+        this.tx = (this.boundaries.width - this.originalDim.width * this.tscale) / 2;
+        this.ty = (this.boundaries.height - this.originalDim.height * this.tscale) / 2;
     }
 
     public stopAnimations(): void {
@@ -129,6 +128,8 @@ class DragPhysics extends CanvasElementPhysics {
         this.rect.y += dy * this.transitionSpeed;
         this.scale += dscale * this.transitionSpeed;
 
+        this.updateRectScale();
+
         if (this.dragging) {
             this.vx = (this.rect.x - this.lastX) * (1 - this.initFlickSmoothing) + this.vx * this.initFlickSmoothing;
             this.vy = (this.rect.y - this.lastY) * (1 - this.initFlickSmoothing) + this.vy * this.initFlickSmoothing;
@@ -144,6 +145,11 @@ class DragPhysics extends CanvasElementPhysics {
         }
 
         this.totalDiff = absSum([dx, dy, dscale, this.vx, this.vy]);
+    }
+
+    private updateRectScale(): void {
+        this.rect.width = this.originalDim.width * this.scale;
+        this.rect.height = this.originalDim.height * this.scale;
     }
 }
 
