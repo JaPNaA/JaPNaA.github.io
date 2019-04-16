@@ -10,7 +10,9 @@ class CanvasImage extends CanvasElement {
     }
 
     public tick(): void { }
-    public draw(): void { }
+    public draw(X: CanvasRenderingContext2D): void {
+        X.drawImage(this.image, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
+    }
     public shouldRedraw(): boolean { return true; }
 }
 

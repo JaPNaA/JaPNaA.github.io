@@ -7,6 +7,8 @@ import absSum from "../../../../utils/absSum";
 import CanvasButton from "../../../../components/canvasElements/canvasButton";
 import SimpleEasePhysics from "../../../../components/canvasElements/physics/simpleEase";
 import CloseButton from "./closeButton";
+import DragPhysics from "../../../../components/canvasElements/physics/drag";
+import CanvasImage from "../../../../components/canvasElements/canvasImage";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -37,18 +39,9 @@ class ImageView extends View {
     private width: number;
     private height: number;
 
-    private x: number;
-    private lastX: number;
-    private targetX: number;
-    private velocityX: number;
+    private canvasImage?: CanvasImage;
+    private imagePhysics: DragPhysics;
 
-    private y: number;
-    private lastY: number;
-    private targetY: number;
-    private velocityY: number;
-
-    private scale: number;
-    private tscale: number;
 
     private shouldRedraw: boolean;
     private drawing: boolean;
@@ -71,11 +64,7 @@ class ImageView extends View {
         this.width = 0;
         this.height = 0;
 
-        this.lastX = this.targetX = this.x = 0;
-        this.lastY = this.targetY = this.y = 0;
-        this.velocityX = 0;
-        this.velocityY = 0;
-        this.tscale = this.scale = 1;
+        this.imagePhysics = new DragPhysics(0.1, 0.5, 0.9, { width: 100, height: 100 }, { width: 100, height: 100 });
 
         this.dragging = false;
         this.userAdjusted = false;
@@ -108,9 +97,7 @@ class ImageView extends View {
     }
 
     public setInitalTransform(x: number, y: number, scale: number): void {
-        this.targetX = this.x = x;
-        this.targetY = this.y = y;
-        this.tscale = this.scale = scale;
+        // 
         this.hasInitalTransform = true;
     }
 
@@ -121,6 +108,9 @@ class ImageView extends View {
         if (!this.hasInitalTransform) {
             this.stopAnimations();
         }
+
+        this.canvasImage = new CanvasImage(0, 0, this.image);
+        this.canvasImage.setPhysics(this.imagePhysics);
     }
 
     private getX(): CanvasRenderingContext2D {
@@ -152,39 +142,15 @@ class ImageView extends View {
     }
 
     private tick(deltaTime: number): void {
-        const dx = this.targetX - this.x;
-        const dy = this.targetY - this.y;
-        const dscale = this.tscale - this.scale;
-
-        this.x += dx * ImageView.targetTransitionSpeed;
-        this.y += dy * ImageView.targetTransitionSpeed;
-        this.scale += dscale * ImageView.targetTransitionSpeed;
-
-        if (this.dragging) {
-            this.velocityX = (this.x - this.lastX) * (1 - ImageView.initFlickSmoothing) + this.velocityX * ImageView.initFlickSmoothing;
-            this.velocityY = (this.y - this.lastY) * (1 - ImageView.initFlickSmoothing) + this.velocityY * ImageView.initFlickSmoothing;
-            this.lastX = this.x;
-            this.lastY = this.y;
-        } else {
-            this.velocityX *= ImageView.flickFriction;
-            this.velocityY *= ImageView.flickFriction;
-            this.x += this.velocityX;
-            this.y += this.velocityY;
-            this.targetX += this.velocityX;
-            this.targetY += this.velocityY;
-        }
-
-        const totalDiff = absSum([dx, dy, dscale, this.velocityX, this.velocityY]);
-        this.shouldRedraw = totalDiff > ImageView.redrawThreshold;
-
         this.closeButton.tick(deltaTime);
     }
 
     private draw() {
         if (!this.image) { return; }
         this.X.clearRect(0, 0, this.width, this.height);
+        
 
-        this.X.imageSmoothingEnabled = this.scale < 3;
+        this.X.imageSmoothingEnabled = this.imagePhysics.getScale() < 3;
         // at some point, when it's zoomed in enough, open the skyrim intro, if the meme is still relevant
 
         this.X.save();
@@ -194,20 +160,27 @@ class ImageView extends View {
         this.X.shadowOffsetX = 0;
         this.X.shadowOffsetY = 4;
 
-        this.X.drawImage(
-            this.image,
-            0, 0, this.image.width, this.image.height,
-            this.x, this.y, this.image.width * this.scale, this.image.height * this.scale
-        );
+        if (this.canvasImage) {
+            this.canvasImage.draw(this.X);
+
+            const rect = this.canvasImage.getRect();
+
+            if (rect.x < 0) {
+                this.closeButtonPhysics.moveTo(0, 0);
+            } else {
+                this.closeButtonPhysics.teleportTo(rect.x - CloseButton.width, rect.y - CloseButton.height);
+            }
+            this.closeButton.draw(this.X);
+        }
+        // this.X.drawImage(
+        //     this.image,
+        //     0, 0, this.image.width, this.image.height,
+        //     this.x, this.y, this.image.width * this.scale, this.image.height * this.scale
+        // );
         this.X.restore();
 
         // this.X.drawImage(this.closeButtonImage, 0, 0);
-        if (this.x < 0) {
-            this.closeButtonPhysics.moveTo(0, 0);
-        } else {
-            this.closeButtonPhysics.teleportTo(this.x - CloseButton.width, this.y - CloseButton.height);
-        }
-        this.closeButton.draw(this.X);
+        
     }
 
     private addEventHandlers(): void {
@@ -234,13 +207,7 @@ class ImageView extends View {
     }
 
     private resizeHandler(): void {
-        const dx = (this.app.width - this.width) / 2;
-        const dy = (this.app.height - this.height) / 2;
-        this.x += dx;
-        this.y += dy;
-        this.targetX += dx;
-        this.targetY += dy;
-
+        //
         this.width = this.canvas.width = this.app.width;
         this.height = this.canvas.height = this.app.height;
 
@@ -253,37 +220,31 @@ class ImageView extends View {
 
     private wheelHandler(e: WheelEvent): void {
         e.preventDefault();
-
-        let factor = ImageView.zoomFactor;
         if (e.deltaY > 0) {
-            factor = 1 / factor;
+            this.imagePhysics.zoomInto(ImageView.zoomFactor, e.clientX, e.clientY);
+        } else {
+            this.imagePhysics.zoomOutFrom(ImageView.zoomFactor, e.clientX, e.clientY);
         }
 
-        this.tscale *= factor;
-
-        this.targetX -= (e.clientX - this.targetX) * (factor - 1);
-        this.targetY -= (e.clientY - this.targetY) * (factor - 1);
         this.userAdjusted = true;
         this.redraw();
     }
 
     private mouseMoveHandler(e: MouseEvent): void {
         if (!this.dragging) { return; }
-        this.targetX += e.movementX;
-        this.targetY += e.movementY;
-        this.x += e.movementX;
-        this.y += e.movementY;
+        this.imagePhysics.mouseMove(e.movementX, e.movementY);
         this.userAdjusted = true;
         this.redraw();
     }
 
     private mouseDownHandler(e: MouseEvent): void {
-        this.dragging = true;
+        this.imagePhysics.mouseDown();
+        // TODO: Close on actual click: not mousedown
         this.closeButton.checkClick(e.clientX, e.clientY);
     }
 
     private mouseUpHandler(): void {
-        this.dragging = false;
+        this.imagePhysics.mouseUp();
     }
 
     private closeButtonClickHandler(): void {
@@ -298,26 +259,13 @@ class ImageView extends View {
 
     private resetImagePosition(): void {
         if (!this.image) { return; }
-        if (this.image.width <= this.width && this.image.height <= this.height) {
-            this.tscale = 1;
-        } else {
-            this.tscale = Math.min(
-                this.width / this.image.width,
-                this.height / this.image.height
-            );
-        }
-
-        this.targetX = (this.width - this.image.width * this.tscale) / 2;
-        this.targetY = (this.height - this.image.height * this.tscale) / 2;
-
+        // this.imagePhysics.resetImageTransform();
         this.userAdjusted = false;
         this.redraw();
     }
 
     private stopAnimations(): void {
-        this.x = this.targetX;
-        this.y = this.targetY;
-        this.scale = this.tscale;
+        // this.imagePhysics.stopAnimations();
         this.redraw();
     }
 }

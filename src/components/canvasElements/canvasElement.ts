@@ -1,5 +1,5 @@
 import CanvasElementPhysics from "./physics/physics";
-import Rect from "../../types/rect";
+import Rect from "../../types/math/rect";
 
 abstract class CanvasElement {
     protected rect: Rect;
@@ -24,6 +24,10 @@ abstract class CanvasElement {
     public setPhysics(physics: CanvasElementPhysics) {
         this.physics = physics;
         this.physics.init(this.rect);
+    }
+
+    public getRect(): Rect {
+        return this.rect;
     }
 
     protected applyPhysics(dt: number): void {
