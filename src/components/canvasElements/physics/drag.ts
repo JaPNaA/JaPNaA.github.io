@@ -1,6 +1,7 @@
 import CanvasElementPhysics from "./physics";
 import absSum from "../../../utils/absSum";
-import Dim from "../../../types/math/dim";
+import { Dim, newDim } from "../../../types/math/dim";
+import { Rect } from "../../../types/math/rect";
 
 class DragPhysics extends CanvasElementPhysics {
     private static changeThreshold: number = 0.0001;
@@ -23,17 +24,19 @@ class DragPhysics extends CanvasElementPhysics {
     private tscale: number;
 
     private dragging: boolean;
-    private originalDim: Dim;
-    private boundaries: Dim;
+    private imageDim: Dim;
+    private bounds: Dim;
 
-    constructor(transitionSpeed: number, initFlickSmoothing: number, flickFriction: number, originalDim: Dim, boundaries: Dim) {
+    constructor(options: {
+        transitionSpeed: number, initFlickSmoothing: number, flickFriction: number
+    }) {
         super();
 
-        this.transitionSpeed = transitionSpeed;
-        this.initFlickSmoothing = initFlickSmoothing;
-        this.flickFriction = flickFriction;
-        this.originalDim = originalDim;
-        this.boundaries = boundaries;
+        this.transitionSpeed = options.transitionSpeed;
+        this.initFlickSmoothing = options.initFlickSmoothing;
+        this.flickFriction = options.flickFriction;
+        this.imageDim = newDim();
+        this.bounds = newDim();
 
         this.lastX = this.tx = 0;
         this.lastY = this.ty = 0;
@@ -45,6 +48,13 @@ class DragPhysics extends CanvasElementPhysics {
         this.totalDiff = 0;
     }
 
+    protected onAttach(oldRect: Rect): void {
+        this.rect.x = oldRect.x;
+        this.rect.y = oldRect.y;
+        this.setImageSize(this.rect.width, this.rect.height);
+        this.updateRectScale();
+    }
+
     public teleportTo(x: number, y: number): void {
         this.tx = this.rect.x = x;
         this.ty = this.rect.y = y;
@@ -52,6 +62,17 @@ class DragPhysics extends CanvasElementPhysics {
 
     public setScale(scale: number): void {
         this.tscale = this.scale = scale;
+    }
+
+    public resize(width: number, height: number): void {
+        this.normalizeResize(this.bounds.width, this.bounds.height, width, height);
+        this.bounds.width = width;
+        this.bounds.height = height;
+    }
+
+    private setImageSize(width: number, height: number): void {
+        this.imageDim.width = width;
+        this.imageDim.height = height;
     }
 
     public getScale(): number {
@@ -84,7 +105,8 @@ class DragPhysics extends CanvasElementPhysics {
         this.dragging = false;
     }
 
-    public normalizeResize(fromWidth: number, fromHeight: number, toWidth: number, toHeight: number): void {
+    private normalizeResize(fromWidth: number, fromHeight: number, toWidth: number, toHeight: number): void {
+        if (!this.rect) { return; }
         const dx = (toWidth - fromWidth) / 2;
         const dy = (toHeight - fromHeight) / 2;
         this.rect.x += dx;
@@ -98,17 +120,17 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     public resetImageTransform(): void {
-        if (this.originalDim.width <= this.boundaries.width && this.originalDim.height <= this.rect.height) {
+        if (this.imageDim.width <= this.bounds.width && this.imageDim.height <= this.bounds.height) {
             this.tscale = 1;
         } else {
             this.tscale = Math.min(
-                this.rect.width / this.originalDim.width,
-                this.rect.height / this.originalDim.height
+                this.bounds.width / this.imageDim.width,
+                this.bounds.height / this.imageDim.height
             );
         }
 
-        this.tx = (this.boundaries.width - this.originalDim.width * this.tscale) / 2;
-        this.ty = (this.boundaries.height - this.originalDim.height * this.tscale) / 2;
+        this.tx = (this.bounds.width - this.imageDim.width * this.tscale) / 2;
+        this.ty = (this.bounds.height - this.imageDim.height * this.tscale) / 2;
     }
 
     public stopAnimations(): void {
@@ -116,8 +138,6 @@ class DragPhysics extends CanvasElementPhysics {
         this.rect.y = this.ty;
         this.scale = this.tscale;
     }
-
-    public setup(): void { }
 
     public tick(dt: number): void {
         const dx = this.tx - this.rect.x;
@@ -148,8 +168,8 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     private updateRectScale(): void {
-        this.rect.width = this.originalDim.width * this.scale;
-        this.rect.height = this.originalDim.height * this.scale;
+        this.rect.width = this.imageDim.width * this.scale;
+        this.rect.height = this.imageDim.height * this.scale;
     }
 }
 

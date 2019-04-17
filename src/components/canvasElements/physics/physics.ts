@@ -1,15 +1,20 @@
-import Rect from "../../../types/math/rect";
+import { Rect, newRect } from "../../../types/math/rect";
 
 abstract class CanvasElementPhysics {
-    protected rect!: Rect;
+    protected rect: Rect;
+
+    constructor() {
+        this.rect = newRect();
+    }
 
     public abstract tick(dt: number): void;
     public abstract rectChanged(): boolean;
-    protected abstract setup(): void;
+    protected abstract onAttach(oldRect: Rect): void;
 
     public init(rect: Rect): void {
+        const oldRect = this.rect;
         this.rect = rect;
-        this.setup();
+        this.onAttach(oldRect);
     }
 }
 

@@ -17,7 +17,7 @@ class SimpleEasePhysics extends CanvasElementPhysics {
         this.totalDiff = 0;
     }
 
-    protected setup(): void {
+    protected onAttach(): void {
         this.targetX = this.rect.x;
         this.targetY = this.rect.y;
     }

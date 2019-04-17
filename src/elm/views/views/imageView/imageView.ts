@@ -2,12 +2,11 @@ import View from "../../view";
 import IApp from "../../../../types/app/iApp";
 import ViewMap from "../../viewMap";
 import SiteResources from "../../../../siteResources";
-import SiteConfig from "../../../../siteConfig";
 import SimpleEasePhysics from "../../../../components/canvasElements/physics/simpleEase";
 import CloseButton from "./closeButton";
 import DragPhysics from "../../../../components/canvasElements/physics/drag";
 import CanvasImage from "../../../../components/canvasElements/canvasImage";
-import Dim from "../../../../types/math/dim";
+import { Dim, newDim } from "../../../../types/math/dim";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -22,9 +21,6 @@ class ImageView extends View {
     private X: CanvasRenderingContext2D;
     private closeButton: CloseButton;
     private closeButtonPhysics: SimpleEasePhysics;
-
-    private imageDim: Dim;
-    private canvasDim: Dim;
 
     private image?: HTMLImageElement;
 
@@ -50,9 +46,6 @@ class ImageView extends View {
         this.canvas = document.createElement("canvas");
         this.X = this.getX();
 
-        this.imageDim = { width: 100, height: 100 };
-        this.canvasDim = { width: 100, height: 100 };
-
         this.closeButton = new CloseButton();
         this.closeButtonPhysics = new SimpleEasePhysics(0.05);
         this.closeButton.setPhysics(this.closeButtonPhysics);
@@ -62,7 +55,11 @@ class ImageView extends View {
         this.width = 0;
         this.height = 0;
 
-        this.imagePhysics = new DragPhysics(0.1, 0.5, 0.9, this.imageDim, this.canvasDim);
+        this.imagePhysics = new DragPhysics({
+            transitionSpeed: 0.1,
+            initFlickSmoothing: 0.5,
+            flickFriction: 0.9
+        });
 
         this.userAdjusted = false;
         this.drawing = false;
@@ -94,15 +91,13 @@ class ImageView extends View {
     }
 
     public setInitalTransform(x: number, y: number, scale: number): void {
-        // 
+        this.imagePhysics.teleportTo(x, y);
+        this.imagePhysics.setScale(scale);
         this.hasInitalTransform = true;
     }
 
     private setImage(image: HTMLImageElement) {
         this.image = image;
-
-        this.imageDim.width = image.width;
-        this.imageDim.height = image.height;
 
         this.canvasImage = new CanvasImage(0, 0, this.image);
         this.canvasImage.setPhysics(this.imagePhysics);
@@ -214,12 +209,9 @@ class ImageView extends View {
     }
 
     private resizeHandler(): void {
-        if (this.canvasImage) {
-            this.imagePhysics.normalizeResize(this.width, this.height, this.app.width, this.app.height);
-        }
-
-        this.canvasDim.width = this.width = this.canvas.width = this.app.width;
-        this.canvasDim.height = this.height = this.canvas.height = this.app.height;
+        this.width = this.canvas.width = this.app.width;
+        this.height = this.canvas.height = this.app.height;
+        this.imagePhysics.resize(this.width, this.height);
 
         if (!this.userAdjusted) {
             this.resetImagePosition();
