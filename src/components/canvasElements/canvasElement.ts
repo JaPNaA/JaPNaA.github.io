@@ -21,7 +21,7 @@ abstract class CanvasElement {
         this.applyPhysics(dt);
     }
 
-    public setPhysics(physics: CanvasElementPhysics) {
+    public attachPhysics(physics: CanvasElementPhysics) {
         this.physics = physics;
         this.physics.init(this.rect);
     }

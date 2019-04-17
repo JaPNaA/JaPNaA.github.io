@@ -3,42 +3,32 @@ import IApp from "../../../../types/app/iApp";
 import ViewMap from "../../viewMap";
 import SiteResources from "../../../../siteResources";
 import SimpleEasePhysics from "../../../../components/canvasElements/physics/simpleEase";
-import CloseButton from "./closeButton";
-import DragPhysics from "../../../../components/canvasElements/physics/drag";
-import CanvasImage from "../../../../components/canvasElements/canvasImage";
-import { Dim, newDim } from "../../../../types/math/dim";
+import ImageViewCloseButton from "./closeButton";
+import ImageViewImage from "./image";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
     public viewName = ImageView.viewName;
     public isFullPage: boolean = false;
 
-    private static zoomFactor: number = 1.1;
-
     protected elm: HTMLDivElement;
 
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
-    private closeButton: CloseButton;
+
+    private closeButton: ImageViewCloseButton;
     private closeButtonPhysics: SimpleEasePhysics;
 
-    private image?: HTMLImageElement;
-
-    private then: number;
+    private image: ImageViewImage;
 
     private src?: string;
-    private hasInitalTransform: boolean;
 
     private width: number;
     private height: number;
 
-    private canvasImage?: CanvasImage;
-    private imagePhysics: DragPhysics;
-
-
+    private then: number;
     private shouldRedraw: boolean;
     private drawing: boolean;
-    private userAdjusted: boolean;
 
     constructor(app: IApp, stateData?: string) {
         super(app);
@@ -46,22 +36,15 @@ class ImageView extends View {
         this.canvas = document.createElement("canvas");
         this.X = this.getX();
 
-        this.closeButton = new CloseButton();
+        this.closeButton = new ImageViewCloseButton();
         this.closeButtonPhysics = new SimpleEasePhysics(0.05);
-        this.closeButton.setPhysics(this.closeButtonPhysics);
+        this.closeButton.attachPhysics(this.closeButtonPhysics);
 
-        this.hasInitalTransform = false;
+        this.image = new ImageViewImage();
 
         this.width = 0;
         this.height = 0;
 
-        this.imagePhysics = new DragPhysics({
-            transitionSpeed: 0.1,
-            initFlickSmoothing: 0.5,
-            flickFriction: 0.9
-        });
-
-        this.userAdjusted = false;
         this.drawing = false;
         this.shouldRedraw = true;
 
@@ -91,23 +74,13 @@ class ImageView extends View {
     }
 
     public setInitalTransform(x: number, y: number, scale: number): void {
-        this.imagePhysics.teleportTo(x, y);
-        this.imagePhysics.setScale(scale);
-        this.hasInitalTransform = true;
+        this.image.setInitalTransform(x, y, scale);
     }
 
     private setImage(image: HTMLImageElement) {
-        this.image = image;
-
-        this.canvasImage = new CanvasImage(0, 0, this.image);
-        this.canvasImage.setPhysics(this.imagePhysics);
+        this.image.setImage(image);
 
         this.resetImagePosition();
-
-        if (!this.hasInitalTransform) {
-            this.stopAnimations();
-        }
-
     }
 
     private getX(): CanvasRenderingContext2D {
@@ -140,48 +113,27 @@ class ImageView extends View {
 
     private tick(deltaTime: number): void {
         this.closeButton.tick(deltaTime);
-
-        if (this.canvasImage) {
-            this.canvasImage.tick(deltaTime);
-        }
+        this.image.tick(deltaTime);
     }
 
     private draw() {
-        if (!this.image) { return; }
+        // TODO: Bring back stop drawing
+        console.log("draw");
         this.X.clearRect(0, 0, this.width, this.height);
 
+        this.image.draw(this.X);
 
-        this.X.imageSmoothingEnabled = this.imagePhysics.getScale() < 3;
-        // at some point, when it's zoomed in enough, open the skyrim intro, if the meme is still relevant
-        // <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/RrjJtYpOawU?start=61&autoplay=1&mute=1&controls=0&disablekb=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-        this.X.save();
-
-        this.X.shadowColor = "rgba(0,0,0,0.35)";
-        this.X.shadowBlur = 8;
-        this.X.shadowOffsetX = 0;
-        this.X.shadowOffsetY = 4;
-
-        if (this.canvasImage) {
-            this.canvasImage.draw(this.X);
-
-            const rect = this.canvasImage.getRect();
-
+        const rect = this.image.getRect();
+        if (rect) {
             if (rect.x < 0) {
                 this.closeButtonPhysics.moveTo(0, 0);
             } else {
-                this.closeButtonPhysics.teleportTo(rect.x - CloseButton.width, rect.y - CloseButton.height);
+                this.closeButtonPhysics.teleportTo(rect.x - ImageViewCloseButton.width, rect.y - ImageViewCloseButton.height);
             }
             this.closeButton.draw(this.X);
         }
-        // this.X.drawImage(
-        //     this.image,
-        //     0, 0, this.image.width, this.image.height,
-        //     this.x, this.y, this.image.width * this.scale, this.image.height * this.scale
-        // );
-        this.X.restore();
 
-        // this.X.drawImage(this.closeButtonImage, 0, 0);
+        this.X.restore();
 
     }
 
@@ -211,42 +163,29 @@ class ImageView extends View {
     private resizeHandler(): void {
         this.width = this.canvas.width = this.app.width;
         this.height = this.canvas.height = this.app.height;
-        this.imagePhysics.resize(this.width, this.height);
-
-        if (!this.userAdjusted) {
-            this.resetImagePosition();
-            this.stopAnimations();
-        }
+        this.image.physics.resize(this.width, this.height);
         this.redraw();
     }
 
     private wheelHandler(e: WheelEvent): void {
         e.preventDefault();
-        if (e.deltaY > 0) {
-            this.imagePhysics.zoomOutFrom(ImageView.zoomFactor, e.clientX, e.clientY);
-        } else {
-            this.imagePhysics.zoomInto(ImageView.zoomFactor, e.clientX, e.clientY);
-        }
-
-        this.userAdjusted = true;
+        this.image.zoom(e.deltaY, e.clientX, e.clientY);
         this.redraw();
     }
 
     private mouseMoveHandler(e: MouseEvent): void {
-        this.imagePhysics.mouseMove(e.movementX, e.movementY);
-
-        this.userAdjusted = true;
+        this.image.physics.mouseMove(e.movementX, e.movementY);
         this.redraw();
     }
 
     private mouseDownHandler(e: MouseEvent): void {
-        this.imagePhysics.mouseDown();
+        this.image.physics.mouseDown();
         // TODO: Close on actual click: not mousedown
         this.closeButton.checkClick(e.clientX, e.clientY);
     }
 
     private mouseUpHandler(): void {
-        this.imagePhysics.mouseUp();
+        this.image.physics.mouseUp();
     }
 
     private closeButtonClickHandler(): void {
@@ -260,14 +199,7 @@ class ImageView extends View {
     }
 
     private resetImagePosition(): void {
-        if (!this.canvasImage) { return; }
-        this.imagePhysics.resetImageTransform();
-        this.userAdjusted = false;
-        this.redraw();
-    }
-
-    private stopAnimations(): void {
-        // this.imagePhysics.stopAnimations();
+        this.image.physics.resetImageTransform();
         this.redraw();
     }
 }

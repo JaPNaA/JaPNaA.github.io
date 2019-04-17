@@ -2,14 +2,14 @@ import CanvasButton from "../../../../components/canvasElements/canvasButton";
 import SiteResources from "../../../../siteResources";
 import SiteConfig from "../../../../siteConfig";
 
-class CloseButton extends CanvasButton {
+class ImageViewCloseButton extends CanvasButton {
     public static width: number = 32;
     public static height: number = 32;
 
     private image: HTMLImageElement;
 
     constructor() {
-        super(0, 0, CloseButton.width, CloseButton.height);
+        super(0, 0, ImageViewCloseButton.width, ImageViewCloseButton.height);
         this.image = SiteResources.loadImage(SiteConfig.path.img.close).image;
     }
 
@@ -18,4 +18,4 @@ class CloseButton extends CanvasButton {
     }
 }
 
-export default CloseButton;
+export default ImageViewCloseButton;

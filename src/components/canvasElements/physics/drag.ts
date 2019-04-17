@@ -24,6 +24,7 @@ class DragPhysics extends CanvasElementPhysics {
     private tscale: number;
 
     private dragging: boolean;
+    private userAdjusted: boolean;
     private imageDim: Dim;
     private bounds: Dim;
 
@@ -45,6 +46,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.tscale = this.scale = 1;
 
         this.dragging = false;
+        this.userAdjusted = false;
         this.totalDiff = 0;
     }
 
@@ -65,9 +67,19 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     public resize(width: number, height: number): void {
-        this.normalizeResize(this.bounds.width, this.bounds.height, width, height);
+        const oldWidth = this.bounds.width;
+        const oldHeight = this.bounds.height;
+
         this.bounds.width = width;
         this.bounds.height = height;
+
+        if (this.userAdjusted) {
+            this.normalizeResize(oldWidth, oldHeight, width, height);
+        } else {
+            this.resetImageTransform();
+        }
+
+        this.preventTransition();
     }
 
     private setImageSize(width: number, height: number): void {
@@ -87,6 +99,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.tscale *= factor;
         this.tx -= (x - this.tx) * (factor - 1);
         this.ty -= (y - this.ty) * (factor - 1);
+        this.userAdjusted = true;
     }
 
     public mouseMove(dx: number, dy: number): void {
@@ -95,6 +108,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.ty += dy;
         this.rect.x += dx;
         this.rect.y += dy;
+        this.userAdjusted = true;
     }
 
     public mouseDown(): void {
@@ -131,6 +145,7 @@ class DragPhysics extends CanvasElementPhysics {
 
         this.tx = (this.bounds.width - this.imageDim.width * this.tscale) / 2;
         this.ty = (this.bounds.height - this.imageDim.height * this.tscale) / 2;
+        this.userAdjusted = false;
     }
 
     public stopAnimations(): void {
@@ -151,6 +166,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.updateRectScale();
 
         if (this.dragging) {
+            // TODO: BUG: init flick smoothing takes in account clicks
             this.vx = (this.rect.x - this.lastX) * (1 - this.initFlickSmoothing) + this.vx * this.initFlickSmoothing;
             this.vy = (this.rect.y - this.lastY) * (1 - this.initFlickSmoothing) + this.vy * this.initFlickSmoothing;
             this.lastX = this.rect.x;
@@ -170,6 +186,12 @@ class DragPhysics extends CanvasElementPhysics {
     private updateRectScale(): void {
         this.rect.width = this.imageDim.width * this.scale;
         this.rect.height = this.imageDim.height * this.scale;
+    }
+
+    private preventTransition(): void {
+        this.rect.x = this.tx;
+        this.rect.y = this.ty;
+        this.scale = this.tscale;
     }
 }
 
