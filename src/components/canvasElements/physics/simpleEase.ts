@@ -43,6 +43,8 @@ class SimpleEasePhysics extends CanvasElementPhysics {
         this.rect.y += dy * this.transitionSpeed;
         this.totalDiff = absSum([dx, dy]);
     }
+
+    public onDraw(): void { }
 }
 
 export default SimpleEasePhysics;

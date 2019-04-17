@@ -10,8 +10,6 @@ class DragPhysics extends CanvasElementPhysics {
     private initFlickSmoothing: number;
     private flickFriction: number;
 
-    private totalDiff: number;
-
     private lastX: number;
     private tx: number;
     private vx: number;
@@ -27,6 +25,8 @@ class DragPhysics extends CanvasElementPhysics {
     private userAdjusted: boolean;
     private imageDim: Dim;
     private bounds: Dim;
+
+    private isCurrRenderDirty: boolean;
 
     constructor(options: {
         transitionSpeed: number, initFlickSmoothing: number, flickFriction: number
@@ -47,7 +47,7 @@ class DragPhysics extends CanvasElementPhysics {
 
         this.dragging = false;
         this.userAdjusted = false;
-        this.totalDiff = 0;
+        this.isCurrRenderDirty = true;
     }
 
     protected onAttach(oldRect: Rect): void {
@@ -85,6 +85,7 @@ class DragPhysics extends CanvasElementPhysics {
     private setImageSize(width: number, height: number): void {
         this.imageDim.width = width;
         this.imageDim.height = height;
+        this.isCurrRenderDirty = true;
     }
 
     public getScale(): number {
@@ -100,6 +101,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.tx -= (x - this.tx) * (factor - 1);
         this.ty -= (y - this.ty) * (factor - 1);
         this.userAdjusted = true;
+        this.isCurrRenderDirty = true;
     }
 
     public mouseMove(dx: number, dy: number): void {
@@ -109,6 +111,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.rect.x += dx;
         this.rect.y += dy;
         this.userAdjusted = true;
+        this.isCurrRenderDirty = true;
     }
 
     public mouseDown(): void {
@@ -130,7 +133,13 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     public rectChanged(): boolean {
-        return this.totalDiff > DragPhysics.changeThreshold;
+        return this.isCurrRenderDirty || absSum([
+            this.tx - this.rect.x,
+            this.ty - this.rect.y,
+            this.tscale - this.scale,
+            this.vx,
+            this.vy
+        ]) > DragPhysics.changeThreshold;
     }
 
     public resetImageTransform(): void {
@@ -146,6 +155,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.tx = (this.bounds.width - this.imageDim.width * this.tscale) / 2;
         this.ty = (this.bounds.height - this.imageDim.height * this.tscale) / 2;
         this.userAdjusted = false;
+        this.isCurrRenderDirty = true;
     }
 
     public stopAnimations(): void {
@@ -179,8 +189,10 @@ class DragPhysics extends CanvasElementPhysics {
             this.tx += this.vx;
             this.ty += this.vy;
         }
+    }
 
-        this.totalDiff = absSum([dx, dy, dscale, this.vx, this.vy]);
+    public onDraw(): void {
+        this.isCurrRenderDirty = false;
     }
 
     private updateRectScale(): void {

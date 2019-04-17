@@ -8,6 +8,7 @@ abstract class CanvasElementPhysics {
     }
 
     public abstract tick(dt: number): void;
+    public abstract onDraw(): void;
     public abstract rectChanged(): boolean;
     protected abstract onAttach(oldRect: Rect): void;
 

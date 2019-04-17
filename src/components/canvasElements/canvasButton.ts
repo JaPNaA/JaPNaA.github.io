@@ -42,6 +42,7 @@ class CanvasButton extends CanvasElement {
     }
 
     public draw(X: CanvasRenderingContext2D): void {
+        super.draw(X);
         X.fillStyle = "#ff0000";
         X.fillRect(this.rect.x, this.rect.y, this.rect.width, this.rect.height);
     }

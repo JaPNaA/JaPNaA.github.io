@@ -79,7 +79,6 @@ class ImageView extends View {
 
     private setImage(image: HTMLImageElement) {
         this.image.setImage(image);
-
         this.resetImagePosition();
     }
 
@@ -89,9 +88,15 @@ class ImageView extends View {
         return X;
     }
 
+    private redrawIfShould(): void {
+        this.updateShouldRedraw();
+        if (this.shouldRedraw) {
+            this.redraw();
+        }
+    }
+
     private redraw(): void {
         if (this.drawing) { return; }
-        this.shouldRedraw = true;
         this.reqanfLoop();
     }
 
@@ -117,8 +122,6 @@ class ImageView extends View {
     }
 
     private draw() {
-        // TODO: Bring back stop drawing
-        console.log("draw");
         this.X.clearRect(0, 0, this.width, this.height);
 
         this.image.draw(this.X);
@@ -134,7 +137,7 @@ class ImageView extends View {
         }
 
         this.X.restore();
-
+        this.updateShouldRedraw();
     }
 
     private addEventHandlers(): void {
@@ -170,12 +173,12 @@ class ImageView extends View {
     private wheelHandler(e: WheelEvent): void {
         e.preventDefault();
         this.image.zoom(e.deltaY, e.clientX, e.clientY);
-        this.redraw();
+        this.redrawIfShould();
     }
 
     private mouseMoveHandler(e: MouseEvent): void {
         this.image.physics.mouseMove(e.movementX, e.movementY);
-        this.redraw();
+        this.redrawIfShould();
     }
 
     private mouseDownHandler(e: MouseEvent): void {
@@ -201,6 +204,10 @@ class ImageView extends View {
     private resetImagePosition(): void {
         this.image.physics.resetImageTransform();
         this.redraw();
+    }
+
+    private updateShouldRedraw(): void {
+        this.shouldRedraw = this.image.physics.rectChanged() || this.closeButtonPhysics.rectChanged();
     }
 }
 

@@ -14,8 +14,11 @@ abstract class CanvasElement {
         };
     }
 
-    public abstract draw(X: CanvasRenderingContext2D): void;
     public abstract shouldRedraw(): boolean;
+
+    public draw(X: CanvasRenderingContext2D): void {
+        if (this.physics) { this.physics.onDraw(); }
+    }
 
     public tick(dt: number): void {
         this.applyPhysics(dt);
