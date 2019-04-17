@@ -29,12 +29,15 @@ class ImageViewCloseButton extends CanvasButton {
     public tick(dt: number) {
         super.tick(dt);
 
-        const rect = this.imageViewImage.getRect();
-        if (rect && this.physics) {
-            if (rect.x < 0) {
+        const imageRect = this.imageViewImage.getRect();
+        if (imageRect && this.physics) {
+            if (
+                imageRect.x - this.rect.width < 0 ||
+                imageRect.y - this.rect.height < 0
+            ) {
                 this.physics.moveTo(0, 0);
             } else {
-                this.physics.teleportTo(rect.x - ImageViewCloseButton.width, rect.y - ImageViewCloseButton.height);
+                this.physics.teleportTo(imageRect.x - ImageViewCloseButton.width, imageRect.y - ImageViewCloseButton.height);
             }
         }
     }

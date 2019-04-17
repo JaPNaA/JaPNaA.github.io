@@ -5,6 +5,7 @@ import { Rect } from "../../../types/math/rect";
 
 class DragPhysics extends CanvasElementPhysics {
     private static changeThreshold: number = 0.0001;
+    private static padding: number = 16;
 
     private transitionSpeed: number;
     private initFlickSmoothing: number;
@@ -55,6 +56,8 @@ class DragPhysics extends CanvasElementPhysics {
         const dy = this.ty - this.rect.y;
         const dscale = this.tscale - this.scale;
 
+        this.constrainToBounds();
+
         this.rect.x += dx * this.transitionSpeed;
         this.rect.y += dy * this.transitionSpeed;
         this.scale += dscale * this.transitionSpeed;
@@ -74,6 +77,23 @@ class DragPhysics extends CanvasElementPhysics {
             this.rect.y += this.vy;
             this.tx += this.vx;
             this.ty += this.vy;
+        }
+    }
+
+    private constrainToBounds(): void {
+        const twidth = this.tscale * this.imageDim.width;
+        const theight = this.tscale * this.imageDim.height;
+
+        if (this.ty > this.bounds.height - DragPhysics.padding) {
+            this.ty = this.bounds.height - DragPhysics.padding;
+        } else if (this.ty < DragPhysics.padding - theight) {
+            this.ty = DragPhysics.padding + -theight;
+        }
+
+        if (this.tx > this.bounds.width - DragPhysics.padding) {
+            this.tx = this.bounds.width - DragPhysics.padding;
+        } else if (this.tx < DragPhysics.padding + -twidth) {
+            this.tx = DragPhysics.padding + -twidth;
         }
     }
 

@@ -119,15 +119,6 @@ class ImageView extends View {
     private tick(deltaTime: number): void {
         this.closeButton.tick(deltaTime);
         this.image.tick(deltaTime);
-
-        const rect = this.image.getRect();
-        if (rect) {
-            if (rect.x < 0) {
-                this.closeButtonPhysics.moveTo(0, 0);
-            } else {
-                this.closeButtonPhysics.teleportTo(rect.x - ImageViewCloseButton.width, rect.y - ImageViewCloseButton.height);
-            }
-        }
     }
 
     private draw() {
