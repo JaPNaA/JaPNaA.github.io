@@ -16,7 +16,7 @@ class CanvasButton extends CanvasElement {
 
     public shouldRedraw(): boolean {
         if (this.physics) {
-            return this.physics.rectChanged();
+            return this.physics.hasRectChanged();
         } else {
             return false;
         }

@@ -50,16 +50,44 @@ class DragPhysics extends CanvasElementPhysics {
         this.isCurrRenderDirty = true;
     }
 
-    protected onAttach(oldRect: Rect): void {
-        this.rect.x = oldRect.x;
-        this.rect.y = oldRect.y;
-        this.setImageSize(this.rect.width, this.rect.height);
+    public tick(dt: number): void {
+        const dx = this.tx - this.rect.x;
+        const dy = this.ty - this.rect.y;
+        const dscale = this.tscale - this.scale;
+
+        this.rect.x += dx * this.transitionSpeed;
+        this.rect.y += dy * this.transitionSpeed;
+        this.scale += dscale * this.transitionSpeed;
+
         this.updateRectScale();
+
+        if (this.dragging) {
+            // TODO: BUG: init flick smoothing takes in account clicks
+            this.vx = (this.rect.x - this.lastX) * (1 - this.initFlickSmoothing) + this.vx * this.initFlickSmoothing;
+            this.vy = (this.rect.y - this.lastY) * (1 - this.initFlickSmoothing) + this.vy * this.initFlickSmoothing;
+            this.lastX = this.rect.x;
+            this.lastY = this.rect.y;
+        } else {
+            this.vx *= this.flickFriction;
+            this.vy *= this.flickFriction;
+            this.rect.x += this.vx;
+            this.rect.y += this.vy;
+            this.tx += this.vx;
+            this.ty += this.vy;
+        }
+    }
+
+    public onDraw(): void {
+        this.isCurrRenderDirty = false;
     }
 
     public teleportTo(x: number, y: number): void {
         this.tx = this.rect.x = x;
         this.ty = this.rect.y = y;
+    }
+
+    public getScale(): number {
+        return this.scale;
     }
 
     public setScale(scale: number): void {
@@ -82,14 +110,14 @@ class DragPhysics extends CanvasElementPhysics {
         this.preventTransition();
     }
 
-    private setImageSize(width: number, height: number): void {
-        this.imageDim.width = width;
-        this.imageDim.height = height;
-        this.isCurrRenderDirty = true;
-    }
-
-    public getScale(): number {
-        return this.scale;
+    public hasRectChanged(): boolean {
+        return this.isCurrRenderDirty || absSum([
+            this.tx - this.rect.x,
+            this.ty - this.rect.y,
+            this.tscale - this.scale,
+            this.vx,
+            this.vy
+        ]) > DragPhysics.changeThreshold;
     }
 
     public zoomOutFrom(factor: number, x: number, y: number): void {
@@ -122,26 +150,6 @@ class DragPhysics extends CanvasElementPhysics {
         this.dragging = false;
     }
 
-    private normalizeResize(fromWidth: number, fromHeight: number, toWidth: number, toHeight: number): void {
-        if (!this.rect) { return; }
-        const dx = (toWidth - fromWidth) / 2;
-        const dy = (toHeight - fromHeight) / 2;
-        this.rect.x += dx;
-        this.rect.y += dy;
-        this.tx += dx;
-        this.ty += dy;
-    }
-
-    public rectChanged(): boolean {
-        return this.isCurrRenderDirty || absSum([
-            this.tx - this.rect.x,
-            this.ty - this.rect.y,
-            this.tscale - this.scale,
-            this.vx,
-            this.vy
-        ]) > DragPhysics.changeThreshold;
-    }
-
     public resetImageTransform(): void {
         if (this.imageDim.width <= this.bounds.width && this.imageDim.height <= this.bounds.height) {
             this.tscale = 1;
@@ -164,35 +172,27 @@ class DragPhysics extends CanvasElementPhysics {
         this.scale = this.tscale;
     }
 
-    public tick(dt: number): void {
-        const dx = this.tx - this.rect.x;
-        const dy = this.ty - this.rect.y;
-        const dscale = this.tscale - this.scale;
-
-        this.rect.x += dx * this.transitionSpeed;
-        this.rect.y += dy * this.transitionSpeed;
-        this.scale += dscale * this.transitionSpeed;
-
+    protected onAttach(oldRect: Rect): void {
+        this.rect.x = oldRect.x;
+        this.rect.y = oldRect.y;
+        this.setImageSize(this.rect.width, this.rect.height);
         this.updateRectScale();
-
-        if (this.dragging) {
-            // TODO: BUG: init flick smoothing takes in account clicks
-            this.vx = (this.rect.x - this.lastX) * (1 - this.initFlickSmoothing) + this.vx * this.initFlickSmoothing;
-            this.vy = (this.rect.y - this.lastY) * (1 - this.initFlickSmoothing) + this.vy * this.initFlickSmoothing;
-            this.lastX = this.rect.x;
-            this.lastY = this.rect.y;
-        } else {
-            this.vx *= this.flickFriction;
-            this.vy *= this.flickFriction;
-            this.rect.x += this.vx;
-            this.rect.y += this.vy;
-            this.tx += this.vx;
-            this.ty += this.vy;
-        }
     }
 
-    public onDraw(): void {
-        this.isCurrRenderDirty = false;
+    private setImageSize(width: number, height: number): void {
+        this.imageDim.width = width;
+        this.imageDim.height = height;
+        this.isCurrRenderDirty = true;
+    }
+
+    private normalizeResize(fromWidth: number, fromHeight: number, toWidth: number, toHeight: number): void {
+        if (!this.rect) { return; }
+        const dx = (toWidth - fromWidth) / 2;
+        const dy = (toHeight - fromHeight) / 2;
+        this.rect.x += dx;
+        this.rect.y += dy;
+        this.tx += dx;
+        this.ty += dy;
     }
 
     private updateRectScale(): void {

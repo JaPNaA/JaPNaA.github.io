@@ -17,11 +17,6 @@ class SimpleEasePhysics extends CanvasElementPhysics {
         this.totalDiff = 0;
     }
 
-    protected onAttach(): void {
-        this.targetX = this.rect.x;
-        this.targetY = this.rect.y;
-    }
-
     public moveTo(x: number, y: number): void {
         this.targetX = x;
         this.targetY = y;
@@ -32,7 +27,7 @@ class SimpleEasePhysics extends CanvasElementPhysics {
         this.targetY = this.rect.y = y;
     }
 
-    public rectChanged(): boolean {
+    public hasRectChanged(): boolean {
         return this.totalDiff > SimpleEasePhysics.changedThreshold;
     }
 
@@ -45,6 +40,11 @@ class SimpleEasePhysics extends CanvasElementPhysics {
     }
 
     public onDraw(): void { }
+
+    protected onAttach(): void {
+        this.targetX = this.rect.x;
+        this.targetY = this.rect.y;
+    }
 }
 
 export default SimpleEasePhysics;

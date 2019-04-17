@@ -13,6 +13,7 @@ class CanvasImage extends CanvasElement {
         super.draw(X);
         X.drawImage(this.image, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
     }
+
     public shouldRedraw(): boolean { return true; }
 }
 

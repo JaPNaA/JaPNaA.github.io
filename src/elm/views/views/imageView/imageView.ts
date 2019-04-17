@@ -16,10 +16,10 @@ class ImageView extends View {
     private canvas: HTMLCanvasElement;
     private X: CanvasRenderingContext2D;
 
+    private image: ImageViewImage;
     private closeButton: ImageViewCloseButton;
     private closeButtonPhysics: SimpleEasePhysics;
 
-    private image: ImageViewImage;
 
     private src?: string;
 
@@ -36,11 +36,11 @@ class ImageView extends View {
         this.canvas = document.createElement("canvas");
         this.X = this.getX();
 
-        this.closeButton = new ImageViewCloseButton();
-        this.closeButtonPhysics = new SimpleEasePhysics(0.05);
-        this.closeButton.attachPhysics(this.closeButtonPhysics);
-
         this.image = new ImageViewImage();
+
+        this.closeButton = new ImageViewCloseButton(this.image);
+        this.closeButtonPhysics = new SimpleEasePhysics(0.2);
+        this.closeButton.attachPhysics(this.closeButtonPhysics);
 
         this.width = 0;
         this.height = 0;
@@ -119,12 +119,6 @@ class ImageView extends View {
     private tick(deltaTime: number): void {
         this.closeButton.tick(deltaTime);
         this.image.tick(deltaTime);
-    }
-
-    private draw() {
-        this.X.clearRect(0, 0, this.width, this.height);
-
-        this.image.draw(this.X);
 
         const rect = this.image.getRect();
         if (rect) {
@@ -133,11 +127,21 @@ class ImageView extends View {
             } else {
                 this.closeButtonPhysics.teleportTo(rect.x - ImageViewCloseButton.width, rect.y - ImageViewCloseButton.height);
             }
-            this.closeButton.draw(this.X);
         }
+    }
+
+    private draw() {
+        this.X.clearRect(0, 0, this.width, this.height);
+
+        this.image.draw(this.X);
+        this.closeButton.draw(this.X);
 
         this.X.restore();
         this.updateShouldRedraw();
+    }
+
+    private updateShouldRedraw(): void {
+        this.shouldRedraw = this.image.physics.hasRectChanged() || this.closeButtonPhysics.hasRectChanged();
     }
 
     private addEventHandlers(): void {
@@ -204,10 +208,6 @@ class ImageView extends View {
     private resetImagePosition(): void {
         this.image.physics.resetImageTransform();
         this.redraw();
-    }
-
-    private updateShouldRedraw(): void {
-        this.shouldRedraw = this.image.physics.rectChanged() || this.closeButtonPhysics.rectChanged();
     }
 }
 

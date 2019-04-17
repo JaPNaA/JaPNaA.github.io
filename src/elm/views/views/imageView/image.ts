@@ -61,14 +61,13 @@ class ImageViewImage {
         }
     }
 
-    private getScale(): number {
-        return this.physics.getScale();
-    }
-
     public getRect(): Rect | undefined {
         return this.image && this.image.getRect();
     }
 
+    private getScale(): number {
+        return this.physics.getScale();
+    }
 }
 
 export default ImageViewImage;
