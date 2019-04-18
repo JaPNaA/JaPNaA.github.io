@@ -4,6 +4,7 @@ import EmbededApp from "../../app/embededApp";
 import WidgetMap from "../../elm/widgets/widgetMap";
 import WidgetClass from "../../types/widgetClass";
 import IApp from "../../types/app/iApp";
+import SiteConfig from "../../siteConfig";
 
 export default function htmlViewParse(app: IApp, text_: string, options: {
     scripts?: boolean,
@@ -53,8 +54,8 @@ function runScripts(div: HTMLDivElement) {
 
     for (let i = 0; i < scripts.length; i++) {
         const script = scripts[i];
-        const func = new Function("div", "id", script.innerHTML);
-        func(div, idElementMap);
+        const func = new Function("div", "id", "SiteConfig", script.innerHTML);
+        func(div, idElementMap, SiteConfig);
     }
 }
 

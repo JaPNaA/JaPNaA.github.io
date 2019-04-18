@@ -1,7 +1,8 @@
 <h1> My stuff </h1>
 
 It's currently <span id="time"> ... </span>
-or ${{ return Date.now() }} milliseconds since epoch
+or ${{ return Date.now() }} milliseconds since epoch according to your system clock,
+and the server says it's <span id="stime"> ... </span>!
 
 <div>
     According to your system clock, I am
@@ -16,4 +17,6 @@ or ${{ return Date.now() }} milliseconds since epoch
 <script>
     const time = id.get("time");
     time.innerText = new Date().toLocaleDateString();
+    const stime = id.get("stime");
+    stime.innerText = SiteConfig.serverTime.toLocaleDateString();
 </script>

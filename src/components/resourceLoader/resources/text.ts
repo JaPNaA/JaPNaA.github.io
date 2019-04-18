@@ -4,15 +4,16 @@ import ResourceLoaderHooks from "../resourceLoaderHooks";
 class TextResource extends Resource {
     public path: string;
     public text?: string;
+    public req: XMLHttpRequest;
 
     constructor(hooks: ResourceLoaderHooks, path: string) {
         super(hooks);
         this.path = path;
 
-        this.getText(path);
+        this.req = this.getText(path);
     }
 
-    private getText(path: string): void {
+    private getText(path: string): XMLHttpRequest {
         const req = new XMLHttpRequest();
         req.open("GET", path);
         req.responseType = "text";
@@ -35,6 +36,7 @@ class TextResource extends Resource {
         });
 
         req.send();
+        return req;
     }
 }
 

@@ -6,6 +6,7 @@ import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../siteResources";
 import htmlViewParse from "../../../components/htmlViewParser/htmlViewParser";
 import IApp from "../../../types/app/iApp";
+import removeChildren from "../../../utils/removeChildren";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -65,9 +66,12 @@ class Overview extends View {
         content.appendChild(document.createTextNode("Loading..."));
 
         SiteResources.loadText(SiteConfig.path.view.overview)
-            .onLoad(e => content.appendChild(
-                htmlViewParse(this.app, e.text || "Failed to load", { inlineJS: true, scripts: true })
-            ))
+            .onLoad(e => {
+                removeChildren(content);
+                content.appendChild(
+                    htmlViewParse(this.app, e.text || "Failed to load", { inlineJS: true, scripts: true })
+                );
+            })
             .onError(() => content.innerHTML = "Failed to load");
 
         container.appendChild(content);

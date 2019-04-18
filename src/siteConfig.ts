@@ -1,6 +1,7 @@
 import isHandheld from "./utils/isHandheld";
 import isMobile from "./utils/isMobile";
 import isIOS from "./utils/isIOS";
+import getServerTime from "./utils/getServerTime";
 
 class SiteConfig {
     static title: string = "JaPNaA";
@@ -37,19 +38,32 @@ class SiteConfig {
     static isHandheld: boolean;
     static isMobile: boolean;
     static isIOS: boolean;
+
+    static setup: Function;
+    static serverTime?: Date;
 }
 
-// matches localhost and ips, for debugging
-const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
-if (match) {
-    const port = parseInt(location.port);
-    if (!isNaN(port)) {
-        SiteConfig.path.thingy = match[0] + (port + 1);
+SiteConfig.setup = function () {
+    // matches localhost and ips, for debugging
+    const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
+    if (match) {
+        const port = parseInt(location.port);
+        if (!isNaN(port)) {
+            SiteConfig.path.thingy = match[0] + (port + 1);
+        }
     }
-}
 
-SiteConfig.isHandheld = isHandheld();
-SiteConfig.isMobile = isMobile();
-SiteConfig.isIOS = isIOS();
+    SiteConfig.isHandheld = isHandheld();
+    SiteConfig.isMobile = isMobile();
+    SiteConfig.isIOS = isIOS();
+
+    getServerTime().then(e => {
+        SiteConfig.serverTime = e;
+        console.log(e);
+    });
+    setTimeout(function () {
+        getServerTime().then(e => console.log(e));
+    }, 5000);
+};
 
 export default SiteConfig;
