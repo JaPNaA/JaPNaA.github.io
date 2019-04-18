@@ -233,6 +233,7 @@ class CardJSONv1Elm {
             console.log(bbox.left, bbox.top, bbox.width / image.width);
             imageView.setInitalTransform(bbox.left, bbox.top, bbox.width / image.naturalWidth);
             imageView.setImageSrc(image.src);
+            imageView.transitionIn();
         });
     }
 }

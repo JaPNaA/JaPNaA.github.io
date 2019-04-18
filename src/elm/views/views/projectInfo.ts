@@ -41,7 +41,7 @@ class ProjectInfoView extends View {
         const yearInt: number = parseInt(year);
         const indexInt: number = parseInt(index);
 
-        if (!yearInt || !indexInt) {
+        if (yearInt === undefined || indexInt === undefined) {
             throw new Error("Invalid stateData format");
         }
 

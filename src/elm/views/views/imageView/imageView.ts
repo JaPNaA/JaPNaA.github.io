@@ -5,11 +5,16 @@ import SiteResources from "../../../../siteResources";
 import SimpleEasePhysics from "../../../../components/canvasElements/physics/simpleEase";
 import ImageViewCloseButton from "./closeButton";
 import ImageViewImage from "./image";
+import wait from "../../../../utils/wait";
+import triggerTransitionIn from "../../../../utils/triggerTransitionIn";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
     public viewName = ImageView.viewName;
     public isFullPage: boolean = false;
+
+    private static destorySpeed: number = 500;
+    private static transitionInSpeed: number = 500;
 
     protected elm: HTMLDivElement;
 
@@ -56,7 +61,7 @@ class ImageView extends View {
         super.setup();
         this.elm.appendChild(this.canvas);
 
-        this.reqanfLoop();
+        this.redraw();
         this.addEventHandlers();
         this.resizeHandler();
         this.resetImagePosition();
@@ -66,7 +71,13 @@ class ImageView extends View {
         }
     }
 
-    public setImageSrc(src: string) {
+    public async destory(): Promise<void> {
+        super.destory();
+        this.removeEventHandlers();
+        await wait(ImageView.destorySpeed);
+    }
+
+    public setImageSrc(src: string): void {
         SiteResources.loadImage(src)
             .onLoad(e =>
                 this.setImage(e.copyImage())
@@ -77,7 +88,11 @@ class ImageView extends View {
         this.image.setInitalTransform(x, y, scale);
     }
 
-    private setImage(image: HTMLImageElement) {
+    public transitionIn(): void {
+        triggerTransitionIn(this.elm, ImageView.transitionInSpeed);
+    }
+
+    private setImage(image: HTMLImageElement): void {
         this.image.setImage(image);
         this.resetImagePosition();
     }
@@ -97,6 +112,7 @@ class ImageView extends View {
 
     private redraw(): void {
         if (this.drawing) { return; }
+        this.then = performance.now();
         this.reqanfLoop();
     }
 
@@ -121,18 +137,17 @@ class ImageView extends View {
         this.image.tick(deltaTime);
     }
 
-    private draw() {
+    private draw(): void {
         this.X.clearRect(0, 0, this.width, this.height);
 
         this.image.draw(this.X);
         this.closeButton.draw(this.X);
 
-        this.X.restore();
         this.updateShouldRedraw();
     }
 
     private updateShouldRedraw(): void {
-        this.shouldRedraw = this.image.physics.hasRectChanged() || this.closeButtonPhysics.hasRectChanged();
+        this.shouldRedraw = this.image.physics.hasRectChanged() || this.closeButton.shouldRedraw();
     }
 
     private addEventHandlers(): void {
@@ -156,6 +171,10 @@ class ImageView extends View {
 
         this.closeButtonClickHandler = this.closeButtonClickHandler.bind(this);
         this.closeButton.onClick(this.closeButtonClickHandler);
+    }
+
+    private removeEventHandlers(): void {
+        removeEventListener("keydown", this.keyDownHandler);
     }
 
     private resizeHandler(): void {

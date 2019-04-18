@@ -12,7 +12,7 @@
    viewBox="0 0 8.4666664 8.4666665"
    version="1.1"
    id="svg8"
-   sodipodi:docname="close.svg"
+   sodipodi:docname="close-white.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -28,7 +28,7 @@
      id="namedview12"
      showgrid="false"
      inkscape:zoom="20.85965"
-     inkscape:cx="8.4496173"
+     inkscape:cx="-0.85063462"
      inkscape:cy="16.141439"
      inkscape:window-x="0"
      inkscape:window-y="24"
@@ -44,12 +44,12 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     style="font-style:normal;font-weight:normal;font-size:medium;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     style="font-style:normal;font-weight:normal;font-size:medium;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f2ffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      id="g873"
      transform="translate(-76.035424,-121.79149)">
     <rect
@@ -59,10 +59,10 @@
        height="0.52916664"
        width="7.0664916"
        id="rect866"
-       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:0.26499998, 2.11999989;stroke-dashoffset:0;stroke-opacity:1" />
+       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#f2ffff;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:0.26499998, 2.11999988999999989;stroke-dashoffset:0;stroke-opacity:1" />
     <rect
        transform="rotate(45)"
-       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:0.26499998, 2.11999989;stroke-dashoffset:0;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#f2ffff;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:0.26499998, 2.11999988999999989;stroke-dashoffset:0;stroke-opacity:1"
        id="rect1458"
        width="7.0664916"
        height="0.52916664"
@@ -73,9 +73,9 @@
      id="text843"
      y="4.0018229"
      x="3.7797616"
-     style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+     style="font-style:normal;font-weight:normal;font-size:5.64444447px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#f2ffff;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
      xml:space="preserve"><tspan
-       style="stroke-width:0.26458332"
+       style="stroke-width:0.26458332;fill:#f2ffff;fill-opacity:1;"
        y="8.9958344"
        x="3.7797616"
        id="tspan841" /></text>

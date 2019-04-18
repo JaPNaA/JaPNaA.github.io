@@ -65,11 +65,8 @@ class DragPhysics extends CanvasElementPhysics {
         this.updateRectScale();
 
         if (this.dragging) {
-            // TODO: BUG: init flick smoothing takes in account clicks
             this.vx = (this.rect.x - this.lastX) * (1 - this.initFlickSmoothing) + this.vx * this.initFlickSmoothing;
             this.vy = (this.rect.y - this.lastY) * (1 - this.initFlickSmoothing) + this.vy * this.initFlickSmoothing;
-            this.lastX = this.rect.x;
-            this.lastY = this.rect.y;
         } else {
             this.vx *= this.flickFriction;
             this.vy *= this.flickFriction;
@@ -78,6 +75,9 @@ class DragPhysics extends CanvasElementPhysics {
             this.tx += this.vx;
             this.ty += this.vy;
         }
+
+        this.lastX = this.rect.x;
+        this.lastY = this.rect.y;
     }
 
     private constrainToBounds(): void {
