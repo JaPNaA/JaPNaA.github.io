@@ -96,11 +96,12 @@ class ProjectInfoView extends View {
 
     private linkClickHandler(elm: HTMLAnchorElement, event: MouseEvent) {
         const link = elm.href;
-        const view = new FrameView(this.app, link);
+        const topApp = this.app.top();
+        const view = new FrameView(topApp, link);
         view.preventRedirection();
         view.setup();
         view.animateTransitionIn();
-        this.app.views.add(view);
+        topApp.views.add(view);
 
         event.preventDefault();
     }

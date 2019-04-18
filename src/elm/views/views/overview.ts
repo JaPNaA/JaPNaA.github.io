@@ -49,7 +49,7 @@ class Overview extends View {
         hexagonImg.classList.add("hexagon");
 
         titleElm.appendChild(hexagonImg);
-        titleElm.appendChild(logoImg);  
+        titleElm.appendChild(logoImg);
 
         stickyBar.setup();
         stickyBar.appendTo(this.elm);
@@ -66,7 +66,7 @@ class Overview extends View {
 
         SiteResources.loadText(SiteConfig.path.view.overview)
             .onLoad(e => content.appendChild(
-                htmlViewParse(e.text || "Failed to load", {inlineJS: true, scripts: true})
+                htmlViewParse(this.app, e.text || "Failed to load", { inlineJS: true, scripts: true })
             ))
             .onError(() => content.innerHTML = "Failed to load");
 

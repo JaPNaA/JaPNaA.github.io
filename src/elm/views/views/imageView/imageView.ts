@@ -34,6 +34,7 @@ class ImageView extends View {
     private then: number;
     private shouldRedraw: boolean;
     private drawing: boolean;
+    private reqanfHandle: number;
 
     constructor(app: IApp, stateData?: string) {
         super(app);
@@ -55,6 +56,7 @@ class ImageView extends View {
 
         this.src = stateData;
         this.then = performance.now();
+        this.reqanfHandle = -1;
     }
 
     public async setup(): Promise<void> {
@@ -74,6 +76,7 @@ class ImageView extends View {
     public async destory(): Promise<void> {
         super.destory();
         this.removeEventHandlers();
+        cancelAnimationFrame(this.reqanfHandle);
         await wait(ImageView.destorySpeed);
     }
 
@@ -126,7 +129,7 @@ class ImageView extends View {
         this.draw();
 
         if (this.shouldRedraw) {
-            requestAnimationFrame(this.reqanfLoop.bind(this));
+            this.reqanfHandle = requestAnimationFrame(this.reqanfLoop.bind(this));
         } else {
             this.drawing = false;
         }
@@ -186,7 +189,7 @@ class ImageView extends View {
 
     private wheelHandler(e: WheelEvent): void {
         e.preventDefault();
-        this.image.zoom(e.deltaY, e.clientX, e.clientY);
+        this.image.zoom(e.deltaY, e.layerX, e.layerY);
         this.redrawIfShould();
     }
 
@@ -198,7 +201,7 @@ class ImageView extends View {
     private mouseDownHandler(e: MouseEvent): void {
         this.image.physics.mouseDown();
         // TODO: Close on actual click: not mousedown
-        this.closeButton.checkClick(e.clientX, e.clientY);
+        this.closeButton.checkClick(e.layerX, e.layerY);
     }
 
     private mouseUpHandler(): void {

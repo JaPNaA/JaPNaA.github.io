@@ -3,8 +3,9 @@ import ViewClass from "../../types/viewClass";
 import EmbededApp from "../../app/embededApp";
 import WidgetMap from "../../elm/widgets/widgetMap";
 import WidgetClass from "../../types/widgetClass";
+import IApp from "../../types/app/iApp";
 
-export default function htmlViewParse(text_: string, options: {
+export default function htmlViewParse(app: IApp, text_: string, options: {
     scripts?: boolean,
     inlineJS?: boolean
 } = {}): HTMLDivElement {
@@ -21,7 +22,7 @@ export default function htmlViewParse(text_: string, options: {
         runScripts(div);
     }
 
-    replaceElements(div);
+    replaceElements(div, app);
 
     return div;
 }
@@ -68,25 +69,25 @@ function getElementIdMap(div: HTMLDivElement) {
     return idElementMap;
 }
 
-function replaceElements(div: HTMLDivElement) {
-    replaceViewElements(div);
+function replaceElements(div: HTMLDivElement, app: IApp) {
+    replaceViewElements(div, app);
     replaceWidgetElements(div);
 }
 
-function replaceViewElements(div: HTMLDivElement) {
+function replaceViewElements(div: HTMLDivElement, app: IApp) {
     for (const [name, view] of ViewMap) {
         const tagName = "japnaa:view:" + name;
         const elms = div.getElementsByTagName(tagName);
 
         for (let i = 0; i < elms.length; i++) {
             const elm = elms[i];
-            replaceViewElement(elm, view);
+            replaceViewElement(app, elm, view);
         }
     }
 }
 
-function replaceViewElement(elm: Element, viewClass: ViewClass) {
-    const embededApp = new EmbededApp(elm);
+function replaceViewElement(parentApp: IApp, elm: Element, viewClass: ViewClass) {
+    const embededApp = new EmbededApp(parentApp, elm);
     const stateData = elm.getAttribute("statedata");
     embededApp.setup();
     elm.classList.add("embededView");

@@ -1,12 +1,13 @@
 import BaseApp from "./baseApp";
 import FakeAppURL from "./components/fakeUrl";
+import IApp from "../types/app/iApp";
 
 class EmbededApp extends BaseApp {
     private parentElm: Element;
     public url: FakeAppURL;
 
-    constructor(parentElm: Element) {
-        super();
+    constructor(parentApp: IApp, parentElm: Element) {
+        super(parentApp);
         this.parentElm = parentElm;
         this.url = new FakeAppURL();
     }
