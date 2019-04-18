@@ -77,6 +77,14 @@ class ResourceLoader {
         return this.loadResource<XMLResource>(path, XMLResource, type);
     }
 
+    public deleteResource(path: string): boolean {
+        if (this.resources.has(path)) {
+            this.resources.delete(path);
+            return true;
+        }
+        return false;
+    }
+
     private loadResource<T>(path: string, tconstructor: ResourceClass<T>, ...additionalArgs: any[]): T {
         const existingResource: Resource | undefined = this.resources.get(path);
         if (existingResource) {
