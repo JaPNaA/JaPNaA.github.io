@@ -189,9 +189,14 @@ class ImageView extends View {
         this.touchControls.onEndMove(() => {
             this.image.physics.endDrag();
         });
-        this.touchControls.onZoom((e) => {
+        this.touchControls.onZoom(e => {
             const [factor, center] = e;
             this.image.physics.zoomInto(factor, center.x, center.y);
+            this.redrawIfShould();
+        });
+        this.touchControls.onDoubleTap((e) => {
+            console.log("doubletap");
+            this.image.alternateFitToReal(e.x, e.y);
             this.redrawIfShould();
         });
     }

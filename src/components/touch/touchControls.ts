@@ -7,19 +7,28 @@ class TouchControls {
     private elm: HTMLElement;
     private touchMap: Map<number, Vec2>;
 
+    private singleTapPos: Vec2;
+    private singleTapped: boolean;
+    private touchMoved: boolean;
+
     private moveHandlers: EventHandlers<Vec2>;
     private startMoveHandlers: EventHandlers;
     private endMoveHandlers: EventHandlers;
     private zoomHandlers: EventHandlers<[number, Vec2]>;
+    private doubleTapHandlers: EventHandlers<Vec2>;
 
     constructor(elm: HTMLElement) {
         this.elm = elm;
         this.touchMap = new Map();
+        this.singleTapped = false;
+        this.singleTapPos = newVec2();
+        this.touchMoved = false;
 
         this.moveHandlers = new EventHandlers();
         this.startMoveHandlers = new EventHandlers();
         this.endMoveHandlers = new EventHandlers();
         this.zoomHandlers = new EventHandlers();
+        this.doubleTapHandlers = new EventHandlers();
     }
 
     public setup(): void {
@@ -47,6 +56,10 @@ class TouchControls {
         this.zoomHandlers.add(handler);
     }
 
+    public onDoubleTap(handler: Handler<Vec2>): void {
+        this.doubleTapHandlers.add(handler);
+    }
+
     private addEventHandlers(): void {
         this.touchStartHandler = this.touchStartHandler.bind(this);
         this.elm.addEventListener("touchstart", this.touchStartHandler);
@@ -67,7 +80,10 @@ class TouchControls {
     private touchStartHandler(e: TouchEvent): void {
         if (e.cancelable) { e.preventDefault(); }
 
-        if (this.touchMap.size === 0) { this.startMoveHandlers.dispatch(); }
+        if (this.touchMap.size === 0) {
+            this.startMoveHandlers.dispatch();
+            this.touchMoved = false;
+        }
 
         for (let i = 0; i < e.changedTouches.length; i++) {
             const touch = e.changedTouches[i];
@@ -83,7 +99,20 @@ class TouchControls {
             this.touchMap.delete(touch.identifier);
         }
 
-        if (this.touchMap.size === 0) { this.endMoveHandlers.dispatch(); }
+        if (this.touchMap.size === 0) {
+            this.endMoveHandlers.dispatch();
+            if (!this.touchMoved) {
+                const touch = e.changedTouches[0];
+
+                if (this.singleTapped) {
+                    this.doubleTapHandlers.dispatch(newVec2(touch.clientX, touch.clientY));
+                    this.singleTapped = false;
+                } else {
+                    this.singleTapPos = newVec2(touch.clientY, touch.clientY)
+                    this.singleTapped = true;
+                }
+            }
+        }
     }
 
     private touchMoveHandler(e: TouchEvent): void {
@@ -108,6 +137,8 @@ class TouchControls {
 
             this.touchMap.set(touch.identifier, newVec2(touch.clientX, touch.clientY));
         }
+
+        this.touchMoved = true;
     }
 
     private checkZoom(touchA: Touch, touchB: Touch): void {
