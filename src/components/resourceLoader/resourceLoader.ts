@@ -77,6 +77,16 @@ class ResourceLoader {
         return this.loadResource<XMLResource>(path, XMLResource, type);
     }
 
+    /** For anything else that loads, but cannot be used with ResourceLoader */
+    public addResourceLoading(): void {
+        this.toBeLoaded++;
+    }
+
+    /** For anything else that loads, but cannot be used with ResourceLoader */
+    public addResourceLoaded(): void {
+        this.onLoadHandler();
+    }
+
     public deleteResource(path: string): boolean {
         if (this.resources.has(path)) {
             this.resources.delete(path);
