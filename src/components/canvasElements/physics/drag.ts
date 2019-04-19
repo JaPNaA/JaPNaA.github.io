@@ -1,5 +1,5 @@
 import CanvasElementPhysics from "./physics";
-import absSum from "../../../utils/absSum";
+import absSum from "../../../utils/math/absSum";
 import { Dim, newDim } from "../../../types/math/dim";
 import { Rect } from "../../../types/math/rect";
 
@@ -107,7 +107,7 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     public getScale(): number {
-        return this.scale;
+        return this.tscale;
     }
 
     public setScale(scale: number): void {
@@ -152,7 +152,12 @@ class DragPhysics extends CanvasElementPhysics {
         this.isCurrRenderDirty = true;
     }
 
-    public mouseMove(dx: number, dy: number): void {
+    public zoomToScale(scale: number, x: number, y: number): void {
+        this.zoomInto(scale / this.tscale, x, y);
+        // this.tscale = scale;
+    }
+
+    public drag(dx: number, dy: number): void {
         if (!this.dragging) { return; }
         this.tx += dx;
         this.ty += dy;
@@ -162,11 +167,11 @@ class DragPhysics extends CanvasElementPhysics {
         this.isCurrRenderDirty = true;
     }
 
-    public mouseDown(): void {
+    public startDrag(): void {
         this.dragging = true;
     }
 
-    public mouseUp(): void {
+    public endDrag(): void {
         this.dragging = false;
     }
 

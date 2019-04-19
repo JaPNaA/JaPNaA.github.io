@@ -1,5 +1,5 @@
 import CanvasElementPhysics from "./physics";
-import absSum from "../../../utils/absSum";
+import absSum from "../../../utils/math/absSum";
 
 class SimpleEasePhysics extends CanvasElementPhysics {
     private static changedThreshold = 0.0001;

@@ -61,6 +61,15 @@ class ImageViewImage {
         }
     }
 
+    /** Alternates between the scale being 1 and zooming to fit */
+    public alternateFitToReal(x: number, y: number): void {
+        if (this.physics.getScale() < 1) {
+            this.physics.zoomToScale(1, x, y);
+        } else {
+            this.physics.resetImageTransform();
+        }
+    }
+
     public getRect(): Rect | undefined {
         return this.image && this.image.getRect();
     }
