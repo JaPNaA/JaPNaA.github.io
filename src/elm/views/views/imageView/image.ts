@@ -11,8 +11,8 @@ class ImageViewImage {
     constructor() {
         this.physics = new DragPhysics({
             transitionSpeed: 0.25,
-            initFlickSmoothing: 0.2,
-            flickFriction: 0.93
+            initFlickSmoothing: 0.3,
+            flickFriction: 0.94
         });
     }
 
