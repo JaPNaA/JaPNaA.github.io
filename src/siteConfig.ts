@@ -57,13 +57,13 @@ SiteConfig.setup = function () {
     SiteConfig.isMobile = isMobile();
     SiteConfig.isIOS = isIOS();
 
-    getServerTime().then(e => {
-        SiteConfig.serverTime = e;
-        console.log(e);
-    });
-    setTimeout(function () {
-        getServerTime().then(e => console.log(e));
-    }, 5000);
+    // getServerTime().then(e => {
+    //     SiteConfig.serverTime = e;
+    //     console.log(e);
+    // });
+    // setTimeout(function () {
+    //     getServerTime().then(e => console.log(e));
+    // }, 5000);
 };
 
 export default SiteConfig;

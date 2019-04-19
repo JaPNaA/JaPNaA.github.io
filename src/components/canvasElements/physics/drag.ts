@@ -23,6 +23,7 @@ class DragPhysics extends CanvasElementPhysics {
     private tscale: number;
 
     private dragging: boolean;
+    private zooming: boolean;
     private userAdjusted: boolean;
     private imageDim: Dim;
     private bounds: Dim;
@@ -47,6 +48,7 @@ class DragPhysics extends CanvasElementPhysics {
         this.tscale = this.scale = 1;
 
         this.dragging = false;
+        this.zooming = false;
         this.userAdjusted = false;
         this.isCurrRenderDirty = true;
     }
@@ -65,8 +67,10 @@ class DragPhysics extends CanvasElementPhysics {
         this.updateRectScale();
 
         if (this.dragging) {
-            this.vx = (this.rect.x - this.lastX) * (1 - this.initFlickSmoothing) + this.vx * this.initFlickSmoothing;
-            this.vy = (this.rect.y - this.lastY) * (1 - this.initFlickSmoothing) + this.vy * this.initFlickSmoothing;
+            if (!this.zooming) {
+                this.vx = (this.rect.x - this.lastX) * (1 - this.initFlickSmoothing) + this.vx * this.initFlickSmoothing;
+                this.vy = (this.rect.y - this.lastY) * (1 - this.initFlickSmoothing) + this.vy * this.initFlickSmoothing;
+            }
         } else {
             this.vx *= this.flickFriction;
             this.vy *= this.flickFriction;
@@ -140,6 +144,11 @@ class DragPhysics extends CanvasElementPhysics {
         ]) > DragPhysics.changeThreshold;
     }
 
+    public zoomToScale(scale: number, x: number, y: number): void {
+        this.zoomInto(scale / this.tscale, x, y);
+        // this.tscale = scale;
+    }
+
     public zoomOutFrom(factor: number, x: number, y: number): void {
         this.zoomInto(1 / factor, x, y);
     }
@@ -148,30 +157,33 @@ class DragPhysics extends CanvasElementPhysics {
         this.tscale *= factor;
         this.tx -= (x - this.tx) * (factor - 1);
         this.ty -= (y - this.ty) * (factor - 1);
+        this.zooming = true;
         this.userAdjusted = true;
         this.isCurrRenderDirty = true;
     }
 
-    public zoomToScale(scale: number, x: number, y: number): void {
-        this.zoomInto(scale / this.tscale, x, y);
-        // this.tscale = scale;
+    public dragIfDragging(dx: number, dy: number): void {
+        if (!this.dragging) { return; }
+        this.drag(dx, dy);
     }
 
     public drag(dx: number, dy: number): void {
-        if (!this.dragging) { return; }
         this.tx += dx;
         this.ty += dy;
         this.rect.x += dx;
         this.rect.y += dy;
         this.userAdjusted = true;
+        this.zooming = false;
         this.isCurrRenderDirty = true;
     }
 
     public startDrag(): void {
+        this.zooming = false;
         this.dragging = true;
     }
 
     public endDrag(): void {
+        this.zooming = false;
         this.dragging = false;
     }
 

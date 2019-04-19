@@ -9,6 +9,7 @@ import wait from "../../../../utils/wait";
 import triggerTransitionIn from "../../../../utils/triggerTransitionIn";
 import { newVec2, Vec2 } from "../../../../types/math/vec2";
 import getDist from "../../../../utils/math/getDist";
+import TouchControls from "../../../../components/touch/touchControls";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -33,9 +34,10 @@ class ImageView extends View {
     private width: number;
     private height: number;
 
-    private lastMovingTouch?: Vec2;
-    private lastPinchingTouch?: Vec2;
-    private lastPinchDist?: number;
+    private touchControls: TouchControls;
+    // private lastMovingTouch?: Vec2;
+    // private lastPinchingTouch?: Vec2;
+    // private lastPinchDist?: number;
 
     private then: number;
     private shouldRedraw: boolean;
@@ -57,6 +59,8 @@ class ImageView extends View {
         this.width = 0;
         this.height = 0;
 
+        this.touchControls = new TouchControls(this.elm);
+
         this.drawing = false;
         this.shouldRedraw = true;
 
@@ -73,6 +77,7 @@ class ImageView extends View {
         this.addEventHandlers();
         this.resizeHandler();
         this.resetImagePosition();
+        this.touchControls.setup();
 
         if (this.src) {
             this.setImageSrc(this.src);
@@ -82,6 +87,7 @@ class ImageView extends View {
     public async destory(): Promise<void> {
         super.destory();
         this.removeEventHandlers();
+        this.touchControls.destory();
         cancelAnimationFrame(this.reqanfHandle);
         await wait(ImageView.destorySpeed);
     }
@@ -170,11 +176,24 @@ class ImageView extends View {
         this.elm.addEventListener("wheel", this.wheelHandler.bind(this), { passive: false });
         this.elm.addEventListener("dblclick", this.doubleClickHandler.bind(this));
         this.elm.addEventListener("mousedown", this.mouseDownHandler.bind(this));
-        this.elm.addEventListener("touchstart", this.touchStartHandler.bind(this));
         this.elm.addEventListener("mouseup", this.mouseUpHandler.bind(this));
-        this.elm.addEventListener("touchend", this.touchEndHandler.bind(this));
         this.elm.addEventListener("mousemove", this.mouseMoveHandler.bind(this));
-        this.elm.addEventListener("touchmove", this.touchMoveHandler.bind(this));
+
+        this.touchControls.onStartMove(() => {
+            this.image.physics.startDrag();
+        });
+        this.touchControls.onMove(e => {
+            this.image.physics.drag(e.x, e.y);
+            this.redrawIfShould();
+        });
+        this.touchControls.onEndMove(() => {
+            this.image.physics.endDrag();
+        });
+        this.touchControls.onZoom((e) => {
+            const [factor, center] = e;
+            this.image.physics.zoomInto(factor, center.x, center.y);
+            this.redrawIfShould();
+        });
     }
 
     private removeEventHandlers(): void {
@@ -201,7 +220,7 @@ class ImageView extends View {
     }
 
     private mouseMoveHandler(e: MouseEvent): void {
-        this.image.physics.drag(e.movementX, e.movementY);
+        this.image.physics.dragIfDragging(e.movementX, e.movementY);
         this.redrawIfShould();
     }
 
@@ -217,79 +236,6 @@ class ImageView extends View {
         e.preventDefault();
         this.image.physics.endDrag();
         this.redrawIfShould();
-    }
-
-    // TODO: re-impelement touch
-
-    private touchMoveHandler(e: TouchEvent): void {
-        if (e.cancelable) { e.preventDefault(); }
-
-        if (e.touches.length > 1) {
-            if (this.lastMovingTouch && this.lastPinchingTouch) {
-                const [movingTouch, pinchingTouch] = this.sortTouchesClosestTo(this.lastMovingTouch, [e.touches[0], e.touches[1]]);
-
-                {
-                    const dx = movingTouch.clientX - this.lastMovingTouch.x;
-                    const dy = movingTouch.clientY - this.lastMovingTouch.y;
-                    this.lastMovingTouch.x = movingTouch.clientX;
-                    this.lastMovingTouch.y = movingTouch.clientY;
-                    this.image.physics.drag(dx, dy);
-                }
-
-                {
-                    const dist = getDist(pinchingTouch.clientX - movingTouch.clientX, pinchingTouch.clientY - movingTouch.pageY);
-                    if (this.lastPinchDist) {
-                        const ddist = dist / this.lastPinchDist;
-                        this.image.physics.zoomInto(ddist, movingTouch.clientX, movingTouch.clientY);
-                    }
-                    this.lastPinchDist = dist;
-                }
-
-            } else {
-                const movingTouch = e.changedTouches[0];
-                this.lastMovingTouch = newVec2(movingTouch.clientX, movingTouch.clientY);
-                const pinchingTouch = e.changedTouches[0];
-                this.lastPinchingTouch = newVec2(pinchingTouch.clientX, pinchingTouch.clientY);
-            }
-        } else if (e.touches.length === 1) {
-            const changedTouch = e.changedTouches[0];
-
-            if (this.lastMovingTouch) {
-                const dx = changedTouch.clientX - this.lastMovingTouch.x;
-                const dy = changedTouch.clientY - this.lastMovingTouch.y;
-                this.lastMovingTouch.x = changedTouch.clientX;
-                this.lastMovingTouch.y = changedTouch.clientY;
-                this.image.physics.drag(dx, dy);
-            } else {
-                this.lastMovingTouch = newVec2(changedTouch.clientX, changedTouch.clientY);
-            }
-        }
-
-        this.redrawIfShould();
-    }
-
-    private sortTouchesClosestTo(point: Vec2, arr: Touch[]): Touch[] {
-        return arr.sort((a, b) =>
-            getDist(point.x - a.clientX, point.y - a.clientY) -
-            getDist(point.x - b.clientX, point.y - b.clientY)
-        );
-    }
-
-    private touchStartHandler(e: TouchEvent): void {
-        if (e.cancelable) {
-            e.preventDefault();
-        }
-
-        this.image.physics.startDrag();
-    }
-
-    private touchEndHandler(e: TouchEvent): void {
-        if (e.cancelable) { e.preventDefault(); }
-
-        this.image.physics.endDrag();
-        this.lastMovingTouch = undefined;
-        this.lastPinchingTouch = undefined;
-        this.lastPinchDist = undefined;
     }
 
     private closeButtonClickHandler(): void {
