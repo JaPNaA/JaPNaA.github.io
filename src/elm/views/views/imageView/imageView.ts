@@ -178,30 +178,14 @@ class ImageView extends View {
         this.elm.addEventListener("mousedown", this.mouseDownHandler.bind(this));
         this.elm.addEventListener("mouseup", this.mouseUpHandler.bind(this));
         this.elm.addEventListener("mousemove", this.mouseMoveHandler.bind(this));
+        this.elm.addEventListener("click", this.clickHandler.bind(this));
 
-        this.touchControls.onTap(e => {
-            this.closeButton.checkClick(e.x, e.y);
-        });
-        this.touchControls.onStartMove(() => {
-            this.image.physics.startDrag();
-        });
-        this.touchControls.onMove(e => {
-            this.image.physics.drag(e.x, e.y);
-            this.redrawIfShould();
-        });
-        this.touchControls.onEndMove(() => {
-            this.image.physics.endDrag();
-        });
-        this.touchControls.onZoom(e => {
-            const [factor, center] = e;
-            this.image.physics.zoomInto(factor, center.x, center.y);
-            this.redrawIfShould();
-        });
-        this.touchControls.onDoubleTap((e) => {
-            console.log("doubletap");
-            this.image.alternateFitToReal(e.x, e.y);
-            this.redrawIfShould();
-        });
+        this.touchControls.onTap(this.tapHandler.bind(this));
+        this.touchControls.onStartMove(this.startMoveHandler.bind(this));
+        this.touchControls.onMove(this.moveHandler.bind(this));
+        this.touchControls.onEndMove(this.endMoveHandler.bind(this));
+        this.touchControls.onZoom(this.zoomHandler.bind(this));
+        this.touchControls.onDoubleTap(this.doubleTapHandler.bind(this));
     }
 
     private removeEventHandlers(): void {
@@ -221,9 +205,21 @@ class ImageView extends View {
         this.redrawIfShould();
     }
 
+    private zoomHandler(e: [number, Vec2]): void {
+        const [factor, center] = e;
+        this.image.physics.zoomInto(factor, center.x, center.y);
+        this.redrawIfShould();
+    }
+
     private doubleClickHandler(e: MouseEvent): void {
         e.preventDefault();
         this.image.alternateFitToReal(e.layerX, e.layerY);
+        this.redrawIfShould();
+    }
+
+    private doubleTapHandler(vec: Vec2): void {
+        console.log("doubletap");
+        this.image.alternateFitToReal(vec.x, vec.y);
         this.redrawIfShould();
     }
 
@@ -232,18 +228,39 @@ class ImageView extends View {
         this.redrawIfShould();
     }
 
+    private moveHandler(dv: Vec2): void {
+        this.image.physics.drag(dv.x, dv.y);
+        this.redrawIfShould();
+    }
+
+    private clickHandler(e: MouseEvent): void {
+        e.preventDefault();
+        this.closeButton.checkClick(e.layerX, e.layerY);
+        this.redrawIfShould();
+    }
+
+    private tapHandler(pos: Vec2): void {
+        this.closeButton.checkClick(pos.x, pos.y);
+    }
+
     private mouseDownHandler(e: MouseEvent): void {
         e.preventDefault();
         this.image.physics.startDrag();
-        // TODO: Close on actual click: not mousedown
-        this.closeButton.checkClick(e.layerX, e.layerY);
         this.redrawIfShould();
+    }
+
+    private startMoveHandler(): void {
+        this.image.physics.startDrag();
     }
 
     private mouseUpHandler(e: MouseEvent): void {
         e.preventDefault();
         this.image.physics.endDrag();
         this.redrawIfShould();
+    }
+
+    private endMoveHandler(): void {
+        this.image.physics.endDrag();
     }
 
     private closeButtonClickHandler(): void {
