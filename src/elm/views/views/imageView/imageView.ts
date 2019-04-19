@@ -33,11 +33,9 @@ class ImageView extends View {
 
     private width: number;
     private height: number;
+    private dpr: number;
 
     private touchControls: TouchControls;
-    // private lastMovingTouch?: Vec2;
-    // private lastPinchingTouch?: Vec2;
-    // private lastPinchDist?: number;
 
     private then: number;
     private shouldRedraw: boolean;
@@ -56,6 +54,7 @@ class ImageView extends View {
         this.closeButtonPhysics = new SimpleEasePhysics(0.2);
         this.closeButton.attachPhysics(this.closeButtonPhysics);
 
+        this.dpr = 1;
         this.width = 0;
         this.height = 0;
 
@@ -153,10 +152,12 @@ class ImageView extends View {
     }
 
     private draw(): void {
+        this.X.scale(this.dpr, this.dpr);
         this.X.clearRect(0, 0, this.width, this.height);
 
         this.image.draw(this.X);
         this.closeButton.draw(this.X);
+        this.X.resetTransform();
 
         this.updateShouldRedraw();
     }
@@ -193,9 +194,15 @@ class ImageView extends View {
     }
 
     private resizeHandler(): void {
-        this.width = this.canvas.width = this.app.width;
-        this.height = this.canvas.height = this.app.height;
-        this.image.physics.resize(this.width, this.height);
+        const dpr = devicePixelRatio || 1;
+        const actualWidth = this.app.width * dpr;
+        const actualHeight = this.app.height * dpr;
+
+        this.dpr = dpr;
+        this.width = this.canvas.width = actualWidth;
+        this.height = this.canvas.height = actualHeight;
+
+        this.image.physics.resize(this.app.width, this.app.height);
         this.redraw();
     }
 
