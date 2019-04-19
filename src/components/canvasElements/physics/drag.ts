@@ -173,7 +173,6 @@ class DragPhysics extends CanvasElementPhysics {
         this.rect.x += dx;
         this.rect.y += dy;
         this.userAdjusted = true;
-        this.zooming = false;
         this.isCurrRenderDirty = true;
     }
 
