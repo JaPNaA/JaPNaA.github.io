@@ -179,6 +179,9 @@ class ImageView extends View {
         this.elm.addEventListener("mouseup", this.mouseUpHandler.bind(this));
         this.elm.addEventListener("mousemove", this.mouseMoveHandler.bind(this));
 
+        this.touchControls.onTap(e => {
+            this.closeButton.checkClick(e.x, e.y);
+        });
         this.touchControls.onStartMove(() => {
             this.image.physics.startDrag();
         });

@@ -15,6 +15,7 @@ class TouchControls {
     private startMoveHandlers: EventHandlers;
     private endMoveHandlers: EventHandlers;
     private zoomHandlers: EventHandlers<[number, Vec2]>;
+    private tapHandlers: EventHandlers<Vec2>;
     private doubleTapHandlers: EventHandlers<Vec2>;
 
     constructor(elm: HTMLElement) {
@@ -28,6 +29,7 @@ class TouchControls {
         this.startMoveHandlers = new EventHandlers();
         this.endMoveHandlers = new EventHandlers();
         this.zoomHandlers = new EventHandlers();
+        this.tapHandlers = new EventHandlers();
         this.doubleTapHandlers = new EventHandlers();
     }
 
@@ -58,6 +60,10 @@ class TouchControls {
 
     public onDoubleTap(handler: Handler<Vec2>): void {
         this.doubleTapHandlers.add(handler);
+    }
+
+    public onTap(handler: Handler<Vec2>): void {
+        this.tapHandlers.add(handler);
     }
 
     private addEventHandlers(): void {
@@ -103,14 +109,17 @@ class TouchControls {
             this.endMoveHandlers.dispatch();
             if (!this.touchMoved) {
                 const touch = e.changedTouches[0];
+                const touchVec = newVec2(touch.clientY, touch.clientY);
 
                 if (this.singleTapped) {
-                    this.doubleTapHandlers.dispatch(newVec2(touch.clientX, touch.clientY));
+                    this.doubleTapHandlers.dispatch(touchVec);
                     this.singleTapped = false;
                 } else {
-                    this.singleTapPos = newVec2(touch.clientY, touch.clientY)
+                    this.singleTapPos = touchVec;
                     this.singleTapped = true;
                 }
+
+                this.tapHandlers.dispatch(touchVec);
             }
         }
     }
