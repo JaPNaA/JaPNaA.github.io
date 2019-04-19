@@ -109,7 +109,7 @@ class TouchControls {
             this.endMoveHandlers.dispatch();
             if (!this.touchMoved) {
                 const touch = e.changedTouches[0];
-                const touchVec = newVec2(touch.clientY, touch.clientY);
+                const touchVec = newVec2(touch.clientX, touch.clientY);
 
                 if (this.singleTapped) {
                     this.doubleTapHandlers.dispatch(touchVec);
