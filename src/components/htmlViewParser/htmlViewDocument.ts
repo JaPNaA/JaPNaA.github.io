@@ -5,8 +5,9 @@ import EmbededApp from "../../app/embededApp";
 import ViewClass from "../../types/viewClass";
 import WidgetMap from "../../elm/widgets/widgetMap";
 import WidgetClass from "../../types/widgetClass";
+import IHTMLViewDocument from "./iHTMLViewDocument";
 
-class HTMLViewDocument {
+class HTMLViewDocument implements IHTMLViewDocument {
     private elm: HTMLDivElement;
     private app: IApp;
 

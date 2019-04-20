@@ -1,5 +1,6 @@
 import IApp from "../../types/app/iApp";
 import HTMLViewDocument from "./htmlViewDocument";
+import IHTMLViewDocument from "./iHTMLViewDocument";
 
 type HTMLViewParserOptions = {
     scripts?: boolean,
@@ -16,7 +17,7 @@ class HTMLViewParser {
         this.options = options;
     }
 
-    public parse(text_: string): HTMLViewDocument {
+    public parse(text_: string): IHTMLViewDocument {
         let text: string = text_;
 
         if (this.options.inlineJS) {
