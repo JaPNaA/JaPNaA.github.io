@@ -1,11 +1,7 @@
 import IApp from "../../types/app/iApp";
 import HTMLViewDocument from "./htmlViewDocument";
 import IHTMLViewDocument from "./iHTMLViewDocument";
-
-type HTMLViewParserOptions = {
-    scripts?: boolean,
-    inlineJS?: boolean
-};
+import HTMLViewParserOptions from "./types/htmlViewParserOptions";
 
 class HTMLViewParser {
     private static inlineJSMatcher: RegExp = /\${{([^]+?)}}/g;
@@ -30,6 +26,7 @@ class HTMLViewParser {
             doc.runScripts();
         }
 
+        doc.setLinkHandlingMethod(this.options);
         doc.replaceElements();
 
         return doc;

@@ -5,8 +5,8 @@ import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
 import getLink from "../../../utils/isLink";
 import removeChildren from "../../../utils/removeChildren";
-import { resolve, parse } from "url";
-import openPopup from "../../../utils/openPopup";
+import url from "url";
+import openPopup from "../../../utils/open/openPopup";
 import FrameView from "./frameView";
 import contentJSONPath from "../../../utils/paths/contentJson";
 import IInfoJSON from "../../../types/project/infojson";
@@ -84,7 +84,7 @@ class AllThingies extends View {
     }
 
     private cleanPath(): string {
-        const urlParsed = parse(this.contentHref);
+        const urlParsed = url.parse(this.contentHref);
         let path = urlParsed.path;
 
         if (path) {
@@ -117,7 +117,7 @@ class AllThingies extends View {
     }
 
     private navigate(link: string): boolean {
-        const linkParsed = parse(link);
+        const linkParsed = url.parse(link);
         const isSameHost = linkParsed.hostname === location.hostname;
         const depth = this.getPathDepth(linkParsed.path);
 
@@ -198,7 +198,7 @@ class AllThingies extends View {
             const hrefAttrib = anchor.getAttribute("href");
 
             if (hrefAttrib) {
-                const href = resolve(this.contentHref, hrefAttrib);
+                const href = url.resolve(this.contentHref, hrefAttrib);
                 anchor.href = href;
                 this.mapLinkToProject(href);
             }
@@ -206,7 +206,7 @@ class AllThingies extends View {
     }
 
     private mapLinkToProject(href: string) {
-        const path = parse(href).path;
+        const path = url.parse(href).path;
         const depth = this.getPathDepth(path);
 
         if (depth === 2) {
@@ -231,7 +231,7 @@ class AllThingies extends View {
         for (let i = 0; i < content.data.length; i++) {
             const entry = content.data[i];
             if (!isProjectCard(entry)) { continue; }
-            const entryLink = resolve(SiteConfig.path.thingy, entry.content.link);
+            const entryLink = url.resolve(SiteConfig.path.thingy, entry.content.link);
             if (entryLink === link) {
                 return {
                     year: parseInt(year),

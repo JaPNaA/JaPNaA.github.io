@@ -1,10 +1,9 @@
 import SiteConfig from "../../siteConfig";
 import ViewMap from "../../elm/views/viewMap";
-
-import url from "url";
 import View404 from "../../elm/views/views/404";
 import IApp from "../../types/app/iApp";
 import AppState from "../../types/appState";
+import parseAppStateURL from "../../utils/parseAppStateURL";
 
 class URLController {
     public restored: boolean;
@@ -51,7 +50,7 @@ class URLController {
     }
 
     public restoreFromURL(app: IApp, url: string): void {
-        const urlParsed = this.parseURL(url);
+        const urlParsed = parseAppStateURL(url);
         if (!urlParsed) { return; }
 
         console.log('restore url', url);
@@ -106,22 +105,6 @@ class URLController {
             this.initalURL = initalURL;
             this.fromRedirect = true;
             history.replaceState(null, SiteConfig.title, initalURL);
-        }
-    }
-
-    private parseURL(href: string): AppState | undefined {
-        const cleanURL = url.parse(href);
-        if (!cleanURL.path) return;
-        const cleanPath = cleanURL.path.slice(1);
-
-        const divisorIndex = cleanPath.indexOf('/');
-        if (divisorIndex < 0) {
-            return { viewName: cleanPath };
-        } else {
-            const viewName = cleanPath.slice(0, divisorIndex);
-            const stateData = decodeURIComponent(cleanPath.slice(divisorIndex + 1));
-
-            return { viewName, stateData };
         }
     }
 }

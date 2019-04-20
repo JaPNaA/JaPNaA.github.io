@@ -6,10 +6,17 @@ import ViewClass from "../../types/viewClass";
 import WidgetMap from "../../elm/widgets/widgetMap";
 import WidgetClass from "../../types/widgetClass";
 import IHTMLViewDocument from "./iHTMLViewDocument";
+import LinkHandlingOptions from "./types/linkHandlingOptions";
+import url from "url";
+import parseAppStateURL from "../../utils/parseAppStateURL";
+import openNoopener from "../../utils/open/openNoopener";
+import openFrameView from "../../utils/open/openFrameView";
+
 
 class HTMLViewDocument implements IHTMLViewDocument {
     private elm: HTMLDivElement;
     private app: IApp;
+    private linkHandlingOptions?: LinkHandlingOptions;
 
     constructor(app: IApp, text: string) {
         this.app = app;
@@ -36,6 +43,56 @@ class HTMLViewDocument implements IHTMLViewDocument {
     public replaceElements(): void {
         this.replaceViewElements();
         this.replaceWidgetElements();
+    }
+
+    public setLinkHandlingMethod(options: LinkHandlingOptions): void {
+        this.linkHandlingOptions = options;
+
+        const anchors = this.elm.getElementsByTagName("a");
+        for (let i = 0; i < anchors.length; i++) {
+            anchors[i].addEventListener("click", e =>
+                this.anchorClickHandler(anchors[i], e)
+            );
+        }
+    }
+
+    private anchorClickHandler(anchor: HTMLAnchorElement, e: MouseEvent) {
+        if (!e.cancelable || !this.linkHandlingOptions) { return; }
+        e.preventDefault();
+        const href = anchor.href;
+        const parsed = url.parse(href);
+
+        if (parsed.host === location.host) {
+            const appState = parseAppStateURL(parsed);
+            if (appState) {
+                const viewClass = ViewMap.get(appState.viewName);
+                if (viewClass && this.linkHandlingOptions.openViewsWithLinks) {
+                    this.app.views.switchAndInit(viewClass, appState.stateData);
+                } else {
+                    this.openLink(href);
+                }
+            } else {
+                this.openLink(href);
+            }
+        } else {
+            if (this.linkHandlingOptions.dontLeavePage) {
+                openNoopener(href);
+            } else {
+                location.assign(href);
+            }
+        }
+    }
+
+    private openLink(href: string): void {
+        if (!this.linkHandlingOptions) { return; }
+
+        if (this.linkHandlingOptions.openFrameViewWithLinks) {
+            openFrameView(this.app, href);
+        } else if (this.linkHandlingOptions.dontLeavePage) {
+            openNoopener(href);
+        } else {
+            location.assign(href);
+        }
     }
 
     private parseHTML(html: string): HTMLDivElement {

@@ -90,7 +90,9 @@ class Overview extends View {
 
         const parser = new HTMLViewParser(this.app, {
             inlineJS: true,
-            scripts: true
+            scripts: true,
+            dontLeavePage: true,
+            openViewsWithLinks: true
         });
         const doc = parser.parse(text);
         doc.appendTo(this.content);
