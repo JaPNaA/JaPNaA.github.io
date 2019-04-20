@@ -4,9 +4,9 @@ import HexagonsTitle from "../../widgets/hexagonsTitle/hexagonsTitle";
 import StickyBar from "../../widgets/stickyBar/stickyBar";
 import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../siteResources";
-import htmlViewParse from "../../../components/htmlViewParser/htmlViewParser";
 import IApp from "../../../types/app/iApp";
 import removeChildren from "../../../utils/removeChildren";
+import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -15,12 +15,14 @@ class Overview extends View {
     public isFullPage = true;
 
     protected elm: HTMLDivElement;
+    private content: HTMLDivElement;
 
     private hexagonsTitle: HexagonsTitle;
 
     constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
+        this.content = this.createContent();
         this.hexagonsTitle = new HexagonsTitle(this.elm);
     }
 
@@ -33,7 +35,7 @@ class Overview extends View {
         this.hexagonsTitle.registerEventHandlers();
 
         this.createStickyBar();
-        this.createContent();
+        this.loadAndWriteContent();
     }
 
     public async destory(): Promise<void> {
@@ -57,25 +59,41 @@ class Overview extends View {
         stickyBar.setTitle(titleElm);
     }
 
-    private createContent() {
-        const container = document.createElement("div");
-        container.classList.add("contentContainer");
-
+    private createContent(): HTMLDivElement {
         const content = document.createElement("div");
         content.classList.add("content");
-        content.appendChild(document.createTextNode("Loading..."));
+        return content;
+    }
+
+    private loadAndWriteContent() {
+        const container = document.createElement("div");
+        container.classList.add("contentContainer");
+        this.content.appendChild(document.createTextNode("Loading..."));
 
         SiteResources.loadText(SiteConfig.path.view.overview)
             .onLoad(e => {
-                removeChildren(content);
-                content.appendChild(
-                    htmlViewParse(this.app, e.text || "Failed to load", { inlineJS: true, scripts: true })
-                );
+                this.writeContent(e.text);
             })
-            .onError(() => content.innerHTML = "Failed to load");
+            .onError(() => this.content.innerHTML = "Failed to load");
 
-        container.appendChild(content);
+        container.appendChild(this.content);
         this.elm.appendChild(container);
+    }
+
+    private writeContent(text?: string): void {
+        removeChildren(this.content);
+
+        if (!text) {
+            this.content.appendChild(document.createTextNode("Failed to load"));
+            return;
+        }
+
+        const parser = new HTMLViewParser(this.app, {
+            inlineJS: true,
+            scripts: true
+        });
+        const doc = parser.parse(text);
+        doc.appendTo(this.content);
     }
 }
 
