@@ -7,8 +7,7 @@ import ImageViewCloseButton from "./closeButton";
 import ImageViewImage from "./image";
 import wait from "../../../../utils/wait";
 import triggerTransitionIn from "../../../../utils/triggerTransitionIn";
-import { newVec2, Vec2 } from "../../../../types/math/vec2";
-import getDist from "../../../../utils/math/getDist";
+import { Vec2 } from "../../../../types/math/vec2";
 import TouchControls from "../../../../components/touch/touchControls";
 
 class ImageView extends View {
@@ -131,8 +130,8 @@ class ImageView extends View {
     }
 
     private reqanfLoop(): void {
-        const now = performance.now();
-        const deltaTime = now - this.then;
+        const now: number = performance.now();
+        const deltaTime: number = now - this.then;
         this.then = now;
 
         this.drawing = true;
@@ -194,9 +193,9 @@ class ImageView extends View {
     }
 
     private resizeHandler(): void {
-        const dpr = devicePixelRatio || 1;
-        const actualWidth = this.app.width * dpr;
-        const actualHeight = this.app.height * dpr;
+        const dpr: number = devicePixelRatio || 1;
+        const actualWidth: number = this.app.width * dpr;
+        const actualHeight: number = this.app.height * dpr;
 
         this.dpr = dpr;
         this.width = this.canvas.width = actualWidth;

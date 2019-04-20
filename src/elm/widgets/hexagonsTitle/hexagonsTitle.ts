@@ -4,6 +4,8 @@ import SiteResources from "../../../siteResources";
 import Widget from "../widget";
 import WidgetMap from "../widgetMap";
 
+// TODO: Make this look better on mobile
+
 class HexagonsTitle extends Widget {
     public static widgetName = "hexagonsTitle";
     public widgetName = HexagonsTitle.widgetName;

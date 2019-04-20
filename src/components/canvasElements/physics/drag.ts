@@ -54,9 +54,9 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     public tick(dt: number): void {
-        const dx = this.tx - this.rect.x;
-        const dy = this.ty - this.rect.y;
-        const dscale = this.tscale - this.scale;
+        const dx: number = this.tx - this.rect.x;
+        const dy: number = this.ty - this.rect.y;
+        const dscale: number = this.tscale - this.scale;
 
         this.constrainToBounds();
 
@@ -85,8 +85,8 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     private constrainToBounds(): void {
-        const twidth = this.tscale * this.imageDim.width;
-        const theight = this.tscale * this.imageDim.height;
+        const twidth: number = this.tscale * this.imageDim.width;
+        const theight: number = this.tscale * this.imageDim.height;
 
         if (this.ty > this.bounds.height - DragPhysics.padding) {
             this.ty = this.bounds.height - DragPhysics.padding;
@@ -119,8 +119,8 @@ class DragPhysics extends CanvasElementPhysics {
     }
 
     public resize(width: number, height: number): void {
-        const oldWidth = this.bounds.width;
-        const oldHeight = this.bounds.height;
+        const oldWidth: number = this.bounds.width;
+        const oldHeight: number = this.bounds.height;
 
         this.bounds.width = width;
         this.bounds.height = height;
@@ -223,8 +223,8 @@ class DragPhysics extends CanvasElementPhysics {
 
     private normalizeResize(fromWidth: number, fromHeight: number, toWidth: number, toHeight: number): void {
         if (!this.rect) { return; }
-        const dx = (toWidth - fromWidth) / 2;
-        const dy = (toHeight - fromHeight) / 2;
+        const dx: number = (toWidth - fromWidth) / 2;
+        const dy: number = (toHeight - fromHeight) / 2;
         this.rect.x += dx;
         this.rect.y += dy;
         this.tx += dx;

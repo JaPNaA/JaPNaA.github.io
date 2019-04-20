@@ -6,7 +6,7 @@ class ImageViewImage {
     public physics: DragPhysics;
     private image?: CanvasImage;
 
-    private static zoomFactor: number = 1.1;
+    private static zoomFactor: number = 1.2;
 
     constructor() {
         this.physics = new DragPhysics({
@@ -16,7 +16,7 @@ class ImageViewImage {
         });
     }
 
-    public setImage(image: HTMLImageElement) {
+    public setImage(image: HTMLImageElement): void {
         this.image = new CanvasImage(0, 0, image);
         this.image.attachPhysics(this.physics);
     }
