@@ -4,18 +4,18 @@ import SplashScreen from "../elm/views/views/splashScreen";
 import View from "../elm/views/view";
 import Overview from "../elm/views/views/overview";
 import SiteResources from "../siteResources";
-import GlobalWidget from "../elm/widgets/global/global";
+import GlobalWidgets from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
 import AppURL from "./components/url";
 
 class App extends BaseApp {
-    private globalWidget: GlobalWidget;
+    private globalWidget: GlobalWidgets;
     public url: AppURL;
 
     constructor() {
         super();
         this.url = new AppURL(this, this.events);
-        this.globalWidget = new GlobalWidget(this);
+        this.globalWidget = new GlobalWidgets(this);
     }
 
     public async setup(): Promise<void> {
