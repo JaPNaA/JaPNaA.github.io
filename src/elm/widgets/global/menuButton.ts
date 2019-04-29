@@ -11,7 +11,6 @@ class MenuButton extends Widget {
     protected elm: HTMLDivElement;
     private app: IApp;
 
-
     private static hiddenClass = "hidden";
     private static scrollBarExistsClass = "scrollBarExists";
 
@@ -29,6 +28,7 @@ class MenuButton extends Widget {
     }
 
     public destory(): void {
+        super.destory();
         this.removeEventHandlers();
     }
 

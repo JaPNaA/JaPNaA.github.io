@@ -1,0 +1,21 @@
+.widget.TopLoadingBar {
+    // z-index: 6;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    background-color: @theme-color-blue;
+
+    opacity: 1;
+
+    &.loading {
+        transition: 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) opacity,
+            0.5s cubic-bezier(0.22, 0.61, 0.36, 1) width;
+        height: 4px;
+    }
+
+    &.done {
+        opacity: 0;
+    }
+}

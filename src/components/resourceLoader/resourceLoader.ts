@@ -7,6 +7,7 @@ import Handler from "../../utils/events/handler";
 import TextResource from "./resources/text";
 import JSONResource from "./resources/json";
 import XMLResource from "./resources/xml";
+import ResourceLoaderProgress from "../../types/resourceLoaderProgress";
 
 type ResourceClass<T> = new (hooks: ResourceLoaderHooks, path: string, ...additionalArgs: any[]) => T;
 
@@ -19,6 +20,8 @@ class ResourceLoader {
 
     private doneHandlers: EventHandlers;
     private doneEventOnceHandlers: OnceHandlers;
+    private newResourceHandlers: EventHandlers<Resource | undefined>;
+    private progressChange: EventHandlers;
 
     constructor() {
         this.toBeLoaded = 0;
@@ -27,16 +30,26 @@ class ResourceLoader {
         this.resources = new Map();
         this.hooks = new ResourceLoaderHooks(this.onLoadHandler.bind(this), this.onErrorHandler.bind(this));
 
+        this.newResourceHandlers = new EventHandlers();
         this.doneHandlers = new EventHandlers();
         this.doneEventOnceHandlers = new OnceHandlers();
+        this.progressChange = new EventHandlers();
     }
 
     public getResource(name: string): Resource | undefined {
         return this.resources.get(name);
     }
 
-    public getProgress(): { total: number, loaded: number } {
-        return { total: this.toBeLoaded, loaded: this.loaded };
+    public getProgress(): ResourceLoaderProgress {
+        return { total: this.toBeLoaded, loaded: this.loaded, num: this.loaded / this.toBeLoaded };
+    }
+
+    public onNewResource(handler: Handler<Resource | undefined>): void {
+        this.newResourceHandlers.add(handler);
+    }
+
+    public offNewResource(handler: Handler<Resource | undefined>): void {
+        this.newResourceHandlers.remove(handler);
     }
 
     public isDone(): boolean {
@@ -61,6 +74,14 @@ class ResourceLoader {
         this.doneEventOnceHandlers.add(handler);
     }
 
+    public onProgressChange(handler: Handler): void {
+        this.progressChange.add(handler);
+    }
+
+    public offProgressChange(handler: Handler): void {
+        this.progressChange.remove(handler);
+    }
+
     public loadImage(path: string): ImageResource {
         return this.loadResource<ImageResource>(path, ImageResource);
     }
@@ -80,6 +101,7 @@ class ResourceLoader {
     /** For anything else that loads, but cannot be used with ResourceLoader */
     public addResourceLoading(): void {
         this.toBeLoaded++;
+        this.newResourceHandlers.dispatch(undefined);
     }
 
     /** For anything else that loads, but cannot be used with ResourceLoader */
@@ -106,6 +128,8 @@ class ResourceLoader {
         // converting to unkown because of bug in typescript with returning 'this type
         this.resources.set(path, resource as any as Resource);
         this.toBeLoaded++;
+        this.newResourceHandlers.dispatch(resource as any as Resource);
+        this.progressChange.dispatch();
         return resource;
     }
 
@@ -120,6 +144,7 @@ class ResourceLoader {
     }
 
     private checkDone(): void {
+        this.progressChange.dispatch();
         if (this.isDone()) {
             this.onDoneHandler();
         }
