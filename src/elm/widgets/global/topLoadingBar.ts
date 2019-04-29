@@ -4,7 +4,7 @@ import SiteResources from "../../../siteResources";
 import ResourceLoaderProgress from "../../../types/resourceLoaderProgress";
 
 class TopLoadingBar extends Widget {
-    public static widgetName: string = TopLoadingBar.widgetName;
+    public static widgetName: string = "TopLoadingBar";
     public widgetName: string = TopLoadingBar.widgetName;
 
     // `| undefined` solves weird typescript bug because it thinks im using node

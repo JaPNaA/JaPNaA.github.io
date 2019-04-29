@@ -6,7 +6,7 @@ import Widget from "../widget";
 
 class MenuButton extends Widget {
     public static widgetName: string = "MenuButton";
-    public widgetName: string = MenuButton.name;
+    public widgetName: string = MenuButton.widgetName;
 
     protected elm: HTMLDivElement;
     private app: IApp;
