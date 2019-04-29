@@ -39,27 +39,36 @@ class SiteConfig {
     static isMobile: boolean;
     static isIOS: boolean;
 
-    static setup: Function;
-    static serverTime?: Date;
-}
+    private static serverTime?: Date;
+    private static serverTimePromise: Promise<Date>;
 
-SiteConfig.setup = function () {
-    // matches localhost and ips, for debugging
-    const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
-    if (match) {
-        const port = parseInt(location.port);
-        if (!isNaN(port)) {
-            SiteConfig.path.thingy = match[0] + (port + 1);
+    public static setup() {
+        // matches localhost and ips, for debugging
+        const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
+        if (match) {
+            const port = parseInt(location.port);
+            if (!isNaN(port)) {
+                SiteConfig.path.thingy = match[0] + (port + 1);
+            }
         }
+
+        SiteConfig.isHandheld = isHandheld();
+        SiteConfig.isMobile = isMobile();
+        SiteConfig.isIOS = isIOS();
+
+        this.serverTimePromise = getServerTime();
+        this.serverTimePromise.then(e => {
+            SiteConfig.serverTime = e;
+        });
     }
 
-    SiteConfig.isHandheld = isHandheld();
-    SiteConfig.isMobile = isMobile();
-    SiteConfig.isIOS = isIOS();
-
-    getServerTime().then(e => {
-        SiteConfig.serverTime = e;
-    });
-};
+    public static getServerTime(): Promise<Date> {
+        if (this.serverTime) {
+            return Promise.resolve(this.serverTime);
+        } else {
+            return this.serverTimePromise;
+        }
+    }
+}
 
 export default SiteConfig;

@@ -17,8 +17,6 @@
     years old!
 </p>
 
-Here's an error: ${{ e r r o r ! }}
-
 <japnaa:view:projectinfo statedata="2018.3"></japnaa:view:projectinfo>
 <japnaa:view:view404></japnaa:view:view404>
 
@@ -26,9 +24,11 @@ Here's an error: ${{ e r r o r ! }}
 </japnaa:view:imageview>
 
 <script>
+    console.log(SiteConfig);
     const time = id.get("time");
     time.innerText = new Date().toLocaleDateString();
     const stime = id.get("stime");
-    stime.innerText = SiteConfig.serverTime.toLocaleDateString();
-    asdf
+    SiteConfig.getServerTime().then(e => {
+        stime.innerText = e.toLocaleDateString();
+    });
 </script>
