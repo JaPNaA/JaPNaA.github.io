@@ -34,7 +34,13 @@ class HTMLViewParser {
 
     private runInlineJS(text: string): string {
         return text.replace(HTMLViewParser.inlineJSMatcher, function (match: string, evalStr: string): string {
-            const result: any = new Function(evalStr)();
+            let result: any;
+            try {
+                result = new Function(evalStr)();
+            } catch (err) {
+                console.error(err);
+                result = "[Inline JS Error]";
+            }
 
             if (result === undefined) {
                 return "";

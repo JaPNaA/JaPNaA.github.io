@@ -14,12 +14,15 @@ import openFrameView from "../../utils/open/openFrameView";
 
 
 class HTMLViewDocument implements IHTMLViewDocument {
+    public hasErrors: boolean;
+
     private elm: HTMLDivElement;
     private app: IApp;
     private linkHandlingOptions?: LinkHandlingOptions;
 
     constructor(app: IApp, text: string) {
         this.app = app;
+        this.hasErrors = false;
 
         this.elm = this.parseHTML(text);
         this.elm.classList.add("html-parsed");
@@ -35,8 +38,17 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
         for (let i = 0; i < scripts.length; i++) {
             const script = scripts[i];
-            const func = new Function("div", "id", "SiteConfig", script.innerHTML);
-            func(this.elm, idElementMap, SiteConfig);
+            try {
+                const func = new Function("div", "id", "SiteConfig", script.innerHTML);
+                func(this.elm, idElementMap, SiteConfig);
+            } catch (err) {
+                console.error(err);
+                this.hasErrors = true;
+            }
+        }
+
+        if (this.hasErrors) {
+            this.createScriptErrorWarning();
         }
     }
 
@@ -54,6 +66,13 @@ class HTMLViewDocument implements IHTMLViewDocument {
                 this.anchorClickHandler(anchors[i], e)
             );
         }
+    }
+
+    private createScriptErrorWarning(): void {
+        const div = document.createElement("div");
+        div.classList.add("scriptErrorWarning");
+        div.innerText = "Some scripts failed to run. Expect limited functionality.";
+        this.elm.insertBefore(div, this.elm.firstChild);
     }
 
     private anchorClickHandler(anchor: HTMLAnchorElement, e: MouseEvent) {
