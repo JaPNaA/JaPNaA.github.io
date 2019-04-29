@@ -12,12 +12,9 @@ abstract class Widget {
         this.elm.classList.add(widgetName);
 
         this.widgetName = widgetName;
-        console.log("setup " + this.widgetName);
     }
 
-    public destory(): void {
-        console.log("destory " + this.widgetName);
-    }
+    public destory(): void { }
 
     public appendTo(parent: Element): void {
         this.parent = parent;

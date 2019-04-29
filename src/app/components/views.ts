@@ -77,7 +77,6 @@ class AppViews implements IAppViews {
             this.triggerClose(view);
         }
         this.activeViews.length = 0;
-        console.log("close all views");
     }
 
     public close(view: View): void {
@@ -90,7 +89,6 @@ class AppViews implements IAppViews {
     private triggerClose(view: View) {
         view.destory().then(() => {
             view.removeFrom(this.mainElm);
-            console.log("remove view", view);
         });
         this.appEvents.dispatchViewChange();
     }

@@ -224,7 +224,6 @@ class ImageView extends View {
     }
 
     private doubleTapHandler(vec: Vec2): void {
-        console.log("doubletap");
         this.image.alternateFitToReal(vec.x, vec.y);
         this.redrawIfShould();
     }

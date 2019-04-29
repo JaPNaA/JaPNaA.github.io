@@ -31,11 +31,8 @@ abstract class View {
         this.elm.classList.add(viewName);
 
         if (this.isFullPage) {
-            console.log("register page", this.viewName);
             this.app.url.pushHistory(this);
         }
-
-        console.log("setup " + this.viewName);
     }
 
     /**
@@ -45,7 +42,6 @@ abstract class View {
      * it's safe to remove the element.
      */
     public async destory(): Promise<void> {
-        console.log("destory " + this.viewName);
         this.destoryHandlers.dispatch();
         this.events.destory();
         this.elm.classList.add("destory");
@@ -75,7 +71,7 @@ abstract class View {
     public getState(): string | undefined { return; }
 
     /** Add destory handler */
-    public onDestory(handler: Handler): void { 
+    public onDestory(handler: Handler): void {
         this.destoryHandlers.add(handler);
     }
 

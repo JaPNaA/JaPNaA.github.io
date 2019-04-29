@@ -34,13 +34,9 @@ abstract class BaseApp implements IApp {
         }
     }
 
-    public async setup(): Promise<void> {
-        console.log("setup BaseApp");
-    }
+    public async setup(): Promise<void> { }
 
-    public async destory(): Promise<void> {
-        console.log("destory BaseApp");
-    }
+    public async destory(): Promise<void> { }
 }
 
 export default BaseApp;

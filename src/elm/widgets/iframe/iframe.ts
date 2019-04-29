@@ -62,7 +62,6 @@ class IFrame extends Widget {
         this.elm.addEventListener("load", () => {
             if (this.isClosed()) {
                 this.eventHandlers.dispatch();
-                console.log("close");
             }
         });
     }
