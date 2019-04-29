@@ -17,6 +17,7 @@ class XMLResource extends Resource {
 
     private getXML(path: string): void {
         const req = new XMLHttpRequest();
+        console.log(path);
         req.open("GET", path);
         req.responseType = "text";
 
