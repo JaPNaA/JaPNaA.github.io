@@ -93,7 +93,7 @@ class ImageView extends View {
     public setImageSrc(src: string): void {
         SiteResources.loadImage(src)
             .onLoad(e =>
-                this.setImage(e.copyImage())
+                this.setImage(e.image)
             );
     }
 

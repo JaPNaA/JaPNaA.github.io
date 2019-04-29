@@ -16,10 +16,12 @@ class ImageResource extends Resource {
         this.image.addEventListener("error", e => this.onErrorHandler(e.error));
     }
 
+    public _isStillLoaded(): boolean {
+        return this.image.complete;
+    }
+
     public copyImage(): HTMLImageElement {
-        const img = document.createElement("img");
-        img.src = this.path;
-        return img;
+        return this.image.cloneNode() as HTMLImageElement;
     }
 }
 

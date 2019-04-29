@@ -40,6 +40,10 @@ abstract class Resource {
         return this;
     }
 
+    public _isStillLoaded(): boolean {
+        return true;
+    }
+
     protected onLoadHandler(): void {
         this.loaded = true;
         this.dispatchLoadEvent();
