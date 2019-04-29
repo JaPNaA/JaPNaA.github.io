@@ -3,3 +3,4 @@ quickstart.bat
 /others
 /node_modules
 /docs/bundle.js
+/build
