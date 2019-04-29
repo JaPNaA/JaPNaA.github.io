@@ -121,7 +121,8 @@ class Menu extends View {
     private createCopyright(): HTMLDivElement {
         const copyright = document.createElement("div");
         copyright.classList.add("copy");
-        copyright.innerHTML = "Copyright &copy; 2019 JaPNaA"
+        SiteConfig.getServerTime()
+            .then(e => copyright.innerHTML = `Copyright &copy; ${e.getUTCFullYear()} JaPNaA`);
         return copyright;
     }
 
