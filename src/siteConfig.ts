@@ -57,7 +57,6 @@ class SiteConfig {
             const port = parseInt(location.port);
             if (!isNaN(port)) {
                 this.path.thingy = match[0] + (port + 1);
-                console.log(this.path.thingy);
             }
         }
 

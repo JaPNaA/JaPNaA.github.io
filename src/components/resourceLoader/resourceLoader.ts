@@ -91,7 +91,6 @@ class ResourceLoader {
     }
 
     public loadJSON(path: string): JSONResource {
-        console.log(path);
         return this.loadResource<JSONResource>(path, JSONResource);
     }
 

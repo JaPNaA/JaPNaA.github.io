@@ -28,7 +28,7 @@ class ContentMan {
         for (let year = index.end; year >= index.start; year--) {
             const list = await this.getFileForYear(year);
 
-            for (let i = list.data.length; i >= 0; i--) {
+            for (let i = list.data.length - 1; i >= 0; i--) {
                 yield list.data[i];
             }
         }

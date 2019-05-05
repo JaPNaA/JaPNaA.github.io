@@ -4,7 +4,7 @@ import ResourceLoaderHooks from "../resourceLoaderHooks";
 class XMLResource extends Resource {
     public path: string;
     public document: Document = null as any as Document;
-    
+
     private type: SupportedType;
 
     constructor(hooks: ResourceLoaderHooks, path: string, type?: SupportedType) {
@@ -17,7 +17,6 @@ class XMLResource extends Resource {
 
     private getXML(path: string): void {
         const req = new XMLHttpRequest();
-        console.log(path);
         req.open("GET", path);
         req.responseType = "text";
 
