@@ -38,7 +38,6 @@ class App extends BaseApp {
 
         await SiteResources.nextDone();
         this.views.close(splashScreen);
-
     }
 
     private addEventHandlers() {

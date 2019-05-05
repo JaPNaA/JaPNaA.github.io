@@ -4,21 +4,26 @@ import View404 from "../../elm/views/views/404";
 import IApp from "../../types/app/iApp";
 import AppState from "../../types/appState";
 import parseAppStateURL from "../../utils/parseAppStateURL";
+import ShortUrlView from "../../elm/views/views/shortUrl";
 
 class URLController {
     public restored: boolean;
+    public isShortUrl: boolean;
 
     private fromRedirect: boolean;
     private initalSearch: string;
     private initalURL: string;
+    private initalHash: string;
 
     private stateEmpty: boolean;
 
     constructor() {
         this.initalURL = location.href;
         this.initalSearch = location.search;
+        this.initalHash = location.hash;
 
         this.fromRedirect = false;
+        this.isShortUrl = false;
         this.stateEmpty = true;
         this.restored = false;
 
@@ -45,8 +50,11 @@ class URLController {
     }
 
     public restoreFromRedirect(app: IApp): void {
-        if (!this.fromRedirect) { return; }
-        this.restoreFromURL(app, this.initalURL);
+        if (this.isShortUrl) {
+            this.restoreShortURL(app, this.initalHash);
+        } else if (this.fromRedirect) {
+            this.restoreFromURL(app, this.initalURL);
+        }
     }
 
     public restoreFromURL(app: IApp, url: string): void {
@@ -62,7 +70,13 @@ class URLController {
         this.restored = true;
     }
 
-    public restore(app: IApp, state: AppState) {
+    public restoreShortURL(app: IApp, hash: string): void {
+        app.views.open(ShortUrlView, hash);
+        console.log("h");
+        this.restored = true;
+    }
+
+    public restore(app: IApp, state: AppState): void {
         const viewClass = ViewMap.get(state.viewName);
         if (viewClass) {
             const view = new viewClass(app, state.stateData);
@@ -72,6 +86,12 @@ class URLController {
         } else {
             this.restored = false;
         }
+    }
+
+    public clearState(): void {
+        history.replaceState(
+            null, SiteConfig.title
+        )
     }
 
     private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
@@ -88,13 +108,8 @@ class URLController {
         return { url, title };
     }
 
-    public clearState(): void {
-        history.replaceState(
-            null, SiteConfig.title
-        )
-    }
 
-    private setToOldURL() {
+    private setToOldURL(): void {
         const urlparams = new URLSearchParams(this.initalSearch);
         const initalURL = urlparams.get("u");
 
@@ -102,6 +117,9 @@ class URLController {
             this.initalURL = initalURL;
             this.fromRedirect = true;
             history.replaceState(null, SiteConfig.title, initalURL);
+        } else if (this.initalHash) {
+            this.isShortUrl = true;
+            history.replaceState(null, SiteConfig.title, "/" + this.initalHash);
         }
     }
 }
