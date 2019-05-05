@@ -7,6 +7,8 @@ import SiteResources from "../siteResources";
 import GlobalWidgets from "../elm/widgets/global/global";
 import BaseApp from "./baseApp";
 import AppURL from "./components/url";
+import ContentMan from "../components/contentMan/contentMan";
+import SiteConfig from "../siteConfig";
 
 class App extends BaseApp {
     private globalWidget: GlobalWidgets;
@@ -49,5 +51,9 @@ class App extends BaseApp {
         this.events.dispatchResize();
     }
 }
+
+
+SiteConfig.setup();
+ContentMan.setup();
 
 export default App;
