@@ -8,6 +8,8 @@ class SplashScreen extends View {
     public viewName = SplashScreen.viewName;
     protected elm: HTMLDivElement;
 
+    public showMenuButton: boolean = false;
+
     constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");

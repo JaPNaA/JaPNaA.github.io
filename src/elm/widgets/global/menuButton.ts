@@ -66,7 +66,7 @@ class MenuButton extends Widget {
                 this.elm.classList.remove(MenuButton.scrollBarExistsClass);
             }
 
-            if (topView.showGlobalWidget) {
+            if (topView.showMenuButton) {
                 this.elm.classList.remove(MenuButton.hiddenClass);
             } else {
                 this.elm.classList.add(MenuButton.hiddenClass);

@@ -11,7 +11,7 @@ abstract class View {
     public id: number = View.vidCounter++;
     public isFullPage: boolean;
     public viewName: string = null as any as string;
-    public showGlobalWidget: boolean = true;
+    public showMenuButton: boolean = true;
 
     protected app: IApp;
     protected events: EventManager;

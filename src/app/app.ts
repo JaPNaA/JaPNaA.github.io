@@ -36,8 +36,12 @@ class App extends BaseApp {
             this.views.open(Overview);
         }
 
+        // indefinite loading
+        SiteResources.addResourceLoading();
+
         await SiteResources.nextDone();
         this.views.close(splashScreen);
+
     }
 
     private addEventHandlers() {

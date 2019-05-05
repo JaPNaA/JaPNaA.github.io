@@ -14,7 +14,7 @@ class FrameView extends View {
     public static transitionInTime = 400;
     public static viewName = "FrameView";
     public viewName = FrameView.viewName;
-    public showGlobalWidget = false;
+    public showMenuButton = false;
     public isFullPage = true;
 
     protected elm: HTMLDivElement;
