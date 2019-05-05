@@ -31,7 +31,8 @@ class SiteConfig {
             thingy_: "/Thingy_"
         },
 
-        content: "assets/content/"
+        content: "assets/content/",
+        contentIndex: "assets/content/index.json"
     }
 
     static readonly hexagonsTitle = {
