@@ -64,7 +64,7 @@ abstract class Resource {
     }
 
     private dispathErrorEvent(): void {
-        if (!this.errorHandlers.hasAny()) {
+        if (!this.errorHandlers.hasAny() && this.loadHandlers.hasAny()) {
             console.error("Throwing resource load error", this);
             throw new Error("Unhandled resource load error");
         }

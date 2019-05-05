@@ -14,12 +14,17 @@ class ImageViewCloseButton extends CanvasButton {
     private image: HTMLImageElement;
     private imageViewImage: ImageViewImage;
     private transitionProgress: number;
+    private justLoaded: boolean;
 
     constructor(imageViewImage: ImageViewImage) {
         super(0, 0, ImageViewCloseButton.width, ImageViewCloseButton.height);
         this.imageViewImage = imageViewImage;
-        this.image = SiteResources.loadImage(SiteConfig.path.img.closeWhite).image;
+        this.image =
+            SiteResources.loadImage(SiteConfig.path.img.closeWhite)
+                .onLoad(() => this.justLoaded = true)
+                .image;
         this.transitionProgress = 0;
+        this.justLoaded = false;
     }
 
     public attachPhysics(physics: SimpleEasePhysics) {
@@ -36,10 +41,12 @@ class ImageViewCloseButton extends CanvasButton {
 
         X.drawImage(this.image, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         X.restore();
+
+        this.justLoaded = false;
     }
 
     public shouldRedraw(): boolean {
-        return (
+        return this.justLoaded || (
             this.transitionProgress !== 0 && this.transitionProgress !== 1
         ) || super.shouldRedraw();
     }

@@ -13,7 +13,12 @@ class ImageResource extends Resource {
         this.image.src = path;
 
         this.image.addEventListener("load", () => this.onLoadHandler());
-        this.image.addEventListener("error", e => this.onErrorHandler(e.error));
+        this.image.addEventListener("error", e =>
+            this.onErrorHandler(
+                e.error ||
+                new Error("Failed to load image")
+            )
+        );
     }
 
     public _isStillLoaded(): boolean {

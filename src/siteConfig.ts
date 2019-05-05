@@ -68,8 +68,6 @@ class SiteConfig {
         this.serverTimePromise.then(e => {
             SiteConfig.serverTime = e;
         });
-
-        console.log(JSON.stringify(location));
     }
 
     public static getServerTime(): Promise<Date> {

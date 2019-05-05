@@ -40,6 +40,7 @@ class ImageView extends View {
     private shouldRedraw: boolean;
     private drawing: boolean;
     private reqanfHandle: number;
+    private inErrorState: boolean;
 
     constructor(app: IApp, stateData?: string) {
         super(app);
@@ -65,6 +66,7 @@ class ImageView extends View {
         this.src = stateData;
         this.then = performance.now();
         this.reqanfHandle = -1;
+        this.inErrorState = false;
     }
 
     public async setup(): Promise<void> {
@@ -92,9 +94,8 @@ class ImageView extends View {
 
     public setImageSrc(src: string): void {
         SiteResources.loadImage(src)
-            .onLoad(e =>
-                this.setImage(e.image)
-            );
+            .onLoad(e => this.setImage(e.image))
+            .onError(() => this.inErrorState = true);
     }
 
     public setInitalTransform(x: number, y: number, scale: number): void {
@@ -106,8 +107,12 @@ class ImageView extends View {
     }
 
     private setImage(image: HTMLImageElement): void {
-        this.image.setImage(image);
-        this.resetImagePosition();
+        if (image.complete) {
+            this.image.setImage(image);
+            this.resetImagePosition();
+        } else {
+            this.inErrorState = true;
+        }
     }
 
     private getX(): CanvasRenderingContext2D {
@@ -154,15 +159,47 @@ class ImageView extends View {
         this.X.scale(this.dpr, this.dpr);
         this.X.clearRect(0, 0, this.width, this.height);
 
-        this.image.draw(this.X);
+        if (this.inErrorState) {
+            this.drawErrorMessage();
+        } else {
+            this.image.draw(this.X);
+        }
+
         this.closeButton.draw(this.X);
         this.X.resetTransform();
 
         this.updateShouldRedraw();
     }
 
+    private drawErrorMessage(): void {
+        const width = 256;
+        const height = 64;
+        const closeButtonRect = this.closeButton.getRect();
+        this.X.save();
+        this.X.translate(this.width / 2, this.height / 2);
+        this.X.fillStyle = "#000000"
+        this.X.strokeStyle = "#ff0000";
+        this.X.rect(-width / 2, -height / 2, width, height);
+        this.X.fill();
+        this.X.lineWidth = 3;
+        this.X.stroke();
+        this.X.fillStyle = "#ff3030";
+        this.X.font = "18px 'Roboto'";
+        this.X.textAlign = "center";
+        this.X.textBaseline = "middle";
+        this.X.fillText("Failed to load image", 0, 2);
+        this.X.restore();
+        this.closeButtonPhysics.teleportTo(
+            (this.width - width) / 2 - closeButtonRect.width,
+            (this.height - height) / 2 - closeButtonRect.height
+        );
+    }
+
     private updateShouldRedraw(): void {
-        this.shouldRedraw = this.image.physics.hasRectChanged() || this.closeButton.shouldRedraw();
+        this.shouldRedraw = (
+            !this.inErrorState &&
+            this.image.physics.hasRectChanged()
+        ) || this.closeButton.shouldRedraw();
     }
 
     private addEventHandlers(): void {
