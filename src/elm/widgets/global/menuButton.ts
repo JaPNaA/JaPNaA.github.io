@@ -39,10 +39,7 @@ class MenuButton extends Widget {
         SiteResources.onDone(this.viewChangeHandler);
 
         this.elm.addEventListener("click", () => {
-            const menu = new Menu(this.app);
-            menu.setup();
-            menu.animateTransitionIn();
-            this.app.views.add(menu);
+            this.toggleMenu();
         });
     }
 
@@ -74,6 +71,18 @@ class MenuButton extends Widget {
         } else {
             this.elm.classList.remove(MenuButton.scrollBarExistsClass);
             this.elm.classList.remove(MenuButton.hiddenClass);
+        }
+    }
+
+    private toggleMenu(): void {
+        const existingMenu = this.app.views.getA(Menu);
+        if (existingMenu) {
+            this.app.views.close(existingMenu);
+        } else {
+            const menu = new Menu(this.app);
+            menu.setup();
+            menu.animateTransitionIn();
+            this.app.views.add(menu);
         }
     }
 }

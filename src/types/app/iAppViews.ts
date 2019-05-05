@@ -11,4 +11,5 @@ export default interface IAppViews {
     addBehind(view: View): void;
     add(view: View): void;
     close(view: View): void;
+    getA(viwe: ViewClass): View | undefined;
 }

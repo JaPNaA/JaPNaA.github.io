@@ -86,6 +86,10 @@ class AppViews implements IAppViews {
         this.triggerClose(view);
     }
 
+    public getA(viewClass: ViewClass): View | undefined {
+        return this.activeViews.find(e => e instanceof viewClass);
+    }
+
     private triggerClose(view: View) {
         view.destory().then(() => {
             view.removeFrom(this.mainElm);
