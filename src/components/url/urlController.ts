@@ -52,7 +52,7 @@ class URLController {
     public restoreFromRedirect(app: IApp): void {
         if (this.fromRedirect) {
             this.restoreFromURL(app, this.initalURL);
-        } else {
+        } else if (this.isShortUrl) {
             this.restoreShortURL(app, this.initalHash);
         }
     }
