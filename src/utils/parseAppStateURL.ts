@@ -1,8 +1,10 @@
 import AppState from "../types/appState";
 import url from "url";
+import AppStateBuilder from "./appStateBuilder";
 
 export default function parseAppStateURL(href: string | url.UrlWithStringQuery): AppState | undefined {
     let cleanURL;
+    const builder = new AppStateBuilder();
 
     if (typeof href === "string") {
         cleanURL = url.parse(href);
@@ -15,11 +17,13 @@ export default function parseAppStateURL(href: string | url.UrlWithStringQuery):
 
     const divisorIndex = cleanPath.indexOf('/');
     if (divisorIndex < 0) {
-        return { viewName: cleanPath };
+        builder.viewName = cleanPath + cleanURL.hash;
     } else {
         const viewName = cleanPath.slice(0, divisorIndex);
         const stateData = decodeURIComponent(cleanPath.slice(divisorIndex + 1));
-
-        return { viewName, stateData };
+        builder.viewName = viewName;
+        builder.stateData = stateData + cleanURL.hash;
     }
+
+    return builder.build();
 }

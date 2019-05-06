@@ -50,10 +50,10 @@ class URLController {
     }
 
     public restoreFromRedirect(app: IApp): void {
-        if (this.isShortUrl) {
-            this.restoreShortURL(app, this.initalHash);
-        } else if (this.fromRedirect) {
+        if (this.fromRedirect) {
             this.restoreFromURL(app, this.initalURL);
+        } else {
+            this.restoreShortURL(app, this.initalHash);
         }
     }
 
@@ -70,13 +70,21 @@ class URLController {
         this.restored = true;
     }
 
-    public restoreShortURL(app: IApp, hash: string): void {
-        app.views.open(ShortUrlView, hash);
-        console.log("h");
-        this.restored = true;
+    public restore(app: IApp, state: AppState): void {
+        if (state.viewName[0] === "#") {
+            this.restoreShortURL(app, state.viewName);
+        } else {
+            this.restoreView(app, state);
+        }
     }
 
-    public restore(app: IApp, state: AppState): void {
+    public clearState(): void {
+        history.replaceState(
+            null, SiteConfig.title
+        )
+    }
+
+    private restoreView(app: IApp, state: AppState): void {
         const viewClass = ViewMap.get(state.viewName);
         if (viewClass) {
             const view = new viewClass(app, state.stateData);
@@ -88,10 +96,9 @@ class URLController {
         }
     }
 
-    public clearState(): void {
-        history.replaceState(
-            null, SiteConfig.title
-        )
+    public restoreShortURL(app: IApp, hash: string): void {
+        app.views.open(ShortUrlView, hash);
+        this.restored = true;
     }
 
     private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {

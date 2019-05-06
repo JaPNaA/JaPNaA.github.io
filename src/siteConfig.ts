@@ -32,7 +32,8 @@ class SiteConfig {
         },
 
         content: "assets/content/",
-        contentIndex: "assets/content/index.json"
+        contentIndex: "assets/content/index.json",
+        redirectMap: "assets/content/redirects.txt"
     }
 
     static readonly hexagonsTitle = {
