@@ -15,7 +15,7 @@ class ShortUrlView extends View {
 
     constructor(app: IApp, hash?: string) {
         super(app);
-        if (!hash) { throw new Error("No hash provided"); }
+        if (hash === undefined) { throw new Error("No hash provided"); }
 
         this.elm = document.createElement("div");
         this.hash = hash;

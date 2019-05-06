@@ -1,16 +1,17 @@
 import AppState from "../types/appState";
 
 class AppStateBuilder implements AppState {
-    viewName!: string;
-    id?: number;
-    stateData?: string;
+    public viewName!: string;
+    public id?: number;
+    public stateData?: string;
+    public hash?: string;
 
     public build(): AppState {
-        if (!this.viewName) { throw new Error("Missing viewName"); }
+        if (this.viewName === "") { throw new Error("Missing viewName"); }
         return {
             viewName: this.viewName,
             id: this.id,
-            stateData: this.stateData
+            stateData: this.stateData + ((this.hash) ? this.hash : "")
         };
     }
 }
