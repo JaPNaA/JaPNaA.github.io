@@ -4,6 +4,8 @@ import SiteConfig from "../../siteConfig";
 import IIndex from "../../types/project/index";
 import IInfoJSON from "../../types/project/infojson";
 
+// TODO: Make this function like a lazyily evaluated array
+
 class ContentMan {
     static index?: IIndex;
     static indexPromise: Promise<IIndex>;

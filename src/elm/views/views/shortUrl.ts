@@ -54,9 +54,10 @@ class ShortUrlView extends View {
     private redirectToProjectByYearAndName(): void {
         const hashContent = this.hash.slice(2); // trim out "#_"
 
-        const year = hashContent.match(/^\d+/);
-        if (!year) { throw new Error("No year specified"); }
-        const yearInt = parseInt(year[0]) || 0;
+        const yearMatches = hashContent.match(/^\d+/);
+        if (!yearMatches) { throw new Error("No year specified"); }
+        const year = yearMatches[0];
+        const yearInt = parseInt(year) || 0;
         const path = hashContent.slice(year.length);
 
         if (isNaN(yearInt)) {

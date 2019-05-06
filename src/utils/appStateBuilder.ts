@@ -7,11 +7,25 @@ class AppStateBuilder implements AppState {
     public hash?: string;
 
     public build(): AppState {
-        if (this.viewName === "") { throw new Error("Missing viewName"); }
+        if (!this.viewName && !this.hash) { throw new Error("Missing viewName"); }
+
+        let viewName = this.viewName;
+        let stateData = this.stateData;
+
+        if (!this.viewName && this.hash) {
+            viewName = this.hash;
+        } else if (this.hash) {
+            if (!stateData) {
+                stateData = this.hash;
+            } else {
+                stateData += this.hash;
+            }
+        }
+
         return {
-            viewName: this.viewName,
+            viewName: viewName,
             id: this.id,
-            stateData: this.stateData + ((this.hash) ? this.hash : "")
+            stateData: stateData
         };
     }
 }
