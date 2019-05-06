@@ -8,6 +8,7 @@ fi
 mkdir build
 
 # build
+npm run clean
 npm run build
 cp -r docs/* build
 

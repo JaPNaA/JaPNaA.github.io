@@ -5,4 +5,6 @@ import "./views/frameView";
 import "./views/menu";
 import "./views/overview";
 import "./views/projectInfo";
+import "./views/shortUrl";
+import "./views/test";
 import "./views/splashScreen";

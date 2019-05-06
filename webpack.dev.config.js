@@ -1,4 +1,5 @@
 const prodConfig = require("./webpack.config");
+const path = require("path");
 
 const devConfig = {
     ...prodConfig,
@@ -7,4 +8,29 @@ const devConfig = {
     devtool: 'inline-source-map'
 }
 
-module.exports = devConfig;
+const testConfig = {
+    name: "test",
+    entry: "./test/main.ts",
+    output: {
+        path: path.resolve(__dirname, "docs"),
+        filename: "test-bundle.js",
+        publicPath: "./test/"
+    },
+    module: {
+        rules: [{
+            test: /\.tsx?$/,
+            use: "ts-loader",
+            exclude: /node_modules/
+        }]
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
+    },
+    target: "web",
+    plugins: [],
+
+    mode: "development",
+    watch: true
+};
+
+module.exports = [devConfig, testConfig];
