@@ -1,4 +1,5 @@
 import { isIterableObjectEqual } from "./utils/isIterableObjectEqual";
+import stringify from "./utils/stringify";
 
 abstract class Test {
     public abstract name: string
@@ -88,16 +89,16 @@ export abstract class TestRunner extends Test {
 
     protected assertEquals(a: any, b: any, aName_?: string, bName_?: string) {
         const aName = aName_ || "value";
-        const bName = bName_ || b.toString();
+        const bName = bName_ || stringify(b);
         if (a === b) {
             this.passAssertion(aName + " is equal to " + bName + ", " + bName);
         } else {
             this.failAssertion(
                 aName + " was not equal to " + bName + ", " +
-                aName + " was " + a.toString() + (
+                aName + " was " + stringify(a) + (
                     (bName_ === undefined) ?
                         '' : (
-                            ', and ' + bName + ' was ' + b.toString()
+                            ', and ' + bName + ' was ' + stringify(b)
                         )
                 )
             );
@@ -106,16 +107,16 @@ export abstract class TestRunner extends Test {
 
     protected assertIterableObjectEquals<T>(a: T, b: T, aName_?: string, bName_?: string) {
         const aName = aName_ || "value";
-        const bName = bName_ || b.toString();
+        const bName = bName_ || stringify(b);
         if (isIterableObjectEqual(a, b)) {
             this.passAssertion(aName + " is equal to " + bName + ", " + bName);
         } else {
             this.failAssertion(
                 aName + " was not equal to " + bName + ", " +
-                aName + " was " + a.toString() + (
+                aName + " was " + stringify(a) + (
                     (bName_ === undefined) ?
                         '' : (
-                            ', and ' + bName + ' was ' + b.toString()
+                            ', and ' + bName + ' was ' + stringify(b)
                         )
                 )
             );
