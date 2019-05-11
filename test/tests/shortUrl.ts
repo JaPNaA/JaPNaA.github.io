@@ -15,7 +15,10 @@ export default class ShortUrlTest extends TestRunner {
 
     public setup(): void {
         const text = new TextResource(SiteResources.__debug_getHooks(), SiteConfig.path.redirectMap, true);
-        text.text = "jeep, https://www.google.ca/search?q=jeep&tbm=isch\njeepsacar ,https://www.google.com/?q=jeep";
+        text.text = `
+        jeep, https://www.google.ca/search?q=jeep&tbm=isch
+         jeepsacar   ,       https://www.google.com/?q=jeep
+        `;
         text.loaded = true;
 
         SiteResources.__debug_setResource(
@@ -26,28 +29,42 @@ export default class ShortUrlTest extends TestRunner {
     public async runTests(): Promise<void> {
         const thingy_ = SiteConfig.path.repo.thingy_;
 
-        this.testParseShortUrl("#_",
+        this.testParseShortUrl(
             "_1minesweeperAI",
             thingy_ + "2017/minesweeperAI"
         );
-
-        this.testParseShortUrl("map (jeep)",
-            "jeep",
-            "https://www.google.ca/search?q=jeep&tbm=isch"
+        this.testParseShortUrl(
+            "_10nonexistantproject",
+            thingy_ + "2026/nonexistantproject"
         );
 
-        this.testParseShortUrl("map (jeepsacar), space trimming",
+        this.testParseShortUrl(
+            "jeep",
+            "https://www.google.ca/search?q=jeep&tbm=isch",
+        );
+
+        this.testParseShortUrl(
             "jeepsacar",
-            "https://www.google.com/?q=jeep"
+            "https://www.google.com/?q=jeep",
+            "Lots of extra spaces"
+        );
+
+        this.testParseShortUrl(
+            "#20",
+            "https://gitlab.com/JaPNaA/japnaabotdiscord"
+        );
+        this.testParseShortUrl(
+            "#0",
+            "/Thingy_2016/MyFirstEverSite/"
         );
 
         await Promise.all(this.promises);
     }
 
-    private testParseShortUrl(name: string, input: string, expected: string): void {
+    private testParseShortUrl(input: string, expected: string, message?: string): void {
         this.promises.push(parseShortUrl(input)
             .then(e => {
-                this.nextAssertTests = name;
+                this.nextAssertTests = message || "#" + input;
                 this.assertEquals(e, expected)
             })
             .catch(e => {

@@ -93,7 +93,7 @@ export abstract class TestRunner extends Test {
             await this.runTests();
             this.destory();
         } catch (err) {
-            this.logStopByError(err);
+            this.logError(err);
         }
     }
 
@@ -160,10 +160,10 @@ export abstract class TestRunner extends Test {
     }
 
     protected assertNotRunningThisLine(message?: string): void {
-        throw new Error(message || "Illegal state");
+        this.logError(new Error(message || "Illegal state"));
     }
 
-    private logStopByError(error: Error): void {
+    private logError(error: Error): void {
         if (this.passed || !this.stopAfterFailedAssert) {
             const stack = error.stack ? error.stack : error.toString();
             this.assertions.push(new FailedAssertion(stack + "\nStopping."));
