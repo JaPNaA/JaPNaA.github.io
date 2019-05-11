@@ -1,6 +1,8 @@
 quickstart.bat
 .vscode
+npm-debug.log
 /others
 /node_modules
 /docs/bundle.js
+/docs/test-bundle.js
 /build
