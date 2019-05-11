@@ -1,0 +1,40 @@
+.TestReport {
+    .testResult {
+        > .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        > .message {
+            font-size: 14px;
+            opacity: 0.6;
+        }
+    }
+
+    .children {
+        margin-left: 32px;
+        margin-top: 8px;
+        position: relative;
+    }
+
+    .children::before {
+        content: "";
+        width: 2px;
+        height: 100%;
+        position: absolute;
+        left: -12px;
+        display: block;
+        background-color: currentColor;
+        opacity: 0.4;
+    }
+
+    .passed {
+        background-color: #ceffb1;
+        color: #183a05;
+    }
+
+    .assertion {
+        font-size: 12px;
+        font-family: Consolas, "Courier New", Courier, monospace;
+    }
+}

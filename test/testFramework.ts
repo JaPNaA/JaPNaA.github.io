@@ -7,6 +7,7 @@ abstract class Test {
     public abstract setup(): void;
     public abstract run(): void;
     public abstract destory(): void;
+    public abstract getResult(): TestResult;
 }
 
 export class Tester {
@@ -19,11 +20,15 @@ export class Tester {
 export class TestList extends Test {
     public name: string;
     private tests: Test[];
+    private results: TestResult[];
+    private passed: boolean;
 
     constructor(tests: Test[], name?: string) {
         super();
+        this.results = [];
         this.name = name || this.constructor.name;
         this.tests = tests;
+        this.passed = true;
     }
 
     public setup(): void { }
@@ -33,7 +38,21 @@ export class TestList extends Test {
             this.setup();
             test.run();
             this.destory();
+
+            const result = test.getResult();
+            if (!result.passed) {
+                this.passed = false;
+            }
+            this.results.push(result);
         }
+    }
+
+    public getMessage(passed: boolean): string {
+        return passed ? "All tests passed" : "One or more tests failed";
+    }
+
+    public getResult(): TestResult {
+        return new TestResult(this.name, this.passed, this.results, this.getMessage(this.passed));
     }
 }
 
@@ -63,10 +82,10 @@ export abstract class TestRunner extends Test {
         this.destory();
     }
 
-    public getResults(): TestResult[] {
-        return [new TestResult(
+    public getResult(): TestResult {
+        return new TestResult(
             this.name, this.passed, this.assertions, this.getMessage(this.passed)
-        )];
+        );
     }
 
     protected assertTrue(v: boolean, name_?: string) {
@@ -163,12 +182,12 @@ export abstract class TestRunner extends Test {
     }
 }
 
-interface Passable {
+export interface Passable {
     message?: string,
     passed: boolean
 }
 
-class TestResult implements Passable {
+export class TestResult implements Passable {
     public constructor(
         public testName: string,
         public passed: boolean,
@@ -177,7 +196,8 @@ class TestResult implements Passable {
     ) { }
 }
 
-abstract class Assertion implements Passable {
+
+export abstract class Assertion implements Passable {
     constructor(
         public passed: boolean,
         public message: string

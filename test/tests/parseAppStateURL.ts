@@ -20,7 +20,9 @@ export default class ParseAppStateURLTest extends TestRunner {
     }
 
     private testUrlWithHost(host: string): void {
-        this.nextAssertTests = "simple url";
+        const hostMessage = " (" + host + ")";
+
+        this.nextAssertTests = "simple url" + hostMessage;
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "test"),
             {
@@ -30,7 +32,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             }
         );
 
-        this.nextAssertTests = "url with statedata";
+        this.nextAssertTests = "url with statedata" + hostMessage;
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "allthingies/Thingy_2019"),
             {
@@ -40,7 +42,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             }
         );
 
-        this.nextAssertTests = "url with statedata and hash";
+        this.nextAssertTests = "url with statedata and hash" + hostMessage;
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "allthingies/Thingy_2019#jeepsacar"),
             {
@@ -50,7 +52,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             }
         );
 
-        this.nextAssertTests = "url only hash";
+        this.nextAssertTests = "url only hash" + hostMessage;
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "#jeepsacar"),
             {
@@ -60,7 +62,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             }
         );
 
-        this.nextAssertTests = "url with viewname and hash";
+        this.nextAssertTests = "url with viewname and hash" + hostMessage;
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "overview#jeepsacar"),
             {
