@@ -38,17 +38,18 @@ export class TestList extends Test {
 
         for (const test of this.tests) {
             this.setup();
-            promises.push(test.run());
+            promises.push(this.runAndGetResult(test));
             this.destory();
-
-            const result = test.getResult();
-            if (!result.passed) {
-                this.passed = false;
-            }
-            this.results.push(result);
         }
 
         await Promise.all(promises);
+
+        for (const result of this.results) {
+            if (!result.passed) {
+                this.passed = false;
+                break;
+            }
+        }
     }
 
     public getMessage(passed: boolean): string {
@@ -57,6 +58,11 @@ export class TestList extends Test {
 
     public getResult(): TestResult {
         return new TestResult(this.name, this.passed, this.results, this.getMessage(this.passed));
+    }
+
+    private async runAndGetResult(test: Test): Promise<void> {
+        await test.run();
+        this.results.push(test.getResult());
     }
 }
 
