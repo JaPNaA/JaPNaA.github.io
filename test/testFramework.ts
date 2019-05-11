@@ -59,6 +59,7 @@ export class TestList extends Test {
 export abstract class TestRunner extends Test {
     public name: string;
     protected nextAssertTests?: string;
+    protected stopAfterFailedAssert: boolean = true;
     private passed: boolean;
     private assertions: Assertion[];
 
@@ -173,9 +174,10 @@ export abstract class TestRunner extends Test {
 
         console.error(message);
 
-        debugger; //! INTENDED DEBUGGER STATEMENT
-
-        throw new Error("Assertion failed");
+        if (this.stopAfterFailedAssert) {
+            debugger; //! INTENDED DEBUGGER STATEMENT
+            throw new Error("Assertion failed");
+        }
     }
 
     private passAssertion(pass: string): void {

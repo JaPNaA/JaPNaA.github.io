@@ -2,7 +2,7 @@ import createAllTests from "./allTests";
 import TestReport from "./testReport";
 
 const elm = document.getElementById("test") as HTMLDivElement;
-elm.appendChild(document.createTextNode("Testing..."));
+elm.innerText = "Testing...";
 
 const allTests = createAllTests();
 
@@ -14,6 +14,8 @@ try {
 
 const result = allTests.getResult();
 console.log(result);
+
+elm.innerText = "";
 
 const report = new TestReport(result);
 report.appendTo(elm);

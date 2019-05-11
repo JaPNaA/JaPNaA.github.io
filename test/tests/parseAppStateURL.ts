@@ -2,6 +2,8 @@ import { TestRunner } from "../testFramework";
 import parseAppStateURL from "../../src/utils/parseAppStateURL";
 
 export default class ParseAppStateURLTest extends TestRunner {
+    protected stopAfterFailedAssert = false;
+
     public runTests(): void {
         for (const host of [
             location.protocol + "//" + location.host + "/",
@@ -48,6 +50,16 @@ export default class ParseAppStateURLTest extends TestRunner {
             {
                 viewName: "allthingies",
                 stateData: "Thingy_2019#jeepsacar",
+                id: undefined
+            }
+        );
+
+        this.nextAssertTests = "url with statedata with slashes and hashes" + hostMessage;
+        this.assertIterableObjectEquals(
+            parseAppStateURL(host + "frameview/https://japnaa.github.io/overview#jeepsacar"),
+            {
+                viewName: "frameview",
+                stateData: "https://japnaa.github.io/overview#jeepsacar",
                 id: undefined
             }
         );
