@@ -77,9 +77,13 @@ export abstract class TestRunner extends Test {
     }
 
     public run(): void {
-        this.setup();
-        this.runTests();
-        this.destory();
+        try {
+            this.setup();
+            this.runTests();
+            this.destory();
+        } catch (err) {
+            this.logStopByError(err);
+        }
     }
 
     public getResult(): TestResult {
@@ -142,7 +146,18 @@ export abstract class TestRunner extends Test {
         }
     }
 
-    private failAssertion(fail: string) {
+    private logStopByError(error: Error): void {
+        if (this.passed) {
+            const stack = error.stack ? error.stack : error.toString();
+            this.assertions.push(new FailedAssertion(stack + "\nStopping."));
+            console.error(error);
+        } else {
+            this.assertions.push(new FailedAssertion("Error occurred when running tests. Stopping."));
+        }
+        this.passed = false;
+    }
+
+    private failAssertion(fail: string): void {
         let message;
 
         if (this.nextAssertTests) {
@@ -163,7 +178,7 @@ export abstract class TestRunner extends Test {
         throw new Error("Assertion failed");
     }
 
-    private passAssertion(pass: string) {
+    private passAssertion(pass: string): void {
         let message;
 
         if (this.nextAssertTests) {
@@ -175,7 +190,7 @@ export abstract class TestRunner extends Test {
         this.assertions.push(new PassedAssertion(message));
     }
 
-    private useNextAssertionTestName() {
+    private useNextAssertionTestName(): string | undefined {
         const str = this.nextAssertTests;
         this.nextAssertTests = undefined;
         return str;

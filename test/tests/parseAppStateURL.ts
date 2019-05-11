@@ -11,12 +11,12 @@ export default class ParseAppStateURLTest extends TestRunner {
             this.testUrlWithHost(host);
         }
 
-
         this.nextAssertTests = "no url";
         this.assertEquals(
             parseAppStateURL(""),
             undefined
         );
+
     }
 
     private testUrlWithHost(host: string): void {
