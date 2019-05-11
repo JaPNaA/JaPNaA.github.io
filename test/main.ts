@@ -6,16 +6,16 @@ elm.innerText = "Testing...";
 
 const allTests = createAllTests();
 
-try {
-    allTests.run();
-} catch (err) {
-    console.error(err);
+allTests.run()
+    .then(generateReport)
+    .catch(err => console.error(err));
+
+function generateReport() {
+    const result = allTests.getResult();
+    console.log(result);
+
+    elm.innerText = "";
+
+    const report = new TestReport(result);
+    report.appendTo(elm);
 }
-
-const result = allTests.getResult();
-console.log(result);
-
-elm.innerText = "";
-
-const report = new TestReport(result);
-report.appendTo(elm);

@@ -6,6 +6,7 @@ import SiteResources from "../../../siteResources";
 class TestView extends View {
     public static viewName: string = "test";
     public viewName = TestView.viewName;
+    public showMenuButton = false;
 
     protected elm: HTMLDivElement;
 

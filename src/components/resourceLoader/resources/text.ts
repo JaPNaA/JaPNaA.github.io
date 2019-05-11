@@ -6,9 +6,12 @@ class TextResource extends Resource {
     public text?: string;
     public req: XMLHttpRequest;
 
-    constructor(hooks: ResourceLoaderHooks, path: string) {
+    private __debugFlag?: boolean;
+
+    constructor(hooks: ResourceLoaderHooks, path: string, __debugFlag?: boolean) {
         super(hooks);
         this.path = path;
+        this.__debugFlag = __debugFlag;
 
         this.req = this.getText(path);
     }
@@ -35,7 +38,9 @@ class TextResource extends Resource {
             this.onErrorHandler(new Error("Failed to load " + this.path + ", not connected to internet?"));
         });
 
-        req.send();
+
+        if (!this.__debugFlag)
+            req.send();
         return req;
     }
 }

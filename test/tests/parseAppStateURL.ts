@@ -4,6 +4,8 @@ import parseAppStateURL from "../../src/utils/parseAppStateURL";
 export default class ParseAppStateURLTest extends TestRunner {
     protected stopAfterFailedAssert = false;
 
+    constructor() { super("parseAppStateUrl"); }
+
     public runTests(): void {
         for (const host of [
             location.protocol + "//" + location.host + "/",
@@ -18,7 +20,6 @@ export default class ParseAppStateURLTest extends TestRunner {
             parseAppStateURL(""),
             undefined
         );
-
     }
 
     private testUrlWithHost(host: string): void {

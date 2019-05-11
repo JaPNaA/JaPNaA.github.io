@@ -5,11 +5,12 @@ class JSONResource extends Resource {
     public path: string;
     public data?: any;
 
-    constructor(hooks: ResourceLoaderHooks, path: string) {
+    constructor(hooks: ResourceLoaderHooks, path: string, __debugFlag?: boolean) {
         super(hooks);
         this.path = path;
 
-        this.getJSON(path);
+        if (!__debugFlag)
+            this.getJSON(path);
     }
 
     private getJSON(path: string): void {

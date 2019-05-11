@@ -5,7 +5,7 @@ abstract class Test {
     public abstract name: string
     constructor() { }
     public abstract setup(): void;
-    public abstract run(): void;
+    public abstract async run(): Promise<void>;
     public abstract destory(): void;
     public abstract getResult(): TestResult;
 }
@@ -33,10 +33,12 @@ export class TestList extends Test {
 
     public setup(): void { }
     public destory(): void { }
-    public run(): void {
+    public async run(): Promise<void> {
+        const promises = [];
+
         for (const test of this.tests) {
             this.setup();
-            test.run();
+            promises.push(test.run());
             this.destory();
 
             const result = test.getResult();
@@ -45,6 +47,8 @@ export class TestList extends Test {
             }
             this.results.push(result);
         }
+
+        await Promise.all(promises);
     }
 
     public getMessage(passed: boolean): string {
@@ -77,10 +81,10 @@ export abstract class TestRunner extends Test {
         return passed ? "Test passed" : "Test failed";
     }
 
-    public run(): void {
+    public async run(): Promise<void> {
         try {
             this.setup();
-            this.runTests();
+            await this.runTests();
             this.destory();
         } catch (err) {
             this.logStopByError(err);
@@ -115,7 +119,9 @@ export abstract class TestRunner extends Test {
         const aName = aName_ || "value";
         const bName = bName_ || stringify(b);
         if (a === b) {
-            this.passAssertion(aName + " is equal to " + bName + ", " + bName);
+            this.passAssertion(aName + " is equal to " + bName +
+                ((bName_ === undefined) ? "" : ", " + stringify(b))
+            );
         } else {
             this.failAssertion(
                 aName + " was not equal to " + bName + ", " +
@@ -147,8 +153,12 @@ export abstract class TestRunner extends Test {
         }
     }
 
+    protected assertNotRunningThisLine(message?: string): void {
+        throw new Error(message || "Illegal state");
+    }
+
     private logStopByError(error: Error): void {
-        if (this.passed) {
+        if (this.passed || !this.stopAfterFailedAssert) {
             const stack = error.stack ? error.stack : error.toString();
             this.assertions.push(new FailedAssertion(stack + "\nStopping."));
             console.error(error);

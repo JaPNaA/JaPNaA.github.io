@@ -117,6 +117,14 @@ class ResourceLoader {
         return false;
     }
 
+    public __debug_setResource(path: string, resource: any) {
+        this.resources.set(path, resource);
+    }
+
+    public __debug_getHooks(): ResourceLoaderHooks {
+        return this.hooks;
+    }
+
     private loadResource<T>(path: string, tconstructor: ResourceClass<T>, ...additionalArgs: any[]): T {
         const existingResource: Resource | undefined = this.resources.get(path);
         if (existingResource) {
