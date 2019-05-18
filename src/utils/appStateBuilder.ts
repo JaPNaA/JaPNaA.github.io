@@ -2,6 +2,7 @@ import AppState from "../types/appState";
 
 class AppStateBuilder implements AppState {
     public viewName!: string;
+    public directURL: boolean = false;
     public id?: number;
     public stateData?: string;
     public hash?: string;
@@ -24,8 +25,9 @@ class AppStateBuilder implements AppState {
 
         return {
             viewName: viewName,
+            stateData: stateData,
+            directURL: this.directURL,
             id: this.id,
-            stateData: stateData
         };
     }
 }

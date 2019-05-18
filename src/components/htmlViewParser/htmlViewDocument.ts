@@ -11,7 +11,7 @@ import url from "url";
 import parseAppStateURL from "../../utils/parseAppStateURL";
 import openNoopener from "../../utils/open/openNoopener";
 import openFrameView from "../../utils/open/openFrameView";
-import createViewState from "../../utils/createViewState";
+import createAppState from "../../utils/createViewState";
 
 
 class HTMLViewDocument implements IHTMLViewDocument {
@@ -152,7 +152,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
         const view = new viewClass(
             embededApp,
-            createViewState(viewClass, stateData || undefined)
+            createAppState(viewClass, stateData || undefined)
         );
         view.setup();
         embededApp.views.add(view);

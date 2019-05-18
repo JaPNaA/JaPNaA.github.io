@@ -15,7 +15,7 @@ import ICard from "../../../types/project/card";
 import JSONResource from "../../../components/resourceLoader/resources/json";
 import ProjectInfoView from "./projectInfo";
 import AppState from "../../../types/appState";
-import createViewState from "../../../utils/createViewState";
+import createAppState from "../../../utils/createViewState";
 import openFrameView from "../../../utils/open/openFrameView";
 
 type LinkMatch = {
@@ -166,7 +166,7 @@ class AllThingies extends View {
     }
 
     private openProjectView(match: LinkMatch): void {
-        const view = new ProjectInfoView(this.app, createViewState(ProjectInfoView));
+        const view = new ProjectInfoView(this.app, createAppState(ProjectInfoView));
         view.setProject(match.data, match.year, match.index);
         view.setup();
         this.app.views.add(view);

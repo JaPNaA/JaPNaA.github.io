@@ -7,7 +7,7 @@ import IApp from "../../../types/app/iApp";
 import SiteResources from "../../../siteResources";
 import IInfoJSON from "../../../types/project/infojson";
 import FrameView from "./frameView";
-import createViewState from "../../../utils/createViewState";
+import createAppState from "../../../utils/createViewState";
 import AppState from "../../../types/appState";
 import openFrameView from "../../../utils/open/openFrameView";
 

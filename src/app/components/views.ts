@@ -3,7 +3,7 @@ import View from "../../elm/views/view";
 import BaseApp from "../baseApp";
 import AppEvents from "./events";
 import IAppViews from "../../types/app/iAppViews";
-import createViewState from "../../utils/createViewState";
+import createAppState from "../../utils/createViewState";
 
 // handles views
 
@@ -99,7 +99,7 @@ class AppViews implements IAppViews {
     }
 
     private createViewWithStatedata(viewClass: ViewClass, stateData?: string): View {
-        return new viewClass(this.app, createViewState(viewClass, stateData));
+        return new viewClass(this.app, createAppState(viewClass, stateData));
     }
 }
 

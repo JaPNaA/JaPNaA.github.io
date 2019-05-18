@@ -4,6 +4,7 @@ import URLController from "../../components/url/urlController";
 import BaseApp from "../baseApp";
 import View from "../../elm/views/view";
 import AppState from "../../types/appState";
+import createAppState from "../../utils/createViewState";
 
 class AppURL implements IAppURL {
     public restored: boolean = false;
@@ -35,8 +36,9 @@ class AppURL implements IAppURL {
         const viewState = view.getState();
         this.history.push({
             viewName: view.viewName,
+            stateData: viewState,
+            directURL: false,
             id: view.id,
-            stateData: viewState
         });
         this.pushState(view.viewName, viewState);
     }

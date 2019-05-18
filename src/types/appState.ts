@@ -1,8 +1,8 @@
 interface AppState {
     viewName: string;
     id?: number;
+    directURL: boolean;
     stateData?: string;
-    directURL?: boolean;
 };
 
 export default AppState;
