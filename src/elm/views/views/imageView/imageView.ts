@@ -30,6 +30,7 @@ class ImageView extends View {
 
 
     private src?: string;
+    private fromDirectURL: boolean;
 
     private width: number;
     private height: number;
@@ -65,6 +66,7 @@ class ImageView extends View {
         this.shouldRedraw = true;
 
         this.src = state.stateData;
+        this.fromDirectURL = state.directURL;
         this.then = performance.now();
         this.reqanfHandle = -1;
         this.inErrorState = false;
@@ -307,7 +309,11 @@ class ImageView extends View {
     }
 
     private closeButtonClickHandler(): void {
-        this.app.views.close(this);
+        if (this.fromDirectURL) {
+            history.back();
+        } else {
+            this.app.views.close(this);
+        }
     }
 
     private keyDownHandler(e: KeyboardEvent): void {
