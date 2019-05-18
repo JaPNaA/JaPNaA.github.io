@@ -220,6 +220,8 @@ class ImageView extends View {
         this.elm.addEventListener("mousemove", this.mouseMoveHandler.bind(this));
         this.elm.addEventListener("click", this.clickHandler.bind(this));
 
+        this.closeButton.onLoad(this.redraw.bind(this));
+
         this.touchControls.onTap(this.tapHandler.bind(this));
         this.touchControls.onStartMove(this.startMoveHandler.bind(this));
         this.touchControls.onMove(this.moveHandler.bind(this));

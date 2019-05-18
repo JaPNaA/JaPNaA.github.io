@@ -4,6 +4,8 @@ import SiteConfig from "../../../../siteConfig";
 import ImageViewImage from "./image";
 import SimpleEasePhysics from "../../../../components/canvasElements/physics/simpleEase";
 import { easeInOutCubic } from "../../../../utils/easingFunctions";
+import EventHandlers from "../../../../utils/events/eventHandlers";
+import Handler from "../../../../utils/events/handler";
 
 class ImageViewCloseButton extends CanvasButton {
     public static width: number = 32;
@@ -14,17 +16,22 @@ class ImageViewCloseButton extends CanvasButton {
     private image: HTMLImageElement;
     private imageViewImage: ImageViewImage;
     private transitionProgress: number;
-    private justLoaded: boolean;
+
+    private loadHanders: EventHandlers;
 
     constructor(imageViewImage: ImageViewImage) {
         super(0, 0, ImageViewCloseButton.width, ImageViewCloseButton.height);
         this.imageViewImage = imageViewImage;
         this.image =
             SiteResources.loadImage(SiteConfig.path.img.closeWhite)
-                .onLoad(() => this.justLoaded = true)
+                .onLoad(() => this.loadHanders.dispatch())
                 .image;
         this.transitionProgress = 0;
-        this.justLoaded = false;
+        this.loadHanders = new EventHandlers();
+    }
+
+    public onLoad(handler: Handler) {
+        this.loadHanders.add(handler);
     }
 
     public attachPhysics(physics: SimpleEasePhysics) {
@@ -41,12 +48,10 @@ class ImageViewCloseButton extends CanvasButton {
 
         X.drawImage(this.image, this.rect.x, this.rect.y, this.rect.width, this.rect.height);
         X.restore();
-
-        this.justLoaded = false;
     }
 
     public shouldRedraw(): boolean {
-        return this.justLoaded || (
+        return (
             this.transitionProgress !== 0 && this.transitionProgress !== 1
         ) || super.shouldRedraw();
     }
