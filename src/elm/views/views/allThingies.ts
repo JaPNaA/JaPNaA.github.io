@@ -16,6 +16,7 @@ import JSONResource from "../../../components/resourceLoader/resources/json";
 import ProjectInfoView from "./projectInfo";
 import AppState from "../../../types/appState";
 import createViewState from "../../../utils/createViewState";
+import openFrameView from "../../../utils/open/openFrameView";
 
 type LinkMatch = {
     year: number,
@@ -142,7 +143,7 @@ class AllThingies extends View {
         if (match) {
             this.openProjectView(match);
         } else {
-            this.openFrameView(link);
+            openFrameView(this.app, link);
         }
     }
 
@@ -169,14 +170,6 @@ class AllThingies extends View {
         view.setProject(match.data, match.year, match.index);
         view.setup();
         this.app.views.add(view);
-    }
-
-    private openFrameView(link: string): void {
-        const frameView = new FrameView(this.app, createViewState(FrameView, link));
-        frameView.preventRedirection();
-        frameView.setup();
-        frameView.animateTransitionIn();
-        this.app.views.add(frameView);
     }
 
     private setPageContent(doc: Document) {

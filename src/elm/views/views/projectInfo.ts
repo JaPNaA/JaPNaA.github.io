@@ -9,6 +9,7 @@ import IInfoJSON from "../../../types/project/infojson";
 import FrameView from "./frameView";
 import createViewState from "../../../utils/createViewState";
 import AppState from "../../../types/appState";
+import openFrameView from "../../../utils/open/openFrameView";
 
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
@@ -99,11 +100,7 @@ class ProjectInfoView extends View {
     private linkClickHandler(elm: HTMLAnchorElement, event: MouseEvent) {
         const link = elm.href;
         const topApp = this.app.top();
-        const view = new FrameView(topApp, createViewState(FrameView, link));
-        view.preventRedirection();
-        view.setup();
-        view.animateTransitionIn();
-        topApp.views.add(view);
+        openFrameView(topApp, link);
 
         event.preventDefault();
     }
