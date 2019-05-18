@@ -53,7 +53,6 @@ class App extends BaseApp {
 }
 
 
-SiteConfig.setup();
 ContentMan.setup();
 
 export default App;

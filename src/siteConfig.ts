@@ -5,9 +5,10 @@ import getServerTime from "./utils/getServerTime";
 import { resolve } from "url";
 
 class SiteConfig {
-    static readonly title: string = "JaPNaA";
+    public readonly title: string = "JaPNaA";
+    public readonly id: number = Math.random();
 
-    static readonly path = {
+    public readonly path = {
         base: "",
 
         img: {
@@ -36,19 +37,19 @@ class SiteConfig {
         redirectMap: "assets/content/redirects.txt"
     }
 
-    static readonly hexagonsTitle = {
+    public readonly hexagonsTitle = {
         hexagonsPerLayer: 50,
         layers: 4
     };
 
-    static isHandheld: boolean;
-    static isMobile: boolean;
-    static isIOS: boolean;
+    public isHandheld: boolean;
+    public isMobile: boolean;
+    public isIOS: boolean;
 
-    private static serverTime?: Date;
-    private static serverTimePromise: Promise<Date>;
+    private serverTime?: Date;
+    private serverTimePromise: Promise<Date>;
 
-    public static setup() {
+    constructor() {
         const base = location.origin + location.pathname;
         this.insertBaseUrl(base, this.path);
 
@@ -66,20 +67,20 @@ class SiteConfig {
         this.isIOS = isIOS();
 
         this.serverTimePromise = getServerTime();
-        this.serverTimePromise.then(e => {
-            SiteConfig.serverTime = e;
-        });
+        this.serverTimePromise.then(e => this.serverTime = e);
+        console.log(this.id, this.serverTimePromise);
     }
 
-    public static getServerTime(): Promise<Date> {
+    public getServerTime(): Promise<Date> {
         if (this.serverTime) {
             return Promise.resolve(this.serverTime);
         } else {
+            console.log(this.id, this.serverTimePromise);
             return this.serverTimePromise;
         }
     }
 
-    private static insertBaseUrl(base: string, obj: { [x: string]: any }) {
+    private insertBaseUrl(base: string, obj: { [x: string]: any }) {
         const keys = Object.keys(obj);
         if (obj.notRelative === true) { return; }
         for (const key of keys) {
@@ -92,4 +93,4 @@ class SiteConfig {
     }
 }
 
-export default SiteConfig;
+export default new SiteConfig();
