@@ -48,6 +48,7 @@ export default class ShortUrlTest extends TestRunner {
             "https://www.google.com/?q=jeep",
             "Lots of extra spaces"
         );
+        this.testParseShortUrlError("dfajsldasflk");
 
         this.testParseShortUrl(
             "#20",
@@ -57,6 +58,7 @@ export default class ShortUrlTest extends TestRunner {
             "#0",
             "/Thingy_2016/MyFirstEverSite/"
         );
+        this.testParseShortUrlError("##asdf");
 
         await Promise.all(this.promises);
     }
@@ -69,6 +71,18 @@ export default class ShortUrlTest extends TestRunner {
             })
             .catch(e => {
                 this.assertNotRunningThisLine("Failed to parse url \"" + input + '"');
+            })
+        );
+    }
+
+    private testParseShortUrlError(input: string, message?: string): void {
+        this.promises.push(parseShortUrl(input)
+            .then(e => {
+                this.assertNotRunningThisLine("Failed to parse url \"" + input + '"');
+            })
+            .catch(e => {
+                this.nextAssertTests = input + " throws error";
+                this.assertRunningThisLine();
             })
         );
     }

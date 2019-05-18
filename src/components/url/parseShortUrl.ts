@@ -1,12 +1,13 @@
 import SiteConfig from "../../siteConfig";
 import SiteResources from "../../siteResources";
+import ContentMan from "../contentMan/contentMan";
 
 export default async function parseShortUrl(short: string): Promise<string | undefined> {
     const firstChar = short[0];
 
     switch (firstChar) {
         case '#':
-            return await projectByIndex(short);
+            return await projectByNumber(short);
         case '_':
             return projectByYearAndName(short);
         default:
@@ -14,13 +15,19 @@ export default async function parseShortUrl(short: string): Promise<string | und
     }
 }
 
-async function projectByIndex(short: string): Promise<string> {
+async function projectByNumber(short: string): Promise<string> {
     // TODO: this will take more work using current code
-    throw new Error("not implemented");
+    const no = parseInt(short.slice(1)); // trim out "#";
+    if (isNaN(no)) { throw new Error("Invalid number"); }
+
+    const card = await ContentMan.getCardByNumber(no);
+    if (!card) { throw new Error("Card doesn't exist"); }
+
+    return card.content.link;
 }
 
 function projectByYearAndName(short: string): string {
-    const hashContent = short.slice(1); // trim out "#"
+    const hashContent = short.slice(1); // trim out "_"
 
     const yearMatches = hashContent.match(/^\d+/);
     if (!yearMatches) { throw new Error("No year specified"); }

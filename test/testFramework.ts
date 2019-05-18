@@ -163,6 +163,10 @@ export abstract class TestRunner extends Test {
         this.logError(new Error(message || "Illegal state"));
     }
 
+    protected assertRunningThisLine(message?: string): void {
+        this.passAssertion(message || "Ran this line");
+    }
+
     private logError(error: Error): void {
         if (this.passed || !this.stopAfterFailedAssert) {
             const stack = error.stack ? error.stack : error.toString();

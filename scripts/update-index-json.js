@@ -44,7 +44,6 @@ function extractYear(name) {
  * @typedef {import("../src/types/project/card").default} ICard
  */
 /**
- * 
  * @param {IInfoJSON} obj 
  */
 function createMetadataFrom(year, obj) {
