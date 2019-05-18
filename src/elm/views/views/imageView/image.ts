@@ -5,6 +5,7 @@ import { Rect } from "../../../../types/math/rect";
 class ImageViewImage {
     public physics: DragPhysics;
     private image?: CanvasImage;
+    private animateNextReset: boolean;
 
     private static zoomFactor: number = 1.2;
 
@@ -14,6 +15,7 @@ class ImageViewImage {
             initFlickSmoothing: 0.3,
             flickFriction: 0.94
         });
+        this.animateNextReset = false;
     }
 
     public setImage(image: HTMLImageElement): void {
@@ -49,7 +51,7 @@ class ImageViewImage {
     public setInitalTransform(x: number, y: number, scale: number): void {
         this.physics.teleportTo(x, y);
         this.physics.setScale(scale);
-        // this.hasInitalTransform = true;
+        this.animateNextReset = true;
     }
 
     public zoom(dist: number, x: number, y: number): void {
@@ -67,6 +69,14 @@ class ImageViewImage {
             this.physics.zoomToScale(1, x, y);
         } else {
             this.physics.resetImageTransform();
+        }
+    }
+
+    public resetImageTransform(): void {
+        this.physics.resetImageTransform();
+        if (!this.animateNextReset) {
+            this.physics.stopAnimations();
+            this.animateNextReset = true;
         }
     }
 

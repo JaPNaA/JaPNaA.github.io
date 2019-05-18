@@ -77,7 +77,7 @@ class ImageView extends View {
         this.redraw();
         this.addEventHandlers();
         this.resizeHandler();
-        this.resetImagePosition();
+        // this.resetImagePosition();
         this.touchControls.setup();
 
         if (this.src) {
@@ -317,7 +317,7 @@ class ImageView extends View {
     }
 
     private resetImagePosition(): void {
-        this.image.physics.resetImageTransform();
+        this.image.resetImageTransform();
         this.redraw();
     }
 }

@@ -198,13 +198,17 @@ class DragPhysics extends CanvasElementPhysics {
 
         this.tx = (this.bounds.width - this.imageDim.width * this.tscale) / 2;
         this.ty = (this.bounds.height - this.imageDim.height * this.tscale) / 2;
+        this.vx = 0;
+        this.vy = 0;
         this.userAdjusted = false;
         this.isCurrRenderDirty = true;
     }
 
     public stopAnimations(): void {
-        this.rect.x = this.tx;
-        this.rect.y = this.ty;
+        this.lastX = this.rect.x = this.tx;
+        this.lastY = this.rect.y = this.ty;
+        this.vx = 0;
+        this.vy = 0;
         this.scale = this.tscale;
     }
 
