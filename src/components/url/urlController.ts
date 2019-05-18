@@ -88,7 +88,7 @@ class URLController {
     private restoreView(app: IApp, state: AppState): void {
         const viewClass = ViewMap.get(state.viewName);
         if (viewClass) {
-            const view = new viewClass(app, createViewState(viewClass, state.stateData));
+            const view = new viewClass(app, createViewState(viewClass, state.stateData, true));
             view.setup();
             app.views.addBehind(view);
             this.restored = true;

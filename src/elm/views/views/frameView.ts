@@ -26,18 +26,24 @@ class FrameView extends View {
     private urlElm: HTMLDivElement;
 
     private path?: string;
-    private redirect: boolean;
+    private fromDirectURL: boolean;
 
     constructor(app: IApp, state: AppState) {
         super(app);
         this.path = state.stateData;
-        this.redirect = true;
+
+        if (state.directURL) {
+            this.fromDirectURL = true;
+        } else {
+            this.fromDirectURL = false;
+        }
 
         this.elm = document.createElement("div");
 
         this.header = this.createHeader();
         this.closeButton = this.createCloseButton();
         this.urlElm = this.createUrlElm();
+
         this.createPadRight();
     }
 
@@ -52,10 +58,6 @@ class FrameView extends View {
         // POSSIBLE BUG: State not pushed
     }
 
-    public preventRedirection(): void {
-        this.redirect = false;
-    }
-
     public animateTransitionIn(): void {
         triggerTransitionIn(this.elm, FrameView.transitionInTime);
     }
@@ -67,7 +69,7 @@ class FrameView extends View {
 
         // tests for iOS: prevent bug where you can't scroll in an iframe
         // Apple, fix your browser!
-        if (this.redirect || SiteConfig.isIOS) {
+        if (SiteConfig.isIOS) {
             location.replace(this.path);
             return;
         }
@@ -136,7 +138,11 @@ class FrameView extends View {
     }
 
     private closeSelf() {
-        this.app.views.close(this);
+        if (this.fromDirectURL) {
+            history.go(-2);
+        } else {
+            this.app.views.close(this);
+        }
     }
 }
 
