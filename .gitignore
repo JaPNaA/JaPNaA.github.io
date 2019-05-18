@@ -5,4 +5,5 @@ npm-debug.log
 /node_modules
 /docs/bundle.js
 /docs/test-bundle.js
+/docs/assets/content/index.json
 /build
