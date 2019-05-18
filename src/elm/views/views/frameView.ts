@@ -27,6 +27,7 @@ class FrameView extends View {
 
     private path?: string;
     private fromDirectURL: boolean;
+    private startHistoryLength: number = 0;
 
     constructor(app: IApp, state: AppState) {
         super(app);
@@ -74,6 +75,7 @@ class FrameView extends View {
             return;
         }
 
+        this.startHistoryLength = history.length;
         this.iframe = new IFrame(this.path);
 
         this.header.classList.add("header");
@@ -139,7 +141,13 @@ class FrameView extends View {
 
     private closeSelf() {
         if (this.fromDirectURL) {
-            history.go(-2);
+            const dist = this.startHistoryLength - history.length;
+            console.log(this.startHistoryLength, history.length, dist);
+            if (dist >= 0) {
+                history.go(-2);
+            } else {
+                history.go(dist - 1);
+            }
         } else {
             this.app.views.close(this);
         }
