@@ -11,6 +11,7 @@ import url from "url";
 import parseAppStateURL from "../../utils/parseAppStateURL";
 import openNoopener from "../../utils/open/openNoopener";
 import openFrameView from "../../utils/open/openFrameView";
+import createViewState from "../../utils/createViewState";
 
 
 class HTMLViewDocument implements IHTMLViewDocument {
@@ -149,7 +150,10 @@ class HTMLViewDocument implements IHTMLViewDocument {
         embededApp.setup();
         elm.classList.add("embededView");
 
-        const view = new viewClass(embededApp, stateData || undefined);
+        const view = new viewClass(
+            embededApp,
+            createViewState(viewClass, stateData || undefined)
+        );
         view.setup();
         embededApp.views.add(view);
     }

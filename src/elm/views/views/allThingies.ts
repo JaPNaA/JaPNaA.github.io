@@ -14,6 +14,8 @@ import isProjectCard from "../../../utils/isProjectCard";
 import ICard from "../../../types/project/card";
 import JSONResource from "../../../components/resourceLoader/resources/json";
 import ProjectInfoView from "./projectInfo";
+import AppState from "../../../types/appState";
+import createViewState from "../../../utils/createViewState";
 
 type LinkMatch = {
     year: number,
@@ -34,15 +36,15 @@ class AllThingies extends View {
     private contentHref: string;
     private linkProjectMatchMap: Map<string, LinkMatch | undefined>;
 
-    constructor(app: IApp, stateData?: string) {
+    constructor(app: IApp, state: AppState) {
         super(app)
         this.elm = document.createElement("div");
         this.title = this.createTitle();
         this.pageContent = this.createPageContent();
         this.linkProjectMatchMap = new Map();
 
-        if (stateData) {
-            this.contentHref = SiteConfig.path.thingy + "/" + stateData + "/";
+        if (state.stateData) {
+            this.contentHref = SiteConfig.path.thingy + "/" + state.stateData + "/";
         } else {
             this.contentHref = SiteConfig.path.thingy + SiteConfig.path.repo.thingy;
         }
@@ -163,14 +165,14 @@ class AllThingies extends View {
     }
 
     private openProjectView(match: LinkMatch): void {
-        const view = new ProjectInfoView(this.app);
+        const view = new ProjectInfoView(this.app, createViewState(ProjectInfoView));
         view.setProject(match.data, match.year, match.index);
         view.setup();
         this.app.views.add(view);
     }
 
     private openFrameView(link: string): void {
-        const frameView = new FrameView(this.app, link);
+        const frameView = new FrameView(this.app, createViewState(FrameView, link));
         frameView.preventRedirection();
         frameView.setup();
         frameView.animateTransitionIn();

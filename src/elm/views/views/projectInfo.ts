@@ -7,6 +7,8 @@ import IApp from "../../../types/app/iApp";
 import SiteResources from "../../../siteResources";
 import IInfoJSON from "../../../types/project/infojson";
 import FrameView from "./frameView";
+import createViewState from "../../../utils/createViewState";
+import AppState from "../../../types/appState";
 
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
@@ -21,12 +23,12 @@ class ProjectInfoView extends View {
     private projectYear?: number;
     private projectIndex?: number;
 
-    constructor(app: IApp, stateData?: string) {
+    constructor(app: IApp, state: AppState) {
         super(app);
         this.elm = document.createElement("div");
 
-        if (stateData) {
-            this.loadingPromise = this.loadProjectFromStateData(stateData);
+        if (state.stateData) {
+            this.loadingPromise = this.loadProjectFromStateData(state.stateData);
         }
     }
 
@@ -97,7 +99,7 @@ class ProjectInfoView extends View {
     private linkClickHandler(elm: HTMLAnchorElement, event: MouseEvent) {
         const link = elm.href;
         const topApp = this.app.top();
-        const view = new FrameView(topApp, link);
+        const view = new FrameView(topApp, createViewState(FrameView, link));
         view.preventRedirection();
         view.setup();
         view.animateTransitionIn();

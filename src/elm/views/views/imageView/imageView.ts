@@ -9,6 +9,7 @@ import wait from "../../../../utils/wait";
 import triggerTransitionIn from "../../../../utils/triggerTransitionIn";
 import { Vec2 } from "../../../../types/math/vec2";
 import TouchControls from "../../../../components/touch/touchControls";
+import AppState from "../../../../types/appState";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -42,7 +43,7 @@ class ImageView extends View {
     private reqanfHandle: number;
     private inErrorState: boolean;
 
-    constructor(app: IApp, stateData?: string) {
+    constructor(app: IApp, state: AppState) {
         super(app);
         this.elm = document.createElement("div");
         this.canvas = document.createElement("canvas");
@@ -63,7 +64,7 @@ class ImageView extends View {
         this.drawing = false;
         this.shouldRedraw = true;
 
-        this.src = stateData;
+        this.src = state.stateData;
         this.then = performance.now();
         this.reqanfHandle = -1;
         this.inErrorState = false;

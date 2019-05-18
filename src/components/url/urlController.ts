@@ -5,6 +5,7 @@ import IApp from "../../types/app/iApp";
 import AppState from "../../types/appState";
 import parseAppStateURL from "../../utils/parseAppStateURL";
 import ShortUrlView from "../../elm/views/views/shortUrl";
+import createViewState from "../../utils/createViewState";
 
 class URLController {
     public restored: boolean;
@@ -87,7 +88,7 @@ class URLController {
     private restoreView(app: IApp, state: AppState): void {
         const viewClass = ViewMap.get(state.viewName);
         if (viewClass) {
-            const view = new viewClass(app, state.stateData);
+            const view = new viewClass(app, createViewState(viewClass, state.stateData));
             view.setup();
             app.views.addBehind(view);
             this.restored = true;

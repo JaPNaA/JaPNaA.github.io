@@ -6,6 +6,7 @@ import SiteResources from "../../../siteResources";
 import SiteConfig from "../../../siteConfig";
 import wait from "../../../utils/wait";
 import triggerTransitionIn from "../../../utils/triggerTransitionIn";
+import AppState from "../../../types/appState";
 
 // TODO: Add loading bar
 
@@ -23,13 +24,13 @@ class FrameView extends View {
     private header: HTMLDivElement;
     private closeButton: HTMLDivElement;
     private urlElm: HTMLDivElement;
-    
+
     private path?: string;
     private redirect: boolean;
 
-    constructor(app: IApp, path?: string) {
+    constructor(app: IApp, state: AppState) {
         super(app);
-        this.path = path;
+        this.path = state.stateData;
         this.redirect = true;
 
         this.elm = document.createElement("div");

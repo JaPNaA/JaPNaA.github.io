@@ -3,6 +3,7 @@ import View from "../../elm/views/view";
 import BaseApp from "../baseApp";
 import AppEvents from "./events";
 import IAppViews from "../../types/app/iAppViews";
+import createViewState from "../../utils/createViewState";
 
 // handles views
 
@@ -35,23 +36,23 @@ class AppViews implements IAppViews {
     }
 
     public switchAndInit(viewClass: ViewClass, stateData?: string): View {
-        const view: View = new viewClass(this.app, stateData);
+        const view = this.createViewWithStatedata(viewClass, stateData);
         view.setup();
         this.switch(view);
         return view;
     }
 
     public open(viewClass: ViewClass, stateData?: string): View {
-        const view: View = new viewClass(this.app, stateData);
+        const view = this.createViewWithStatedata(viewClass, stateData);
         view.setup();
         this.add(view);
         return view;
     }
 
     public openBehind(viewClass: ViewClass, stateData?: string): View {
-        const view: View = new viewClass(this.app, stateData);
+        const view = this.createViewWithStatedata(viewClass, stateData);
         view.setup();
-        this.add(view);
+        this.addBehind(view);
         return view;
     }
 
@@ -95,6 +96,10 @@ class AppViews implements IAppViews {
             view.removeFrom(this.mainElm);
         });
         this.appEvents.dispatchViewChange();
+    }
+
+    private createViewWithStatedata(viewClass: ViewClass, stateData?: string): View {
+        return new viewClass(this.app, createViewState(viewClass, stateData));
     }
 }
 

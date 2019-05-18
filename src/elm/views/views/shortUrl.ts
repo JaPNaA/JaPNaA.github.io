@@ -1,9 +1,8 @@
 import View from "../view";
 import ViewMap from "../viewMap";
 import IApp from "../../../types/app/iApp";
-import SiteConfig from "../../../siteConfig";
-import SiteResources from "../../../siteResources";
 import parseShortUrl from "../../../components/url/parseShortUrl";
+import AppState from "../../../types/appState";
 
 class ShortUrlView extends View {
     public static viewName = "#";
@@ -14,12 +13,12 @@ class ShortUrlView extends View {
     private hash: string;
     private newHref?: string;
 
-    constructor(app: IApp, hash?: string) {
+    constructor(app: IApp, state: AppState) {
         super(app);
-        if (hash === undefined) { throw new Error("No hash provided"); }
+        if (state.stateData === undefined) { throw new Error("No hash provided"); }
 
         this.elm = document.createElement("div");
-        this.hash = hash;
+        this.hash = state.stateData;
     }
 
     public setup(): void {
