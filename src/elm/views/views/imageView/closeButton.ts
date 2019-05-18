@@ -22,12 +22,12 @@ class ImageViewCloseButton extends CanvasButton {
     constructor(imageViewImage: ImageViewImage) {
         super(0, 0, ImageViewCloseButton.width, ImageViewCloseButton.height);
         this.imageViewImage = imageViewImage;
+        this.loadHanders = new EventHandlers();
         this.image =
             SiteResources.loadImage(SiteConfig.path.img.closeWhite)
                 .onLoad(() => this.loadHanders.dispatch())
                 .image;
         this.transitionProgress = 0;
-        this.loadHanders = new EventHandlers();
     }
 
     public onLoad(handler: Handler) {
