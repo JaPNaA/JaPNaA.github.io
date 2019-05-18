@@ -4,7 +4,7 @@ import isIOS from "./utils/isIOS";
 import getServerTime from "./utils/getServerTime";
 import { resolve } from "url";
 
-class SiteConfig {
+class SiteConfig_ {
     public readonly title: string = "JaPNaA";
     public readonly id: number = Math.random();
 
@@ -93,4 +93,6 @@ class SiteConfig {
     }
 }
 
-export default new SiteConfig();
+const SiteConfig = new SiteConfig_();
+
+export default SiteConfig;

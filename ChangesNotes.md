@@ -7,7 +7,7 @@
   - content
 
 # Remember to add back
-  - shortURL
+  - ~~shortURL~~
 
 # Remember to change
   - the icons
