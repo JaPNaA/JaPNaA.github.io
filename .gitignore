@@ -1,9 +1,13 @@
-quickstart.bat
+# nothing important in there 
 .vscode
-npm-debug.log
-/others
-/node_modules
+
+# these files are automatically built
 /docs/bundle.js
 /docs/test-bundle.js
 /docs/assets/content/index.json
+
+# the obvious ones
+npm-debug.log
+/others
+/node_modules
 /build
