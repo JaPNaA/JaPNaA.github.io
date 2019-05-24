@@ -36,7 +36,7 @@ class AppURL implements IAppURL {
         this.history.push({
             viewName: view.viewName,
             stateData: viewState,
-            directURL: false,
+            directURL: this.controller.currentURL,
             id: view.id,
         });
         this.pushState(view.viewName, viewState);

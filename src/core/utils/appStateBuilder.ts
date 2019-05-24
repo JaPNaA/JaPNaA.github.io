@@ -2,10 +2,10 @@ import AppState from "../types/appState";
 
 class AppStateBuilder implements AppState {
     public viewName!: string;
-    public directURL: boolean = false;
     public id?: number;
     public stateData?: string;
     public hash?: string;
+    public directURL?: string;
 
     public build(): AppState {
         if (!this.viewName && !this.hash) { throw new Error("Missing viewName"); }

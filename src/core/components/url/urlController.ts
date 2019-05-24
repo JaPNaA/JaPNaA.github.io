@@ -2,10 +2,10 @@ import ViewMap from "../../view/viewMap";
 import IApp from "../../types/app/iApp";
 import AppState from "../../types/appState";
 import parseAppStateURL from "../../utils/parseAppStateURL";
-import createAppState from "../../utils/createViewState";
 
 class URLController {
     public restored: boolean;
+    public currentURL: string;
 
     private shouldRestore: boolean;
     private initalSearch: string;
@@ -16,15 +16,16 @@ class URLController {
     private siteTitle: string;
 
     constructor(siteTitle: string) {
+        this.siteTitle = siteTitle;
+
         this.initalURL = location.href;
+        this.currentURL = location.href;
         this.initalSearch = location.search;
         this.initalHash = location.hash;
 
         this.shouldRestore = false;
         this.stateEmpty = true;
         this.restored = false;
-
-        this.siteTitle = siteTitle;
 
         this.setToOldURL();
     }
@@ -33,6 +34,7 @@ class URLController {
         const { title, url } = this.getTitleAndURLFromViewState(viewName, viewStateData);
 
         history.replaceState(null, title, url);
+        this.currentURL = url;
         document.title = title;
         this.stateEmpty = false;
     }
@@ -45,6 +47,7 @@ class URLController {
         const { title, url } = this.getTitleAndURLFromViewState(viewName, viewStateData);
 
         history.pushState(null, title, url);
+        this.currentURL = url;
         document.title = title;
     }
 
@@ -57,6 +60,7 @@ class URLController {
         const urlParsed = parseAppStateURL(url);
         if (!urlParsed) { return; }
 
+        urlParsed.directURL = url;
         this.restore(app, urlParsed);
 
         if (!this.restored && app.view404) {
@@ -71,14 +75,15 @@ class URLController {
 
     public clearState(): void {
         history.replaceState(
-            null, this.siteTitle
-        )
+            null, this.siteTitle, "/"
+        );
+        this.currentURL = "/";
     }
 
     private restoreView(app: IApp, state: AppState): void {
         const viewClass = ViewMap.get(state.viewName);
         if (viewClass) {
-            const view = new viewClass(app, createAppState(viewClass, state.stateData, true));
+            const view = new viewClass(app, state);
             view.setup();
             app.views.addBehind(view);
             this.restored = true;
@@ -86,11 +91,6 @@ class URLController {
             this.restored = false;
         }
     }
-
-    // public restoreShortURL(app: IApp, hash: string): void {
-    //     app.views.open(ShortUrlView, hash);
-    //     this.restored = true;
-    // }
 
     private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
         const viewNameEnc = encodeURIComponent(viewName.toLowerCase());

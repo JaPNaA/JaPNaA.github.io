@@ -18,10 +18,11 @@ class ShortUrlView extends View {
 
     constructor(app: IApp, state: AppState) {
         super(app);
-        if (state.stateData === undefined) { throw new Error("No hash provided"); }
+        console.log(state);
+        if (state.directURL === undefined) { throw new Error("No hash provided"); }
 
         this.elm = document.createElement("div");
-        this.hash = state.stateData;
+        this.hash = state.viewName;
     }
 
     public setup(): void {

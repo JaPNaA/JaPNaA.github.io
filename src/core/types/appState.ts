@@ -1,7 +1,7 @@
 interface AppState {
     viewName: string;
     id?: number;
-    directURL: boolean;
+    directURL?: string;
     stateData?: string;
 };
 

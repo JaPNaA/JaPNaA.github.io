@@ -7,6 +7,7 @@ class TestView extends View {
     public static viewName: string = "test";
     public viewName = TestView.viewName;
     public showMenuButton = false;
+    public isFullPage = true;
 
     protected elm: HTMLDivElement;
 

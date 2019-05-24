@@ -31,7 +31,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             {
                 viewName: "test",
                 stateData: undefined,
-                directURL: false,
+                directURL: undefined,
                 id: undefined
             }
         );
@@ -42,7 +42,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             {
                 viewName: "allthingies",
                 stateData: "Thingy_2019",
-                directURL: false,
+                directURL: undefined,
                 id: undefined
             }
         );
@@ -53,7 +53,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             {
                 viewName: "allthingies",
                 stateData: "Thingy_2019#jeepsacar",
-                directURL: false,
+                directURL: undefined,
                 id: undefined
             }
         );
@@ -64,7 +64,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             {
                 viewName: "frameview",
                 stateData: "https://japnaa.github.io/overview#jeepsacar",
-                directURL: false,
+                directURL: undefined,
                 id: undefined
             }
         );
@@ -75,7 +75,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             {
                 viewName: "#jeepsacar",
                 stateData: undefined,
-                directURL: false,
+                directURL: undefined,
                 id: undefined
             }
         );
@@ -86,7 +86,7 @@ export default class ParseAppStateURLTest extends TestRunner {
             {
                 viewName: "overview",
                 stateData: "#jeepsacar",
-                directURL: false,
+                directURL: undefined,
                 id: undefined
             }
         );

@@ -66,7 +66,7 @@ class ImageView extends View {
         this.shouldRedraw = true;
 
         this.src = state.stateData;
-        this.fromDirectURL = state.directURL;
+        this.fromDirectURL = state.directURL !== undefined;
         this.then = performance.now();
         this.reqanfHandle = -1;
         this.inErrorState = false;
