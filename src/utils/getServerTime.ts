@@ -1,4 +1,4 @@
-import SiteResources from "../siteResources";
+import SiteResources from "../core/siteResources";
 
 const PING = "/ping";
 

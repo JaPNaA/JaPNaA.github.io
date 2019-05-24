@@ -1,6 +1,6 @@
 import { Vec2, newVec2 } from "../../types/math/vec2";
-import EventHandlers from "../../utils/events/eventHandlers";
-import Handler from "../../utils/events/handler";
+import EventHandlers from "../../core/utils/events/eventHandlers";
+import Handler from "../../core/utils/events/handler";
 import getDist from "../../utils/math/getDist";
 
 class TouchControls {

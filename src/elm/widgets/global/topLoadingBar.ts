@@ -1,7 +1,7 @@
-import Widget from "../widget";
-import IApp from "../../../types/app/iApp";
-import SiteResources from "../../../siteResources";
-import ResourceLoaderProgress from "../../../types/resourceLoaderProgress";
+import Widget from "../../../core/widget/widget";
+import IApp from "../../../core/types/app/iApp";
+import SiteResources from "../../../core/siteResources";
+import ResourceLoaderProgress from "../../../core/types/resourceLoaderProgress";
 
 class TopLoadingBar extends Widget {
     public static widgetName: string = "TopLoadingBar";

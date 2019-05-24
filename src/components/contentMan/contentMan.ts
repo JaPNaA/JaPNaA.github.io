@@ -1,5 +1,5 @@
 import IProject from "../../types/project/project";
-import SiteResources from "../../siteResources";
+import SiteResources from "../../core/siteResources";
 import SiteConfig from "../../siteConfig";
 import IIndex from "../../types/project/index";
 import IInfoJSON from "../../types/project/infojson";

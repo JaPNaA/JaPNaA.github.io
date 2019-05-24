@@ -1,6 +1,6 @@
 import removeChildren from "../../../utils/removeChildren";
-import Widget from "../widget";
-import WidgetMap from "../widgetMap";
+import Widget from "../../../core/widget/widget";
+import WidgetMap from "../../../core/widget/widgetMap";
 
 class StickyBar extends Widget {
     public static widgetName = "stickyBar";

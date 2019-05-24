@@ -1,5 +1,5 @@
 import SiteConfig from "../../siteConfig";
-import SiteResources from "../../siteResources";
+import SiteResources from "../../core/siteResources";
 import ContentMan from "../contentMan/contentMan";
 
 export default async function parseShortUrl(short: string): Promise<string | undefined> {

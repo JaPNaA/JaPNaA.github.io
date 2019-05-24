@@ -1,17 +1,17 @@
 import SiteConfig from "../../siteConfig";
-import IApp from "../../types/app/iApp";
-import ViewMap from "../../elm/views/viewMap";
-import EmbededApp from "../../app/embededApp";
-import ViewClass from "../../types/viewClass";
-import WidgetMap from "../../elm/widgets/widgetMap";
-import WidgetClass from "../../types/widgetClass";
+import IApp from "../../core/types/app/iApp";
+import ViewMap from "../../core/view/viewMap";
+import EmbededApp from "../../core/app/embededApp";
+import ViewClass from "../../core/types/viewClass";
+import WidgetMap from "../../core/widget/widgetMap";
+import WidgetClass from "../../core/types/widgetClass";
 import IHTMLViewDocument from "./iHTMLViewDocument";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import url from "url";
-import parseAppStateURL from "../../utils/parseAppStateURL";
-import openNoopener from "../../utils/open/openNoopener";
-import openFrameView from "../../utils/open/openFrameView";
-import createAppState from "../../utils/createViewState";
+import parseAppStateURL from "../../core/utils/parseAppStateURL";
+import openNoopener from "../../core/utils/open/openNoopener";
+import openFrameView from "../../utils/openFrameView";
+import createAppState from "../../core/utils/createViewState";
 
 
 class HTMLViewDocument implements IHTMLViewDocument {

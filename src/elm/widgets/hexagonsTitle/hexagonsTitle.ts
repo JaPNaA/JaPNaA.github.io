@@ -1,8 +1,8 @@
 import HexagonsLayer from "./hexagonsLayer";
 import SiteConfig from "../../../siteConfig";
-import SiteResources from "../../../siteResources";
-import Widget from "../widget";
-import WidgetMap from "../widgetMap";
+import SiteResources from "../../../core/siteResources";
+import Widget from "../../../core/widget/widget";
+import WidgetMap from "../../../core/widget/widgetMap";
 
 // TODO: Make this look better on mobile
 

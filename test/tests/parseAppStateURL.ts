@@ -1,5 +1,5 @@
 import { TestRunner } from "../testFramework";
-import parseAppStateURL from "../../src/utils/parseAppStateURL";
+import parseAppStateURL from "../../src/core/utils/parseAppStateURL";
 
 export default class ParseAppStateURLTest extends TestRunner {
     protected stopAfterFailedAssert = false;

@@ -1,7 +1,7 @@
-import Widget from "../widget";
-import WidgetMap from "../widgetMap";
-import EventHandlers from "../../../utils/events/eventHandlers";
-import Handler from "../../../utils/events/handler";
+import Widget from "../../../core/widget/widget";
+import WidgetMap from "../../../core/widget/widgetMap";
+import EventHandlers from "../../../core/utils/events/eventHandlers";
+import Handler from "../../../core/utils/events/handler";
 
 class IFrame extends Widget {
     public static widgetName = "iframe";

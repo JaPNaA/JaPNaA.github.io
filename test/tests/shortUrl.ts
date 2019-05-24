@@ -1,8 +1,8 @@
 import { TestRunner } from "../testFramework";
 import parseShortUrl from "../../src/components/url/parseShortUrl";
 import SiteConfig from "../../src/siteConfig";
-import SiteResources from "../../src/siteResources";
-import TextResource from "../../src/components/resourceLoader/resources/text";
+import SiteResources from "../../src/core/siteResources";
+import TextResource from "../../src/core/components/resourceLoader/resources/text";
 
 export default class ShortUrlTest extends TestRunner {
     protected stopAfterFailedAssert = false;

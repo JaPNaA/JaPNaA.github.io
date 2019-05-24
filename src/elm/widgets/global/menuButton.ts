@@ -1,8 +1,8 @@
-import SiteResources from "../../../siteResources";
+import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";
-import Menu from "../../views/views/menu";
-import IApp from "../../../types/app/iApp";
-import Widget from "../widget";
+import Menu from "../../views/menu/menu";
+import IApp from "../../../core/types/app/iApp";
+import Widget from "../../../core/widget/widget";
 
 class MenuButton extends Widget {
     public static widgetName: string = "MenuButton";

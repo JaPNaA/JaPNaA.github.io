@@ -1,4 +1,4 @@
-import IApp from "../../types/app/iApp";
+import IApp from "../../core/types/app/iApp";
 import HTMLViewDocument from "./htmlViewDocument";
 import IHTMLViewDocument from "./iHTMLViewDocument";
 import HTMLViewParserOptions from "./types/htmlViewParserOptions";

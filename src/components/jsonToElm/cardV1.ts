@@ -2,10 +2,10 @@ import ICard from "../../types/project/card";
 import SiteConfig from "../../siteConfig";
 import Display from "../../types/project/display";
 import DisplayImg from "../../types/project/displayImg";
-import triggerTransitionIn from "../../utils/triggerTransitionIn";
-import SiteResources from "../../siteResources";
-import IApp from "../../types/app/iApp";
-import ImageView from "../../elm/views/views/imageView/imageView";
+import triggerTransitionIn from "../../core/utils/triggerTransitionIn";
+import SiteResources from "../../core/siteResources";
+import IApp from "../../core/types/app/iApp";
+import ImageView from "../../elm/views/imageView/imageView";
 
 // TODO: refactor, along with it's .less companion!
 
