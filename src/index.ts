@@ -1,11 +1,11 @@
-// import "./elm/views/loader";
-// import "./elm/widgets/loader";
+import "./elm/views/loader";
+import "./elm/widgets/loader";
 
-// import App from "./app";
+import App from "./app";
 
-// const app = new App();
-// app.setup();
+const app = new App();
+app.setup();
 
-// console.log(app);
+console.log(app);
 
-import "./core/app/mainApp";
+// import "./core/app/mainApp";

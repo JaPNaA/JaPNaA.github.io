@@ -1,4 +1,4 @@
-import "./views/imageView/imageView";
+import "./imageView/imageView";
 import "./404/404";
 import "./allThingies/allThingies";
 import "./frameView/frameView";
