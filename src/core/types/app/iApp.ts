@@ -1,7 +1,7 @@
 import IAppURL from "./iAppURL";
 import IAppEvents from "./iAppEvents";
 import IAppViews from "./iAppViews";
-import ViewClass from "../view/viewClass";
+import ViewDescriptor from "./viewDescriptor";
 
 export default interface IApp {
     title: string;
@@ -12,7 +12,7 @@ export default interface IApp {
     events: IAppEvents;
     views: IAppViews;
 
-    view404?: ViewClass;
+    view404?: ViewDescriptor;
 
     setup(): Promise<void>;
     destory(): Promise<void>;

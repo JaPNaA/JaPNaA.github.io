@@ -85,11 +85,11 @@ class URLController {
     }
 
     private async restoreView(app: IApp, state: AppState): Promise<void> {
-        const viewClass = await ViewMap.get(state.viewName);
-        if (viewClass) {
+        try {
+            const viewClass = await ViewMap.get(state.viewName);
             app.views.openBehind(viewClass, state);
             this.restored = true;
-        } else {
+        } catch (err) {
             this.restored = false;
         }
     }

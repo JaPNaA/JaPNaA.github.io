@@ -2,11 +2,11 @@ import IApp from "../types/app/iApp";
 import AppEvents from "./components/events";
 import AppViews from "./components/views";
 import IAppURL from "../types/app/iAppURL";
-import ViewClass from "../types/view/viewClass";
+import ViewDescriptor from "../types/app/viewDescriptor";
 
 abstract class BaseApp implements IApp {
     public abstract title: string;
-    public view404?: ViewClass;
+    public view404?: ViewDescriptor;
     public width: number;
     public height: number;
 
