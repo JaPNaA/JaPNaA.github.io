@@ -3,7 +3,6 @@
 
 # these files are automatically built
 /docs/*bundle.js
-/docs/test-bundle.js
 /docs/assets/content/index.json
 
 # the obvious ones
