@@ -18,12 +18,16 @@ class AppURL implements IAppURL {
     constructor(app: BaseApp, appEvents: AppEvents) {
         this.app = app;
         this.appEvents = appEvents;
-        this.controller = new URLController(app.title);
+        this.controller = new URLController();
         this.history = [];
 
         this.frozen = false;
 
         this.attachEventHandlers();
+    }
+
+    public setTitle(title: string) {
+        this.controller.setTitle(title);
     }
 
     public async restoreIfShould(): Promise<void> {

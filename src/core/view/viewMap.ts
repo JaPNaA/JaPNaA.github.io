@@ -8,7 +8,13 @@ class ViewMapClass {
         this.map = new Map();
     }
 
-    public add(cls: ViewClass): void {
+    public add(cls: ViewClass | ViewClassGhost): void {
+        const existing = this.map.get(cls.viewName.toLowerCase());
+        if (this.isViewClass(existing) && cls instanceof ViewClassGhost) {
+            console.warn("Attempted to replace existing view with ghost");
+            return;
+        }
+
         this.map.set(cls.viewName.toLowerCase(), cls);
     }
 
@@ -39,6 +45,10 @@ class ViewMapClass {
                 return cls;
             }
         }
+    }
+
+    private isViewClass(x: ViewClass | ViewClassGhost | undefined): x is ViewClass {
+        return Boolean(x && !(x instanceof ViewClassGhost));
     }
 }
 

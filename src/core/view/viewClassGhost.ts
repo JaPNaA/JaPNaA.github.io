@@ -4,19 +4,25 @@ import IApp from "../types/app/iApp";
 import AppState from "../types/appState";
 import View from "./view";
 
-abstract class ViewClassGhost implements ViewMetadata {
+type GetClassFunction = () => Promise<{ default: ViewClass }>;
+
+class ViewClassGhost implements ViewMetadata {
     public viewName: string;
     public viewMatcher?: RegExp;
+    public importer: GetClassFunction;
 
-    constructor(viewName: string, matcher?: RegExp) {
+    constructor(viewName: string, defaultClassImporter: GetClassFunction, matcher?: RegExp) {
         this.viewName = viewName;
         this.viewMatcher = matcher;
+        this.importer = defaultClassImporter;
     }
 
-    public abstract async getClass(): Promise<ViewClass>;
+    public async getClass(): Promise<ViewClass> {
+        return (await this.importer()).default;
+    }
 
     public async create(app: IApp, appState: AppState): Promise<View> {
-        return new (await this.getClass())(app, appState);
+        return new (await this.importer()).default(app, appState);
     }
 }
 

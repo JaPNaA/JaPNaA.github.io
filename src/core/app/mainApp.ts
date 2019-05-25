@@ -20,6 +20,7 @@ abstract class MainApp extends BaseApp {
 
         this.createSplashScreen();
         this.restoreState();
+        this.url.setTitle(this.title);
 
         document.body.appendChild(this.mainElm);
     }

@@ -15,8 +15,8 @@ class URLController {
     private stateEmpty: boolean;
     private siteTitle: string;
 
-    constructor(siteTitle: string) {
-        this.siteTitle = siteTitle;
+    constructor() {
+        this.siteTitle = document.title;
 
         this.initalURL = location.href;
         this.currentURL = location.href;
@@ -28,6 +28,10 @@ class URLController {
         this.restored = false;
 
         this.setToOldURL();
+    }
+
+    public setTitle(title: string) {
+        this.siteTitle = title;
     }
 
     public setState(viewName: string, viewStateData?: string): void {

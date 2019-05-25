@@ -107,7 +107,7 @@ class AppViews implements IAppViews {
     ): Promise<View> {
         let viewClass;
         if (viewClassOrGhost instanceof ViewClassGhost) {
-            viewClass = await viewClassOrGhost.getClass()
+            viewClass = await viewClassOrGhost.getClass();
         } else {
             viewClass = viewClassOrGhost;
         }
