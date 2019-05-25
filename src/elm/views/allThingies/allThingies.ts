@@ -1,3 +1,5 @@
+import "../../../../styles/views/allThingies.less";
+
 import View from "../../../core/view/view";
 import IApp from "../../../core/types/app/iApp";
 import ViewMap from "../../../core/view/viewMap";

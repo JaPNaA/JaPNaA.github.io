@@ -1,3 +1,5 @@
+import "../../../../styles/widgets/iframe.less";
+
 import Widget from "../../../core/widget/widget";
 import WidgetMap from "../../../core/widget/widgetMap";
 import EventHandlers from "../../../core/utils/events/eventHandlers";

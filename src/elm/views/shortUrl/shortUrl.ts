@@ -1,3 +1,5 @@
+import "../../../../styles/views/shortUrl.less";
+
 import View from "../../../core/view/view";
 import ViewMap from "../../../core/view/viewMap";
 import IApp from "../../../core/types/app/iApp";

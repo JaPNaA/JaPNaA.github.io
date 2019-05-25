@@ -1,3 +1,6 @@
+
+import "../../../../styles/widgets/global/global.less"
+
 import Widget from "../../../core/widget/widget";
 import App from "../../../app";
 import WidgetMap from "../../../core/widget/widgetMap";

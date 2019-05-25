@@ -1,3 +1,5 @@
+import "../../../../styles/views/splashScreen.less";
+
 import View from "../../../core/view/view";
 import wait from "../../../utils/wait";
 import ViewMap from "../../../core/view/viewMap";

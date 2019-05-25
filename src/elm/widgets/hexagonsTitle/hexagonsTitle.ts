@@ -1,3 +1,5 @@
+import "../../../../styles/widgets/hexagonsTitle.less";
+
 import HexagonsLayer from "./hexagonsLayer";
 import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../core/siteResources";

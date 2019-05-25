@@ -1,3 +1,5 @@
+import "../../../../styles/views/overview.less";
+
 import View from "../../../core/view/view";
 import ViewMap from "../../../core/view/viewMap";
 import HexagonsTitle from "../../widgets/hexagonsTitle/hexagonsTitle";

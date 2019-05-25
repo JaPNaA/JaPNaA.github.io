@@ -1,16 +1,4 @@
-@theme-color-0: #00ff80;
-@theme-color: #00ff9e;
-@theme-color-1: #00ffbb;
-
-@theme-color-blue: #006ded;
-@theme-color-cyan: #26ebff;
-@theme-color-green: #1cff3a;
-@theme-color-lime: #b4ff7a;
-@accent-color-dark-red: #c22000;
-@accent-color-red: #ff2a00;
-@accent-color-light-red: #ffc6ba;
-
-@header-gradient: linear-gradient(169deg, @theme-color-0, @theme-color-1);
+@import "./variables.less";
 
 body {
     font-family: "Roboto";
@@ -47,23 +35,3 @@ a {
 
     -webkit-overflow-scrolling: touch;
 }
-
-@import "./widgets/global/global.less";
-@import "./widgets/cardV1.less";
-@import "./widgets/hexagonsTitle.less";
-@import "./widgets/htmlViewDocument.less";
-@import "./widgets/iframe.less";
-@import "./widgets/stickyBar.less";
-
-@import "./views/404.less";
-@import "./views/allThingies.less";
-@import "./views/frameView.less";
-@import "./views/imageView.less";
-@import "./views/overview.less";
-@import "./views/menu.less";
-@import "./views/projectInfo.less";
-@import "./views/shortUrl.less";
-@import "./views/splashScreen.less";
-@import "./views/test.less";
-
-@import "./embededApp.less";

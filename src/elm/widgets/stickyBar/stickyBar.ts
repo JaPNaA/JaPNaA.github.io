@@ -1,3 +1,5 @@
+import "../../../../styles/widgets/stickyBar.less";
+
 import removeChildren from "../../../utils/removeChildren";
 import Widget from "../../../core/widget/widget";
 import WidgetMap from "../../../core/widget/widgetMap";

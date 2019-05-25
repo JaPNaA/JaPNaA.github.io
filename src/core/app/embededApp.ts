@@ -1,3 +1,5 @@
+import "../../../styles/embededApp.less";
+
 import BaseApp from "./baseApp";
 import FakeAppURL from "./components/fakeUrl";
 import IApp from "../types/app/iApp";

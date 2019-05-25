@@ -1,3 +1,5 @@
+import "../../../../styles/views/projectInfo.less";
+
 import View from "../../../core/view/view";
 import ICard from "../../../types/project/card";
 import CardJSONv1Elm from "../../../components/jsonToElm/cardV1";

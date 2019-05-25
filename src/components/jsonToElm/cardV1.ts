@@ -1,3 +1,5 @@
+import "../../../styles/components/cardV1.less";
+
 import ICard from "../../types/project/card";
 import SiteConfig from "../../siteConfig";
 import Display from "../../types/project/display";
