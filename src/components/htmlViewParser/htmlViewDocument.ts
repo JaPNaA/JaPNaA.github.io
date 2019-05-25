@@ -4,7 +4,7 @@ import ViewMap from "../../core/view/viewMap";
 import EmbededApp from "../../core/app/embededApp";
 import ViewClass from "../../core/types/view/viewClass";
 import WidgetMap from "../../core/widget/widgetMap";
-import WidgetClass from "../../core/types/widgetClass";
+import WidgetClass from "../../core/types/widget/widgetClass";
 import IHTMLViewDocument from "./iHTMLViewDocument";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import url from "url";
@@ -13,6 +13,8 @@ import openNoopener from "../../core/utils/open/openNoopener";
 import openFrameView from "../../utils/openFrameView";
 import createViewState from "../../core/utils/createViewState";
 import ViewClassGhost from "../../core/view/viewClassGhost";
+import WidgetClassGhost from "../../core/widget/widgetClassGhost";
+import WidgetFactory from "../../core/widget/widgetFactory";
 
 
 class HTMLViewDocument implements IHTMLViewDocument {
@@ -167,11 +169,13 @@ class HTMLViewDocument implements IHTMLViewDocument {
         }
     }
 
-    private replaceWidgetElement(elm: Element, widgetClass: WidgetClass): void {
-        const widget = new widgetClass(...this.getWidgetArguments(elm));
-        widget.setup();
-        widget.appendTo(elm);
-        elm.classList.add("embededWidget");
+    private replaceWidgetElement(elm: Element, widgetClass: WidgetClass | WidgetClassGhost): void {
+        WidgetFactory.create(widgetClass, this.getWidgetArguments(elm))
+            .then(widget => {
+                widget.setup();
+                widget.appendTo(elm);
+                elm.classList.add("embededWidget");
+            });
     }
 
     private getWidgetArguments(elm: Element): any[] {

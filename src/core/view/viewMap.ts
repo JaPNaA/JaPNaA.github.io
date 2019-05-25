@@ -1,54 +1,24 @@
 import ViewClass from "../types/view/viewClass";
 import ViewClassGhost from "./viewClassGhost";
+import ClassAndGhostMap from "../components/classGhost/classAndGhostMap";
 
-class ViewMapClass {
-    private map: Map<string, ViewClass | ViewClassGhost>;
-
-    constructor() {
-        this.map = new Map();
+class ViewMapClass extends ClassAndGhostMap<ViewClass, ViewClassGhost> {
+    protected getNameFor(cls: ViewClass | ViewClassGhost): string {
+        return cls.viewName;
     }
 
-    public add(cls: ViewClass | ViewClassGhost): void {
-        const existing = this.map.get(cls.viewName.toLowerCase());
-        if (this.isViewClass(existing) && cls instanceof ViewClassGhost) {
-            console.warn("Attempted to replace existing view with ghost");
-            return;
-        }
-
-        this.map.set(cls.viewName.toLowerCase(), cls);
+    protected isGhost(cls: ViewClass | ViewClassGhost): cls is ViewClassGhost {
+        return cls instanceof ViewClassGhost;
     }
 
-    public [Symbol.iterator](): IterableIterator<[string, ViewClass | ViewClassGhost]> {
-        return this.map[Symbol.iterator]();
+    protected doesMatch(cls: ViewClass | ViewClassGhost, name: string): boolean {
+        return Boolean(cls.viewName.toLowerCase() === name.toLowerCase() || (
+            cls.viewMatcher && cls.viewMatcher.test(name)
+        ));
     }
 
-    public async get(name: string): Promise<ViewClass> {
-        const value = this.getClassOrGhost(name.toLowerCase());
-        if (!value) { throw new Error("View \"" + name + "\" doesn't exist"); }
-
-        if (value instanceof ViewClassGhost) {
-            return value.getClass();
-        } else {
-            return value;
-        }
-    }
-
-    private getClassOrGhost(name: string): ViewClass | ViewClassGhost | undefined {
-        const value = this.map.get(name);
-        if (value) { return value; }
-
-        for (const [key, cls] of this.map) {
-            if (
-                cls.viewMatcher &&
-                cls.viewMatcher.test(name)
-            ) {
-                return cls;
-            }
-        }
-    }
-
-    private isViewClass(x: ViewClass | ViewClassGhost | undefined): x is ViewClass {
-        return Boolean(x && !(x instanceof ViewClassGhost));
+    protected getBodyFromGhost(ghost: ViewClassGhost): Promise<ViewClass> {
+        return ghost.getClass();
     }
 }
 

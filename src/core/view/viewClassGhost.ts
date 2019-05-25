@@ -3,27 +3,17 @@ import ViewMetadata from "../types/view/viewMetadata";
 import IApp from "../types/app/iApp";
 import AppState from "../types/appState";
 import View from "./view";
-import SiteResources from "../siteResources";
+import ClassGhost from "../components/classGhost/classGhost";
+import ClassImporterFunction from "../types/classImporterFunction";
 
-type GetClassFunction = () => Promise<{ default: ViewClass }>;
-
-class ViewClassGhost implements ViewMetadata {
+class ViewClassGhost extends ClassGhost<View, ViewClass> implements ViewMetadata {
     public viewName: string;
     public viewMatcher?: RegExp;
-    public importer: GetClassFunction;
 
-    constructor(viewName: string, defaultClassImporter: GetClassFunction, matcher?: RegExp) {
+    constructor(viewName: string, defaultClassImporter: ClassImporterFunction<ViewClass>, matcher?: RegExp) {
+        super(viewName, defaultClassImporter);
         this.viewName = viewName;
         this.viewMatcher = matcher;
-        this.importer = defaultClassImporter;
-    }
-
-    public async getClass(): Promise<ViewClass> {
-        console.log("Loading view " + this.viewName);
-        SiteResources.addResourceLoading();
-        const viewClass = (await this.importer()).default;
-        SiteResources.addResourceLoaded();
-        return viewClass;
     }
 
     public async create(app: IApp, appState: AppState): Promise<View> {
