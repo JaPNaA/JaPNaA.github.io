@@ -7,12 +7,12 @@ import AppState from "../appState";
 export default interface IAppViews {
     top(): View | undefined;
     firstFullTop(): View | undefined;
-    switchAndInit(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View>;
-    open(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View>;
-    openBehind(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View>;
+    switchAndInit(viewClass: ViewClass | ViewClassGhost | string, stateData?: string | AppState): Promise<View>;
+    open(viewClass: ViewClass | ViewClassGhost | string, stateData?: string | AppState): Promise<View>;
+    openBehind(viewClass: ViewClass | ViewClassGhost | string, stateData?: string | AppState): Promise<View>;
     switch(view: View): void;
     addBehind(view: View): void;
     add(view: View): void;
     close(view: View): void;
-    getA(view: ViewMetadata): View | undefined;
+    getA(view: ViewMetadata | string): View | undefined;
 }

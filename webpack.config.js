@@ -7,7 +7,7 @@ module.exports = {
         path: path.resolve(__dirname, "docs"),
         filename: 'bundle.js',
         chunkFilename: '[name].bundle.js',
-        publicPath: "./"
+        publicPath: "/"
     },
     module: {
         rules: [{
@@ -20,7 +20,7 @@ module.exports = {
         }]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.ts', '.js', '.tsx']
     },
     target: "web",
     plugins: [],

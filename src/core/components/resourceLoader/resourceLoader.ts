@@ -102,6 +102,7 @@ class ResourceLoader {
     public addResourceLoading(): void {
         this.toBeLoaded++;
         this.newResourceHandlers.dispatch(undefined);
+        this.progressChange.dispatch();
     }
 
     /** For anything else that loads, but cannot be used with ResourceLoader */

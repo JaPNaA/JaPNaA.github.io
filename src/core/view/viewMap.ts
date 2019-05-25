@@ -22,9 +22,9 @@ class ViewMapClass {
         return this.map[Symbol.iterator]();
     }
 
-    public async get(name: string): Promise<ViewClass | undefined> {
-        const value = this.getClassOrGhost(name);
-        if (!value) { return; }
+    public async get(name: string): Promise<ViewClass> {
+        const value = this.getClassOrGhost(name.toLowerCase());
+        if (!value) { throw new Error("View \"" + name + "\" doesn't exist"); }
 
         if (value instanceof ViewClassGhost) {
             return value.getClass();

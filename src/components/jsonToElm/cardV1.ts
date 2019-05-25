@@ -5,7 +5,7 @@ import DisplayImg from "../../types/project/displayImg";
 import triggerTransitionIn from "../../core/utils/triggerTransitionIn";
 import SiteResources from "../../core/siteResources";
 import IApp from "../../core/types/app/iApp";
-import ImageView from "../../elm/views/imageView/imageView";
+import IImageView from "../../elm/views/imageView/iImageView";
 
 // TODO: refactor, along with it's .less companion!
 
@@ -228,7 +228,7 @@ class CardJSONv1Elm {
 
     private addImageClickHandler(image: HTMLImageElement): void {
         image.addEventListener("click", async () => {
-            const imageView = await this.app.top().views.open(ImageView) as ImageView;
+            const imageView = await this.app.top().views.open("ImageView") as IImageView;
             const bbox = image.getBoundingClientRect();
 
             imageView.setInitalTransform(bbox.left, bbox.top, bbox.width / image.naturalWidth);

@@ -3,6 +3,7 @@ import ViewMetadata from "../types/view/viewMetadata";
 import IApp from "../types/app/iApp";
 import AppState from "../types/appState";
 import View from "./view";
+import SiteResources from "../siteResources";
 
 type GetClassFunction = () => Promise<{ default: ViewClass }>;
 
@@ -18,7 +19,11 @@ class ViewClassGhost implements ViewMetadata {
     }
 
     public async getClass(): Promise<ViewClass> {
-        return (await this.importer()).default;
+        console.log("Loading view " + this.viewName);
+        SiteResources.addResourceLoading();
+        const viewClass = (await this.importer()).default;
+        SiteResources.addResourceLoaded();
+        return viewClass;
     }
 
     public async create(app: IApp, appState: AppState): Promise<View> {

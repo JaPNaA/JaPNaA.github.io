@@ -7,7 +7,7 @@ import isUrlAbsolute from "../../../utils/isUrlAbsolute";
 import SiteConfig from "../../../siteConfig";
 
 class ShortUrlView extends View {
-    public static viewName = "shortUrl";
+    public static viewName = "ShortUrl";
     public static viewMatcher = /^#/;
     public viewName = ShortUrlView.viewName;
 

@@ -1,8 +1,8 @@
 import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";
-import Menu from "../../views/menu/menu";
 import IApp from "../../../core/types/app/iApp";
 import Widget from "../../../core/widget/widget";
+import IMenu from "../../views/menu/iMenu";
 
 class MenuButton extends Widget {
     public static widgetName: string = "MenuButton";
@@ -14,10 +14,13 @@ class MenuButton extends Widget {
     private static hiddenClass = "hidden";
     private static scrollBarExistsClass = "scrollBarExists";
 
+    private isLoadingMenu: boolean;
+
     constructor(app: IApp) {
         super();
         this.app = app;
         this.elm = document.createElement("div");
+        this.isLoadingMenu = false;
     }
 
     public setup() {
@@ -75,14 +78,16 @@ class MenuButton extends Widget {
     }
 
     private toggleMenu(): void {
-        const existingMenu = this.app.views.getA(Menu);
+        if (this.isLoadingMenu) { return; }
+
+        const existingMenu = this.app.views.getA("Menu");
         if (existingMenu) {
             this.app.views.close(existingMenu);
         } else {
-            const menu = new Menu(this.app);
-            menu.setup();
-            menu.animateTransitionIn();
-            this.app.views.add(menu);
+            this.isLoadingMenu = true;
+            this.app.views.open("Menu")
+                .then(menu => (menu as IMenu).animateTransitionIn());
+            this.isLoadingMenu = false;
         }
     }
 }

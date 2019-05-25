@@ -2,9 +2,7 @@ import View from "../../../core/view/view";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
 import IApp from "../../../core/types/app/iApp";
-import AllThingies from "../allThingies/allThingies";
 import ViewClass from "../../../core/types/view/viewClass";
-import Overview from "../overview/overview";
 import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";
 
@@ -63,8 +61,8 @@ class Menu extends View {
         const children: HTMLElement[] = [
             this.createTitle(),
             this.createHeading("Navigate"),
-            this.createButtonThatOpens(Overview, "Title page"),
-            this.createButtonThatOpens(AllThingies, "All thingies"),
+            this.createButtonThatOpens("Overview", "Title page"),
+            this.createButtonThatOpens("AllThingies", "All thingies"),
             this.createCopyright()
         ];
 
@@ -91,14 +89,14 @@ class Menu extends View {
         return heading;
     }
 
-    private createButtonThatOpens(viewClass: ViewClass, label: string): HTMLDivElement {
+    private createButtonThatOpens(viewName: string, label: string): HTMLDivElement {
         const button = document.createElement("div");
         button.classList.add("viewButton");
         const labelElm = document.createElement("div");
         labelElm.classList.add("label");
         labelElm.innerText = label;
 
-        if (this.isTopViewA(viewClass)) {
+        if (this.isTopViewA(viewName)) {
             button.classList.add("active");
             button.appendChild(this.createActiveCircle());
         }
@@ -106,7 +104,7 @@ class Menu extends View {
         button.appendChild(labelElm);
 
         button.addEventListener("click", () => {
-            this.app.views.switchAndInit(viewClass);
+            this.app.views.switchAndInit(viewName);
         });
 
         return button;
@@ -135,10 +133,10 @@ class Menu extends View {
         this.app.views.close(this);
     }
 
-    private isTopViewA(viewClass: ViewClass): boolean {
+    private isTopViewA(viewName: string): boolean {
         const top = this.app.views.firstFullTop();
         if (!top) { return false; }
-        return top.constructor === viewClass;
+        return top.viewName === viewName;
     }
 }
 

@@ -12,10 +12,10 @@ import IInfoJSON from "../../../types/project/infojson";
 import isProjectCard from "../../../utils/isProjectCard";
 import ICard from "../../../types/project/card";
 import JSONResource from "../../../core/components/resourceLoader/resources/json";
-import ProjectInfoView from "../projectInfo/projectInfo";
 import AppState from "../../../core/types/appState";
-import createAppState from "../../../core/utils/createViewState";
 import openFrameView from "../../../utils/openFrameView";
+import IProjectInfoView from "../projectInfo/iProjectInfo";
+import createAppState from "../../../core/utils/createViewState";
 
 type LinkMatch = {
     year: number,
@@ -164,8 +164,9 @@ class AllThingies extends View {
             .onLoad(e => this.setPageContent(e.document));
     }
 
-    private openProjectView(match: LinkMatch): void {
-        const view = new ProjectInfoView(this.app, createAppState(ProjectInfoView));
+    private async openProjectView(match: LinkMatch): Promise<void> {
+        const ProjectInfo = await ViewMap.get("ProjectInfo");
+        const view = new ProjectInfo(this.app, createAppState(ProjectInfo)) as IProjectInfoView;
         view.setProject(match.data, match.year, match.index);
         view.setup();
         this.app.views.add(view);

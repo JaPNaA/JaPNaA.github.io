@@ -7,6 +7,8 @@ import createAppState from "../../utils/createViewState";
 import ViewClassGhost from "../../view/viewClassGhost";
 import ViewMetadata from "../../types/view/viewMetadata";
 import AppState from "../../types/appState";
+import ViewDescriptor from "../../types/app/viewDescriptor";
+import ViewMap from "../../view/viewMap";
 
 // handles views
 
@@ -38,22 +40,22 @@ class AppViews implements IAppViews {
         }
     }
 
-    public async switchAndInit(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View> {
-        const view = await this.createViewWithStatedata(viewClass, stateData);
+    public async switchAndInit(viewDescriptor: ViewDescriptor, stateData?: string | AppState): Promise<View> {
+        const view = await this.createViewWithStatedata(viewDescriptor, stateData);
         view.setup();
         this.switch(view);
         return view;
     }
 
-    public async open(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View> {
-        const view = await this.createViewWithStatedata(viewClass, stateData);
+    public async open(viewDescriptor: ViewDescriptor, stateData?: string | AppState): Promise<View> {
+        const view = await this.createViewWithStatedata(viewDescriptor, stateData);
         view.setup();
         this.add(view);
         return view;
     }
 
-    public async openBehind(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View> {
-        const view = await this.createViewWithStatedata(viewClass, stateData);
+    public async openBehind(viewDescriptor: ViewDescriptor, stateData?: string | AppState): Promise<View> {
+        const view = await this.createViewWithStatedata(viewDescriptor, stateData);
         view.setup();
         this.addBehind(view);
         return view;
@@ -90,8 +92,12 @@ class AppViews implements IAppViews {
         this.triggerClose(view);
     }
 
-    public getA(viewClass: ViewMetadata): View | undefined {
-        return this.activeViews.find(e => viewClass.viewName === e.viewName);
+    public getA(viewClass: ViewMetadata | string): View | undefined {
+        if (typeof viewClass === 'string') {
+            return this.activeViews.find(e => viewClass === e.viewName);
+        } else {
+            return this.activeViews.find(e => viewClass.viewName === e.viewName);
+        }
     }
 
     private triggerClose(view: View) {
@@ -102,19 +108,21 @@ class AppViews implements IAppViews {
     }
 
     private async createViewWithStatedata(
-        viewClassOrGhost: ViewClass | ViewClassGhost,
+        descriptor: ViewDescriptor,
         stateData?: string | AppState
     ): Promise<View> {
         let viewClass;
-        if (viewClassOrGhost instanceof ViewClassGhost) {
-            viewClass = await viewClassOrGhost.getClass();
+        if (descriptor instanceof ViewClassGhost) {
+            viewClass = await descriptor.getClass();
+        } else if (typeof descriptor === 'string') {
+            viewClass = await ViewMap.get(descriptor);
         } else {
-            viewClass = viewClassOrGhost;
+            viewClass = descriptor;
         }
 
         let appState;
         if (typeof stateData === 'string' || stateData === undefined) {
-            appState = createAppState(viewClassOrGhost, stateData);
+            appState = createAppState(viewClass, stateData);
         } else {
             appState = stateData;
         }

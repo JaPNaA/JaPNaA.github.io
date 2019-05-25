@@ -1,12 +1,12 @@
 import BaseApp from "./baseApp";
 import AppURL from "./components/url";
-import ViewClass from "../types/view/viewClass";
 import SiteResources from "../siteResources";
+import ViewDescriptor from "../types/app/viewDescriptor";
 
 abstract class MainApp extends BaseApp {
     public url: AppURL;
-    public indexView?: ViewClass;
-    public splashScreenView?: ViewClass;
+    public indexView?: ViewDescriptor;
+    public splashScreenView?: ViewDescriptor;
     public autoRestoreState: boolean = true;
 
     constructor() {

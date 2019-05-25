@@ -4,7 +4,7 @@ import ViewMap from "../../../core/view/viewMap";
 import SiteResources from "../../../core/siteResources";
 
 class TestView extends View {
-    public static viewName: string = "test";
+    public static viewName: string = "Test";
     public viewName = TestView.viewName;
     public showMenuButton = false;
     public isFullPage = true;

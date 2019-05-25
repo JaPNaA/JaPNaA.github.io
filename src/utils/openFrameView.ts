@@ -1,11 +1,8 @@
 import IApp from "../core/types/app/iApp";
-import FrameView from "../elm/views/frameView/frameView";
-import createAppState from "../core/utils/createViewState";
+import IFrameView from "../elm/views/frameView/iFrameView";
 
-export default function openFrameView(app: IApp, href: string): FrameView {
-    const frameView = new FrameView(app, createAppState(FrameView, href));
+export default async function openFrameView(app: IApp, href: string): Promise<IFrameView> {
+    const frameView = await app.views.open("FrameView", href) as IFrameView;
     frameView.animateTransitionIn();
-    frameView.setup();
-    app.views.add(frameView);
     return frameView;
 }

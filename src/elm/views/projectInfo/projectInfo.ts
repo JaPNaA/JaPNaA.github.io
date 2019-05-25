@@ -37,20 +37,6 @@ class ProjectInfoView extends View {
         this.projectIndex = index;
     }
 
-    private async loadProjectFromStateData(stateData: string): Promise<void> {
-        const [year, index] = stateData.split(".");
-        const yearInt: number = parseInt(year);
-        const indexInt: number = parseInt(index);
-
-        if (yearInt === undefined || indexInt === undefined) {
-            throw new Error("Invalid stateData format");
-        }
-
-        this.setProject(await this.getCard(year, indexInt), yearInt, indexInt);
-
-        this.loadingPromise = undefined;
-    }
-
     public getState(): string | undefined {
         if (this.projectIndex !== undefined && this.projectYear !== undefined) {
             return `${this.projectYear}.${this.projectIndex}`;
@@ -80,6 +66,20 @@ class ProjectInfoView extends View {
         elm.addEventListeners();
 
         this.attachLinkClickHandler(elm.viewProjectButton);
+    }
+
+    private async loadProjectFromStateData(stateData: string): Promise<void> {
+        const [year, index] = stateData.split(".");
+        const yearInt: number = parseInt(year);
+        const indexInt: number = parseInt(index);
+
+        if (yearInt === undefined || indexInt === undefined) {
+            throw new Error("Invalid stateData format");
+        }
+
+        this.setProject(await this.getCard(year, indexInt), yearInt, indexInt);
+
+        this.loadingPromise = undefined;
     }
 
     private async getCard(year: string, index: number): Promise<ICard> {
