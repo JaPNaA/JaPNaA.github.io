@@ -1,6 +1,6 @@
 import BaseApp from "./baseApp";
 import AppURL from "./components/url";
-import ViewClass from "../types/viewClass";
+import ViewClass from "../types/view/viewClass";
 import SiteResources from "../siteResources";
 
 abstract class MainApp extends BaseApp {
@@ -24,20 +24,20 @@ abstract class MainApp extends BaseApp {
         document.body.appendChild(this.mainElm);
     }
 
-    private addResizeEventHandler() {
+    private addResizeEventHandler(): void {
         this.resizeHandler = this.resizeHandler.bind(this);
         addEventListener("resize", this.resizeHandler);
     }
 
-    private resizeHandler() {
+    private resizeHandler(): void {
         this.width = innerWidth;
         this.height = innerHeight;
         this.events.dispatchResize();
     }
 
-    private createSplashScreen() {
+    private async createSplashScreen(): Promise<void> {
         if (!this.splashScreenView) { return; }
-        const splashScreen = this.views.open(this.splashScreenView);
+        const splashScreen = await this.views.open(this.splashScreenView);
         SiteResources.nextDone().then(() => {
             if (splashScreen) {
                 this.views.close(splashScreen);
@@ -45,9 +45,9 @@ abstract class MainApp extends BaseApp {
         });
     }
 
-    private restoreState() {
+    private async restoreState(): Promise<void> {
         if (!this.autoRestoreState) { return; }
-        this.url.restoreIfShould();
+        await this.url.restoreIfShould();
 
         if (!this.url.restored && this.indexView) {
             this.views.open(this.indexView);

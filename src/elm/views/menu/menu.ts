@@ -3,7 +3,7 @@ import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
 import IApp from "../../../core/types/app/iApp";
 import AllThingies from "../allThingies/allThingies";
-import ViewClass from "../../../core/types/viewClass";
+import ViewClass from "../../../core/types/view/viewClass";
 import Overview from "../overview/overview";
 import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";

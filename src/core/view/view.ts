@@ -1,5 +1,5 @@
 import IApp from "../types/app/iApp";
-import EventManager from "./eventManager";
+import EventManager from "./components/eventManager";
 import EventHandlers from "../utils/events/eventHandlers";
 import Handler from "../utils/events/handler";
 

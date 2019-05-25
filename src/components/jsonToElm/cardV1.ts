@@ -227,8 +227,8 @@ class CardJSONv1Elm {
     }
 
     private addImageClickHandler(image: HTMLImageElement): void {
-        image.addEventListener("click", () => {
-            const imageView = this.app.top().views.open(ImageView) as ImageView;
+        image.addEventListener("click", async () => {
+            const imageView = await this.app.top().views.open(ImageView) as ImageView;
             const bbox = image.getBoundingClientRect();
 
             imageView.setInitalTransform(bbox.left, bbox.top, bbox.width / image.naturalWidth);

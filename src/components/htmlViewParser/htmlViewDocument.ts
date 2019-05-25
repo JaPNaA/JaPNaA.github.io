@@ -2,7 +2,7 @@ import SiteConfig from "../../siteConfig";
 import IApp from "../../core/types/app/iApp";
 import ViewMap from "../../core/view/viewMap";
 import EmbededApp from "../../core/app/embededApp";
-import ViewClass from "../../core/types/viewClass";
+import ViewClass from "../../core/types/view/viewClass";
 import WidgetMap from "../../core/widget/widgetMap";
 import WidgetClass from "../../core/types/widgetClass";
 import IHTMLViewDocument from "./iHTMLViewDocument";
@@ -11,7 +11,8 @@ import url from "url";
 import parseAppStateURL from "../../core/utils/parseAppStateURL";
 import openNoopener from "../../core/utils/open/openNoopener";
 import openFrameView from "../../utils/openFrameView";
-import createAppState from "../../core/utils/createViewState";
+import createViewState from "../../core/utils/createViewState";
+import ViewClassGhost from "../../core/view/viewClassGhost";
 
 
 class HTMLViewDocument implements IHTMLViewDocument {
@@ -85,12 +86,14 @@ class HTMLViewDocument implements IHTMLViewDocument {
         if (parsed.host === location.host) {
             const appState = parseAppStateURL(parsed);
             if (appState) {
-                const viewClass = ViewMap.get(appState.viewName);
-                if (viewClass && this.linkHandlingOptions.openViewsWithLinks) {
-                    this.app.views.switchAndInit(viewClass, appState.stateData);
-                } else {
-                    this.openLink(href);
-                }
+                const opensWithLinks = this.linkHandlingOptions.openViewsWithLinks;
+                ViewMap.get(appState.viewName).then(viewClass => {
+                    if (viewClass && opensWithLinks) {
+                        this.app.views.switchAndInit(viewClass, appState.stateData);
+                    } else {
+                        this.openLink(href);
+                    }
+                });
             } else {
                 this.openLink(href);
             }
@@ -144,18 +147,12 @@ class HTMLViewDocument implements IHTMLViewDocument {
         }
     }
 
-    private replaceViewElement(elm: Element, viewClass: ViewClass): void {
+    private replaceViewElement(elm: Element, viewClass: ViewClass | ViewClassGhost): void {
         const embededApp = new EmbededApp(this.app, elm);
         const stateData = elm.getAttribute("statedata");
         embededApp.setup();
         elm.classList.add("embededView");
-
-        const view = new viewClass(
-            embededApp,
-            createAppState(viewClass, stateData || undefined)
-        );
-        view.setup();
-        embededApp.views.add(view);
+        embededApp.views.open(viewClass, createViewState(viewClass, stateData || undefined));
     }
 
     private replaceWidgetElements(): void {

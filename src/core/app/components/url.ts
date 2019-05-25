@@ -26,8 +26,8 @@ class AppURL implements IAppURL {
         this.attachEventHandlers();
     }
 
-    public restoreIfShould(): void {
-        this.controller.restoreFromRedirect(this.app);
+    public async restoreIfShould(): Promise<void> {
+        await this.controller.restoreFromRedirect(this.app);
         this.restored = this.controller.restored;
     }
 

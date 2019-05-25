@@ -1,6 +1,6 @@
-import IAppEvents from "../types/app/iAppEvents";
-import Handler from "../utils/events/handler";
-import IAppEventsMan from "../types/app/iAppEventsMan";
+import IAppEvents from "../../types/app/iAppEvents";
+import Handler from "../../utils/events/handler";
+import IAppEventsMan from "../../types/app/iAppEventsMan";
 
 class EventManager implements IAppEventsMan {
     private events: IAppEvents;

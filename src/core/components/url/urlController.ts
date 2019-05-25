@@ -51,17 +51,17 @@ class URLController {
         document.title = title;
     }
 
-    public restoreFromRedirect(app: IApp): void {
+    public async restoreFromRedirect(app: IApp): Promise<void> {
         if (!this.shouldRestore) { return; }
-        this.restoreFromURL(app, this.initalURL);
+        return this.restoreFromURL(app, this.initalURL);
     }
 
-    public restoreFromURL(app: IApp, url: string): void {
+    public async restoreFromURL(app: IApp, url: string): Promise<void> {
         const urlParsed = parseAppStateURL(url);
         if (!urlParsed) { return; }
 
         urlParsed.directURL = url;
-        this.restore(app, urlParsed);
+        await this.restore(app, urlParsed);
 
         if (!this.restored && app.view404) {
             app.views.openBehind(app.view404);
@@ -69,8 +69,8 @@ class URLController {
         }
     }
 
-    public restore(app: IApp, state: AppState): void {
-        this.restoreView(app, state);
+    public restore(app: IApp, state: AppState): Promise<void> {
+        return this.restoreView(app, state);
     }
 
     public clearState(): void {
@@ -80,12 +80,10 @@ class URLController {
         this.currentURL = "/";
     }
 
-    private restoreView(app: IApp, state: AppState): void {
-        const viewClass = ViewMap.get(state.viewName);
+    private async restoreView(app: IApp, state: AppState): Promise<void> {
+        const viewClass = await ViewMap.get(state.viewName);
         if (viewClass) {
-            const view = new viewClass(app, state);
-            view.setup();
-            app.views.addBehind(view);
+            app.views.openBehind(viewClass, state);
             this.restored = true;
         } else {
             this.restored = false;

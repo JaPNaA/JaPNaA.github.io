@@ -1,15 +1,18 @@
 import View from "../../view/view";
-import ViewClass from "../viewClass";
+import ViewClass from "../view/viewClass";
+import ViewMetadata from "../view/viewMetadata";
+import ViewClassGhost from "../../view/viewClassGhost";
+import AppState from "../appState";
 
 export default interface IAppViews {
     top(): View | undefined;
     firstFullTop(): View | undefined;
-    switchAndInit(viewClass: ViewClass, stateData?: string): View;
-    open(viewClass: ViewClass, stateData?: string): View;
-    openBehind(viewClass: ViewClass, stateData?: string): View;
+    switchAndInit(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View>;
+    open(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View>;
+    openBehind(viewClass: ViewClass | ViewClassGhost, stateData?: string | AppState): Promise<View>;
     switch(view: View): void;
     addBehind(view: View): void;
     add(view: View): void;
     close(view: View): void;
-    getA(viwe: ViewClass): View | undefined;
+    getA(view: ViewMetadata): View | undefined;
 }

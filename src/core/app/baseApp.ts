@@ -2,7 +2,7 @@ import IApp from "../types/app/iApp";
 import AppEvents from "./components/events";
 import AppViews from "./components/views";
 import IAppURL from "../types/app/iAppURL";
-import ViewClass from "../types/viewClass";
+import ViewClass from "../types/view/viewClass";
 
 abstract class BaseApp implements IApp {
     public abstract title: string;
