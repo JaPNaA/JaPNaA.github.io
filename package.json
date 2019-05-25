@@ -11,7 +11,7 @@
     "build-dev": "webpack --config webpack.dev.config.js",
     "serve": "http-server docs -p 8080",
     "serve2": "http-server ../../../Thingy -p 8081 --cors=\"*\"",
-    "clean": "rm docs/*bundle.js",
+    "clean": "rm docs/*bundle.js || echo Nothing to clean",
     "update-index-json": "node ./scripts/update-index-json.js",
     "deploy-staging": "./scripts/deploy-staging.sh"
   },
