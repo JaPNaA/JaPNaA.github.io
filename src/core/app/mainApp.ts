@@ -25,6 +25,11 @@ abstract class MainApp extends BaseApp {
         document.body.appendChild(this.mainElm);
     }
 
+    public async destory(): Promise<void> {
+        removeEventListener("resize", this.resizeHandler);
+        removeEventListener("keydown", this.keydownHandler);
+    }
+
     private addEventHandlers(): void {
         this.resizeHandler = this.resizeHandler.bind(this);
         addEventListener("resize", this.resizeHandler);

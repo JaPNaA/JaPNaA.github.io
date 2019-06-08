@@ -9,6 +9,7 @@ import SiteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/iApp";
 import removeChildren from "../../../utils/removeChildren";
 import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";
+import IHTMLViewDocument from "../../../components/htmlViewParser/iHTMLViewDocument";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -18,6 +19,7 @@ class Overview extends View {
 
     protected elm: HTMLDivElement;
     private content: HTMLDivElement;
+    private contentDocument?: IHTMLViewDocument;
 
     private hexagonsTitle: HexagonsTitle;
 
@@ -43,6 +45,9 @@ class Overview extends View {
     public async destory(): Promise<void> {
         super.destory();
         this.hexagonsTitle.destory();
+        if (this.contentDocument) {
+            await this.contentDocument.destory();
+        }
     }
 
     private createStickyBar() {
@@ -96,8 +101,8 @@ class Overview extends View {
             dontLeavePage: true,
             openViewsWithLinks: true
         });
-        const doc = parser.parse(text);
-        doc.appendTo(this.content);
+        this.contentDocument = parser.parse(text);
+        this.contentDocument.appendTo(this.content);
     }
 }
 

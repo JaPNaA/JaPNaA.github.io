@@ -25,13 +25,16 @@ class EmbededApp extends BaseApp {
         this.resizeNextFrame();
     }
 
+    public async destory(): Promise<void> {
+        removeEventListener("resize", this.resizeHandler);
+    }
+
     private addEventHandlers() {
         this.resizeHandler = this.resizeHandler.bind(this);
         addEventListener("resize", this.resizeHandler);
-        this.keydownHandler = this.keydownHandler.bind(this);
-        this.mainElm.addEventListener("keydown", this.keydownHandler);
-        this.mouseoverHandler = this.mouseoverHandler.bind(this);
-        this.mainElm.addEventListener("mouseover", this.mouseoverHandler);
+
+        this.mainElm.addEventListener("keydown", this.keydownHandler.bind(this));
+        this.mainElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));
     }
 
     private resizeNextFrame() {

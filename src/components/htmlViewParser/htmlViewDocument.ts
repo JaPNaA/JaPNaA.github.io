@@ -11,6 +11,7 @@ import WidgetFactory from "../../core/widget/widgetFactory";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import openFrameView from "../../utils/openFrameView";
 import IHTMLViewDocument from "./iHTMLViewDocument";
+import Widget from "../../core/widget/widget";
 
 // TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 
@@ -19,11 +20,16 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
     private elm: HTMLDivElement;
     private app: IApp;
+    private embededApps: EmbededApp[];
+    private widgets: Widget[];
+
     private linkHandlingOptions?: LinkHandlingOptions;
 
     constructor(app: IApp, text: string) {
         this.app = app;
         this.hasErrors = false;
+        this.embededApps = [];
+        this.widgets = [];
 
         this.elm = this.parseHTML(text);
         this.elm.classList.add("html-parsed");
@@ -31,6 +37,19 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
     public appendTo(parent: Element): void {
         parent.appendChild(this.elm);
+    }
+
+    public async destory(): Promise<void> {
+        const destoryPromises = [];
+        for (const app of this.embededApps) {
+            destoryPromises.push(app.destory());
+        }
+
+        for (const widget of this.widgets) {
+            widget.destory();
+        }
+
+        await Promise.all(destoryPromises);
     }
 
     public runScripts(): void {
@@ -160,6 +179,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
         embededApp.setup();
         elm.classList.add("embededView");
         embededApp.views.open(viewClass, createViewState(viewClass, stateData || undefined));
+        this.embededApps.push(embededApp);
     }
 
     private async replaceWidgetElement(elm: Element, widgetName: string): Promise<void> {
@@ -169,6 +189,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
                 widget.setup();
                 widget.appendTo(elm);
                 elm.classList.add("embededWidget");
+                this.widgets.push(widget);
             });
     }
 
