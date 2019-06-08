@@ -33,6 +33,8 @@ abstract class View {
         if (this.isFullPage) {
             this.app.url.pushHistory(this);
         }
+
+        this.app.focus();
     }
 
     /**

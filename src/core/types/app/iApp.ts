@@ -17,4 +17,5 @@ export default interface IApp {
     setup(): Promise<void>;
     destory(): Promise<void>;
     top(): IApp;
+    focus(): void;
 }

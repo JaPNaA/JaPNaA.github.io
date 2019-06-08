@@ -14,7 +14,6 @@ class EmbededApp extends BaseApp {
         super(parentApp);
         this.parentElm = parentElm;
         this.url = new FakeAppURL();
-        this.mainElm.tabIndex = -1; // this makes the app element focusable
     }
 
     public async setup(): Promise<void> {
@@ -53,9 +52,7 @@ class EmbededApp extends BaseApp {
     }
 
     private mouseoverHandler(): void {
-        this.mainElm.focus({
-            preventScroll: true
-        });
+        this.focus();
     }
 }
 

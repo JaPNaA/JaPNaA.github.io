@@ -24,6 +24,7 @@ abstract class BaseApp implements IApp {
 
         this.mainElm = document.createElement("div");
         this.mainElm.classList.add("main");
+        this.mainElm.tabIndex = -1; // this makes the app element focusable
 
         this.events = new AppEvents(this);
         this.views = new AppViews(this, this.events, this.mainElm);
@@ -37,8 +38,13 @@ abstract class BaseApp implements IApp {
         }
     }
 
-    public async setup(): Promise<void> { }
+    public focus(): void {
+        this.mainElm.focus({
+            preventScroll: true
+        });
+    }
 
+    public async setup(): Promise<void> { }
     public async destory(): Promise<void> { }
 }
 
