@@ -7,6 +7,7 @@ import Widget from "../../../core/widget/widget";
 import WidgetMap from "../../../core/widget/widgetMap";
 
 // TODO: Make this look better on mobile
+// TODO: Make a nice transition in
 
 class HexagonsTitle extends Widget {
     public static widgetName = "hexagonsTitle";
