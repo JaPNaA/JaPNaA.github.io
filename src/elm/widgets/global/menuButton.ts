@@ -2,7 +2,7 @@ import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";
 import IApp from "../../../core/types/app/iApp";
 import Widget from "../../../core/widget/widget";
-import IMenu from "../../views/menu/iMenu";
+import Menu from "../../views/menu/menu";
 
 class MenuButton extends Widget {
     public static widgetName: string = "MenuButton";
@@ -80,13 +80,13 @@ class MenuButton extends Widget {
     private toggleMenu(): void {
         if (this.isLoadingMenu) { return; }
 
-        const existingMenu = this.app.views.getA("Menu");
+        const existingMenu = this.app.views.getA(Menu);
         if (existingMenu) {
             this.app.views.close(existingMenu);
         } else {
             this.isLoadingMenu = true;
-            this.app.views.open("Menu")
-                .then(menu => (menu as IMenu).animateTransitionIn());
+            this.app.views.open(Menu)
+                .then(menu => (menu as Menu).animateTransitionIn());
             this.isLoadingMenu = false;
         }
     }
