@@ -12,8 +12,6 @@ import parseAppStateURL from "../../core/utils/parseAppStateURL";
 import openNoopener from "../../core/utils/open/openNoopener";
 import openFrameView from "../../utils/openFrameView";
 import createViewState from "../../core/utils/createViewState";
-import ViewClassGhost from "../../core/view/viewClassGhost";
-import WidgetClassGhost from "../../core/widget/widgetClassGhost";
 import WidgetFactory from "../../core/widget/widgetFactory";
 
 
@@ -149,7 +147,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
         }
     }
 
-    private replaceViewElement(elm: Element, viewClass: ViewClass | ViewClassGhost): void {
+    private replaceViewElement(elm: Element, viewClass: ViewClass): void {
         const embededApp = new EmbededApp(this.app, elm);
         const stateData = elm.getAttribute("statedata");
         embededApp.setup();
@@ -169,7 +167,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
         }
     }
 
-    private replaceWidgetElement(elm: Element, widgetClass: WidgetClass | WidgetClassGhost): void {
+    private replaceWidgetElement(elm: Element, widgetClass: WidgetClass): void {
         WidgetFactory.create(widgetClass, this.getWidgetArguments(elm))
             .then(widget => {
                 widget.setup();

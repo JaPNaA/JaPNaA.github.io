@@ -1,22 +1,13 @@
 import WidgetClass from "../types/widget/widgetClass";
-import ClassAndGhostMap from "../components/classGhost/classAndGhostMap";
-import WidgetClassGhost from "./widgetClassGhost";
+import LazyClassMap from "../components/lazyClassMap/lazyClassMap";
 
-class WidgetMapClass extends ClassAndGhostMap<WidgetClass, WidgetClassGhost> {
-    protected getNameFor(cls: WidgetClass | WidgetClassGhost): string {
+class WidgetMapClass extends LazyClassMap<WidgetClass> {
+    protected getNameFor(cls: WidgetClass): string {
         return cls.widgetName;
     }
 
-    protected isGhost(cls: WidgetClass | WidgetClassGhost): cls is WidgetClassGhost {
-        return cls instanceof WidgetClassGhost;
-    }
-
-    protected doesMatch(cls: WidgetClass | WidgetClassGhost, name: string): boolean {
+    protected doesMatch(cls: WidgetClass, name: string): boolean {
         return cls.widgetName.toLowerCase() === name.toLowerCase();
-    }
-
-    protected getBodyFromGhost(ghost: WidgetClassGhost): Promise<WidgetClass> {
-        return ghost.getClass();
     }
 }
 

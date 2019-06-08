@@ -1,6 +1,5 @@
-import ViewClassGhost from "../../view/viewClassGhost";
 import ViewClass from "../view/viewClass";
 
-type ViewDescriptor = ViewClass | ViewClassGhost | string;
+type ViewDescriptor = ViewClass | string;
 
 export default ViewDescriptor;

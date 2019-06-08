@@ -4,7 +4,6 @@ import BaseApp from "../baseApp";
 import AppEvents from "./events";
 import IAppViews from "../../types/app/iAppViews";
 import createAppState from "../../utils/createViewState";
-import ViewClassGhost from "../../view/viewClassGhost";
 import ViewMetadata from "../../types/view/viewMetadata";
 import AppState from "../../types/appState";
 import ViewDescriptor from "../../types/app/viewDescriptor";
@@ -112,9 +111,7 @@ class AppViews implements IAppViews {
         stateData?: string | AppState
     ): Promise<View> {
         let viewClass;
-        if (descriptor instanceof ViewClassGhost) {
-            viewClass = await descriptor.getClass();
-        } else if (typeof descriptor === 'string') {
+        if (typeof descriptor === 'string') {
             viewClass = await ViewMap.get(descriptor);
         } else {
             viewClass = descriptor;

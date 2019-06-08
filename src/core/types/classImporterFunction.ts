@@ -1,2 +1,2 @@
-type ClassImporterFunction<T> = () => Promise<{ default: T }>;
+type ClassImporterFunction<T> = (name: string) => Promise<{ default: T }>;
 export default ClassImporterFunction;
