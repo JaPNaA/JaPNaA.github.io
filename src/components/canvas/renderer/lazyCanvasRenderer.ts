@@ -56,11 +56,11 @@ abstract class LazyCanvasRenderer {
         this.resizeHandlers = new EventHandlers();
     }
 
-    public appendTo(parent: HTMLElement) {
+    public appendTo(parent: HTMLElement): void {
         parent.appendChild(this.canvas);
     }
 
-    public destory() {
+    public destory(): void {
         cancelAnimationFrame(this.reqnafHandle);
     }
 
@@ -91,11 +91,11 @@ abstract class LazyCanvasRenderer {
         }
     }
 
-    public onResize(handler: Handler<Vec2>) {
+    public onResize(handler: Handler<Vec2>): void {
         this.resizeHandlers.add(handler);
     }
 
-    public offResize(handler: Handler<Vec2>) {
+    public offResize(handler: Handler<Vec2>): void {
         this.resizeHandlers.remove(handler);
     }
 
@@ -107,8 +107,13 @@ abstract class LazyCanvasRenderer {
         this.requestDraw();
     }
 
-    public getContext() {
+    public getContext(): CanvasRenderingContext2D {
         return this.X;
+    }
+
+    public resetTransform() {
+        this.X.resetTransform();
+        this.X.scale(this.dpr, this.dpr);
     }
 
 
@@ -173,6 +178,8 @@ abstract class LazyCanvasRenderer {
     private updateCanvasSize(): void {
         this.canvas.width = this.width * this.dpr;
         this.canvas.height = this.height * this.dpr;
+        this.canvas.style.width = this.width + "px";
+        this.canvas.style.height = this.height + "px";
 
         if (this.dpr !== 1) {
             this.X.scale(this.dpr, this.dpr);

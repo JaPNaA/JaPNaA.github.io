@@ -56,7 +56,7 @@ class HexagonsTitle extends Widget {
         this.logo = new Logo();
 
         this.scrollDist = 0;
-        this.transitionInTimestep = 0;
+        this.transitionInTimestep = SiteConfig.isMobile ? 1 : 0;
 
         this.registeredEventHandlers = false;
     }
@@ -100,6 +100,7 @@ class HexagonsTitle extends Widget {
     }
 
     public tick(deltaTime: number): void {
+        if (SiteConfig.isMobile) { return; }
         this.transitionInTimestep += deltaTime / HexagonsTitle.transitionInTime;
 
         if (this.transitionInTimestep > 1) {

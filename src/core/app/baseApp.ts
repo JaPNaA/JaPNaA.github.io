@@ -3,6 +3,7 @@ import IAppURL from "../types/app/iAppURL";
 import ViewDescriptor from "../types/app/viewDescriptor";
 import AppEvents from "./components/events";
 import AppViews from "./components/views";
+import getFirstScrollableParent from "../utils/firstScrollableParent";
 
 abstract class BaseApp implements IApp {
     public abstract title: string;
@@ -39,9 +40,14 @@ abstract class BaseApp implements IApp {
     }
 
     public focus(): void {
+        const firstScrollable = getFirstScrollableParent(this.mainElm);
+        if (!firstScrollable) { return; }
+        const x = firstScrollable.scrollTop;
+        const y = firstScrollable.scrollLeft;
         this.mainElm.focus({
             preventScroll: true
         });
+        firstScrollable.scrollTo(x, y);
     }
 
     public async setup(): Promise<void> { }

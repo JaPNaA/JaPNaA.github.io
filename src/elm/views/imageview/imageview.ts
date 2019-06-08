@@ -110,7 +110,7 @@ class ImageView extends View {
         }
 
         this.closeButton.draw(X);
-        X.resetTransform();
+        this.renderer.resetTransform();
     }
 
     private drawErrorMessage(X: CanvasRenderingContext2D): void {
