@@ -1,7 +1,7 @@
-import BaseApp from "./baseApp";
-import AppURL from "./components/url";
-import SiteResources from "../siteResources";
 import ViewDescriptor from "../types/app/viewDescriptor";
+import SiteResources from "../siteResources";
+import AppURL from "./components/url";
+import BaseApp from "./baseApp";
 
 abstract class MainApp extends BaseApp {
     public url: AppURL;

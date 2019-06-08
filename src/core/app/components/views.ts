@@ -1,13 +1,12 @@
-import ViewClass from "../../types/view/viewClass";
 import View from "../../view/view";
-import BaseApp from "../baseApp";
-import AppEvents from "./events";
-import IAppViews from "../../types/app/iAppViews";
-import createAppState from "../../utils/createViewState";
+import ViewMap from "../../view/viewMap";
 import ViewMetadata from "../../types/view/viewMetadata";
+import IAppViews from "../../types/app/iAppViews";
 import AppState from "../../types/appState";
 import ViewDescriptor from "../../types/app/viewDescriptor";
-import ViewMap from "../../view/viewMap";
+import createAppState from "../../utils/createViewState";
+import BaseApp from "../baseApp";
+import AppEvents from "./events";
 
 // handles views
 

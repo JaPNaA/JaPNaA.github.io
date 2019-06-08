@@ -1,9 +1,9 @@
 import AppEvents from "./events";
-import IAppURL from "../../types/app/iAppURL";
 import URLController from "../../components/url/urlController";
-import BaseApp from "../baseApp";
-import View from "../../view/view";
+import IAppURL from "../../types/app/iAppURL";
 import AppState from "../../types/appState";
+import View from "../../view/view";
+import BaseApp from "../baseApp";
 
 class AppURL implements IAppURL {
     public restored: boolean = false;

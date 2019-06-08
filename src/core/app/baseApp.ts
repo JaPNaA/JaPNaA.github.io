@@ -1,8 +1,8 @@
 import IApp from "../types/app/iApp";
-import AppEvents from "./components/events";
-import AppViews from "./components/views";
 import IAppURL from "../types/app/iAppURL";
 import ViewDescriptor from "../types/app/viewDescriptor";
+import AppEvents from "./components/events";
+import AppViews from "./components/views";
 
 abstract class BaseApp implements IApp {
     public abstract title: string;

@@ -1,7 +1,7 @@
 import Handler from "../../utils/events/handler";
 import EventHandlers from "../../utils/events/eventHandlers";
-import BaseApp from "../baseApp";
 import IAppEvents from "../../types/app/iAppEvents";
+import BaseApp from "../baseApp";
 
 class AppEvents implements IAppEvents {
     private resizeHandlers: EventHandlers;

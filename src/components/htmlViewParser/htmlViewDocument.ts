@@ -1,16 +1,16 @@
+import url from "url";
 import SiteConfig from "../../siteConfig";
 import IApp from "../../core/types/app/iApp";
 import ViewMap from "../../core/view/viewMap";
 import EmbededApp from "../../core/app/embededApp";
 import WidgetMap from "../../core/widget/widgetMap";
-import IHTMLViewDocument from "./iHTMLViewDocument";
-import LinkHandlingOptions from "./types/linkHandlingOptions";
-import url from "url";
 import parseAppStateURL from "../../core/utils/parseAppStateURL";
 import openNoopener from "../../core/utils/open/openNoopener";
-import openFrameView from "../../utils/openFrameView";
 import createViewState from "../../core/utils/createViewState";
 import WidgetFactory from "../../core/widget/widgetFactory";
+import LinkHandlingOptions from "./types/linkHandlingOptions";
+import openFrameView from "../../utils/openFrameView";
+import IHTMLViewDocument from "./iHTMLViewDocument";
 
 // TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 
@@ -61,6 +61,28 @@ class HTMLViewDocument implements IHTMLViewDocument {
             anchors[i].addEventListener("click", e =>
                 this.anchorClickHandler(anchors[i], e)
             );
+        }
+    }
+
+    public replaceElements(): void {
+        const allElms = this.elm.getElementsByTagName("*");
+        const start = "japnaa:";
+        const viewStart = "view:";
+        const widgetStart = "widget:";
+
+        for (let i = 0; i < allElms.length; i++) {
+            const elm = allElms[i];
+            const tag = elm.tagName.toLowerCase();
+
+            if (tag.startsWith("japnaa:")) {
+                const rest = tag.slice(start.length);
+
+                if (rest.startsWith(viewStart)) {
+                    this.replaceViewElement(elm, rest.slice(viewStart.length));
+                } else if (rest.startsWith(widgetStart)) {
+                    this.replaceWidgetElement(elm, rest.slice(widgetStart.length));
+                }
+            }
         }
     }
 
@@ -127,28 +149,6 @@ class HTMLViewDocument implements IHTMLViewDocument {
             idElementMap.set(elm.id, elm);
         }
         return idElementMap;
-    }
-
-    public replaceElements(): void {
-        const allElms = this.elm.getElementsByTagName("*");
-        const start = "japnaa:";
-        const viewStart = "view:";
-        const widgetStart = "widget:";
-
-        for (let i = 0; i < allElms.length; i++) {
-            const elm = allElms[i];
-            const tag = elm.tagName.toLowerCase();
-
-            if (tag.startsWith("japnaa:")) {
-                const rest = tag.slice(start.length);
-
-                if (rest.startsWith(viewStart)) {
-                    this.replaceViewElement(elm, rest.slice(viewStart.length));
-                } else if (rest.startsWith(widgetStart)) {
-                    this.replaceWidgetElement(elm, rest.slice(widgetStart.length));
-                }
-            }
-        }
     }
 
     private async replaceViewElement(elm: Element, viewName: string): Promise<void> {
