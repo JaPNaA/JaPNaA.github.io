@@ -31,6 +31,7 @@ abstract class MainApp extends BaseApp {
     }
 
     private resizeHandler(): void {
+        // TODO: Handle IOS resizes
         this.width = innerWidth;
         this.height = innerHeight;
         this.events.dispatchResize();

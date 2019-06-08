@@ -14,11 +14,13 @@ abstract class LazyCanvasRenderer {
     private X: CanvasRenderingContext2D;
 
     private then: number;
+    private resizePollsLeft: number;
+    private reqnafHandle: number;
+
     private forceNextRedraw: boolean;
     private isDrawing: boolean;
-
     private isWatchingForResize: boolean;
-    private resizePollsLeft: number;
+
 
     private resizeHandlers: EventHandlers<Vec2>;
 
@@ -44,17 +46,22 @@ abstract class LazyCanvasRenderer {
         this.updateCanvasSize();
 
         this.then = performance.now();
+        this.resizePollsLeft = 0;
+        this.reqnafHandle = -1;
+
         this.forceNextRedraw = false;
         this.isDrawing = false;
-
         this.isWatchingForResize = false;
-        this.resizePollsLeft = 0;
 
         this.resizeHandlers = new EventHandlers();
     }
 
     public appendTo(parent: HTMLElement) {
         parent.appendChild(this.canvas);
+    }
+
+    public destory() {
+        cancelAnimationFrame(this.reqnafHandle);
     }
 
     public requestDraw(): void {
@@ -130,7 +137,7 @@ abstract class LazyCanvasRenderer {
 
         const shouldRedraw = this.checkShouldRedraw();
         if (shouldRedraw) {
-            requestAnimationFrame((e) => this.reqanfHandler(e));
+            this.reqnafHandle = requestAnimationFrame((e) => this.reqanfHandler(e));
         }
         this.isDrawing = shouldRedraw;
     }

@@ -87,6 +87,7 @@ class HexagonsTitle extends Widget {
 
     public destory(): void {
         super.destory();
+        this.renderer.destory();
         if (this.registeredEventHandlers) {
             removeEventListener("resize", this.resizeHandler);
             this.parent.removeEventListener("scroll", this.scrollHandler);
