@@ -2,9 +2,7 @@ import SiteConfig from "../../siteConfig";
 import IApp from "../../core/types/app/iApp";
 import ViewMap from "../../core/view/viewMap";
 import EmbededApp from "../../core/app/embededApp";
-import ViewClass from "../../core/types/view/viewClass";
 import WidgetMap from "../../core/widget/widgetMap";
-import WidgetClass from "../../core/types/widget/widgetClass";
 import IHTMLViewDocument from "./iHTMLViewDocument";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import url from "url";
@@ -14,6 +12,7 @@ import openFrameView from "../../utils/openFrameView";
 import createViewState from "../../core/utils/createViewState";
 import WidgetFactory from "../../core/widget/widgetFactory";
 
+// TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 
 class HTMLViewDocument implements IHTMLViewDocument {
     public hasErrors: boolean;
@@ -52,11 +51,6 @@ class HTMLViewDocument implements IHTMLViewDocument {
         if (this.hasErrors) {
             this.createScriptErrorWarning();
         }
-    }
-
-    public replaceElements(): void {
-        this.replaceViewElements();
-        this.replaceWidgetElements();
     }
 
     public setLinkHandlingMethod(options: LinkHandlingOptions): void {
@@ -135,39 +129,39 @@ class HTMLViewDocument implements IHTMLViewDocument {
         return idElementMap;
     }
 
-    private replaceViewElements(): void {
-        for (const [name, view] of ViewMap) {
-            const tagName = "japnaa:view:" + name;
-            const elms = this.elm.getElementsByTagName(tagName);
+    public replaceElements(): void {
+        const allElms = this.elm.getElementsByTagName("*");
+        const start = "japnaa:";
+        const viewStart = "view:";
+        const widgetStart = "widget:";
 
-            for (let i = 0; i < elms.length; i++) {
-                const elm = elms[i];
-                this.replaceViewElement(elm, view);
+        for (let i = 0; i < allElms.length; i++) {
+            const elm = allElms[i];
+            const tag = elm.tagName.toLowerCase();
+
+            if (tag.startsWith("japnaa:")) {
+                const rest = tag.slice(start.length);
+
+                if (rest.startsWith(viewStart)) {
+                    this.replaceViewElement(elm, rest.slice(viewStart.length));
+                } else if (rest.startsWith(widgetStart)) {
+                    this.replaceWidgetElement(elm, rest.slice(widgetStart.length));
+                }
             }
         }
     }
 
-    private replaceViewElement(elm: Element, viewClass: ViewClass): void {
+    private async replaceViewElement(elm: Element, viewName: string): Promise<void> {
         const embededApp = new EmbededApp(this.app, elm);
         const stateData = elm.getAttribute("statedata");
+        const viewClass = await ViewMap.get(viewName);
         embededApp.setup();
         elm.classList.add("embededView");
         embededApp.views.open(viewClass, createViewState(viewClass, stateData || undefined));
     }
 
-    private replaceWidgetElements(): void {
-        for (const [name, view] of WidgetMap) {
-            const tagName = "japnaa:widget:" + name;
-            const elms = this.elm.getElementsByTagName(tagName);
-
-            for (let i = 0; i < elms.length; i++) {
-                const elm = elms[i];
-                this.replaceWidgetElement(elm, view);
-            }
-        }
-    }
-
-    private replaceWidgetElement(elm: Element, widgetClass: WidgetClass): void {
+    private async replaceWidgetElement(elm: Element, widgetName: string): Promise<void> {
+        const widgetClass = await WidgetMap.get(widgetName);
         WidgetFactory.create(widgetClass, this.getWidgetArguments(elm))
             .then(widget => {
                 widget.setup();
