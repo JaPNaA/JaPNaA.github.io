@@ -1,7 +1,6 @@
 import WidgetMap from "../../core/widget/widgetMap";
-import lowerFirstChar from "../../utils/lowerFirstChar";
 
 WidgetMap.useImporter((name: string) => {
-    const pathName = lowerFirstChar(name);
+    const pathName = name.toLowerCase();
     return import("./" + pathName + "/" + pathName)
 });

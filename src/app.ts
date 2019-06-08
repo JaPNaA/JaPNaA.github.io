@@ -3,7 +3,7 @@ import "../styles/index.less";
 import "./elm/views/setViewImporter";
 import "./elm/widgets/setWidgetImporter";
 
-import SplashScreen from "./elm/views/splashScreen/splashScreen";
+import SplashScreen from "./elm/views/splashscreen/splashscreen";
 import GlobalWidgets from "./elm/widgets/global/global";
 import ContentMan from "./components/contentMan/contentMan";
 import MainApp from "./core/app/mainApp";

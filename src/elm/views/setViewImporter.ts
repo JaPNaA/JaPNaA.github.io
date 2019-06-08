@@ -1,7 +1,6 @@
 import ViewMap from "../../core/view/viewMap";
-import lowerFirstChar from "../../utils/lowerFirstChar";
 
 ViewMap.useImporter((name: string) => {
-    const pathName = lowerFirstChar(name);
+    const pathName = name.toLowerCase();
     return import("./" + pathName + "/" + pathName)
 });
