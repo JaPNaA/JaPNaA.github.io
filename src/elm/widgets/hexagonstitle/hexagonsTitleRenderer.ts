@@ -22,12 +22,10 @@ class HexagonsTitleRenderer extends LazyCanvasRenderer {
     }
 
     protected tick(deltaTime: number): void {
-        console.count("tick");
         this.hexagonsTitle.tick(deltaTime);
     }
 
     protected draw(X: CanvasRenderingContext2D): void {
-        console.count("draw");
         X.clearRect(0, 0, this.width, this.height);
         this.hexagonsTitle.draw(X);
     }

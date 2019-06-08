@@ -1,4 +1,5 @@
 import ClassImporterFunction from "../../types/classImporterFunction";
+import SiteResources from "../../siteResources";
 
 abstract class LazyClassMap<T> {
     private map: Map<string, T>;
@@ -29,9 +30,12 @@ abstract class LazyClassMap<T> {
         if (!value) {
             if (this.importWithName) {
                 try {
+                    SiteResources.addResourceLoading();
                     return (await this.importWithName(name)).default;
                 } catch (err) {
                     throw new Error("View \"" + name + "\" doesn't exist, tried importing.");
+                } finally {
+                    SiteResources.addResourceLoaded();
                 }
             } else {
                 throw new Error("View \"" + name + "\" doesn't exist, no importer used.");

@@ -14,6 +14,7 @@ class TopLoadingBar extends Widget {
     protected elm: HTMLDivElement;
     private app: IApp;
     private lastDoneLoaded: number;
+    private lastProgress: number;
     private removeLoadingTimeout: number;
 
     constructor(app: IApp) {
@@ -21,6 +22,7 @@ class TopLoadingBar extends Widget {
         this.app = app;
         this.elm = document.createElement("div");
         this.lastDoneLoaded = 0;
+        this.lastProgress = 0;
         this.removeLoadingTimeout = -1;
     }
 
@@ -39,14 +41,18 @@ class TopLoadingBar extends Widget {
         });
     }
 
-    private setProgress(progress: ResourceLoaderProgress): void {
-        const loaded = progress.loaded - this.lastDoneLoaded;
-        const total = progress.total - this.lastDoneLoaded;
-        const x = loaded / total;
+    private setProgress(progressData: ResourceLoaderProgress): void {
+        const loaded = progressData.loaded - this.lastDoneLoaded;
+        const total = progressData.total - this.lastDoneLoaded;
+        const progress = loaded / total;
+        const displayProgress = loaded / (total + 1);
 
-        this.elm.style.width = TopLoadingBar.minBarLength + (x * (100 - TopLoadingBar.minBarLength)) + "%";
+        if (displayProgress >= this.lastProgress) {
+            this.elm.style.width = TopLoadingBar.minBarLength + (displayProgress * (100 - TopLoadingBar.minBarLength)) + "%";
+            this.lastProgress = displayProgress;
+        }
 
-        if (x < 1) {
+        if (progress < 1) {
             this.addLoading();
             this.elm.classList.remove("done");
         } else {
@@ -67,6 +73,8 @@ class TopLoadingBar extends Widget {
 
     private removeLoading(): void {
         this.elm.classList.remove("loading");
+        this.elm.style.width = "0";
+        this.lastProgress = 0;
     }
 }
 
