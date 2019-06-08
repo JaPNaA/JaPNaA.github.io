@@ -123,6 +123,7 @@ abstract class LazyCanvasRenderer {
     private reqanfHandler(now: number): void {
         const deltaTime = now - this.then;
         this.then = now;
+        this.isDrawing = true;
 
         this.tick(deltaTime);
         this.draw(this.X);

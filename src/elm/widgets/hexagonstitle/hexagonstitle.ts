@@ -5,6 +5,9 @@ import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../core/siteResources";
 import Widget from "../../../core/widget/widget";
 import WidgetMap from "../../../core/widget/widgetMap";
+import Logo from "./logo";
+import HexagonsTitleRenderer from "./hexagonsTitleRenderer";
+import { easeInQuad, easeInCubic, easeInOutQuad, easeInOutQuart } from "../../../utils/easingFunctions";
 
 // TODO: Make this look better on mobile
 // TODO: Make a nice transition in
@@ -21,25 +24,22 @@ class HexagonsTitle extends Widget {
     protected elm: HTMLDivElement;
     protected parent: HTMLElement;
 
-    private static initalizedStatic: boolean = false;
-    private static logo: HTMLImageElement;
+    private static transitionInTime = 1000;
 
-    private canvas: HTMLCanvasElement;
-    private X: CanvasRenderingContext2D;
+    private renderer: HexagonsTitleRenderer;
+    private logo: Logo;
     private layers: HexagonsLayer[];
 
     private scrollDist: number;
     private gradient: CanvasGradient;
     private registeredEventHandlers: boolean;
 
-    private totalWidth: number;
-    private totalHeight: number;
     private isVertical: boolean;
+
+    private transitionInTimestep: number;
 
     constructor(parentElm: HTMLElement) {
         super();
-
-        HexagonsTitle.initalizeStatic();
         this.parent = parentElm;
 
         this.elm = document.createElement("div");
@@ -48,23 +48,23 @@ class HexagonsTitle extends Widget {
         this.height = 720;
         this.overSizeHeight = 0;
         this.overSizeWidth = 0;
-        this.totalWidth = this.width + this.overSizeWidth;
-        this.totalHeight = this.height + this.overSizeHeight;
         this.isVertical = false;
 
-        this.canvas = this.createCanvas();
-        this.X = this.createX();
+        this.renderer = new HexagonsTitleRenderer(this);
         this.layers = this.createLayers();
         this.gradient = this.createGradient();
+        this.logo = new Logo();
 
         this.scrollDist = 0;
+        this.transitionInTimestep = 0;
+
         this.registeredEventHandlers = false;
     }
 
     public setup(): void {
         super.setup();
-
-        this.elm.appendChild(this.canvas);
+        this.renderer.appendTo(this.elm);
+        this.setSize(this.renderer.width, this.renderer.height);
     }
 
     public registerEventHandlers(): void {
@@ -77,8 +77,10 @@ class HexagonsTitle extends Widget {
         addEventListener("resize", this.resizeHandler);
         this.resizeHandler();
 
+        this.renderer.onResize((size) => this.setSize(size[0], size[1]));
+
         // POSSIBLE BUG: destory before nextDone
-        SiteResources.nextDone().then(() => this.draw());
+        SiteResources.nextDone().then(() => this.renderer.requestDraw());
 
         this.registeredEventHandlers = true;
     }
@@ -91,84 +93,53 @@ class HexagonsTitle extends Widget {
         }
     }
 
-    public setSize(width: number, height: number): void {
-        this.width = width;
-        this.height = height;
-
-        this.isVertical = height > width;
-
-        this.elm.style.width = width + "px";
-        this.elm.style.height = height + "px";
-
-        this.totalWidth = this.canvas.width = this.width + this.overSizeWidth;
-        this.totalHeight = this.canvas.height = this.height + this.overSizeHeight;
-
-        this.gradient = this.createGradient();
-    }
-
     public setOverSize(overSizeWidth: number, overSizeHeight: number): void {
         this.overSizeHeight = overSizeHeight;
         this.overSizeWidth = overSizeWidth;
     }
 
-    public draw(): void {
-        if (!this.isVisible()) { return; }
+    public tick(deltaTime: number): void {
+        this.transitionInTimestep += deltaTime / HexagonsTitle.transitionInTime;
 
+        if (this.transitionInTimestep > 1) {
+            this.transitionInTimestep = 1;
+        } else {
+            this.renderer.requestDraw();
+        }
+    }
+
+    public draw(X: CanvasRenderingContext2D): void {
         const scrollFactor = -this.scrollDist / this.layers.length;
 
-        this.X.clearRect(0, 0, this.totalWidth, this.totalHeight);
-        this.X.fillStyle = this.gradient;
-        this.X.fillRect(0, 0, this.width, this.height);
+        X.fillStyle = this.gradient;
+        X.fillRect(0, 0, this.width, this.height);
 
         if (!this.isVertical) {
-            this.drawLogo();
+            this.drawLogo(X);
         }
+
+        const t = easeInOutQuart(this.transitionInTimestep);
 
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
-
-            this.X.save();
-            this.X.translate(0, i * scrollFactor);
-            layer.draw(this.X);
-            this.X.restore();
+            const scale = 2 * (i + 1) * (1 - t) + 1;
+            X.save();
+            if (t < 0.1) { X.globalAlpha = t * 10; }
+            X.translate(this.width / 2, this.height / 2);
+            X.scale(scale, scale);
+            X.translate(-this.width / 2, -this.height / 2);
+            X.translate(0, i * scrollFactor);
+            layer.draw(X);
+            X.restore();
         }
 
         if (this.isVertical) {
-            this.drawLogo();
+            this.drawLogo(X);
         }
     }
 
     public appendToParent(): void {
         this.parent.appendChild(this.elm);
-    }
-
-    private static initalizeStatic(): void {
-        if (this.initalizedStatic) { return; }
-        this.logo = HexagonsTitle.createLogoImg();
-        this.initalizedStatic = true;
-    }
-
-    private static createLogoImg(): HTMLImageElement {
-        const img: HTMLImageElement = document.createElement("img");
-        img.src = SiteConfig.path.img.logo;
-        return img;
-    }
-
-    private createCanvas(): HTMLCanvasElement {
-        const canvas: HTMLCanvasElement = document.createElement("canvas");
-        canvas.width = this.width;
-        canvas.height = this.height;
-        return canvas;
-    }
-
-    private createX(): CanvasRenderingContext2D {
-        const X: CanvasRenderingContext2D | null = this.canvas.getContext("2d");
-
-        if (X) {
-            return X;
-        } else {
-            throw new Error("Browser unsupported");
-        }
     }
 
     private createLayers(): HexagonsLayer[] {
@@ -182,38 +153,38 @@ class HexagonsTitle extends Widget {
     }
 
     private createGradient(): CanvasGradient {
-        const gradient: CanvasGradient = this.X.createLinearGradient(0, 0, 0, this.height);
+        const gradient: CanvasGradient = this.renderer.getContext().createLinearGradient(0, 0, 0, this.height);
         gradient.addColorStop(0, "#c2ffe3");
         gradient.addColorStop(1, "#ffffff");
         return gradient;
     }
 
-    private drawLogo(): void {
-        this.X.drawImage(
-            HexagonsTitle.logo,
-            (this.width - HexagonsTitle.logo.width) / 2,
-            (this.height - HexagonsTitle.logo.height) / 2
+    private drawLogo(X: CanvasRenderingContext2D): void {
+        this.logo.draw(
+            X,
+            this.width / 2,
+            this.height / 2
         );
     }
 
-    private isVisible(): boolean {
-        const bbox = this.elm.getBoundingClientRect();
-        if (bbox.top + bbox.height > 0) {
-            return true;
-        } else {
-            return false;
-        }
+    private resizeHandler(): void {
+        this.renderer.resizeOrWatchForResize();
     }
 
-    private resizeHandler(): void {
-        this.setSize(innerWidth, innerHeight);
-        this.draw();
+    private setSize(width: number, height: number): void {
+        this.width = width;
+        this.height = height;
+        this.elm.style.width = width + "px";
+        this.elm.style.height = height + "px";
+
+        this.isVertical = height > width;
+        this.gradient = this.createGradient();
     }
 
     private scrollHandler(): void {
         if (SiteConfig.isMobile) { return; }
         this.scrollDist = this.parent.scrollTop;
-        this.draw();
+        this.renderer.drawOnScroll();
     }
 }
 
