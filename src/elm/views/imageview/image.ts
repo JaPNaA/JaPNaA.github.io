@@ -1,5 +1,5 @@
-import CanvasImage from "../../../components/canvasElements/canvasImage";
-import DragPhysics from "../../../components/canvasElements/physics/drag";
+import CanvasImage from "../../../components/canvas/canvasElements/canvasImage";
+import DragPhysics from "../../../components/canvas/canvasElements/physics/drag";
 import { Rect } from "../../../types/math/rect";
 
 class ImageViewImage {

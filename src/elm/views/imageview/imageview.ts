@@ -4,7 +4,7 @@ import View from "../../../core/view/view";
 import IApp from "../../../core/types/app/iApp";
 import ViewMap from "../../../core/view/viewMap";
 import SiteResources from "../../../core/siteResources";
-import SimpleEasePhysics from "../../../components/canvasElements/physics/simpleEase";
+import SimpleEasePhysics from "../../../components/canvas/canvasElements/physics/simpleEase";
 import ImageViewCloseButton from "./closeButton";
 import ImageViewImage from "./image";
 import wait from "../../../utils/wait";

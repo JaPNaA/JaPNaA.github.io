@@ -1,7 +1,7 @@
 import CanvasElementPhysics from "./physics";
-import absSum from "../../../utils/math/absSum";
-import { Dim, newDim } from "../../../types/math/dim";
-import { Rect } from "../../../types/math/rect";
+import absSum from "../../../../utils/math/absSum";
+import { Dim, newDim } from "../../../../types/math/dim";
+import { Rect } from "../../../../types/math/rect";
 
 class DragPhysics extends CanvasElementPhysics {
     private static changeThreshold: number = 0.0001;

@@ -1,4 +1,4 @@
-import { Rect, newRect } from "../../../types/math/rect";
+import { Rect, newRect } from "../../../../types/math/rect";
 
 abstract class CanvasElementPhysics {
     protected rect: Rect;

@@ -1,8 +1,8 @@
-import CanvasButton from "../../../components/canvasElements/canvasButton";
+import CanvasButton from "../../../components/canvas/canvasElements/canvasButton";
 import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";
 import ImageViewImage from "./image";
-import SimpleEasePhysics from "../../../components/canvasElements/physics/simpleEase";
+import SimpleEasePhysics from "../../../components/canvas/canvasElements/physics/simpleEase";
 import { easeInOutCubic } from "../../../utils/easingFunctions";
 import EventHandlers from "../../../core/utils/events/eventHandlers";
 import Handler from "../../../core/utils/events/handler";
