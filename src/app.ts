@@ -10,7 +10,7 @@ import MainApp from "./core/app/mainApp";
 import SiteConfig from "./siteConfig";
 
 class App extends MainApp {
-    public view404 = "404";
+    public view404 = "view404";
     public splashScreenView = SplashScreen;
     public indexView = "Overview";
     public autoRestoreState = true;

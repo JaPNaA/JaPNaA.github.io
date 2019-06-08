@@ -48,16 +48,13 @@ class AppURL implements IAppURL {
 
     public update(): void {
         const topView = this.app.views.firstFullTop();
-        if (topView) {
-            const viewState = topView.getState();
-            const historyEntry = this.history.find((v) => v.id == topView.id);
+        if (!topView) { return; }
+        const viewState = topView.getState();
+        const historyEntry = this.history.find((v) => v.id == topView.id);
 
-            if (!historyEntry) { throw new Error("Cannot update state with unregistered view"); }
-            this.setURLState(topView.viewName, viewState);
-            historyEntry.stateData = viewState;
-        } else {
-            this.clearState();
-        }
+        if (!historyEntry) { throw new Error("Cannot update state with unregistered view"); }
+        this.setURLState(topView.viewName, viewState);
+        historyEntry.stateData = viewState;
     }
 
     private attachEventHandlers(): void {
@@ -92,11 +89,6 @@ class AppURL implements IAppURL {
     private pushState(viewName: string, stateData?: string) {
         if (this.frozen) { return; }
         this.controller.pushState(viewName, stateData);
-    }
-
-    private clearState() {
-        if (this.frozen) { return; }
-        this.controller.clearState();
     }
 }
 
