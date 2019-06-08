@@ -7,11 +7,13 @@ class EventManager implements IAppEventsMan {
 
     private viewChangeHandlers: Handler[];
     private resizeHandlers: Handler[];
+    private keydownHandlers: Handler<KeyboardEvent>[];
 
     constructor(events: IAppEvents) {
         this.events = events;
         this.viewChangeHandlers = [];
         this.resizeHandlers = [];
+        this.keydownHandlers = [];
     }
 
     public destory(): void {
@@ -45,6 +47,18 @@ class EventManager implements IAppEventsMan {
         this.events.offResize(handler);
         this.resizeHandlers.splice(
             this.viewChangeHandlers.indexOf(handler), 1
+        );
+    }
+
+    public onKeydown(handler: Handler<KeyboardEvent>): void {
+        this.events.onKeydown(handler);
+        this.keydownHandlers.push(handler);
+    }
+
+    public offKeydown(handler: Handler<KeyboardEvent>): void {
+        this.events.offKeydown(handler);
+        this.keydownHandlers.splice(
+            this.keydownHandlers.indexOf(handler), 1
         );
     }
 }

@@ -5,4 +5,6 @@ export default interface IAppEventsMan {
     offViewChange(handler: Handler): void;
     onResize(handler: Handler): void;
     offResize(handler: Handler): void;
+    onKeydown(handler: Handler<KeyboardEvent>): void;
+    offKeydown(handler: Handler<KeyboardEvent>): void;
 }

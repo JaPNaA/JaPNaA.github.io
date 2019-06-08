@@ -90,5 +90,11 @@ export default class ParseAppStateURLTest extends TestRunner {
                 id: undefined
             }
         );
+
+        this.nextAssertTests = "root" + hostMessage;
+        this.assertEquals(
+            parseAppStateURL(host),
+            undefined
+        );
     }
 }

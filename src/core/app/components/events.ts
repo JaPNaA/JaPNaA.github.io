@@ -6,10 +6,12 @@ import BaseApp from "../baseApp";
 class AppEvents implements IAppEvents {
     private resizeHandlers: EventHandlers;
     private viewChangeHandlers: EventHandlers;
+    private keydownHandlers: EventHandlers<KeyboardEvent>
 
     constructor(app: BaseApp) {
         this.resizeHandlers = new EventHandlers();
         this.viewChangeHandlers = new EventHandlers();
+        this.keydownHandlers = new EventHandlers();
     }
 
     public onViewChange(handler: Handler): void {
@@ -28,12 +30,24 @@ class AppEvents implements IAppEvents {
         this.resizeHandlers.remove(handler);
     }
 
+    public onKeydown(handler: Handler<KeyboardEvent>): void {
+        this.keydownHandlers.add(handler);
+    }
+
+    public offKeydown(handler: Handler<KeyboardEvent>): void {
+        this.keydownHandlers.remove(handler);
+    }
+
     public dispatchViewChange(): void {
         this.viewChangeHandlers.dispatch();
     }
 
     public dispatchResize(): void {
         this.resizeHandlers.dispatch();
+    }
+
+    public dispatchKeydown(data: KeyboardEvent): void {
+        this.keydownHandlers.dispatch(data);
     }
 }
 

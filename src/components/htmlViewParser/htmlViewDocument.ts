@@ -103,13 +103,15 @@ class HTMLViewDocument implements IHTMLViewDocument {
             const appState = parseAppStateURL(parsed);
             if (appState) {
                 const opensWithLinks = this.linkHandlingOptions.openViewsWithLinks;
-                ViewMap.get(appState.viewName).then(viewClass => {
-                    if (viewClass && opensWithLinks) {
-                        this.app.views.switchAndInit(viewClass, appState.stateData);
-                    } else {
-                        this.openLink(href);
-                    }
-                });
+                ViewMap.get(appState.viewName)
+                    .then(viewClass => {
+                        if (viewClass && opensWithLinks) {
+                            this.app.views.switchAndInit(viewClass, appState.stateData);
+                        } else {
+                            this.openLink(href);
+                        }
+                    })
+                    .catch(() => this.openLink(href));
             } else {
                 this.openLink(href);
             }

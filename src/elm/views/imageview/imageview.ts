@@ -69,7 +69,6 @@ class ImageView extends View {
 
     public async destory(): Promise<void> {
         super.destory();
-        this.removeEventHandlers();
         this.touchControls.destory();
         this.renderer.destory();
         await wait(ImageView.destorySpeed);
@@ -146,11 +145,8 @@ class ImageView extends View {
     }
 
     private addEventHandlers(): void {
-        this.resizeHandler = this.resizeHandler.bind(this);
-        this.renderer.onResize(this.resizeHandler);
-
-        this.keyDownHandler = this.keyDownHandler.bind(this);
-        addEventListener("keydown", this.keyDownHandler);
+        this.renderer.onResize(this.resizeHandler.bind(this));
+        this.events.onKeydown(this.keyDownHandler.bind(this));
 
         this.closeButton.onClick(this.closeButtonClickHandler.bind(this));
         this.elm.addEventListener("wheel", this.wheelHandler.bind(this), { passive: false });
@@ -168,10 +164,6 @@ class ImageView extends View {
         this.touchControls.onEndMove(this.endMoveHandler.bind(this));
         this.touchControls.onZoom(this.zoomHandler.bind(this));
         this.touchControls.onDoubleTap(this.doubleTapHandler.bind(this));
-    }
-
-    private removeEventHandlers(): void {
-        removeEventListener("keydown", this.keyDownHandler);
     }
 
     private resizeHandler(): void {

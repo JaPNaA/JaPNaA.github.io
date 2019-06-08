@@ -27,5 +27,9 @@ export default function parseAppStateURL(href: string | url.UrlWithStringQuery):
         builder.stateData = stateData;
     }
 
-    return builder.build();
+    try {
+        return builder.build();
+    } catch (err) {
+        return undefined;
+    }
 }
