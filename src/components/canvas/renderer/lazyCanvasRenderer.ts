@@ -64,6 +64,9 @@ abstract class LazyCanvasRenderer {
         cancelAnimationFrame(this.reqnafHandle);
     }
 
+    /**
+     * Requests a draw, doesn't check if it should
+     */
     public requestDraw(): void {
         if (this.isDrawing) {
             this.forceNextRedraw = true;
@@ -76,6 +79,13 @@ abstract class LazyCanvasRenderer {
         if (this.checkShouldRedraw()) {
             this.requestDraw();
         }
+    }
+
+    /**
+     * Updates last tick time to current time, effectively clearing the timer
+     */
+    public clearTimer(): void {
+        this.then = performance.now();
     }
 
     /**

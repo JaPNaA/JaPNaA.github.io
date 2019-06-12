@@ -35,6 +35,7 @@ class HexagonsTitle extends Widget {
     private registeredEventHandlers: boolean;
 
     private isVertical: boolean;
+    private loaded: boolean;
 
     private transitionInTimestep: number;
 
@@ -49,6 +50,7 @@ class HexagonsTitle extends Widget {
         this.overSizeHeight = 0;
         this.overSizeWidth = 0;
         this.isVertical = false;
+        this.loaded = false;
 
         this.renderer = new HexagonsTitleRenderer(this);
         this.layers = this.createLayers();
@@ -80,7 +82,11 @@ class HexagonsTitle extends Widget {
         this.renderer.onResize((size) => this.setSize(size[0], size[1]));
 
         // POSSIBLE BUG: destory before nextDone
-        SiteResources.nextDone().then(() => this.renderer.requestDraw());
+        SiteResources.nextDone().then(() => {
+            this.loaded = true;
+            this.renderer.clearTimer();
+            this.renderer.requestDraw();
+        });
 
         this.registeredEventHandlers = true;
     }
@@ -100,7 +106,7 @@ class HexagonsTitle extends Widget {
     }
 
     public tick(deltaTime: number): void {
-        if (SiteConfig.isMobile) { return; }
+        if (SiteConfig.isMobile || !this.loaded) { return; }
         this.transitionInTimestep += deltaTime / HexagonsTitle.transitionInTime;
 
         if (this.transitionInTimestep > 1) {
