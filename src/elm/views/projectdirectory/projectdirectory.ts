@@ -1,4 +1,4 @@
-import "../../../../styles/views/allThingies.less";
+import "../../../../styles/views/projectDirectory.less";
 
 import View from "../../../core/view/view";
 import IApp from "../../../core/types/app/iApp";
@@ -25,14 +25,14 @@ type LinkMatch = {
     data: ICard
 };
 
-class AllThingies extends View {
-    public static viewName = "AllThingies";
-    public viewName = AllThingies.viewName;
+class ProjectDirectory extends View {
+    public static viewName = "ProjectDirectory";
+    public viewName = ProjectDirectory.viewName;
     protected elm: HTMLDivElement;
 
     public isFullPage = true;
 
-    private static defaultTitle = "All my thingies";
+    private static defaultTitle = "Project directory";
     private title: HTMLDivElement;
     private pageContent: HTMLDivElement;
     private contentHref: string;
@@ -70,7 +70,7 @@ class AllThingies extends View {
     private createTitle(): HTMLHeadingElement {
         const title = document.createElement("h1");
         title.classList.add("title");
-        title.innerText = AllThingies.defaultTitle;
+        title.innerText = ProjectDirectory.defaultTitle;
         this.elm.appendChild(title);
         return title;
     }
@@ -184,7 +184,7 @@ class AllThingies extends View {
     }
 
     private setTitle(title: string) {
-        this.title.innerText = title || AllThingies.defaultTitle;
+        this.title.innerText = title || ProjectDirectory.defaultTitle;
     }
 
     private transformLinks(elm: HTMLElement) {
@@ -263,6 +263,6 @@ class AllThingies extends View {
     }
 }
 
-ViewMap.add(AllThingies);
+ViewMap.add(ProjectDirectory);
 
-export default AllThingies;
+export default ProjectDirectory;
