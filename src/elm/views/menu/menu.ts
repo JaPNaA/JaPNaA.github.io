@@ -63,7 +63,7 @@ class Menu extends View {
             this.createTitle(),
             this.createHeading("Navigate"),
             this.createButtonThatOpens("Overview", "Title page"),
-            this.createButtonThatOpens("AllThingies", "All thingies"),
+            this.createButtonThatOpens("ProjectDirectory", "Project Directory"),
             this.createCopyright()
         ];
 

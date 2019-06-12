@@ -38,9 +38,9 @@ export default class ParseAppStateURLTest extends TestRunner {
 
         this.nextAssertTests = "url with statedata" + hostMessage;
         this.assertIterableObjectEquals(
-            parseAppStateURL(host + "allthingies/Thingy_2019"),
+            parseAppStateURL(host + "projectdirectory/Thingy_2019"),
             {
-                viewName: "allthingies",
+                viewName: "projectdirectory",
                 stateData: "Thingy_2019",
                 directURL: undefined,
                 id: undefined
@@ -49,9 +49,9 @@ export default class ParseAppStateURLTest extends TestRunner {
 
         this.nextAssertTests = "url with statedata and hash" + hostMessage;
         this.assertIterableObjectEquals(
-            parseAppStateURL(host + "allthingies/Thingy_2019#jeepsacar"),
+            parseAppStateURL(host + "projectdirectory/Thingy_2019#jeepsacar"),
             {
-                viewName: "allthingies",
+                viewName: "projectdirectory",
                 stateData: "Thingy_2019#jeepsacar",
                 directURL: undefined,
                 id: undefined
