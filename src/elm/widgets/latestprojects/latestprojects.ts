@@ -18,20 +18,6 @@ class LatestProjects extends Widget {
     public setup(): void {
         super.setup();
         this.elm.innerHTML = "Latest projects";
-
-        const gen = ContentMan.cardGeneratorLatest();
-
-        function next() {
-            gen.next().then(
-                e => {
-                    if (!e.done) {
-                        next();
-                    }
-                    console.log(e);
-                }
-            );
-        }
-        next();
     }
 }
 
