@@ -80,13 +80,11 @@ class GridElementManager<T> {
 
     private placeElementOnPosition(position: GridElementPosition, elm: ElementData<T>): Rect {
         for (let yOffset = 0; yOffset < elm.height; yOffset++) {
-            if (!position) { debugger; }
             const y = yOffset + position.y;
             if (y >= this.gridRows) { this.addGridRow(); }
             let gridRow = this.grid[y];
 
             for (let x = position.startX; x <= position.endX; x++) {
-                if (gridRow[x] !== null) { debugger; }
                 gridRow[x] = elm.elm;
             }
         }
@@ -112,10 +110,9 @@ class GridElementManager<T> {
                 if (lastBlockIndex < y) { count++; }
             }
             // console.log(count);
-            if (count < this.minElmWidth) {
+            if (count > this.minElmWidth) {
                 this.firstOpenRow = y;
                 firstOpenRowSet = true;
-                break;
             }
         }
 
@@ -137,7 +134,7 @@ class GridElementManager<T> {
 
         for (let x = 0; x < this.gridColumns; x++) {
             if (lastBlockIndexes[x] === undefined) {
-                lastBlockIndexes[x] = 0;
+                lastBlockIndexes[x] = -1;
             }
         }
 
@@ -201,41 +198,43 @@ class GridElementManager<T> {
 
     private getPossibleRanges(): { possibleRanges: GridElementPosition[], maxRangeWidth: number } {
         const possibleRanges: GridElementPosition[] = [];
+        const lastBlockIndexes = this.getLastBlockIndexes();
         let maxRangeWidth = 0;
 
         for (let y = this.firstOpenRow; y < this.gridRows; y++) {
-            let startX = null;
+            let startX: number | undefined;
 
-            for (let x = 0; x < this.gridColumns - 1; x++) {
-                if (this.grid[y][x] === null && startX === null) {
-                    startX = x;
-                } else if (this.grid[y][x] !== null && startX !== null && x - startX >= this.minElmWidth) {
-                    const width = x - startX;
-                    if (maxRangeWidth < width) {
-                        maxRangeWidth = width;
+            let open = false;
+            for (let x = 0; x < this.gridColumns; x++) {
+                open = lastBlockIndexes[x] < y;
+                if (open) {
+                    if (startX === undefined) {
+                        startX = x;
                     }
-                    possibleRanges.push({
-                        startX: startX,
-                        endX: x - 1,
-                        y: y
-                    });
-                    startX = null;
-
+                } else {
+                    if (startX !== undefined) {
+                        possibleRanges.push({
+                            startX: startX,
+                            endX: x - 1,
+                            y: y
+                        });
+                        maxRangeWidth = Math.max(maxRangeWidth, x - startX);
+                        startX = undefined;
+                    }
                 }
             }
 
-            if (startX !== null && this.gridColumns - 1 - startX >= this.minElmWidth) {
-                const width = this.gridColumns - startX;
-                if (maxRangeWidth < width) {
-                    maxRangeWidth = width;
-                }
+            if (open && startX !== undefined) {
                 possibleRanges.push({
                     startX: startX,
-                    endX: (this.gridColumns - 1),
+                    endX: this.gridColumns - 1,
                     y: y
                 });
+                maxRangeWidth = Math.max(maxRangeWidth, this.gridColumns - 1 - startX);
             }
         }
+
+        debugger;
 
         return { possibleRanges, maxRangeWidth };
     }
