@@ -1,6 +1,7 @@
 import EventHandlers from "../../../core/utils/events/eventHandlers";
 import Handler from "../../../core/utils/events/handler";
 import IApp from "../../../core/types/app/iApp";
+import isVisible from "../../../utils/isVisible";
 
 type Vec2 = [number, number];
 
@@ -119,8 +120,7 @@ abstract class LazyCanvasRenderer {
     protected abstract getNewSize(): Vec2;
 
     protected isVisible(): boolean {
-        const bbox = this.canvas.getBoundingClientRect();
-        return bbox.top + bbox.height > 0;
+        return isVisible(this.canvas);
     }
 
     private setup(): void {
