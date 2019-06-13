@@ -59,8 +59,10 @@ class GridElementManager<T> {
             height: height
         };
         this.allElements.push(elmData);
-        console.log(elmData);
+        // console.log(elmData);
+        console.log(this.grid);
 
+        this.updateFirstOpenRow();
         const position = this.getRangeForElementWithWidth(width);
         const finalPosition = this.placeElementOnPosition(position, elmData);
         this.updateFirstOpenRow();
@@ -84,12 +86,13 @@ class GridElementManager<T> {
             let gridRow = this.grid[y];
 
             for (let x = position.startX; x <= position.endX; x++) {
+                if (gridRow[x] !== null) { debugger; }
                 gridRow[x] = elm.elm;
             }
         }
 
         return {
-            width: position.endX - position.startX,
+            width: position.endX - position.startX + 1,
             height: elm.height,
             x: position.startX,
             y: position.y
@@ -97,25 +100,48 @@ class GridElementManager<T> {
     }
 
     private updateFirstOpenRow() {
-        const dists = new Array(this.gridColumns);
+        const lastBlockIndexes = this.getLastBlockIndexes();
+
+        console.log(lastBlockIndexes);
+
+        let firstOpenRowSet = false;
+
+        for (let y = this.gridRows - 1; y >= 0; y--) {
+            let count = 0;
+            for (const lastBlockIndex of lastBlockIndexes) {
+                if (lastBlockIndex < y) { count++; }
+            }
+            // console.log(count);
+            if (count < this.minElmWidth) {
+                this.firstOpenRow = y;
+                firstOpenRowSet = true;
+                break;
+            }
+        }
+
+        if (!firstOpenRowSet) {
+            this.firstOpenRow = 0;
+        }
+    }
+
+    private getLastBlockIndexes(): number[] {
+        const lastBlockIndexes = new Array(this.gridColumns);
 
         for (let x = 0; x < this.gridColumns; x++) {
             for (let y = this.gridRows - 1; y >= 0; y--) {
-                if (this.grid[y][x] !== null) {
-                    dists[x] = y;
+                if (this.grid[y][x] !== null && lastBlockIndexes[x] === undefined) {
+                    lastBlockIndexes[x] = y;
                 }
             }
         }
 
-        for (let y = this.gridRows - 1; y >= 0; y--) {
-            let count = 0;
-            for (const dist of dists) {
-                if (dist > y) { count++; }
-            }
-            if (count < this.minElmWidth) {
-                this.firstOpenRow = count;
+        for (let x = 0; x < this.gridColumns; x++) {
+            if (lastBlockIndexes[x] === undefined) {
+                lastBlockIndexes[x] = 0;
             }
         }
+
+        return lastBlockIndexes;
     }
 
     // TODO: What an ugly function! Refactor this
@@ -127,7 +153,7 @@ class GridElementManager<T> {
             let widestRange = null;
 
             for (const range of possibleRanges) {
-                const rangeWidth = range.endX - range.startX;
+                const rangeWidth = range.endX - range.startX + 1;
                 if (rangeWidth > maxWidth) {
                     maxWidth = rangeWidth;
                     widestRange = range;
@@ -150,19 +176,21 @@ class GridElementManager<T> {
             let smallestAvailableRange = null as any as GridElementPosition;
 
             for (const range of possibleRanges) {
-                const rangeWidth = range.endX - range.startX;
+                const rangeWidth = range.endX - range.startX + 1;
                 if (rangeWidth >= width && rangeWidth < minWidth) {
                     minWidth = rangeWidth;
                     smallestAvailableRange = range;
                 }
             }
-            const rangeWidth = smallestAvailableRange.endX - smallestAvailableRange.startX;
+            const rangeWidth = smallestAvailableRange.endX - smallestAvailableRange.startX + 1;
             if (rangeWidth - width > GridElementManager.tolerance) {
-                return {
+                const range = {
                     startX: smallestAvailableRange.startX,
-                    endX: smallestAvailableRange.startX + width,
+                    endX: smallestAvailableRange.startX + width - 1,
                     y: smallestAvailableRange.y
-                }
+                };
+                console.log(range);
+                return range;
             }
 
             console.log(smallestAvailableRange);
@@ -175,8 +203,6 @@ class GridElementManager<T> {
         const possibleRanges: GridElementPosition[] = [];
         let maxRangeWidth = 0;
 
-        console.log(this.grid);
-
         for (let y = this.firstOpenRow; y < this.gridRows; y++) {
             let startX = null;
 
@@ -184,14 +210,13 @@ class GridElementManager<T> {
                 if (this.grid[y][x] === null && startX === null) {
                     startX = x;
                 } else if (this.grid[y][x] !== null && startX !== null && x - startX >= this.minElmWidth) {
-                    console.log(startX, x, y);
                     const width = x - startX;
                     if (maxRangeWidth < width) {
                         maxRangeWidth = width;
                     }
                     possibleRanges.push({
                         startX: startX,
-                        endX: x,
+                        endX: x - 1,
                         y: y
                     });
                     startX = null;
@@ -199,10 +224,8 @@ class GridElementManager<T> {
                 }
             }
 
-            console.log(startX);
-            if (startX !== null && (this.gridColumns - 1) - startX >= this.minElmWidth) {
-                console.log(startX, "end", y);
-                const width = (this.gridColumns - 1) - startX;
+            if (startX !== null && this.gridColumns - 1 - startX >= this.minElmWidth) {
+                const width = this.gridColumns - startX;
                 if (maxRangeWidth < width) {
                     maxRangeWidth = width;
                 }
@@ -213,8 +236,6 @@ class GridElementManager<T> {
                 });
             }
         }
-
-        console.log(possibleRanges);
 
         return { possibleRanges, maxRangeWidth };
     }

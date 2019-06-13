@@ -65,8 +65,8 @@ class BrowseProjects extends View {
         projectCard.appendTo(this.elm);
         await projectCard.load();
         const rect = this.grid.addElement(projectCard,
-            Math.floor(Math.random() * 2) + 1,
-            Math.floor(Math.random() * 2) + 1
+            Math.floor(Math.random() * 2) + 2,
+            Math.floor(Math.random() * 2) + 2
         );
         projectCard.setRect(rect);
         return projectCard;
