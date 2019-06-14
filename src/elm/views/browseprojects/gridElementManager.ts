@@ -44,6 +44,33 @@ class GridElementManager<T> {
         return this.scaleRectToReal(finalPosition);
     }
 
+    public resizeElementSize() {
+        throw new Error("not implemented");
+    }
+
+    public resizeGridColumns(columns: number) {
+        if (columns === this.gridColumns) { return; }
+
+        const now = performance.now();
+
+        const oldElements = this.allElements;
+        this.grid.length = 0;
+        this.allElements = [];
+        this.gridColumns = columns;
+        this.firstOpenRow = 0;
+        this.addGridRow();
+
+        for (const element of oldElements) {
+            this.addElement(element.elm, element.width, element.height);
+        }
+
+        console.log("resize took " + (performance.now() - now) + "ms");
+    }
+
+    public setMinElmWidth(minElmWidth: number) {
+        this.minElmWidth = minElmWidth;
+    }
+
     private findPositionForElementWithWidth(width: number): GridElementPosition {
         const { possibleRanges, maxRangeWidth } = this.getPossibleRanges();
 
