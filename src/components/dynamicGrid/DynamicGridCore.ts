@@ -6,15 +6,13 @@ import { ElementData, createElementData } from "./types/ElementData";
 class DynamicGridCore<T> {
     private static tolerance: number = 1;
 
+    public gridColumns: number;
+    public gridRows: number;
+
+    protected allElements: ElementData<T>[];
+
     private grid: (T | null)[][];
-    private allElements: ElementData<T>[];
-
-    private gridColumns: number;
-    private gridRows: number;
     private firstOpenRow: number;
-
-    private width: number;
-    private rowHeight: number;
     private minElmWidth: number;
 
     /**
@@ -23,46 +21,35 @@ class DynamicGridCore<T> {
      * @param rowHeight The real pixel height of a row
      * @param minElmWidth Min size of element on grid, used for optimization
      */
-    constructor(columns: number, width: number, rowHeight: number, minElmWidth: number) {
+    constructor(columns: number, minElmWidth?: number) {
         this.gridColumns = columns;
         this.gridRows = 0;
-        this.width = width;
-        this.rowHeight = rowHeight;
         this.allElements = [];
         this.grid = [];
-        this.minElmWidth = minElmWidth;
+        this.minElmWidth = minElmWidth || 1;
         this.firstOpenRow = 0;
 
         this.addGridRow();
     }
 
-    public addElement(element: T, width: number, height: number) {
+    public addElement(element: T, width: number, height: number): Rect {
         const elmData = createElementData(element, width, height);
         this.allElements.push(elmData);
-
-        const position = this.findPositionForElementWithWidth(width);
-        const finalPosition = this.putElementOnPosition(elmData, position);
-        return this.scaleRectToReal(finalPosition);
+        return this.putElementOnGrid(elmData);
     }
 
-    public resizeElementSize() {
-        throw new Error("not implemented");
-    }
-
-    public resizeGridColumns(columns: number) {
+    public resizeGridColumns(columns: number): void {
         if (columns === this.gridColumns) { return; }
 
         const now = performance.now();
 
-        const oldElements = this.allElements;
         this.grid.length = 0;
-        this.allElements = [];
         this.gridColumns = columns;
         this.firstOpenRow = 0;
         this.addGridRow();
 
-        for (const element of oldElements) {
-            this.addElement(element.elm, element.width, element.height);
+        for (const element of this.allElements) {
+            this.putElementOnGrid(element);
         }
 
         console.log("resize took " + (performance.now() - now) + "ms");
@@ -70,6 +57,13 @@ class DynamicGridCore<T> {
 
     public setMinElmWidth(minElmWidth: number) {
         this.minElmWidth = minElmWidth;
+    }
+
+    protected putElementOnGrid(elmData: ElementData<T>): Rect {
+        const position = this.findPositionForElementWithWidth(elmData.width);
+        const finalPosition = this.putElementOnPosition(elmData, position);
+        elmData.rect = finalPosition;
+        return finalPosition;
     }
 
     private findPositionForElementWithWidth(width: number): GridElementPosition {
@@ -222,16 +216,7 @@ class DynamicGridCore<T> {
         return lastBlockIndexes;
     }
 
-    private scaleRectToReal(rect: Rect): Rect {
-        return {
-            x: rect.x * this.width / this.gridColumns,
-            y: rect.y * this.rowHeight,
-            width: rect.width * this.width / this.gridColumns,
-            height: rect.height * this.rowHeight
-        };
-    }
-
-    private addGridRow() {
+    private addGridRow(): void {
         const arr = [];
         for (let i = 0; i < this.gridColumns; i++) {
             arr[i] = null;

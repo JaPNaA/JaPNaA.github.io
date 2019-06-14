@@ -9,14 +9,14 @@ import ProjectCard from "./projectCard";
 import ContentMan from "../../../components/contentMan/contentMan";
 import IProject from "../../../types/project/project";
 import isProjectCard from "../../../utils/isProjectCard";
-import DynamicGridCore from "../../../components/dynamicGrid/DynamicGridCore";
+import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
 
 class BrowseProjects extends View {
     protected elm: HTMLDivElement;
     public static viewName: string = "BrowseProjects";
 
     private projectCards: ProjectCard[];
-    private grid: DynamicGridCore<ProjectCard>;
+    private grid: DynamicGridDisplay<ProjectCard>;
 
     private cardGenerator: AsyncIterableIterator<IProject>;
 
@@ -25,7 +25,7 @@ class BrowseProjects extends View {
         super(app);
         this.elm = document.createElement("div");
         this.projectCards = [];
-        this.grid = new DynamicGridCore(11, app.width, 64, 2);
+        this.grid = new DynamicGridDisplay(11, app.width, 64, 2);
         this.cardGenerator = ContentMan.cardGeneratorLatest();
     }
 
@@ -64,11 +64,10 @@ class BrowseProjects extends View {
         this.projectCards.push(projectCard);
         projectCard.appendTo(this.elm);
         await projectCard.load();
-        const rect = this.grid.addElement(projectCard,
+        this.grid.addElement(projectCard,
             Math.floor(Math.random() * 3) + 2,
             Math.floor(Math.random() * 2) + 2
         );
-        projectCard.setRect(rect);
         return projectCard;
     }
 }

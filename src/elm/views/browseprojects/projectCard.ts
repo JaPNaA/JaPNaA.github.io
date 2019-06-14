@@ -1,8 +1,9 @@
 import ICard from "../../../types/project/card";
 import isVisible from "../../../utils/isVisible";
 import { Rect } from "../../../types/math/rect";
+import IRectSetable from "../../../components/dynamicGrid/types/IRectSetable";
 
-class ProjectCard {
+class ProjectCard implements IRectSetable {
     private card: ICard;
     private elm: HTMLDivElement;
 
