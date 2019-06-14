@@ -16,10 +16,12 @@ class ImageViewRenderer extends LazyCanvasRenderer {
     }
 
     protected tick(deltaTime: number): void {
+        console.log("tick");
         this.imageView.tick(deltaTime);
     }
 
     protected draw(X: CanvasRenderingContext2D): void {
+        console.log("draw");
         X.clearRect(0, 0, this.width, this.height);
         this.imageView.draw(X);
     }

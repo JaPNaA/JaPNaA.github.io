@@ -80,7 +80,6 @@ abstract class LazyCanvasRenderer {
 
     public updateSize(): void {
         const [width, height] = this.getNewSize();
-        console.log("resize", width, height);
         this.width = width;
         this.height = height;
         this.updateCanvasSize();
