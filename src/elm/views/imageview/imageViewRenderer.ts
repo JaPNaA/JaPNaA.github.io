@@ -4,11 +4,9 @@ import IApp from "../../../core/types/app/iApp";
 
 class ImageViewRenderer extends LazyCanvasRenderer {
     private imageView: ImageView;
-    private app: IApp;
 
     constructor(app: IApp, imageView: ImageView) {
-        super(app.width, app.height);
-        this.app = app;
+        super(app, app.width, app.height);
         this.imageView = imageView;
         this.app.events.onResize(() => this.updateSize());
     }
@@ -18,12 +16,10 @@ class ImageViewRenderer extends LazyCanvasRenderer {
     }
 
     protected tick(deltaTime: number): void {
-        console.log("tick");
         this.imageView.tick(deltaTime);
     }
 
     protected draw(X: CanvasRenderingContext2D): void {
-        console.log("draw");
         X.clearRect(0, 0, this.width, this.height);
         this.imageView.draw(X);
     }

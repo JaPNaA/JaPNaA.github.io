@@ -145,7 +145,7 @@ class ImageView extends View {
     }
 
     private addEventHandlers(): void {
-        this.events.onResize(this.resizeHandler.bind(this));
+        this.renderer.onResize(this.resizeHandler.bind(this));
         this.events.onKeydown(this.keyDownHandler.bind(this));
 
         this.closeButton.onClick(this.closeButtonClickHandler.bind(this));

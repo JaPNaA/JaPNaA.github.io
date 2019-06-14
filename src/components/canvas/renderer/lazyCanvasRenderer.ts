@@ -1,3 +1,7 @@
+import EventHandlers from "../../../core/utils/events/eventHandlers";
+import Handler from "../../../core/utils/events/handler";
+import IApp from "../../../core/types/app/iApp";
+
 type Vec2 = [number, number];
 
 abstract class LazyCanvasRenderer {
@@ -6,6 +10,7 @@ abstract class LazyCanvasRenderer {
     public dpr: number;
 
     protected canvas: HTMLCanvasElement;
+    protected app: IApp;
     private X: CanvasRenderingContext2D;
 
     private then: number;
@@ -13,11 +18,13 @@ abstract class LazyCanvasRenderer {
 
     private forceNextRedraw: boolean;
     private isDrawing: boolean;
+    private resizeHandlers: EventHandlers;
 
-    constructor(width: number, height: number);
-    constructor();
-    constructor(width?: number, height?: number) {
+    constructor(app: IApp, width: number, height: number);
+    constructor(app: IApp);
+    constructor(app: IApp, width?: number, height?: number) {
         this.canvas = document.createElement("canvas");
+        this.app = app;
 
         const X = this.canvas.getContext("2d");
         if (!X) { throw new Error("Canvas not supported"); }
@@ -40,6 +47,9 @@ abstract class LazyCanvasRenderer {
 
         this.forceNextRedraw = false;
         this.isDrawing = false;
+        this.resizeHandlers = new EventHandlers();
+
+        this.setup();
     }
 
     public appendTo(parent: HTMLElement): void {
@@ -69,6 +79,7 @@ abstract class LazyCanvasRenderer {
 
     public updateSize(): void {
         const [width, height] = this.getNewSize();
+        console.log("resize", width, height);
         this.width = width;
         this.height = height;
         this.updateCanvasSize();
@@ -86,11 +97,21 @@ abstract class LazyCanvasRenderer {
         return this.X;
     }
 
+    /**
+     * Add resize handler, guarantees firing before drawing
+     */
+    public onResize(handler: Handler) {
+        this.resizeHandlers.add(handler);
+    }
+
+    public offResize(handler: Handler) {
+        this.resizeHandlers.remove(handler);
+    }
+
     public resetTransform() {
         this.X.resetTransform();
         this.X.scale(this.dpr, this.dpr);
     }
-
 
     protected abstract hasChanged(): boolean;
     protected abstract tick(deltaTime: number): void;
@@ -100,6 +121,15 @@ abstract class LazyCanvasRenderer {
     protected isVisible(): boolean {
         const bbox = this.canvas.getBoundingClientRect();
         return bbox.top + bbox.height > 0;
+    }
+
+    private setup(): void {
+        this.resizeHandler = this.resizeHandler.bind(this);
+        this.app.events.onResize(this.resizeHandler);
+    }
+
+    private resizeHandler(): void {
+        this.resizeHandlers.dispatch();
     }
 
     private reqanfHandler(now: number): void {

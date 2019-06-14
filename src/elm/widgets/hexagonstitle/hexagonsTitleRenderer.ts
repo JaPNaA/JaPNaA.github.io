@@ -1,12 +1,13 @@
 import LazyCanvasRenderer from "../../../components/canvas/renderer/lazyCanvasRenderer";
 import HexagonsTitle from "./hexagonstitle";
+import IApp from "../../../core/types/app/iApp";
 
 class HexagonsTitleRenderer extends LazyCanvasRenderer {
     public hexagonsTitle: HexagonsTitle;
     private justScrolled = false;
 
-    constructor(hexagonsTitle: HexagonsTitle) {
-        super(...HexagonsTitleRenderer.getSizeOfHexagonsTitle(hexagonsTitle));
+    constructor(app: IApp, hexagonsTitle: HexagonsTitle) {
+        super(app, ...HexagonsTitleRenderer.getSizeOfHexagonsTitle(hexagonsTitle));
         this.hexagonsTitle = hexagonsTitle;
     }
 

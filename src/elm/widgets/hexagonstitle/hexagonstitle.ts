@@ -7,8 +7,7 @@ import Widget from "../../../core/widget/widget";
 import WidgetMap from "../../../core/widget/widgetMap";
 import Logo from "./logo";
 import HexagonsTitleRenderer from "./hexagonsTitleRenderer";
-import { easeInQuad, easeInCubic, easeInOutQuad, easeInOutQuart } from "../../../utils/easingFunctions";
-import { Vec2, newVec2 } from "../../../types/math/vec2";
+import { easeInOutQuart } from "../../../utils/easingFunctions";
 import IApp from "../../../core/types/app/iApp";
 
 // TODO: Make this look better on mobile
@@ -57,7 +56,7 @@ class HexagonsTitle extends Widget {
         this.isVertical = false;
         this.loaded = false;
 
-        this.renderer = new HexagonsTitleRenderer(this);
+        this.renderer = new HexagonsTitleRenderer(app, this);
         this.layers = this.createLayers();
         this.gradient = this.createGradient();
         this.logo = new Logo();
@@ -81,7 +80,7 @@ class HexagonsTitle extends Widget {
         this.parent.addEventListener("scroll", this.scrollHandler, { passive: true });
 
         this.resizeHandler = this.resizeHandler.bind(this);
-        this.app.events.onResize(this.resizeHandler);
+        this.renderer.onResize(this.resizeHandler);
 
         // POSSIBLE BUG: destory before nextDone
         SiteResources.nextDone().then(() => {
@@ -97,7 +96,7 @@ class HexagonsTitle extends Widget {
         super.destory();
         this.renderer.destory();
         if (this.registeredEventHandlers) {
-            this.app.events.offResize(this.resizeHandler);
+            this.renderer.offResize(this.resizeHandler);
             this.parent.removeEventListener("scroll", this.scrollHandler);
         }
     }
@@ -163,6 +162,7 @@ class HexagonsTitle extends Widget {
     }
 
     private createGradient(): CanvasGradient {
+        // BUG: createGradient is called *after* drawing when resizing
         const gradient: CanvasGradient = this.renderer.getContext().createLinearGradient(0, 0, 0, this.height);
         gradient.addColorStop(0, "#c2ffe3");
         gradient.addColorStop(1, "#ffffff");
@@ -178,8 +178,8 @@ class HexagonsTitle extends Widget {
     }
 
     private resizeHandler(): void {
-        this.renderer.updateSize();
         this.setSize(this.app.width, this.app.height);
+        this.renderer.updateSize();
     }
 
     private setSize(width: number, height: number): void {

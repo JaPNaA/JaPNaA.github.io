@@ -72,7 +72,6 @@ class ResizeWatcher {
         this.width = width;
         this.height = height;
         this.resizeHandlers.dispatch(newVec2(width, height));
-        console.log("resize");
     }
 
     private didResize(): boolean {

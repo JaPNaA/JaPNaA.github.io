@@ -144,7 +144,6 @@ class FrameView extends View {
     private closeSelf() {
         if (this.fromDirectURL) {
             const dist = this.startHistoryLength - history.length;
-            console.log(this.startHistoryLength, history.length, dist);
             if (dist >= 0) {
                 history.go(-2);
             } else {
