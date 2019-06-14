@@ -2,6 +2,9 @@ import EventHandlers from "../../../core/utils/events/eventHandlers";
 import Handler from "../../../core/utils/events/handler";
 import IApp from "../../../core/types/app/iApp";
 import isVisible from "../../../utils/isVisible";
+import EventHandlers from "../../../core/utils/events/eventHandlers";
+import Handler from "../../../core/utils/events/handler";
+import IApp from "../../../core/types/app/iApp";
 
 type Vec2 = [number, number];
 
@@ -80,6 +83,7 @@ abstract class LazyCanvasRenderer {
 
     public updateSize(): void {
         const [width, height] = this.getNewSize();
+        console.log("resize", width, height);
         this.width = width;
         this.height = height;
         this.updateCanvasSize();
