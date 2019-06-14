@@ -33,6 +33,7 @@ class BrowseProjects extends View {
         await super.setup();
 
         this.addCardsUntilScreenFull();
+        this.events.onResize(() => this.grid.resizeElementSize(this.app.width, 64));
     }
 
     private async addCardsUntilScreenFull() {
