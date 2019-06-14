@@ -44,10 +44,10 @@ class ResizeWatcher {
      */
     public resizeOrWatch(): void {
         if (this.didResize()) {
-            this.watchForResize();
-        } else {
             const [newWidth, newHeight] = this.sizeGetter();
             this.resize(newWidth, newHeight);
+        } else {
+            this.watchForResize();
         }
     }
 
@@ -76,7 +76,7 @@ class ResizeWatcher {
 
     private didResize(): boolean {
         const [newWidth, newHeight] = this.sizeGetter();
-        return newWidth === this.width && newHeight === this.height;
+        return newWidth !== this.width && newHeight !== this.height;
     }
 
     private watchForResize() {
