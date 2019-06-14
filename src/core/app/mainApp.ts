@@ -2,16 +2,20 @@ import ViewDescriptor from "../types/app/viewDescriptor";
 import SiteResources from "../siteResources";
 import AppURL from "./components/url";
 import BaseApp from "./baseApp";
+import ResizeWatcher from "./components/ResizeWatcher";
+import { Vec2 } from "../../types/math/vec2";
 
 abstract class MainApp extends BaseApp {
     public url: AppURL;
     public indexView?: ViewDescriptor;
     public splashScreenView?: ViewDescriptor;
     public autoRestoreState: boolean = true;
+    public resizeWatcher: ResizeWatcher;
 
     constructor() {
         super();
         this.url = new AppURL(this, this.events);
+        this.resizeWatcher = new ResizeWatcher();
     }
 
     public async setup(): Promise<void> {
@@ -26,21 +30,21 @@ abstract class MainApp extends BaseApp {
     }
 
     public async destory(): Promise<void> {
-        removeEventListener("resize", this.resizeHandler);
+        this.resizeWatcher.offResize(this.resizeHandler);
         removeEventListener("keydown", this.keydownHandler);
+        this.resizeWatcher.destory();
     }
 
     private addEventHandlers(): void {
         this.resizeHandler = this.resizeHandler.bind(this);
-        addEventListener("resize", this.resizeHandler);
+        this.resizeWatcher.onResize(this.resizeHandler);
         this.keydownHandler = this.keydownHandler.bind(this);
         addEventListener("keydown", this.keydownHandler);
     }
 
-    private resizeHandler(): void {
-        // TODO: Handle IOS resizes
-        this.width = innerWidth;
-        this.height = innerHeight;
+    private resizeHandler(newSize: Vec2): void {
+        this.width = newSize.x;
+        this.height = newSize.y;
         this.events.dispatchResize();
     }
 

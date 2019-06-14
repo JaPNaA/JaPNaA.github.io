@@ -1,6 +1,3 @@
-import EventHandlers from "../../../core/utils/events/eventHandlers";
-import Handler from "../../../core/utils/events/handler";
-
 type Vec2 = [number, number];
 
 abstract class LazyCanvasRenderer {
@@ -9,20 +6,13 @@ abstract class LazyCanvasRenderer {
     public dpr: number;
 
     protected canvas: HTMLCanvasElement;
-
-    private static resizeWatchTTL: number = 120;
     private X: CanvasRenderingContext2D;
 
     private then: number;
-    private resizePollsLeft: number;
     private reqnafHandle: number;
 
     private forceNextRedraw: boolean;
     private isDrawing: boolean;
-    private isWatchingForResize: boolean;
-
-
-    private resizeHandlers: EventHandlers<Vec2>;
 
     constructor(width: number, height: number);
     constructor();
@@ -46,14 +36,10 @@ abstract class LazyCanvasRenderer {
         this.updateCanvasSize();
 
         this.then = performance.now();
-        this.resizePollsLeft = 0;
         this.reqnafHandle = -1;
 
         this.forceNextRedraw = false;
         this.isDrawing = false;
-        this.isWatchingForResize = false;
-
-        this.resizeHandlers = new EventHandlers();
     }
 
     public appendTo(parent: HTMLElement): void {
@@ -81,40 +67,19 @@ abstract class LazyCanvasRenderer {
         }
     }
 
+    public updateSize(): void {
+        const [width, height] = this.getNewSize();
+        this.width = width;
+        this.height = height;
+        this.updateCanvasSize();
+        this.requestDraw();
+    }
+
     /**
      * Updates last tick time to current time, effectively clearing the timer
      */
     public clearTimer(): void {
         this.then = performance.now();
-    }
-
-    /**
-     * Resizes if the size has changed, but watches for one
-     * in case it hasn't. This is for IOS Support.
-     */
-    public resizeOrWatchForResize(): void {
-        if (this.didResize()) {
-            this.watchForResize();
-        } else {
-            const [newWidth, newHeight] = this.getNewSize();
-            this.resize(newWidth, newHeight);
-        }
-    }
-
-    public onResize(handler: Handler<Vec2>): void {
-        this.resizeHandlers.add(handler);
-    }
-
-    public offResize(handler: Handler<Vec2>): void {
-        this.resizeHandlers.remove(handler);
-    }
-
-    public resize(width: number, height: number): void {
-        this.width = width;
-        this.height = height;
-        this.updateCanvasSize();
-        this.resizeHandlers.dispatch([width, height]);
-        this.requestDraw();
     }
 
     public getContext(): CanvasRenderingContext2D {
@@ -135,11 +100,6 @@ abstract class LazyCanvasRenderer {
     protected isVisible(): boolean {
         const bbox = this.canvas.getBoundingClientRect();
         return bbox.top + bbox.height > 0;
-    }
-
-    private didResize(): boolean {
-        const [newWidth, newHeight] = this.getNewSize();
-        return newWidth === this.width && newHeight === this.height;
     }
 
     private reqanfHandler(now: number): void {
@@ -166,25 +126,6 @@ abstract class LazyCanvasRenderer {
         }
     }
 
-    private watchForResize() {
-        this.resizePollsLeft = LazyCanvasRenderer.resizeWatchTTL;
-        if (this.isWatchingForResize) { return; }
-        this.resizeWatchLoop();
-    }
-
-    private resizeWatchLoop() {
-        this.resizePollsLeft--;
-
-        if (this.didResize() || this.resizePollsLeft <= 0) {
-            const [newWidth, newHeight] = this.getNewSize();
-            this.isWatchingForResize = false;
-            this.resize(newWidth, newHeight);
-            return;
-        }
-
-        requestAnimationFrame(() => this.resizeWatchLoop());
-    }
-
     private updateCanvasSize(): void {
         this.canvas.width = this.width * this.dpr;
         this.canvas.height = this.height * this.dpr;
@@ -192,7 +133,7 @@ abstract class LazyCanvasRenderer {
         this.canvas.style.height = this.height + "px";
 
         if (this.dpr !== 1) {
-            this.X.scale(this.dpr, this.dpr);
+            this.resetTransform();
         }
     }
 }

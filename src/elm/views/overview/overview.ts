@@ -27,7 +27,7 @@ class Overview extends View {
         super(app);
         this.elm = document.createElement("div");
         this.content = this.createContent();
-        this.hexagonsTitle = new HexagonsTitle(this.elm);
+        this.hexagonsTitle = new HexagonsTitle(app, this.elm);
     }
 
     public setup(): void {

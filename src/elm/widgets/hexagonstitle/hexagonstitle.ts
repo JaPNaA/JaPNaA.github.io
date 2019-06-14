@@ -8,6 +8,8 @@ import WidgetMap from "../../../core/widget/widgetMap";
 import Logo from "./logo";
 import HexagonsTitleRenderer from "./hexagonsTitleRenderer";
 import { easeInQuad, easeInCubic, easeInOutQuad, easeInOutQuart } from "../../../utils/easingFunctions";
+import { Vec2, newVec2 } from "../../../types/math/vec2";
+import IApp from "../../../core/types/app/iApp";
 
 // TODO: Make this look better on mobile
 // TODO: Make a nice transition in
@@ -26,6 +28,8 @@ class HexagonsTitle extends Widget {
 
     private static transitionInTime = 1000;
 
+    private app: IApp;
+
     private renderer: HexagonsTitleRenderer;
     private logo: Logo;
     private layers: HexagonsLayer[];
@@ -39,14 +43,15 @@ class HexagonsTitle extends Widget {
 
     private transitionInTimestep: number;
 
-    constructor(parentElm: HTMLElement) {
+    constructor(app: IApp, parentElm: HTMLElement) {
         super();
         this.parent = parentElm;
 
+        this.app = app;
         this.elm = document.createElement("div");
 
-        this.width = 1280;
-        this.height = 720;
+        this.width = app.width;
+        this.height = app.height;
         this.overSizeHeight = 0;
         this.overSizeWidth = 0;
         this.isVertical = false;
@@ -76,10 +81,7 @@ class HexagonsTitle extends Widget {
         this.parent.addEventListener("scroll", this.scrollHandler, { passive: true });
 
         this.resizeHandler = this.resizeHandler.bind(this);
-        addEventListener("resize", this.resizeHandler);
-        this.resizeHandler();
-
-        this.renderer.onResize((size) => this.setSize(size[0], size[1]));
+        this.app.events.onResize(this.resizeHandler);
 
         // POSSIBLE BUG: destory before nextDone
         SiteResources.nextDone().then(() => {
@@ -95,7 +97,7 @@ class HexagonsTitle extends Widget {
         super.destory();
         this.renderer.destory();
         if (this.registeredEventHandlers) {
-            removeEventListener("resize", this.resizeHandler);
+            this.app.events.offResize(this.resizeHandler);
             this.parent.removeEventListener("scroll", this.scrollHandler);
         }
     }
@@ -176,7 +178,8 @@ class HexagonsTitle extends Widget {
     }
 
     private resizeHandler(): void {
-        this.renderer.resizeOrWatchForResize();
+        this.renderer.updateSize();
+        this.setSize(this.app.width, this.app.height);
     }
 
     private setSize(width: number, height: number): void {

@@ -8,10 +8,14 @@ class EmbededApp extends BaseApp {
     public url: FakeAppURL;
     public title: string = "embededApp";
 
-    private parentElm: Element;
+    public parentApp: IApp;
+
+    protected parentElm: Element;
 
     constructor(parentApp: IApp, parentElm: Element) {
         super(parentApp);
+
+        this.parentApp = parentApp;
         this.parentElm = parentElm;
         this.url = new FakeAppURL();
     }
@@ -25,12 +29,12 @@ class EmbededApp extends BaseApp {
     }
 
     public async destory(): Promise<void> {
-        removeEventListener("resize", this.resizeHandler);
+        this.parentApp.events.offResize(this.resizeHandler);
     }
 
     private addEventHandlers() {
         this.resizeHandler = this.resizeHandler.bind(this);
-        addEventListener("resize", this.resizeHandler);
+        this.parentApp.events.onResize(this.resizeHandler);
 
         this.mainElm.addEventListener("keydown", this.keydownHandler.bind(this));
         this.mainElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));

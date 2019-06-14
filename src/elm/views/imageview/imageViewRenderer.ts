@@ -10,7 +10,7 @@ class ImageViewRenderer extends LazyCanvasRenderer {
         super(app.width, app.height);
         this.app = app;
         this.imageView = imageView;
-        this.app.events.onResize(() => this.resizeOrWatchForResize());
+        this.app.events.onResize(() => this.updateSize());
     }
 
     protected hasChanged(): boolean {
@@ -18,10 +18,12 @@ class ImageViewRenderer extends LazyCanvasRenderer {
     }
 
     protected tick(deltaTime: number): void {
+        console.log("tick");
         this.imageView.tick(deltaTime);
     }
 
     protected draw(X: CanvasRenderingContext2D): void {
+        console.log("draw");
         X.clearRect(0, 0, this.width, this.height);
         this.imageView.draw(X);
     }
