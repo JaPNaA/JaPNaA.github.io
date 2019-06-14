@@ -1,8 +1,9 @@
-import { Rect, newRect } from "../../../types/math/rect";
-import createArray from "../../../utils/createArray";
-import { ElementData, GridElementPosition, createGridElementPosition, createElementData } from "./types";
+import { Rect, newRect } from "../../types/math/rect";
+import createArray from "../../utils/createArray";
+import { GridElementPosition, createGridElementPosition } from "./types/GridElementPosition";
+import { ElementData, createElementData } from "./types/ElementData";
 
-class GridElementManager<T> {
+class DynamicGridCore<T> {
     private static tolerance: number = 1;
 
     private grid: (T | null)[][];
@@ -113,7 +114,7 @@ class GridElementManager<T> {
             }
         }
 
-        if (smallestAvailableRange.width - width > GridElementManager.tolerance) {
+        if (smallestAvailableRange.width - width > DynamicGridCore.tolerance) {
             return createGridElementPosition(
                 smallestAvailableRange.x,
                 smallestAvailableRange.y,
@@ -240,4 +241,4 @@ class GridElementManager<T> {
     }
 }
 
-export default GridElementManager;
+export default DynamicGridCore;
