@@ -1,13 +1,14 @@
-import "../../../styles/components/cardV1.less";
+import "../../../../styles/components/cardV1.less";
 
-import ICard from "../../types/project/card";
-import SiteConfig from "../../siteConfig";
-import Display from "../../types/project/display";
-import DisplayImg from "../../types/project/displayImg";
-import triggerTransitionIn from "../../core/utils/triggerTransitionIn";
-import SiteResources from "../../core/siteResources";
-import IApp from "../../core/types/app/iApp";
-import IImageView from "../../elm/views/imageview/iImageView";
+import ICard from "../../../types/project/card";
+import SiteConfig from "../../../siteConfig";
+import Display from "../../../types/project/display";
+import DisplayImg from "../../../types/project/displayImg";
+import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
+import SiteResources from "../../../core/siteResources";
+import IApp from "../../../core/types/app/iApp";
+import IImageView from "../../../elm/views/imageview/iImageView";
+import getFirstDisplayImgSrc from "./getFirstDisplayImg";
 
 // TODO: refactor, along with it's .less companion!
 
@@ -76,21 +77,12 @@ class CardJSONv1Elm {
             background.style.cssText = this.card.style;
         }
 
+        const src = getFirstDisplayImgSrc(this.card);
 
-        const displays = this.card.content.display;
-
-        if (displays[0]) {
-            const display = displays[0];
-
-            if (display.type === "img") {
-                const src = displays[0].src;
-
-                if (src) {
-                    background.style.backgroundImage = `url(${SiteConfig.path.thingy}${src})`;
-                    this.elm.classList.add("backgroundImageExists");
-                    this.backgroundImageExists = true;
-                }
-            }
+        if (src) {
+            background.style.backgroundImage = `url(${SiteConfig.path.thingy}${src})`;
+            this.elm.classList.add("backgroundImageExists");
+            this.backgroundImageExists = true;
         }
 
         return background;

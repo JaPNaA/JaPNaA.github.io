@@ -4,7 +4,7 @@ import ViewMetadata from "../../types/view/viewMetadata";
 import IAppViews from "../../types/app/iAppViews";
 import AppState from "../../types/appState";
 import ViewDescriptor from "../../types/app/viewDescriptor";
-import createAppState from "../../utils/createViewState";
+import createAppState from "../../utils/createAppState";
 import BaseApp from "../baseApp";
 import AppEvents from "./events";
 

@@ -17,7 +17,7 @@ import JSONResource from "../../../core/components/resourceLoader/resources/json
 import AppState from "../../../core/types/appState";
 import openFrameView from "../../../utils/openFrameView";
 import IProjectInfoView from "../projectinfo/iProjectInfo";
-import createAppState from "../../../core/utils/createViewState";
+import createAppState from "../../../core/utils/createAppState";
 
 type LinkMatch = {
     year: number,

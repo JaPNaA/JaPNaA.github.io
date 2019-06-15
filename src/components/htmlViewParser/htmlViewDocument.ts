@@ -6,7 +6,7 @@ import EmbededApp from "../../core/app/embededApp";
 import WidgetMap from "../../core/widget/widgetMap";
 import parseAppStateURL from "../../core/utils/parseAppStateURL";
 import openNoopener from "../../core/utils/open/openNoopener";
-import createViewState from "../../core/utils/createViewState";
+import createAppState from "../../core/utils/createAppState";
 import WidgetFactory from "../../core/widget/widgetFactory";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import openFrameView from "../../utils/openFrameView";
@@ -178,7 +178,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
         const viewClass = await ViewMap.get(viewName);
         embededApp.setup();
         elm.classList.add("embededView");
-        embededApp.views.open(viewClass, createViewState(viewClass, stateData || undefined));
+        embededApp.views.open(viewClass, createAppState(viewClass, stateData || undefined));
         this.embededApps.push(embededApp);
     }
 

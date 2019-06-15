@@ -2,7 +2,7 @@ import "../../../../styles/views/projectInfo.less";
 
 import View from "../../../core/view/view";
 import ICard from "../../../types/project/card";
-import CardJSONv1Elm from "../../../components/jsonToElm/cardV1";
+import CardJSONv1Elm from "../../../components/jsonToElm/v1/card";
 import ViewMap from "../../../core/view/viewMap";
 import SiteConfig from "../../../siteConfig";
 import IApp from "../../../core/types/app/iApp";
