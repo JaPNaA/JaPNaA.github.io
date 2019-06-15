@@ -197,19 +197,31 @@ class AllThingies extends View {
             if (hrefAttrib) {
                 const href = url.resolve(this.contentHref, hrefAttrib);
                 anchor.href = href;
-                this.mapLinkToProject(href);
+                this.mapLinkToProject(href)
+                    .then(e => { if (e) { anchor.classList.add("hasProjectInfo"); } });
             }
         }
     }
 
-    private mapLinkToProject(href: string) {
+    /**
+     * @returns sucessful?
+     */
+    private mapLinkToProject(href: string): Promise<boolean> {
         const path = url.parse(href).path;
         const depth = this.getPathDepth(path);
+        const prom = new Promise<boolean>(res => {
+            if (depth === 2) {
+                this.findMatchingEntry(href)
+                    .then(e => {
+                        this.linkProjectMatchMap.set(href, e);
+                        res(Boolean(e));
+                    });
+            } else {
+                res(false);
+            }
+        });
 
-        if (depth === 2) {
-            this.findMatchingEntry(href)
-                .then(e => this.linkProjectMatchMap.set(href, e));
-        }
+        return prom;
     }
 
     private async findMatchingEntry(link: string): Promise<LinkMatch | undefined> {
