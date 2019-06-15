@@ -14,18 +14,19 @@ import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDispl
 class BrowseProjects extends View {
     protected elm: HTMLDivElement;
     public static viewName: string = "BrowseProjects";
+    public viewName = BrowseProjects.viewName;
+    public isFullPage = true;
 
     private projectCards: ProjectCard[];
     private grid: DynamicGridDisplay<ProjectCard>;
 
     private cardGenerator: AsyncIterableIterator<IProject>;
 
-
     constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
         this.projectCards = [];
-        this.grid = new DynamicGridDisplay(11, app.width, 64, 2);
+        this.grid = new DynamicGridDisplay(11, 100 /* percent */, 64, 2);
         this.cardGenerator = ContentMan.cardGeneratorLatest();
     }
 
@@ -33,7 +34,7 @@ class BrowseProjects extends View {
         await super.setup();
 
         this.addCardsUntilScreenFull();
-        this.events.onResize(() => this.grid.resizeElementSize(this.app.width, 64));
+        // this.events.onResize(() => this.grid.resizeElementSize(this.app.width, 64));
     }
 
     private async addCardsUntilScreenFull() {
@@ -61,14 +62,11 @@ class BrowseProjects extends View {
     }
 
     private async addCard(card: ICard): Promise<ProjectCard> {
-        const projectCard = ProjectCardFactory.create(card);
+        const projectCard = ProjectCardFactory.create(this.app, card);
         this.projectCards.push(projectCard);
         projectCard.appendTo(this.elm);
         await projectCard.load();
-        this.grid.addElement(projectCard,
-            Math.floor(Math.random() * 3) + 2,
-            Math.floor(Math.random() * 2) + 2
-        );
+        this.grid.addElement(projectCard, projectCard.width, projectCard.height);
         return projectCard;
     }
 }
