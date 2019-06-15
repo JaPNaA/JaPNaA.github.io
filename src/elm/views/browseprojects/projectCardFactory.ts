@@ -3,8 +3,9 @@ import ProjectCard from "./projectCard";
 import IApp from "../../../core/types/app/iApp";
 
 class ProjectCardFactory {
-    public static create(app: IApp, card: ICard): ProjectCard {
-        return new ProjectCard(app, card);
+    // TODO: Refactor method: too many arguments
+    public static create(app: IApp, card: ICard, year: number, index: number): ProjectCard {
+        return new ProjectCard(app, card, year, index);
     }
 }
 

@@ -7,9 +7,9 @@ import ICard from "../../../types/project/card";
 import ProjectCardFactory from "./projectCardFactory";
 import ProjectCard from "./projectCard";
 import ContentMan from "../../../components/contentMan/contentMan";
-import IProject from "../../../types/project/project";
 import isProjectCard from "../../../utils/isProjectCard";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
+import IProjectWithLocation from "../../../components/contentMan/IProjectWithLocation";
 
 class BrowseProjects extends View {
     protected elm: HTMLDivElement;
@@ -20,14 +20,14 @@ class BrowseProjects extends View {
     private projectCards: ProjectCard[];
     private grid: DynamicGridDisplay<ProjectCard>;
 
-    private cardGenerator: AsyncIterableIterator<IProject>;
+    private cardGenerator: AsyncIterableIterator<IProjectWithLocation>;
 
     constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
         this.projectCards = [];
         this.grid = new DynamicGridDisplay(11, 100 /* percent */, 64, 2);
-        this.cardGenerator = ContentMan.cardGeneratorLatest();
+        this.cardGenerator = ContentMan.cardGeneratorLatestWithLocation();
     }
 
     public async setup() {
@@ -52,17 +52,18 @@ class BrowseProjects extends View {
             const state = await this.cardGenerator.next();
             card = state.value;
             done = state.done;
-        } while (!isProjectCard(card) && !done);
+        } while (!isProjectCard(card.project) && !done);
 
-        if (isProjectCard(card) && !done) {
-            return await this.addCard(card);
+        if (isProjectCard(card.project) && !done) {
+            return await this.addCard(card.project, card.year, card.index);
         } else {
             return undefined;
         }
     }
 
-    private async addCard(card: ICard): Promise<ProjectCard> {
-        const projectCard = ProjectCardFactory.create(this.app, card);
+    // TODO: refactor, lower amount of arguments
+    private async addCard(card: ICard, year: number, index: number): Promise<ProjectCard> {
+        const projectCard = ProjectCardFactory.create(this.app, card, year, index);
         this.projectCards.push(projectCard);
         projectCard.appendTo(this.elm);
         projectCard.setup();

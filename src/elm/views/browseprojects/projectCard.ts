@@ -17,10 +17,13 @@ class ProjectCard implements IRectSetable {
     private elm: HTMLDivElement;
     private cardElm: HTMLDivElement;
 
+    private year: number;
+    private index: number;
+
     private contentDescriptionElm?: HTMLDivElement;
     private contentDescriptionTextElm?: HTMLDivElement;
 
-    constructor(app: IApp, card: ICard) {
+    constructor(app: IApp, card: ICard, year: number, index: number) {
         this.app = app;
         this.card = card;
 
@@ -31,6 +34,9 @@ class ProjectCard implements IRectSetable {
         this.cardElm.classList.add("card");
         this.elm.appendChild(this.cardElm);
 
+        this.year = year;
+        this.index = index;
+
         this.width = random(3, 4, 1);
         this.height = random(5, 7, 1);
     }
@@ -38,6 +44,7 @@ class ProjectCard implements IRectSetable {
     public setup() {
         this.cardElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));
         this.cardElm.addEventListener("mouseout", this.mouseoutHandler.bind(this));
+        this.cardElm.addEventListener("click", this.clickHandler.bind(this));
     }
 
     public appendTo(parent: HTMLElement) {
@@ -140,6 +147,11 @@ class ProjectCard implements IRectSetable {
         if (this.contentDescriptionElm) {
             this.contentDescriptionElm.style.height = "0";
         }
+    }
+
+    private clickHandler(): void {
+        // TODO: Animate expanding instead of just switching views
+        this.app.views.switchAndInit("ProjectInfo", this.year + "." + this.index);
     }
 }
 
