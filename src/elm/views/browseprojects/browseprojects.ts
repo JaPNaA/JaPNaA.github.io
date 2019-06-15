@@ -65,6 +65,7 @@ class BrowseProjects extends View {
         const projectCard = ProjectCardFactory.create(this.app, card);
         this.projectCards.push(projectCard);
         projectCard.appendTo(this.elm);
+        projectCard.setup();
         await projectCard.load();
         this.grid.addElement(projectCard, projectCard.width, projectCard.height);
         return projectCard;

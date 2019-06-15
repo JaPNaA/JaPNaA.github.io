@@ -17,6 +17,9 @@ class ProjectCard implements IRectSetable {
     private elm: HTMLDivElement;
     private cardElm: HTMLDivElement;
 
+    private contentDescriptionElm?: HTMLDivElement;
+    private contentDescriptionTextElm?: HTMLDivElement;
+
     constructor(app: IApp, card: ICard) {
         this.app = app;
         this.card = card;
@@ -29,7 +32,12 @@ class ProjectCard implements IRectSetable {
         this.elm.appendChild(this.cardElm);
 
         this.width = random(3, 4, 1);
-        this.height = 6;
+        this.height = random(5, 7, 1);
+    }
+
+    public setup() {
+        this.cardElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));
+        this.cardElm.addEventListener("mouseout", this.mouseoutHandler.bind(this));
     }
 
     public appendTo(parent: HTMLElement) {
@@ -62,42 +70,76 @@ class ProjectCard implements IRectSetable {
         }
     }
 
-    private addBackground() {
+    private addBackground(): void {
         const firstDisplay = getFirstDisplayImgSrc(this.card);
         if (!firstDisplay) { return; }
         const path = SiteConfig.path.thingy + firstDisplay;
         SiteResources.loadImage(path);
-        this.cardElm.style.backgroundImage = "url(" + path + ")";
+
+        const background = document.createElement("div");
+        background.classList.add("background");
+        background.style.backgroundImage = "url(" + path + ")";
+        this.cardElm.appendChild(background);
     }
 
-    private addContent() {
+    private addContent(): void {
         const content = document.createElement("div");
-        content.appendChild(this.createContentBackground());
-        content.appendChild(this.createContentTitle());
-        content.appendChild(this.createContentDescription());
+        content.appendChild(this.createContentBackgroundOverlay());
+        content.appendChild(this.createTextContainer());
         this.cardElm.appendChild(content);
     }
 
-    private createContentBackground() {
+    private createContentBackgroundOverlay(): HTMLDivElement {
         const background = document.createElement("div");
-        background.classList.add("background");
+        background.classList.add("backgroundOverlay");
         // same background color as cardElm
-        background.style.backgroundColor = getComputedStyle(this.cardElm).backgroundColor;
+        if (this.cardElm.style.backgroundColor) {
+            background.style.backgroundColor = this.cardElm.style.backgroundColor;
+        }
         return background;
     }
 
-    private createContentTitle() {
+    private createTextContainer(): HTMLDivElement {
+        const container = document.createElement("div");
+        container.classList.add("textContainer");
+        container.appendChild(this.createContentTitle());
+        container.appendChild(this.createContentDescription());
+        return container;
+    }
+
+    private createContentTitle(): HTMLDivElement {
         const title = document.createElement("div");
         title.classList.add("title");
         title.innerText = this.card.name;
         return title;
     }
 
-    private createContentDescription() {
-        const description = document.createElement("desc");
+    private createContentDescription(): HTMLDivElement {
+        const description = document.createElement("div");
         description.classList.add("description");
-        description.innerHTML = this.card.content.description;
+        this.contentDescriptionElm = description;
+
+        const text = document.createElement("div");
+        text.innerHTML = this.card.content.description;
+        this.contentDescriptionTextElm = text;
+
+        description.appendChild(text);
         return description;
+    }
+
+    private mouseoverHandler(): void {
+        this.cardElm.classList.add("mouseover");
+        if (this.contentDescriptionElm && this.contentDescriptionTextElm) {
+            this.contentDescriptionElm.style.height =
+                this.contentDescriptionTextElm.getBoundingClientRect().height + "px";
+        }
+    }
+
+    private mouseoutHandler(): void {
+        this.cardElm.classList.remove("mouseover");
+        if (this.contentDescriptionElm) {
+            this.contentDescriptionElm.style.height = "0";
+        }
     }
 }
 
