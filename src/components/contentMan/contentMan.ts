@@ -5,6 +5,7 @@ import IIndex from "../../types/project/index";
 import IInfoJSON from "../../types/project/infojson";
 import ICard from "../../types/project/card";
 import isProjectCard from "../../utils/isProjectCard";
+import IProjectWithLocation from "./IProjectWithLocation";
 
 // TODO: Make this function like a lazyily evaluated array
 
@@ -33,27 +34,43 @@ class ContentMan {
         return null;
     }
 
-    public static async *cardGeneratorOldest(): AsyncIterableIterator<IProject> {
+    public static async *cardGeneratorOldestWithLocation(): AsyncIterableIterator<IProjectWithLocation> {
         const index = await this.getIndex();
 
         for (let year = index.start; year <= index.end; year++) {
             const list = await this.getFileForYear(year);
 
-            for (const project of list.data) {
-                yield project;
+            for (let i = 0; i < list.data.length; i++) {
+                const project = list.data[i];
+                yield { project: project, index: i, year: year };
             }
         }
     }
 
-    public static async *cardGeneratorLatest(): AsyncIterableIterator<IProject> {
+    public static async *cardGeneratorLatestWithLocation(): AsyncIterableIterator<IProjectWithLocation> {
         const index = await this.getIndex();
 
         for (let year = index.end; year >= index.start; year--) {
             const list = await this.getFileForYear(year);
 
             for (let i = list.data.length - 1; i >= 0; i--) {
-                yield list.data[i];
+                const project = list.data[i];
+                yield { project: project, index: i, year: year };
             }
+        }
+    }
+
+    public static async *cardGeneratorOldest(): AsyncIterableIterator<IProject> {
+        const gen = this.cardGeneratorOldestWithLocation();
+        for await (const item of gen) {
+            yield item.project;
+        }
+    }
+
+    public static async *cardGeneratorLatest(): AsyncIterableIterator<IProject> {
+        const gen = this.cardGeneratorLatestWithLocation();
+        for await (const item of gen) {
+            yield item.project;
         }
     }
 
