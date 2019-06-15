@@ -25,10 +25,9 @@ abstract class View {
     }
 
     public setup(): void {
-        const viewName = this.viewName || this.constructor.name;
-
+        this.viewName = this.viewName || this.constructor.name;
         this.elm.classList.add("view");
-        this.elm.classList.add(viewName);
+        this.elm.classList.add(this.viewName);
 
         if (this.isFullPage) {
             this.app.url.pushHistory(this);
