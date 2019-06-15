@@ -31,7 +31,7 @@ abstract class LazyClassMap<T> {
             if (this.importWithName) {
                 try {
                     SiteResources.addResourceLoading();
-                    return (await this.importWithName(name)).default;
+                    return (await this.importWithName(name.toLowerCase())).default;
                 } catch (err) {
                     throw new Error("View \"" + name + "\" doesn't exist, tried importing.");
                 } finally {
