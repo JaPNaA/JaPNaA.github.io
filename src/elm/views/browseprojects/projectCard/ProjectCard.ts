@@ -29,6 +29,8 @@ abstract class ProjectCard implements IRectSetable {
     }
 
     public setup() {
+        this.width = Math.max(2, this.width);
+        this.width = Math.max(2, this.height);
         this.cardElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));
         this.cardElm.addEventListener("mouseout", this.mouseoutHandler.bind(this));
         this.cardElm.addEventListener("click", this.clickHandler.bind(this));

@@ -13,6 +13,8 @@ class ProjectV1CardCard extends ProjectCard {
     protected cardTitle: string;
     protected cardDescription: string;
 
+    private static size: number = 20;
+
     private year: number;
     private index: number
     private card: ICard;
@@ -23,14 +25,27 @@ class ProjectV1CardCard extends ProjectCard {
         this.year = year;
         this.index = index;
 
-        this.width = random(3, 4, 1);
-        this.height = random(5, 7, 1);
+        this.width = 3;
+        this.height = 2;
 
         this.cardTitle = card.name;
         this.cardDescription = card.content.description;
     }
 
-    public load(): Promise<void> {
+    public async load(): Promise<void> {
+        const firstDisplay = getFirstDisplayImgSrc(this.card);
+        if (firstDisplay) {
+            const path = SiteConfig.path.thingy + firstDisplay;
+            await new Promise(res => {
+                SiteResources.loadImage(path)
+                    .onLoad(e => {
+                        this.height = Math.round(Math.sqrt(ProjectV1CardCard.size * e.image.height / e.image.width));
+                        this.width = Math.round(Math.sqrt(ProjectV1CardCard.size * e.image.width / e.image.height));
+                        res();
+                    });
+            });
+        }
+
         this.useStyles();
         return super.load();
     }
