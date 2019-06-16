@@ -1,6 +1,7 @@
 import EventHandlers from "../../utils/events/eventHandlers";
 import { Vec2, newVec2 } from "../../../types/math/vec2";
 import Handler from "../../utils/events/handler";
+import SiteConfig from "../../../siteConfig";
 
 type SizeGetter = () => [number, number];
 
@@ -8,9 +9,13 @@ type SizeGetter = () => [number, number];
 
 class ResizeWatcher {
     private static resizeWatchTTL: number = 120;
+    // in all iOS browsers, the width and height change
+    // at different times (whyyyyy)
+    private static resizesAfterResize: number = 2;
     private isWatchingForResize: boolean;
 
     private resizePollsLeft: number;
+    private resizesLeft: number;
 
     private width: number;
     private height: number;
@@ -28,6 +33,7 @@ class ResizeWatcher {
         this.width = width;
         this.height = height;
         this.resizePollsLeft = 0;
+        this.resizesLeft = 0;
         this.isWatchingForResize = false;
         this.resizeHandlers = new EventHandlers();
 
@@ -39,15 +45,15 @@ class ResizeWatcher {
     }
 
     /**
-     * Resizes if the size has changed, but watches for one
-     * in case it hasn't. This is for IOS Support.
+     * Watches for resize of the device is iOS, otherwise,
+     * resize normally
      */
     public resizeOrWatch(): void {
-        if (this.didResize()) {
+        if (SiteConfig.isIOS) {
+            this.watchForResize();
+        } else {
             const [newWidth, newHeight] = this.sizeGetter();
             this.resize(newWidth, newHeight);
-        } else {
-            this.watchForResize();
         }
     }
 
@@ -81,18 +87,24 @@ class ResizeWatcher {
 
     private watchForResize() {
         this.resizePollsLeft = ResizeWatcher.resizeWatchTTL;
+        this.resizesLeft = ResizeWatcher.resizesAfterResize;
         if (this.isWatchingForResize) { return; }
         this.resizeWatchLoop();
     }
 
     private resizeWatchLoop() {
         this.resizePollsLeft--;
+        this.isWatchingForResize = true;
 
         if (this.didResize() || this.resizePollsLeft <= 0) {
             const [newWidth, newHeight] = this.sizeGetter();
-            this.isWatchingForResize = false;
             this.resize(newWidth, newHeight);
-            return;
+
+            this.resizesLeft--;
+            if (this.resizesLeft <= 0) {
+                this.isWatchingForResize = false;
+                return;
+            }
         }
 
         requestAnimationFrame(() => this.resizeWatchLoop());
