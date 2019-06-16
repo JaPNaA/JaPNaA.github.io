@@ -11,9 +11,11 @@ class ProjectLinkCard extends ProjectCard {
 
     constructor(app: IApp, name: string, href: string) {
         super(app);
-        this.width = 2;
-        this.height = 2;
-        this.cardTitle = name;
+        const size = Math.ceil(Math.sqrt(name.length) * 0.5);
+        this.elm.classList.add("link");
+        this.width = size;
+        this.height = size;
+        this.cardTitle = name.replace(/[a-zA-Z](?=[A-Z])/g, "$&\u200B");
         this.cardDescription = href;
         this.href = href;
     }
