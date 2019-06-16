@@ -8,11 +8,11 @@ class DynamicGridCore<T> {
 
     public gridColumns: number;
     public gridRows: number;
+    public firstOpenRow: number;
 
     protected allElements: ElementData<T>[];
 
     private grid: (T | null)[][];
-    private firstOpenRow: number;
     private minElmWidth: number;
 
     /**

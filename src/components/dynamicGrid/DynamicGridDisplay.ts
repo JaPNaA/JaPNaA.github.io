@@ -31,6 +31,10 @@ class DynamicGridDisplay<T extends IRectSetable> extends DynamicGridCore<T> {
         this.callAllElementsToResize();
     }
 
+    public isAfterFirstOpenRow(y: number) {
+        return y > this.firstOpenRow * this.rowHeight;
+    }
+
     private scaleRectToReal(rect: Rect): Rect {
         return {
             x: rect.x * this.columnWidth,

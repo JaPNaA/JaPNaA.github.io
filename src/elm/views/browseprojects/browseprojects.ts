@@ -19,6 +19,7 @@ class BrowseProjects extends View {
 
     private projectCards: ProjectCard[];
     private grid: DynamicGridDisplay<ProjectCard>;
+    private addingToScreenFull: boolean;
 
     private cardGenerator: AsyncIterableIterator<IProjectWithLocation>;
 
@@ -28,20 +29,43 @@ class BrowseProjects extends View {
         this.projectCards = [];
         this.grid = new DynamicGridDisplay(11, 100 /* percent */, 64, 2);
         this.cardGenerator = ContentMan.cardGeneratorLatestWithLocation();
+        this.addingToScreenFull = false;
     }
 
     public async setup() {
         await super.setup();
 
         this.addCardsUntilScreenFull();
+        this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
         // this.events.onResize(() => this.grid.resizeElementSize(this.app.width, 64));
     }
 
-    private async addCardsUntilScreenFull() {
+    private scrollHandler(): void {
+        const bottomY = this.elm.scrollTop + this.elm.clientHeight;
+        if (this.grid.isAfterFirstOpenRow(bottomY)) {
+            this.addCardsUntilScreenFull();
+        }
+    }
+
+    private async addCardsUntilScreenFull(): Promise<void> {
+        if (this.addingToScreenFull) { return; }
+        let count = 0;
+        this.addingToScreenFull = true;
+
         while (true) {
             const card = await this.addNextCard();
-            if (!card || !card.isVisible()) { break; }
+            if (card && card.isVisible()) {
+                count = 0;
+            } else {
+                count++;
+                // append 3 after detected end
+                if (count > 3) {
+                    break;
+                }
+            }
         }
+
+        this.addingToScreenFull = false;
     }
 
     private async addNextCard(): Promise<ProjectCard | undefined> {
@@ -52,9 +76,9 @@ class BrowseProjects extends View {
             const state = await this.cardGenerator.next();
             card = state.value;
             done = state.done;
-        } while (!isProjectCard(card.project) && !done);
+        } while (card && !isProjectCard(card.project) && !done);
 
-        if (isProjectCard(card.project) && !done) {
+        if (card && isProjectCard(card.project) && !done) {
             return await this.addCard(card.project, card.year, card.index);
         } else {
             return undefined;
