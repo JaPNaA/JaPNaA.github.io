@@ -104,6 +104,7 @@ class HexagonsTitle extends Widget {
     public setOverSize(overSizeWidth: number, overSizeHeight: number): void {
         this.overSizeHeight = overSizeHeight;
         this.overSizeWidth = overSizeWidth;
+        this.resizeHandler();
     }
 
     public tick(deltaTime: number): void {
