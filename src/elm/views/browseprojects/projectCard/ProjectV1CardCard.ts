@@ -30,6 +30,7 @@ class ProjectV1CardCard extends ProjectCard {
 
         this.cardTitle = card.name;
         this.cardDescription = card.content.description;
+        this.href = "/projectinfo/" + this.year + "." + this.index;
     }
 
     public async load(): Promise<void> {
@@ -67,7 +68,7 @@ class ProjectV1CardCard extends ProjectCard {
         }
     }
 
-    protected clickHandler(): void {
+    protected linkClickHandler(): void {
         // TODO: Animate expanding instead of just switching views
         this.app.views.switchAndInit("ProjectInfo", this.year + "." + this.index);
     }

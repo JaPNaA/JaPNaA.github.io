@@ -9,10 +9,11 @@ abstract class ProjectCard implements IRectSetable {
 
     protected abstract cardTitle: string;
     protected abstract cardDescription: string;
+    protected href?: string;
 
     protected app: IApp;
     protected elm: HTMLDivElement;
-    protected cardElm: HTMLDivElement;
+    protected cardElm: HTMLAnchorElement;
 
     private contentDescriptionElm?: HTMLDivElement;
     private contentDescriptionTextElm?: HTMLDivElement;
@@ -23,7 +24,7 @@ abstract class ProjectCard implements IRectSetable {
         this.elm = document.createElement("div");
         this.elm.classList.add("projectCard");
 
-        this.cardElm = document.createElement("div");
+        this.cardElm = document.createElement("a");
         this.cardElm.classList.add("card");
         this.elm.appendChild(this.cardElm);
     }
@@ -31,6 +32,11 @@ abstract class ProjectCard implements IRectSetable {
     public setup() {
         this.width = Math.max(2, this.width);
         this.width = Math.max(2, this.height);
+
+        if (this.href) {
+            this.cardElm.href = this.href;
+        }
+
         this.cardElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));
         this.cardElm.addEventListener("mouseout", this.mouseoutHandler.bind(this));
         this.cardElm.addEventListener("click", this.clickHandler.bind(this));
@@ -59,7 +65,15 @@ abstract class ProjectCard implements IRectSetable {
         this.addContent();
     }
 
-    protected abstract clickHandler(): void;
+    protected abstract linkClickHandler(): void;
+
+    protected clickHandler(e: MouseEvent): void {
+        // What if the user exepects something else to happen while a modifier key is down?
+        if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) { return; }
+        e.preventDefault();
+        this.linkClickHandler();
+    }
+
 
     protected createBackground(): HTMLDivElement {
         const background = document.createElement("div");

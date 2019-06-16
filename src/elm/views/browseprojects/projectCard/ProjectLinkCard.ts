@@ -7,7 +7,7 @@ class ProjectLinkCard extends ProjectCard {
     public height: number;
     protected cardTitle: string;
     protected cardDescription: string;
-    private href: string;
+    protected href: string;
 
     constructor(app: IApp, name: string, href: string) {
         super(app);
@@ -20,7 +20,7 @@ class ProjectLinkCard extends ProjectCard {
         this.href = href;
     }
 
-    protected clickHandler(): void {
+    protected linkClickHandler(): void {
         openFrameView(this.app, this.href);
     }
 }
