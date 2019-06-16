@@ -26,7 +26,7 @@ class ProjectV1CardCard extends ProjectCard {
         this.index = index;
 
         this.width = 3;
-        this.height = 2;
+        this.height = 3;
 
         this.cardTitle = card.name;
         this.cardDescription = card.content.description;
