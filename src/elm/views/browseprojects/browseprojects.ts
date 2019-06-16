@@ -19,6 +19,9 @@ class BrowseProjects extends View {
     public viewName = BrowseProjects.viewName;
     public isFullPage = true;
 
+    private static readonly minColWidth = 128;
+    private static readonly minColumns = 3;
+
     private projectCards: ProjectCard[];
     private grid: DynamicGridDisplay<ProjectCard>;
     private addingToScreenFull: boolean;
@@ -39,7 +42,7 @@ class BrowseProjects extends View {
 
         this.addCardsUntilScreenFull();
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
-        this.events.onResize(() => this.grid.resizeElementSize(100, this.app.width / 11));
+        this.events.onResize(this.resizeHandler.bind(this));
     }
 
     private scrollHandler(): void {
@@ -47,6 +50,17 @@ class BrowseProjects extends View {
         if (this.grid.isAfterFirstOpenRow(bottomY)) {
             this.addCardsUntilScreenFull();
         }
+    }
+
+    private resizeHandler(): void {
+        const columns = Math.max(
+            BrowseProjects.minColumns,
+            Math.floor(this.app.width / BrowseProjects.minColWidth)
+        );
+        if (this.grid.gridColumns !== columns) {
+            this.grid.resizeGridColumns(columns);
+        }
+        this.grid.resizeElementSize(100, this.app.width / columns);
     }
 
     private async addCardsUntilScreenFull(): Promise<void> {
