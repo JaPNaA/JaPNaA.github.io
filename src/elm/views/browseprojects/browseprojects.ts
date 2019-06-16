@@ -87,14 +87,14 @@ class BrowseProjects extends View {
         if (done) {
             return undefined;
         } else if (isProjectCardWithLocation(item)) {
-            return await this.addV1(item.project, item.year, item.index);
+            return await this.addV1(item);
         } else if (isProjectLink(item)) {
             return await this.addLink(item.name, item.href);
         }
     }
 
-    private addV1(card: ICard, year: number, index: number): Promise<ProjectCard> {
-        const v1 = ProjectCardFactory.createV1(this.app, card, year, index);
+    private addV1(card: ICardWithLocation): Promise<ProjectCard> {
+        const v1 = ProjectCardFactory.createV1(this.app, card);
         return this.addCard(v1);
     }
 

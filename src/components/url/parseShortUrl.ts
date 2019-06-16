@@ -16,7 +16,6 @@ export default async function parseShortUrl(short: string): Promise<string | und
 }
 
 async function projectByNumber(short: string): Promise<string> {
-    // TODO: this will take more work using current code
     const no = parseInt(short.slice(1)); // trim out "#";
     if (isNaN(no)) { throw new Error("Invalid number"); }
 

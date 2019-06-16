@@ -10,9 +10,6 @@ import HexagonsTitleRenderer from "./hexagonsTitleRenderer";
 import { easeInOutQuart } from "../../../utils/easingFunctions";
 import IApp from "../../../core/types/app/iApp";
 
-// TODO: Make this look better on mobile
-// TODO: Make a nice transition in
-
 class HexagonsTitle extends Widget {
     public static widgetName = "hexagonsTitle";
     public widgetName = HexagonsTitle.widgetName;

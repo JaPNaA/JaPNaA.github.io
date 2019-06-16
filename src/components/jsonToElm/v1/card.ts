@@ -50,9 +50,7 @@ class CardJSONv1Elm {
         triggerTransitionIn(this.elm, CardJSONv1Elm.transitionInTimeout);
     }
 
-    public addEventListeners(): void {
-        // TODO: when image clicked, pop out, show
-    }
+    public addEventListeners(): void { }
 
     private parse(): void {
         this.elm.classList.add("card", "v1");
@@ -157,7 +155,6 @@ class CardJSONv1Elm {
     }
 
     private createDisplaysIn(block: HTMLElement): void {
-        // TODO: slice(1) instead
         const displays = this.card.content.display.slice(0);
         for (const display of displays) {
             this.createDisplayIn(display, block);
