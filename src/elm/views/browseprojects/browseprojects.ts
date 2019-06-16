@@ -20,7 +20,7 @@ class BrowseProjects extends View {
     public isFullPage = true;
 
     private static readonly minColWidth = 128;
-    private static readonly minColumns = 3;
+    private static readonly minColumns = 4;
 
     private projectCards: ProjectCard[];
     private grid: DynamicGridDisplay<ProjectCard>;
@@ -43,6 +43,7 @@ class BrowseProjects extends View {
         this.addCardsUntilScreenFull();
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
         this.events.onResize(this.resizeHandler.bind(this));
+        this.resizeHandler();
     }
 
     private scrollHandler(): void {

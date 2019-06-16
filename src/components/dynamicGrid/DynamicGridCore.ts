@@ -88,7 +88,7 @@ class DynamicGridCore<T> {
             }
         }
 
-        if (!widestRange) {
+        if (!widestRange || widestRange.width < this.minElmWidth) {
             this.addGridRow();
             return createGridElementPosition(0, this.gridRows - 1, width);
         }
