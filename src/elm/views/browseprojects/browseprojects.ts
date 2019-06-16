@@ -10,6 +10,10 @@ import ContentMan from "../../../components/contentMan/contentMan";
 import isProjectCard from "../../../utils/isProjectCard";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
 import IProjectWithLocation from "../../../components/contentMan/IProjectWithLocation";
+import IProjectLink from "../../../components/contentMan/IProjectLink";
+import ICardWithLocation from "../../../components/contentMan/ICardWithLocation";
+import isProjectLink from "../../../utils/isProjectLink";
+import isProjectCardWithLocation from "../../../utils/isProjectCardWithLocation";
 
 class BrowseProjects extends View {
     protected elm: HTMLDivElement;
@@ -21,14 +25,14 @@ class BrowseProjects extends View {
     private grid: DynamicGridDisplay<ProjectCard>;
     private addingToScreenFull: boolean;
 
-    private cardGenerator: AsyncIterableIterator<IProjectWithLocation>;
+    private cardGenerator: AsyncIterableIterator<ICardWithLocation | IProjectLink>;
 
     constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
         this.projectCards = [];
         this.grid = new DynamicGridDisplay(11, 100 /* percent */, 64, 2);
-        this.cardGenerator = ContentMan.cardGeneratorLatestWithLocation();
+        this.cardGenerator = ContentMan.cardAndLinkGeneratorOldestWithLocation();
         this.addingToScreenFull = false;
     }
 
@@ -69,19 +73,25 @@ class BrowseProjects extends View {
     }
 
     private async addNextCard(): Promise<ProjectCard | undefined> {
-        let card;
+        let item;
         let done = false;
 
         do {
             const state = await this.cardGenerator.next();
-            card = state.value;
+            item = state.value;
             done = state.done;
-        } while (card && !isProjectCard(card.project) && !done);
+        } while (
+            !isProjectCardWithLocation(item) &&
+            !isProjectLink(item) &&
+            !done
+        );
 
-        if (card && isProjectCard(card.project) && !done) {
-            return await this.addV1(card.project, card.year, card.index);
-        } else {
+        if (done) {
             return undefined;
+        } else if (isProjectCardWithLocation(item)) {
+            return await this.addV1(item.project, item.year, item.index);
+        } else if (isProjectLink(item)) {
+            return await this.addLink(item.name, item.href);
         }
     }
 

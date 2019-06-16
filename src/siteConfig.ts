@@ -29,7 +29,8 @@ class SiteConfig_ {
         repo: {
             notRelative: true,
             thingy: "/Thingy/",
-            thingy_: "/Thingy_"
+            thingy_: "/Thingy_",
+            linksIndex: "index.json"
         },
 
         content: "assets/content/",
