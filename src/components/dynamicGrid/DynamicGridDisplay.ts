@@ -15,7 +15,6 @@ class DynamicGridDisplay<T extends IRectSetable> extends DynamicGridCore<T> {
 
     public addElement(element: T, width_: number, height: number): Rect {
         const width = Math.min(width_, this.gridColumns);
-        console.log(width, width_);
         const rect = super.addElement(element, width, height);
         const scaled = this.scaleRectToReal(rect);
         element.setRect(scaled);

@@ -41,8 +41,6 @@ class DynamicGridCore<T> {
     public resizeGridColumns(columns: number): void {
         if (columns === this.gridColumns) { return; }
 
-        const now = performance.now();
-
         this.grid.length = 0;
         this.gridColumns = columns;
         this.firstOpenRow = 0;
@@ -51,8 +49,6 @@ class DynamicGridCore<T> {
         for (const element of this.allElements) {
             this.putElementOnGrid(element);
         }
-
-        console.log("resize took " + (performance.now() - now) + "ms");
     }
 
     public setMinElmWidth(minElmWidth: number) {
