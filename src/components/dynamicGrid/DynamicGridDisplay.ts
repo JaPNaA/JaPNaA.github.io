@@ -32,6 +32,12 @@ class DynamicGridDisplay<T extends IRectSetable> extends DynamicGridCore<T> {
         this.callAllElementsToResize();
     }
 
+    public getFirstElementAt(y: number): T | null {
+        const gridY = Math.ceil(y / this.rowHeight);
+        const firstElement = this.getFirstElementInRow(this.grid[gridY]);
+        return firstElement;
+    }
+
     public isAfterFirstOpenRow(y: number) {
         return y > this.firstOpenRow * this.rowHeight;
     }
@@ -50,6 +56,14 @@ class DynamicGridDisplay<T extends IRectSetable> extends DynamicGridCore<T> {
             if (!element.rect) { return; }
             element.elm.setRect(this.scaleRectToReal(element.rect));
         }
+    }
+
+    private getFirstElementInRow(row: (T | null)[] | undefined): T | null {
+        if (!row) { return null; }
+        for (const item of row) {
+            if (item) { return item; }
+        }
+        return null;
     }
 }
 

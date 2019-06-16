@@ -11,8 +11,8 @@ class DynamicGridCore<T> {
     public firstOpenRow: number;
 
     protected allElements: ElementData<T>[];
+    protected grid: (T | null)[][];
 
-    private grid: (T | null)[][];
     private minElmWidth: number;
 
     /**

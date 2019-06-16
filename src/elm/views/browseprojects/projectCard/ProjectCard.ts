@@ -50,6 +50,10 @@ abstract class ProjectCard implements IRectSetable {
         return isVisible(this.elm);
     }
 
+    public getDY() {
+        return this.elm.getBoundingClientRect().top;
+    }
+
     public setRect(rect: Rect): void {
         this.elm.style.top = rect.y + "px";
         this.elm.style.left = rect.x + "%";

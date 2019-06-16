@@ -58,10 +58,18 @@ class BrowseProjects extends View {
             BrowseProjects.minColumns,
             Math.floor(this.app.width / BrowseProjects.minColWidth)
         );
+        const scrollTarget = this.grid.getFirstElementAt(this.elm.scrollTop);
+        const scrollTargetDY = scrollTarget ? scrollTarget.getDY() : 0;
+
         if (this.grid.gridColumns !== columns) {
             this.grid.resizeGridColumns(columns);
         }
         this.grid.resizeElementSize(100, this.app.width / columns);
+
+        if (scrollTarget) {
+            const dy = scrollTarget.getDY();
+            this.elm.scrollBy(0, dy - scrollTargetDY);
+        }
     }
 
     private async addCardsUntilScreenFull(): Promise<void> {
