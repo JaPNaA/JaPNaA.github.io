@@ -29,7 +29,7 @@ class BrowseProjects extends View {
         super(app);
         this.elm = document.createElement("div");
         this.projectCards = [];
-        this.grid = new DynamicGridDisplay(11, 100 /* percent */, 64, 2);
+        this.grid = new DynamicGridDisplay(11, 100 /* percent */, app.width / 11, 2);
         this.cardGenerator = ContentMan.cardAndLinkGeneratorLatestWithLocation();
         this.addingToScreenFull = false;
     }
@@ -39,7 +39,7 @@ class BrowseProjects extends View {
 
         this.addCardsUntilScreenFull();
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
-        // this.events.onResize(() => this.grid.resizeElementSize(this.app.width, 64));
+        this.events.onResize(() => this.grid.resizeElementSize(100, this.app.width / 11));
     }
 
     private scrollHandler(): void {
