@@ -4,8 +4,8 @@ import ViewMap from "../../../core/view/viewMap";
 import View from "../../../core/view/view";
 import IApp from "../../../core/types/app/iApp";
 import ICard from "../../../types/project/card";
-import ProjectCardFactory from "./projectCardFactory";
-import ProjectCard from "./projectCard";
+import ProjectCardFactory from "./ProjectCardFactory";
+import ProjectCard from "./projectCard/ProjectCard";
 import ContentMan from "../../../components/contentMan/contentMan";
 import isProjectCard from "../../../utils/isProjectCard";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
@@ -79,15 +79,23 @@ class BrowseProjects extends View {
         } while (card && !isProjectCard(card.project) && !done);
 
         if (card && isProjectCard(card.project) && !done) {
-            return await this.addCard(card.project, card.year, card.index);
+            return await this.addV1(card.project, card.year, card.index);
         } else {
             return undefined;
         }
     }
 
-    // TODO: refactor, lower amount of arguments
-    private async addCard(card: ICard, year: number, index: number): Promise<ProjectCard> {
-        const projectCard = ProjectCardFactory.create(this.app, card, year, index);
+    private addV1(card: ICard, year: number, index: number): Promise<ProjectCard> {
+        const v1 = ProjectCardFactory.createV1(this.app, card, year, index);
+        return this.addCard(v1);
+    }
+
+    private addLink(name: string, href: string): Promise<ProjectCard> {
+        const link = ProjectCardFactory.createLink(this.app, name, href);
+        return this.addCard(link);
+    }
+
+    private async addCard(projectCard: ProjectCard): Promise<ProjectCard> {
         this.projectCards.push(projectCard);
         projectCard.appendTo(this.elm);
         projectCard.setup();

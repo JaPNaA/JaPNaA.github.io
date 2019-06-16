@@ -1,31 +1,24 @@
-import ICard from "../../../types/project/card";
-import isVisible from "../../../utils/isVisible";
-import { Rect } from "../../../types/math/rect";
-import IRectSetable from "../../../components/dynamicGrid/types/IRectSetable";
-import random from "../../../utils/random";
-import IApp from "../../../core/types/app/iApp";
-import getFirstDisplayImgSrc from "../../../components/jsonToElm/v1/getFirstDisplayImg";
-import SiteResources from "../../../core/siteResources";
-import SiteConfig from "../../../siteConfig";
+import isVisible from "../../../../utils/isVisible";
+import { Rect } from "../../../../types/math/rect";
+import IRectSetable from "../../../../components/dynamicGrid/types/IRectSetable";
+import IApp from "../../../../core/types/app/iApp";
 
-class ProjectCard implements IRectSetable {
-    public width: number;
-    public height: number;
+abstract class ProjectCard implements IRectSetable {
+    public abstract width: number;
+    public abstract height: number;
 
-    private app: IApp;
-    private card: ICard;
-    private elm: HTMLDivElement;
-    private cardElm: HTMLDivElement;
+    protected abstract cardTitle: string;
+    protected abstract cardDescription: string;
 
-    private year: number;
-    private index: number;
+    protected app: IApp;
+    protected elm: HTMLDivElement;
+    protected cardElm: HTMLDivElement;
 
     private contentDescriptionElm?: HTMLDivElement;
     private contentDescriptionTextElm?: HTMLDivElement;
 
-    constructor(app: IApp, card: ICard, year: number, index: number) {
+    constructor(app: IApp) {
         this.app = app;
-        this.card = card;
 
         this.elm = document.createElement("div");
         this.elm.classList.add("projectCard");
@@ -33,12 +26,6 @@ class ProjectCard implements IRectSetable {
         this.cardElm = document.createElement("div");
         this.cardElm.classList.add("card");
         this.elm.appendChild(this.cardElm);
-
-        this.year = year;
-        this.index = index;
-
-        this.width = random(3, 4, 1);
-        this.height = random(5, 7, 1);
     }
 
     public setup() {
@@ -66,27 +53,17 @@ class ProjectCard implements IRectSetable {
      * Loads assets
      */
     public async load(): Promise<void> {
-        this.useStyles();
-        this.addBackground();
+        this.cardElm.appendChild(this.createBackground());
         this.addContent();
     }
 
-    private useStyles() {
-        if (this.card.style) {
-            this.cardElm.style.cssText = this.card.style;
-        }
-    }
+    protected abstract clickHandler(): void;
 
-    private addBackground(): void {
-        const firstDisplay = getFirstDisplayImgSrc(this.card);
-        if (!firstDisplay) { return; }
-        const path = SiteConfig.path.thingy + firstDisplay;
-        SiteResources.loadImage(path);
-
+    protected createBackground(): HTMLDivElement {
         const background = document.createElement("div");
         background.classList.add("background");
-        background.style.backgroundImage = "url(" + path + ")";
-        this.cardElm.appendChild(background);
+        background.style.backgroundColor = "transparent";
+        return background;
     }
 
     private addContent(): void {
@@ -117,7 +94,7 @@ class ProjectCard implements IRectSetable {
     private createContentTitle(): HTMLDivElement {
         const title = document.createElement("div");
         title.classList.add("title");
-        title.innerText = this.card.name;
+        title.innerText = this.cardTitle;
         return title;
     }
 
@@ -127,7 +104,7 @@ class ProjectCard implements IRectSetable {
         this.contentDescriptionElm = description;
 
         const text = document.createElement("div");
-        text.innerHTML = this.card.content.description;
+        text.innerHTML = this.cardDescription;
         this.contentDescriptionTextElm = text;
 
         description.appendChild(text);
@@ -147,11 +124,6 @@ class ProjectCard implements IRectSetable {
         if (this.contentDescriptionElm) {
             this.contentDescriptionElm.style.height = "0";
         }
-    }
-
-    private clickHandler(): void {
-        // TODO: Animate expanding instead of just switching views
-        this.app.views.switchAndInit("ProjectInfo", this.year + "." + this.index);
     }
 }
 
