@@ -41,45 +41,78 @@ class ContentMan {
         return null;
     }
 
-    // TODO: Refactor, large function
     public static async *cardAndLinkGeneratorOldestWithLocation(): AsyncIterableIterator<ICardWithLocation | IProjectLink> {
         const linksIndex = await this.getLinksIndex();
 
         for (const thingy of linksIndex) {
             const [year, thingyName, thingyPath] = thingy;
             const links = await this.getLinksForThingy(thingyPath);
-            const projectsMap = new Map<string, ICardWithLocation>();
-            try {
-                const projects = await this.getFileForYear(year);
+            const projectsMap = await this.createProjectsMap(year);
+            const linksOrProjectGen = this.yieldLinksOrProjectsIfExistsAndDeleteFromMap(links, projectsMap, thingyPath);
 
-                for (let i = 0; i < projects.data.length; i++) {
-                    const project = projects.data[i];
-                    if (isProjectCard(project)) {
-                        projectsMap.set(project.content.link, { project: project, index: i, year: year });
-                    }
-                }
-            } catch (err) {
-                console.warn(err);
-            }
-
-            // go through links, if any are projects, yeild that instead
-            for (const link of links) {
-                const key = thingyPath + link[1];
-                const project = projectsMap.get(thingyPath + link[1]);
-                if (project) {
-                    projectsMap.delete(key);
-                    yield project;
-                } else {
-                    yield {
-                        name: link[0],
-                        href: SiteConfig.path.thingy + thingyPath + link[1]
-                    };
-                }
+            for (const linkOrProject of linksOrProjectGen) {
+                yield linkOrProject;
             }
 
             // clear out any remaining projects
             for (const [key, project] of projectsMap) {
                 yield project;
+            }
+        }
+    }
+
+    public static async *cardAndLinkGeneratorLatestWithLocation(): AsyncIterableIterator<ICardWithLocation | IProjectLink> {
+        const linksIndex = await this.getLinksIndex();
+
+        for (let i = linksIndex.length - 1; i >= 0; i--) {
+            const [year, thingyName, thingyPath] = linksIndex[i];
+            const links = await this.getLinksForThingy(thingyPath);
+            const projectsMap = await this.createProjectsMap(year);
+            const linksOrProjectGen = this.yieldLinksOrProjectsIfExistsAndDeleteFromMap(links, projectsMap, thingyPath);
+
+            for (const linkOrProject of linksOrProjectGen) {
+                yield linkOrProject;
+            }
+
+            // clear out any remaining projects
+            for (const [key, project] of projectsMap) {
+                yield project;
+            }
+        }
+    }
+
+    private static async createProjectsMap(year: number): Promise<Map<string, ICardWithLocation>> {
+        const projectsMap = new Map<string, ICardWithLocation>();
+
+        try {
+            const projects = await this.getFileForYear(year);
+
+            for (let i = 0; i < projects.data.length; i++) {
+                const project = projects.data[i];
+                if (isProjectCard(project)) {
+                    projectsMap.set(project.content.link, { project: project, index: i, year: year });
+                }
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+
+        return projectsMap;
+    }
+
+    private static *yieldLinksOrProjectsIfExistsAndDeleteFromMap(links: string[][], projectsMap: Map<string, ICardWithLocation>, thingyPath: string): IterableIterator<ICardWithLocation | IProjectLink> {
+        for (const link of links) {
+            const [name, href] = link;
+            const key = thingyPath + href;
+            const project = projectsMap.get(thingyPath + href);
+            if (project) {
+                projectsMap.delete(key);
+                yield project;
+            } else {
+                yield {
+                    name: name,
+                    href: SiteConfig.path.thingy + thingyPath + href
+                };
             }
         }
     }

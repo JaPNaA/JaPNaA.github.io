@@ -7,9 +7,7 @@ import ICard from "../../../types/project/card";
 import ProjectCardFactory from "./ProjectCardFactory";
 import ProjectCard from "./projectCard/ProjectCard";
 import ContentMan from "../../../components/contentMan/contentMan";
-import isProjectCard from "../../../utils/isProjectCard";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
-import IProjectWithLocation from "../../../components/contentMan/IProjectWithLocation";
 import IProjectLink from "../../../components/contentMan/IProjectLink";
 import ICardWithLocation from "../../../components/contentMan/ICardWithLocation";
 import isProjectLink from "../../../utils/isProjectLink";
@@ -32,7 +30,7 @@ class BrowseProjects extends View {
         this.elm = document.createElement("div");
         this.projectCards = [];
         this.grid = new DynamicGridDisplay(11, 100 /* percent */, 64, 2);
-        this.cardGenerator = ContentMan.cardAndLinkGeneratorOldestWithLocation();
+        this.cardGenerator = ContentMan.cardAndLinkGeneratorLatestWithLocation();
         this.addingToScreenFull = false;
     }
 
