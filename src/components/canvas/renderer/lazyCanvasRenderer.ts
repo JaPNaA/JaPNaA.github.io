@@ -2,9 +2,6 @@ import EventHandlers from "../../../core/utils/events/eventHandlers";
 import Handler from "../../../core/utils/events/handler";
 import IApp from "../../../core/types/app/iApp";
 import isVisible from "../../../utils/isVisible";
-import EventHandlers from "../../../core/utils/events/eventHandlers";
-import Handler from "../../../core/utils/events/handler";
-import IApp from "../../../core/types/app/iApp";
 
 type Vec2 = [number, number];
 
