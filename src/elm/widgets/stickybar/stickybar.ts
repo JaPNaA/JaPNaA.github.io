@@ -52,6 +52,11 @@ class StickyBar extends Widget {
         this.useStickyPolyfill();
     }
 
+    private static checkSupportsStyleSticky(): boolean {
+        return CSS.supports("position", "sticky") ||
+            CSS.supports("position", "-webkit-sticky");
+    }
+
     private useStickyPolyfill() {
         if (!this.parent) { return; }
         this.stickyPolyfillScrollHandler = this.stickyPolyfillScrollHandler.bind(this);
@@ -76,11 +81,6 @@ class StickyBar extends Widget {
             this.elm.classList.remove("polyFixed");
             this.polyFixed = false;
         }
-    }
-
-    private static checkSupportsStyleSticky(): boolean {
-        return CSS.supports("position", "sticky") ||
-            CSS.supports("position", "-webkit-sticky");
     }
 }
 

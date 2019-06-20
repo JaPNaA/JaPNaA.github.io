@@ -129,9 +129,11 @@ class HexagonsTitle extends Widget {
 
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
-            const scale = 2 * (i + 1) * (1 - t) + 1;
+            const scale = SiteConfig.hexagonsTitle.zoomDistance * (i + 1) * (1 - t) + 1;
             X.save();
-            if (t < 0.1) { X.globalAlpha = t * 10; }
+            if (t < SiteConfig.hexagonsTitle.fadeInSpeed) {
+                X.globalAlpha = t * 1 / SiteConfig.hexagonsTitle.fadeInSpeed;
+            }
             X.translate(this.width / 2, this.height / 2);
             X.scale(scale, scale);
             X.translate(-this.width / 2, -this.height / 2);
@@ -153,7 +155,7 @@ class HexagonsTitle extends Widget {
         const layers: HexagonsLayer[] = [];
 
         for (let i: number = 0; i < SiteConfig.hexagonsTitle.layers; i++) {
-            layers.push(new HexagonsLayer(this));
+            layers.push(new HexagonsLayer(this, i));
         }
 
         return layers;

@@ -5,11 +5,11 @@ import HexagonsTitle from "./hexagonstitle";
 class HexagonsLayer {
     private hexagons: Hexagon[];
 
-    constructor(hexagonsTitle: HexagonsTitle) {
+    constructor(hexagonsTitle: HexagonsTitle, index: number) {
         this.hexagons = [];
 
         for (let i = 0; i < SiteConfig.hexagonsTitle.hexagonsPerLayer; i++) {
-            this.hexagons.push(new Hexagon(hexagonsTitle));
+            this.hexagons.push(new Hexagon(hexagonsTitle, index));
         }
     }
 

@@ -21,6 +21,7 @@ class ProjectsGrid extends Widget {
 
     private static readonly minColWidth = 128;
     private static readonly minColumns = 4;
+    private static readonly initalColumns = 11;
 
     private projectCards: ProjectCard[];
     private grid: DynamicGridDisplay<ProjectCard>;
@@ -33,7 +34,7 @@ class ProjectsGrid extends Widget {
         this.app = app;
         this.elm = document.createElement("div");
         this.projectCards = [];
-        this.grid = new DynamicGridDisplay(11, 100 /* percent */, app.width / 11, 2);
+        this.grid = new DynamicGridDisplay(ProjectsGrid.initalColumns, 100 /* percent */, app.width / ProjectsGrid.initalColumns, 2);
         this.cardGenerator = cardGenerator || ContentMan.cardAndLinkGeneratorLatestWithLocation();
         this.addingToScreenFull = false;
     }

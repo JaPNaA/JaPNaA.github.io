@@ -40,7 +40,11 @@ class SiteConfig_ {
 
     public readonly hexagonsTitle = {
         hexagonsPerLayer: 50,
-        layers: 4
+        layers: 4,
+        hexagonsScale: 1.6,
+        lowPositionScaleBias: 0.75,
+        zoomDistance: 1.2,
+        fadeInSpeed: 0.2
     };
 
     public isHandheld: boolean;

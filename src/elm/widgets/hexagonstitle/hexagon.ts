@@ -20,19 +20,25 @@ class Hexagon {
     private scale: number;
     private x: number;
     private y: number;
+    private z: number;
     private rotation: number;
 
-    constructor(hexagonsTitle: HexagonsTitle) {
+    constructor(hexagonsTitle: HexagonsTitle, z: number) {
         Hexagon.initalizeStatic();
         this.hexagonsTitle = hexagonsTitle;
 
-        this.scale = Math.random() * 0.3 + 0.3;
-        this.scale *= this.scale;
-        this.scale *= this.scale;
-
         this.x = Math.random();
         this.y = Math.random();
+        this.z = z;
         this.rotation = Math.random();
+
+        const size = Math.random();
+        this.scale = size * 0.3 + 0.3;
+        this.scale *= this.scale;
+        this.scale *= this.scale;
+        this.scale *= ((z + 1) / SiteConfig.hexagonsTitle.layers) *
+            SiteConfig.hexagonsTitle.hexagonsScale *
+            (this.y * this.y * SiteConfig.hexagonsTitle.lowPositionScaleBias + 0.5);
 
         this.moveIfInRadius();
     }
