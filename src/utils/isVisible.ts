@@ -1,9 +1,13 @@
-export default function isVisible(elm: HTMLElement): boolean {
+import { Rect, newRect } from "../types/math/rect";
+
+export default function isVisible(elm: HTMLElement, viewport_?: Rect): boolean {
     const bbox = elm.getBoundingClientRect();
+    const viewport = viewport_ || newRect(0, 0, innerWidth, innerHeight);
+
     return (
-        bbox.top < innerHeight &&
-        bbox.top + bbox.height > 0 &&
-        bbox.left < innerWidth &&
-        bbox.left + bbox.width > 0
+        bbox.top < viewport.height &&
+        bbox.top + bbox.height > viewport.y &&
+        bbox.left < viewport.width &&
+        bbox.left + bbox.width > viewport.x
     );
 }

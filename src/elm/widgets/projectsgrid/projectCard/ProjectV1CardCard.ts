@@ -1,7 +1,6 @@
 import ProjectCard from "./ProjectCard";
 import ICard from "../../../../types/project/card";
 import IApp from "../../../../core/types/app/iApp";
-import random from "../../../../utils/random";
 import getFirstDisplayImgSrc from "../../../../components/jsonToElm/v1/getFirstDisplayImg";
 import SiteConfig from "../../../../siteConfig";
 import SiteResources from "../../../../core/siteResources";

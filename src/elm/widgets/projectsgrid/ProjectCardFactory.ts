@@ -1,4 +1,3 @@
-import ICard from "../../../types/project/card";
 import IApp from "../../../core/types/app/iApp";
 import ProjectV1CardCard from "./projectCard/ProjectV1CardCard";
 import ProjectLinkCard from "./projectCard/ProjectLinkCard";

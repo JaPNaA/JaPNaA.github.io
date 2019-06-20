@@ -46,8 +46,8 @@ abstract class ProjectCard implements IRectSetable {
         parent.appendChild(this.elm);
     }
 
-    public isVisible(): boolean {
-        return isVisible(this.elm);
+    public isVisible(viewport?: Rect): boolean {
+        return isVisible(this.elm, viewport);
     }
 
     public getDY() {
