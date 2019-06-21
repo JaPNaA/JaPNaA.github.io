@@ -1,4 +1,5 @@
 const path = require("path");
+const GenerateViewList = require("./webpack/plugins/GenerateViewMap");
 
 module.exports = {
     name: "dist",
@@ -26,7 +27,7 @@ module.exports = {
         extensions: ['.ts', '.js', '.tsx']
     },
     target: "web",
-    plugins: [],
+    plugins: [new GenerateViewList()],
 
     mode: "production",
     watch: false

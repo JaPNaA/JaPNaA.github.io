@@ -4,6 +4,7 @@
 # these files are automatically built
 /docs/*bundle.js
 /docs/assets/content/index.json
+/src/elm/views/viewList.ts
 
 # the obvious ones
 npm-debug.log
