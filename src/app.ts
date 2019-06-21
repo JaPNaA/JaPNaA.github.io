@@ -4,7 +4,7 @@ import "./elm/views/setViewImporter";
 import "./elm/widgets/setWidgetImporter";
 
 import SplashScreen from "./elm/views/SplashScreen/SplashScreen";
-import GlobalWidgets from "./elm/widgets/global/global";
+import GlobalWidgets from "./elm/widgets/Global/Global";
 import ContentMan from "./components/contentMan/contentMan";
 import MainApp from "./core/app/mainApp";
 import SiteConfig from "./siteConfig";

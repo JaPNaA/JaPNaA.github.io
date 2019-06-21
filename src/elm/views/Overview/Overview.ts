@@ -2,8 +2,8 @@ import "../../../../styles/views/overview.less";
 
 import View from "../../../core/view/view";
 import ViewMap from "../../../core/view/viewMap";
-import HexagonsTitle from "../../widgets/hexagonstitle/hexagonstitle";
-import StickyBar from "../../widgets/stickybar/stickybar";
+import HexagonsTitle from "../../widgets/HexagonsTitle/HexagonsTitle";
+import StickyBar from "../../widgets/StickyBar/StickyBar";
 import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/iApp";

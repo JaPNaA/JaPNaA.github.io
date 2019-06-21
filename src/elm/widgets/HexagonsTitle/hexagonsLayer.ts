@@ -1,6 +1,6 @@
 import SiteConfig from "../../../siteConfig";
 import Hexagon from "./hexagon";
-import HexagonsTitle from "./hexagonstitle";
+import HexagonsTitle from "./HexagonsTitle";
 
 class HexagonsLayer {
     private hexagons: Hexagon[];

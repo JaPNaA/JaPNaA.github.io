@@ -5,6 +5,7 @@ const path = require("path");
 const fs = require("fs");
 
 const PATH_TO_VIEWS = "src/elm/views";
+const PATH_TO_WIDGETS = "src/elm/widgets";
 
 /**
  * @typedef {import("webpack")} Webpack
@@ -12,13 +13,19 @@ const PATH_TO_VIEWS = "src/elm/views";
  * @typedef {import("webpack/lib/node/NodeWatchFileSystem")} Webpack.Node.NodeWatchFileSystem
  */
 
-class GenerateViewList {
+class GenerateViewAndWidgetList {
     constructor() {
         /**
          * A list of names of views
          * @type {string[]}
          */
         this.views = [];
+
+        /**
+         * A list of names of widgets
+         * @type {string[]}
+         */
+        this.widgets = [];
 
         /**
          * Has the plugin has initalized?
@@ -48,9 +55,13 @@ class GenerateViewList {
 
         const changedFiles = this.getChangedFiles(compilation);
         const pathToViewsLength = PATH_TO_VIEWS.length;
+        const pathToWidgetsLength = PATH_TO_WIDGETS.length;
+
         for (const [absolutePath, changedFileName] of changedFiles) {
             if (changedFileName.slice(0, pathToViewsLength) === PATH_TO_VIEWS) {
-                this.updateIfIsView(compilation, absolutePath);
+                this.updateListIfIsView(compilation, absolutePath);
+            } else if (changedFileName.slice(0, pathToWidgetsLength) === PATH_TO_WIDGETS) {
+                this.updateListIfIsWidget(compilation, absolutePath);
             }
         }
     }
@@ -61,37 +72,65 @@ class GenerateViewList {
     init(compiler) {
         if (this.initalized) { return; }
         const contextViewsPath = compiler.context + "/" + PATH_TO_VIEWS;
-        const directories = fs.readdirSync(contextViewsPath);
+        const viewsDirectories = fs.readdirSync(contextViewsPath);
 
-        for (const directory of directories) {
+        for (const directory of viewsDirectories) {
             if (fs.existsSync(contextViewsPath + "/" + directory + "/" + directory + ".ts")) {
                 this.views.push(directory);
             }
         }
 
+        const contextWidgetsPath = compiler.context + "/" + PATH_TO_WIDGETS;
+        const widgetDirectories = fs.readdirSync(contextWidgetsPath);
+
+        for (const directory of widgetDirectories) {
+            if (fs.existsSync(contextWidgetsPath + "/" + directory + "/" + directory + ".ts")) {
+                this.widgets.push(directory);
+            }
+        }
+
         this.updateViewMap(compiler);
+        this.updateWidgetMap(compiler);
 
         this.initalized = true;
     }
 
     /**
+     * @param {Webpack.Compiler} compiler 
      * @param {string} viewPath 
      */
-    updateIfIsView(compiler, viewPath) {
-        const viewName = this.getFilenameWithoutExtension(viewPath);
-        if (this.getDirName(viewPath) !== viewName) { return; }
+    updateListIfIsView(compiler, viewPath) {
+        this.updateListIfIs(this.views, compiler, viewPath);
+        this.updateViewMap(compiler);
+    }
 
-        console.log(viewName, "changed");
+    /**
+     * @param {Webpack.Compiler} compiler 
+     * @param {string} widgetPath 
+     */
+    updateListIfIsWidget(compiler, widgetPath) {
+        this.updateListIfIs(this.widgets, compiler, widgetPath);
+        this.updateWidgetMap(compiler);
+    }
 
-        if (this.views.includes(viewName)) {
-            if (!fs.existsSync(viewPath)) {
-                this.views.splice(this.views.indexOf(viewName), 1);
+    /**
+     * @param {string[]} listOfIt
+     * @param {Webpack.Compiler} compiler 
+     * @param {string} pathToIt
+     */
+    updateListIfIs(listOfIt, compiler, pathToIt) {
+        const name = this.getFilenameWithoutExtension(pathToIt);
+        if (this.getDirName(pathToIt) !== name) { return; }
+
+        console.log(name, "changed");
+
+        if (listOfIt.includes(name)) {
+            if (!fs.existsSync(pathToIt)) {
+                listOfIt.splice(listOfIt.indexOf(name), 1);
             }
         } else {
-            this.views.push(viewName);
+            listOfIt.push(name);
         }
-
-        this.updateViewMap(compiler);
     }
 
     /**
@@ -101,6 +140,16 @@ class GenerateViewList {
         fs.writeFileSync(
             compiler.context + "/" + PATH_TO_VIEWS + "/viewList.ts",
             `export default ${JSON.stringify(this.views)};`
+        );
+    }
+
+    /**
+     * @param {Webpack.Compiler} compiler 
+     */
+    updateWidgetMap(compiler) {
+        fs.writeFileSync(
+            compiler.context + "/" + PATH_TO_WIDGETS + "/widgetList.ts",
+            `export default ${JSON.stringify(this.widgets)};`
         );
     }
 
@@ -139,4 +188,4 @@ class GenerateViewList {
     }
 }
 
-module.exports = GenerateViewList;
+module.exports = GenerateViewAndWidgetList;

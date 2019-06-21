@@ -3,7 +3,7 @@ import "../../../../styles/views/browseProjects.less";
 import View from "../../../core/view/view";
 import ViewMap from "../../../core/view/viewMap";
 import IApp from "../../../core/types/app/iApp";
-import ProjectsGrid from "../../widgets/projectsgrid/projectsgrid";
+import ProjectsGrid from "../../widgets/ProjectsGrid/ProjectsGrid";
 
 class BrowseProjects extends View {
     public static viewName = "BrowseProjects";

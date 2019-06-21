@@ -2,7 +2,7 @@ import "../../../../styles/views/frameView.less";
 
 import View from "../../../core/view/view";
 import IApp from "../../../core/types/app/iApp";
-import IFrame from "../../widgets/iframe/iframe";
+import IFrame from "../../widgets/IFrame/IFrame";
 import ViewMap from "../../../core/view/viewMap";
 import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";

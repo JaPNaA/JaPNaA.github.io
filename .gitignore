@@ -5,6 +5,7 @@
 /docs/*bundle.js
 /docs/assets/content/index.json
 /src/elm/views/viewList.ts
+/src/elm/widgets/widgetList.ts
 
 # the obvious ones
 npm-debug.log

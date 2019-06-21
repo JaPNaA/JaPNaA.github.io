@@ -1,5 +1,5 @@
 import SiteConfig from "../../../siteConfig";
-import HexagonsTitle from "./hexagonstitle";
+import HexagonsTitle from "./HexagonsTitle";
 import SiteResources from "../../../core/siteResources";
 import ImageResource from "../../../core/components/resourceLoader/resources/image";
 
