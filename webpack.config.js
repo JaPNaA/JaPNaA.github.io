@@ -12,7 +12,10 @@ module.exports = {
     module: {
         rules: [{
             test: /\.tsx?$/,
-            use: "ts-loader",
+            loaders: [
+                "ts-loader",
+                path.resolve(__dirname, "webpack/loaders/stripConsoleLogs")
+            ],
             exclude: /node_modules/
         }, {
             test: /\.less$/,
