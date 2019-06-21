@@ -16,7 +16,7 @@ import ICard from "../../../types/project/card";
 import JSONResource from "../../../core/components/resourceLoader/resources/json";
 import AppState from "../../../core/types/appState";
 import openFrameView from "../../../utils/openFrameView";
-import IProjectInfoView from "../projectinfo/iProjectInfo";
+import IProjectInfoView from "../ProjectInfo/iProjectInfo";
 import createAppState from "../../../core/utils/createAppState";
 
 type LinkMatch = {

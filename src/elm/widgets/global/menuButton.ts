@@ -2,7 +2,7 @@ import SiteResources from "../../../core/siteResources";
 import SiteConfig from "../../../siteConfig";
 import IApp from "../../../core/types/app/iApp";
 import Widget from "../../../core/widget/widget";
-import Menu from "../../views/menu/menu";
+import Menu from "../../views/Menu/Menu";
 
 class MenuButton extends Widget {
     public static widgetName: string = "MenuButton";

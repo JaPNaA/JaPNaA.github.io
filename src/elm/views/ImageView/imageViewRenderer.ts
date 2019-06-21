@@ -1,5 +1,5 @@
 import LazyCanvasRenderer from "../../../components/canvas/renderer/lazyCanvasRenderer";
-import ImageView from "./imageview";
+import ImageView from "./ImageView";
 import IApp from "../../../core/types/app/iApp";
 
 class ImageViewRenderer extends LazyCanvasRenderer {

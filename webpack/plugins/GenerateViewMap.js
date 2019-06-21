@@ -81,6 +81,8 @@ class GenerateViewList {
         const viewName = this.getFilenameWithoutExtension(viewPath);
         if (this.getDirName(viewPath) !== viewName) { return; }
 
+        console.log(viewName, "changed");
+
         if (this.views.includes(viewName)) {
             if (!fs.existsSync(viewPath)) {
                 this.views.splice(this.views.indexOf(viewName), 1);

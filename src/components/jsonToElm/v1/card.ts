@@ -7,7 +7,7 @@ import DisplayImg from "../../../types/project/displayImg";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import SiteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/iApp";
-import IImageView from "../../../elm/views/imageview/iImageView";
+import IImageView from "../../../elm/views/ImageView/iImageView";
 import getFirstDisplayImgSrc from "./getFirstDisplayImg";
 
 // TODO: refactor, along with it's .less companion!
