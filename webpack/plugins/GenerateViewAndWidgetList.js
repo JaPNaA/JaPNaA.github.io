@@ -31,46 +31,52 @@ class GenerateViewAndWidgetList {
          * Has the plugin has initalized?
          * @type {boolean}
          */
-        this.initalized = false;
+        this._initalized = false;
 
-        this.startTime = Date.now();
-        this.prevTimestamps = {};
+        this._startTime = Date.now();
+        this._prevTimestamps = {};
     }
 
     /**
+     * Webpack's initalization of the plugin
      * @param {Webpack.Compiler} compiler 
      */
     apply(compiler) {
         compiler.hooks.run.tap(pluginName, compilation => {
-            this.init(compilation);
+            this._init(compilation);
         });
-        compiler.hooks.watchRun.tap(pluginName, compilation => this.onWatchRun(compilation));
+        compiler.hooks.watchRun.tap(pluginName, compilation => this._watchRunHandler(compilation));
     }
 
     /**
      * @param {Webpack.Compiler} compilation 
      */
-    onWatchRun(compilation) {
-        this.init(compilation);
+    _watchRunHandler(compilation) {
+        this._init(compilation);
 
-        const changedFiles = this.getChangedFiles(compilation);
-        const pathToViewsLength = PATH_TO_VIEWS.length;
-        const pathToWidgetsLength = PATH_TO_WIDGETS.length;
+        const changedFiles = this._getChangedFiles(compilation);
 
         for (const [absolutePath, changedFileName] of changedFiles) {
-            if (changedFileName.slice(0, pathToViewsLength) === PATH_TO_VIEWS) {
-                this.updateListIfIsView(compilation, absolutePath);
-            } else if (changedFileName.slice(0, pathToWidgetsLength) === PATH_TO_WIDGETS) {
-                this.updateListIfIsWidget(compilation, absolutePath);
+            if (changedFileName.startsWith(PATH_TO_VIEWS)) {
+                this._updateListIfIsView(compilation, absolutePath);
+            } else if (changedFileName.startsWith(PATH_TO_WIDGETS)) {
+                this._updateListIfIsWidget(compilation, absolutePath);
             }
         }
     }
 
     /**
+     * Initalizes with the inital files
      * @param {Webpack.Compiler} compiler 
      */
-    init(compiler) {
-        if (this.initalized) { return; }
+    _init(compiler) {
+        if (this._initalized) { return; }
+        this._initViewList();
+        this._initWidgetList();
+        this._initalized = true;
+    }
+
+    _initViewList() {
         const contextViewsPath = compiler.context + "/" + PATH_TO_VIEWS;
         const viewsDirectories = fs.readdirSync(contextViewsPath);
 
@@ -80,6 +86,10 @@ class GenerateViewAndWidgetList {
             }
         }
 
+        this._updateViewMap(compiler);
+    }
+
+    _initWidgetList() {
         const contextWidgetsPath = compiler.context + "/" + PATH_TO_WIDGETS;
         const widgetDirectories = fs.readdirSync(contextWidgetsPath);
 
@@ -89,40 +99,35 @@ class GenerateViewAndWidgetList {
             }
         }
 
-        this.updateViewMap(compiler);
-        this.updateWidgetMap(compiler);
-
-        this.initalized = true;
+        this._updateWidgetMap(compiler);
     }
 
     /**
      * @param {Webpack.Compiler} compiler 
      * @param {string} viewPath 
      */
-    updateListIfIsView(compiler, viewPath) {
-        this.updateListIfIs(this.views, compiler, viewPath);
-        this.updateViewMap(compiler);
+    _updateListIfIsView(compiler, viewPath) {
+        this._updateListIfIs(this.views, viewPath);
+        this._updateViewMap(compiler);
     }
 
     /**
      * @param {Webpack.Compiler} compiler 
      * @param {string} widgetPath 
      */
-    updateListIfIsWidget(compiler, widgetPath) {
-        this.updateListIfIs(this.widgets, compiler, widgetPath);
-        this.updateWidgetMap(compiler);
+    _updateListIfIsWidget(compiler, widgetPath) {
+        this._updateListIfIs(this.widgets, widgetPath);
+        this._updateWidgetMap(compiler);
     }
 
     /**
+     * Updates a list if the path to a view or widget is valid
      * @param {string[]} listOfIt
-     * @param {Webpack.Compiler} compiler 
      * @param {string} pathToIt
      */
-    updateListIfIs(listOfIt, compiler, pathToIt) {
-        const name = this.getFilenameWithoutExtension(pathToIt);
-        if (this.getDirName(pathToIt) !== name) { return; }
-
-        console.log(name, "changed");
+    _updateListIfIs(listOfIt, pathToIt) {
+        const name = this._getFilenameWithoutExtension(pathToIt);
+        if (this._getDirName(pathToIt) !== name) { return; }
 
         if (listOfIt.includes(name)) {
             if (!fs.existsSync(pathToIt)) {
@@ -136,7 +141,7 @@ class GenerateViewAndWidgetList {
     /**
      * @param {Webpack.Compiler} compiler 
      */
-    updateViewMap(compiler) {
+    _updateViewMap(compiler) {
         fs.writeFileSync(
             compiler.context + "/" + PATH_TO_VIEWS + "/viewList.ts",
             `export default ${JSON.stringify(this.views)};`
@@ -146,7 +151,7 @@ class GenerateViewAndWidgetList {
     /**
      * @param {Webpack.Compiler} compiler 
      */
-    updateWidgetMap(compiler) {
+    _updateWidgetMap(compiler) {
         fs.writeFileSync(
             compiler.context + "/" + PATH_TO_WIDGETS + "/widgetList.ts",
             `export default ${JSON.stringify(this.widgets)};`
@@ -156,7 +161,7 @@ class GenerateViewAndWidgetList {
     /**
      * @param {string} filePath
      */
-    getFilenameWithoutExtension(filePath) {
+    _getFilenameWithoutExtension(filePath) {
         const name = path.basename(filePath);
         return name.slice(0, name.lastIndexOf("."));
     }
@@ -164,7 +169,7 @@ class GenerateViewAndWidgetList {
     /**
      * @param {string} dirPath 
      */
-    getDirName(dirPath) {
+    _getDirName(dirPath) {
         const dirname = path.dirname(dirPath);
         return dirname.slice(dirname.lastIndexOf("/") + 1);
     }
@@ -173,12 +178,12 @@ class GenerateViewAndWidgetList {
      * @param {Webpack.Compiler} compiler
      * @returns {[string, string][]} [absolute, relative][]
      */
-    getChangedFiles(compiler) {
+    _getChangedFiles(compiler) {
         /** @type {Webpack.Node.NodeWatchFileSystem} */
         const watchFileSystem = compiler.watchFileSystem;
         return Object.keys(watchFileSystem.watcher.mtimes)
             .filter(watchfile =>
-                this.prevTimestamps[watchfile] || this.startTime <
+                this._prevTimestamps[watchfile] || this._startTime <
                 compiler.fileTimestamps[watchfile] || Infinity
             )
             .map(changedFile => [
