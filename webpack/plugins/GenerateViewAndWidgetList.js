@@ -71,12 +71,16 @@ class GenerateViewAndWidgetList {
      */
     _init(compiler) {
         if (this._initalized) { return; }
-        this._initViewList();
-        this._initWidgetList();
+        this._initViewList(compiler);
+        this._initWidgetList(compiler);
         this._initalized = true;
     }
 
-    _initViewList() {
+    /**
+     * Initalizes viewList
+     * @param {Webpack.Compiler} compiler 
+     */
+    _initViewList(compiler) {
         const contextViewsPath = compiler.context + "/" + PATH_TO_VIEWS;
         const viewsDirectories = fs.readdirSync(contextViewsPath);
 
@@ -89,7 +93,11 @@ class GenerateViewAndWidgetList {
         this._updateViewMap(compiler);
     }
 
-    _initWidgetList() {
+    /**
+     * Initalizes widgetList
+     * @param {Webpack.Compiler} compiler 
+     */
+    _initWidgetList(compiler) {
         const contextWidgetsPath = compiler.context + "/" + PATH_TO_WIDGETS;
         const widgetDirectories = fs.readdirSync(contextWidgetsPath);
 
