@@ -5,6 +5,7 @@ import IApp from "../../../core/types/app/iApp";
 import IHTMLViewDocument from "../../../components/htmlViewParser/iHTMLViewDocument";
 import HTMLViewParserOptions from "../../../components/htmlViewParser/types/htmlViewParserOptions";
 import SiteResources from "../../../core/siteResources";
+import defaultHtmlViewParserOptions from "./defaultHtmlViewParserOptions";
 
 class HTMLView extends Widget {
     protected elm: Element;
@@ -18,7 +19,11 @@ class HTMLView extends Widget {
     constructor(app: IApp, url: string, options?: HTMLViewParserOptions) {
         super();
         this.url = url;
-        this.parser = new HTMLViewParser(app, options);
+        if (options) {
+            this.parser = new HTMLViewParser(app, options);
+        } else {
+            this.parser = new HTMLViewParser(app, defaultHtmlViewParserOptions);
+        }
         this.elm = document.createElement("div");
     }
 

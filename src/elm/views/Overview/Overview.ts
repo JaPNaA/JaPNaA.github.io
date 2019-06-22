@@ -81,12 +81,7 @@ class Overview extends View {
     }
 
     private loadHTMLView(url: string): void {
-        this.htmlView = new HTMLView(this.app, url, {
-            inlineJS: true,
-            scripts: true,
-            dontLeavePage: true,
-            openViewsWithLinks: true
-        });
+        this.htmlView = new HTMLView(this.app, url);
         this.htmlView.setup();
         this.htmlView.appendTo(this.content);
     }
