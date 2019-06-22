@@ -8,8 +8,7 @@ import SiteConfig from "../../../siteConfig";
 import SiteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/iApp";
 import removeChildren from "../../../utils/removeChildren";
-import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";
-import IHTMLViewDocument from "../../../components/htmlViewParser/iHTMLViewDocument";
+import HTMLView from "../../widgets/HTMLView/HTMLView";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -19,7 +18,7 @@ class Overview extends View {
 
     protected elm: HTMLDivElement;
     private content: HTMLDivElement;
-    private contentDocument?: IHTMLViewDocument;
+    private htmlView?: HTMLView;
 
     private hexagonsTitle: HexagonsTitle;
 
@@ -45,8 +44,8 @@ class Overview extends View {
     public async destory(): Promise<void> {
         super.destory();
         this.hexagonsTitle.destory();
-        if (this.contentDocument) {
-            await this.contentDocument.destory();
+        if (this.htmlView) {
+            await this.htmlView.destory();
         }
     }
 
@@ -75,34 +74,21 @@ class Overview extends View {
     private loadAndWriteContent() {
         const container = document.createElement("div");
         container.classList.add("contentContainer");
-        this.content.appendChild(document.createTextNode("Loading..."));
 
-        SiteResources.loadText(SiteConfig.path.view.overview)
-            .onLoad(e => {
-                this.writeContent(e.text);
-            })
-            .onError(() => this.content.innerHTML = "Failed to load");
-
+        this.loadHTMLView(SiteConfig.path.view.overview);
         container.appendChild(this.content);
         this.elm.appendChild(container);
     }
 
-    private writeContent(text?: string): void {
-        removeChildren(this.content);
-
-        if (!text) {
-            this.content.appendChild(document.createTextNode("Failed to load"));
-            return;
-        }
-
-        const parser = new HTMLViewParser(this.app, {
+    private loadHTMLView(url: string): void {
+        this.htmlView = new HTMLView(this.app, url, {
             inlineJS: true,
             scripts: true,
             dontLeavePage: true,
             openViewsWithLinks: true
         });
-        this.contentDocument = parser.parse(text);
-        this.contentDocument.appendTo(this.content);
+        this.htmlView.setup();
+        this.htmlView.appendTo(this.content);
     }
 }
 
