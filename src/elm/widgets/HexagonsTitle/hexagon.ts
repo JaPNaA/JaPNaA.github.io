@@ -85,7 +85,7 @@ class Hexagon {
 
     private static createImg(): HTMLImageElement {
         const resource: ImageResource = SiteResources.loadImage(SiteConfig.path.img.hexagon);
-        const img: HTMLImageElement = resource.image;
+        const img: HTMLImageElement = resource.data;
 
         this.imgLoaded = false;
         resource.onLoad(() => {

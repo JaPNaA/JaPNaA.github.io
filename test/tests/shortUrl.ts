@@ -15,7 +15,7 @@ export default class ShortUrlTest extends TestRunner {
 
     public setup(): void {
         const text = new TextResource(SiteResources.__debug_getHooks(), SiteConfig.path.redirectMap, true);
-        text.text = `
+        text.data = `
         jeep, https://www.google.ca/search?q=jeep&tbm=isch
          jeepsacar   ,       https://www.google.com/?q=jeep
         `;

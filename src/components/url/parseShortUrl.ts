@@ -59,8 +59,8 @@ async function loadMap(): Promise<string> {
     return new Promise<string>(function (res, rej) {
         SiteResources.loadText(SiteConfig.path.redirectMap)
             .onLoad(e => {
-                if (e.text) {
-                    res(e.text);
+                if (e.data) {
+                    res(e.data);
                 } else {
                     rej();
                 }

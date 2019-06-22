@@ -98,6 +98,22 @@ class ResourceLoader {
         return this.loadResource<XMLResource>(path, XMLResource, type);
     }
 
+    public loadImagePromise(path: string): Promise<typeof ImageResource.prototype.data> {
+        return this.promisify(this.loadResource<ImageResource>(path, ImageResource));
+    }
+
+    public loadTextPromise(path: string): Promise<typeof TextResource.prototype.data> {
+        return this.promisify(this.loadResource<TextResource>(path, TextResource));
+    }
+
+    public loadJSONPromise(path: string): Promise<typeof JSONResource.prototype.data> {
+        return this.promisify(this.loadResource<JSONResource>(path, JSONResource));
+    }
+
+    public loadXMLPromise(path: string, type?: SupportedType): Promise<typeof XMLResource.prototype.data> {
+        return this.promisify(this.loadResource<XMLResource>(path, XMLResource, type));
+    }
+
     /** For anything else that loads, but cannot be used with ResourceLoader */
     public addResourceLoading(): void {
         this.toBeLoaded++;
@@ -124,6 +140,13 @@ class ResourceLoader {
 
     public __debug_getHooks(): ResourceLoaderHooks {
         return this.hooks;
+    }
+
+    private promisify<T extends Resource>(resource: T): Promise<any> {
+        return new Promise(function (res, rej) {
+            resource.onLoad(function (e) { res(e.data); });
+            resource.onError(function (e) { rej(e.error); });
+        });
     }
 
     private loadResource<T>(path: string, tconstructor: ResourceClass<T>, ...additionalArgs: any[]): T {

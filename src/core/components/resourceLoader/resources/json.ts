@@ -1,9 +1,9 @@
 import Resource from "./resource";
 import ResourceLoaderHooks from "../resourceLoaderHooks";
 
-class JSONResource extends Resource {
+class JSONResource extends Resource<any> {
     public path: string;
-    public data?: any;
+    public data!: any;
 
     constructor(hooks: ResourceLoaderHooks, path: string, __debugFlag?: boolean) {
         super(hooks);

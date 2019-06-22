@@ -1,9 +1,9 @@
 import Resource from "./resource";
 import ResourceLoaderHooks from "../resourceLoaderHooks";
 
-class TextResource extends Resource {
+class TextResource extends Resource<string> {
     public path: string;
-    public text?: string;
+    public data!: string;
     public req: XMLHttpRequest;
 
     private __debugFlag?: boolean;
@@ -22,7 +22,7 @@ class TextResource extends Resource {
         req.responseType = "text";
 
         req.addEventListener("load", () => {
-            this.text = req.responseText;
+            this.data = req.responseText;
 
             if (req.status >= 400) {
                 this.onErrorHandler(new Error(

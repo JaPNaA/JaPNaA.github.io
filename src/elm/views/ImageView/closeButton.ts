@@ -26,7 +26,7 @@ class ImageViewCloseButton extends CanvasButton {
         this.image =
             SiteResources.loadImage(SiteConfig.path.img.closeWhite)
                 .onLoad(() => this.loadHanders.dispatch())
-                .image;
+                .data;
         this.transitionProgress = 0;
     }
 

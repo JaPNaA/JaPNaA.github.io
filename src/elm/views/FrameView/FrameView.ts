@@ -116,7 +116,7 @@ class FrameView extends View {
         const closeButton = document.createElement("div");
         closeButton.classList.add("close");
 
-        const img = SiteResources.loadImage(SiteConfig.path.img.close).image;
+        const img = SiteResources.loadImage(SiteConfig.path.img.close).data;
         closeButton.appendChild(img);
 
         this.header.appendChild(closeButton);

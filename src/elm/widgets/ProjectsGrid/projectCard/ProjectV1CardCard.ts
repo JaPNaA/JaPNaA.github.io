@@ -39,8 +39,8 @@ class ProjectV1CardCard extends ProjectCard {
             await new Promise(res => {
                 SiteResources.loadImage(path)
                     .onLoad(e => {
-                        this.height = Math.round(Math.sqrt(ProjectV1CardCard.size * e.image.height / e.image.width));
-                        this.width = Math.round(Math.sqrt(ProjectV1CardCard.size * e.image.width / e.image.height));
+                        this.height = Math.round(Math.sqrt(ProjectV1CardCard.size * e.data.height / e.data.width));
+                        this.width = Math.round(Math.sqrt(ProjectV1CardCard.size * e.data.width / e.data.height));
                         res();
                     });
             });

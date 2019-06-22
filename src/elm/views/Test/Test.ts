@@ -19,7 +19,7 @@ class TestView extends View {
         this.elm.id = "test";
 
         SiteResources.loadText("test-bundle.js")
-            .onLoad(e => eval(e.text as string))
+            .onLoad(e => eval(e.data as string))
             .onError(() => this.elm.innerText = "test-bundle.js doesn't exist, cannot run tests.");
     }
 }

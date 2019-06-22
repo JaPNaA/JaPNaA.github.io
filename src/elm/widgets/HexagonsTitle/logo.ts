@@ -8,7 +8,7 @@ class Logo {
 
     constructor() {
         this.resource = SiteResources.loadImage(SiteConfig.path.img.logo);
-        this.img = this.resource.image;
+        this.img = this.resource.data;
     }
 
     public draw(X: CanvasRenderingContext2D, centerX: number, centerY: number) {

@@ -2,8 +2,9 @@ import ResourceLoaderHooks from "../resourceLoaderHooks";
 import EventHandlers from "../../../utils/events/eventHandlers";
 import Handler from "../../../utils/events/handler";
 
-abstract class Resource {
+abstract class Resource<T = any> {
     public abstract path: string;
+    public abstract data?: T;
     public error?: Error;
     public loaded: boolean;
 

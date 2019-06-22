@@ -25,7 +25,7 @@ class MenuButton extends Widget {
 
     public setup() {
         super.setup();
-        const img = SiteResources.loadImage(SiteConfig.path.img.hamburger).image;
+        const img = SiteResources.loadImage(SiteConfig.path.img.hamburger).data;
         this.elm.appendChild(img);
         this.addEventHandlers();
     }

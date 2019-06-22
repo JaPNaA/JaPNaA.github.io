@@ -1,19 +1,19 @@
 import Resource from "./resource";
 import ResourceLoaderHooks from "../resourceLoaderHooks";
 
-class ImageResource extends Resource {
-    public image: HTMLImageElement;
+class ImageResource extends Resource<HTMLImageElement> {
+    public data: HTMLImageElement;
     public path: string;
 
     constructor(hooks: ResourceLoaderHooks, path: string) {
         super(hooks);
 
-        this.image = document.createElement("img");
+        this.data = document.createElement("img");
         this.path = path;
-        this.image.src = path;
+        this.data.src = path;
 
-        this.image.addEventListener("load", () => this.onLoadHandler());
-        this.image.addEventListener("error", e =>
+        this.data.addEventListener("load", () => this.onLoadHandler());
+        this.data.addEventListener("error", e =>
             this.onErrorHandler(
                 e.error ||
                 new Error("Failed to load image")
@@ -22,11 +22,11 @@ class ImageResource extends Resource {
     }
 
     public _isStillLoaded(): boolean {
-        return this.image.complete;
+        return this.data.complete;
     }
 
     public copyImage(): HTMLImageElement {
-        return this.image.cloneNode() as HTMLImageElement;
+        return this.data.cloneNode() as HTMLImageElement;
     }
 }
 

@@ -1,9 +1,9 @@
 import Resource from "./resource";
 import ResourceLoaderHooks from "../resourceLoaderHooks";
 
-class XMLResource extends Resource {
+class XMLResource extends Resource<Document> {
     public path: string;
-    public document: Document = null as any as Document;
+    public data!: Document;
 
     private type: SupportedType;
 
@@ -30,7 +30,7 @@ class XMLResource extends Resource {
             }
 
             const parser = new DOMParser();
-            this.document = parser.parseFromString(req.responseText, this.type);
+            this.data = parser.parseFromString(req.responseText, this.type);
 
             this.onLoadHandler();
         });

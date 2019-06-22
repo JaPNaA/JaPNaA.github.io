@@ -76,7 +76,7 @@ class ImageView extends View {
 
     public setImageSrc(src: string): void {
         SiteResources.loadImage(src)
-            .onLoad(e => this.setImage(e.image))
+            .onLoad(e => this.setImage(e.data))
             .onError(() => this.inErrorState = true);
     }
 
