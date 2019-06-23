@@ -16,8 +16,7 @@ class SiteConfig_ {
             logo: "assets/img/japnaa-logo.svg",
             hamburger: "assets/img/hamburger.svg",
             close: "assets/img/close.svg",
-            closeWhite: "assets/img/close-white.svg",
-            circle: "assets/img/circle.svg"
+            closeWhite: "assets/img/close-white.svg"
         },
 
         view: {

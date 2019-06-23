@@ -112,10 +112,10 @@ class Menu extends View {
         return button;
     }
 
-    private createActiveCircle(): HTMLImageElement {
-        const image = SiteResources.loadImage(SiteConfig.path.img.circle).copyImage();
-        image.classList.add("circle");
-        return image;
+    private createActiveCircle(): HTMLDivElement {
+        const circle = document.createElement("div");
+        circle.classList.add("circle");
+        return circle;
     }
 
     private createCopyright(): HTMLDivElement {
