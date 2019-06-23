@@ -1,3 +1,5 @@
+import "../../../../styles/views/about.less";
+
 import View from "../../../core/view/view";
 import ViewMap from "../../../core/view/viewMap";
 import IApp from "../../../core/types/app/iApp";
@@ -10,16 +12,27 @@ class About extends View {
     public viewName = About.viewName;
     public isFullPage = true;
 
+    private contentContainer: HTMLDivElement;
+
     constructor(app: IApp) {
         super(app);
         this.elm = document.createElement("div");
+        this.contentContainer = this.createContentContainer();
+        this.elm.appendChild(this.contentContainer);
     }
 
     public setup() {
         super.setup();
         const view = new HTMLView(this.app, SiteConfig.path.view.about);
         view.setup();
-        view.appendTo(this.elm);
+        view.appendTo(this.contentContainer);
+    }
+
+    private createContentContainer() {
+        const contentContainer = document.createElement("div");
+        contentContainer.classList.add("contentContainer");
+        contentContainer.classList.add("longTextContainer");
+        return contentContainer;
     }
 }
 

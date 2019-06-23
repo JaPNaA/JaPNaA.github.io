@@ -8,6 +8,36 @@ a {
     color: @theme-color-blue;
     text-decoration: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+
+    box-shadow: 0px 0px 0px 0px transparent inset;
+
+    &:hover {
+        transition: 0.15s box-shadow ease;
+        box-shadow: 0px -1.5px 0px 0px currentColor inset;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 500;
+    margin-bottom: 8px;
+    margin-top: 1.2em;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+h1 {
+    font-size: 2.8em;
+}
+
+h2 {
+    font-size: 1.7em;
 }
 
 .main {
@@ -36,4 +66,22 @@ a {
     z-index: 0;
 
     -webkit-overflow-scrolling: touch;
+}
+
+.longTextContainer {
+    display: inline-block;
+    text-align: left;
+
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 33vh;
+
+    max-width: 760px;
+    width: 100%;
+    min-height: 100vh;
+
+    box-sizing: border-box;
+    box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.35),
+        0px 0px 8px 0px rgba(0, 0, 0, 0.07);
 }

@@ -68,6 +68,7 @@ class Overview extends View {
     private createContent(): HTMLDivElement {
         const content = document.createElement("div");
         content.classList.add("content");
+        content.classList.add("longTextContainer");
         return content;
     }
 
