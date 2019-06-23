@@ -17,6 +17,7 @@ abstract class ProjectCard implements IRectSetable {
 
     private contentDescriptionElm?: HTMLDivElement;
     private contentDescriptionTextElm?: HTMLDivElement;
+    private touchMovedAfterDown: boolean = false;
 
     constructor(app: IApp) {
         this.app = app;
@@ -39,6 +40,11 @@ abstract class ProjectCard implements IRectSetable {
 
         this.cardElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));
         this.cardElm.addEventListener("mouseout", this.mouseoutHandler.bind(this));
+        this.cardElm.addEventListener("touchstart", this.touchstartHandler.bind(this));
+        this.cardElm.addEventListener("touchmove", this.touchmoveHandler.bind(this));
+        this.cardElm.addEventListener("touchend", this.touchendHandler.bind(this));
+        this.cardElm.addEventListener("focus", this.focusHandler.bind(this));
+        this.cardElm.addEventListener("blur", this.blurHandler.bind(this));
         this.cardElm.addEventListener("click", this.clickHandler.bind(this));
     }
 
@@ -77,7 +83,6 @@ abstract class ProjectCard implements IRectSetable {
         e.preventDefault();
         this.linkClickHandler();
     }
-
 
     protected createBackground(): HTMLDivElement {
         const background = document.createElement("div");
@@ -129,6 +134,33 @@ abstract class ProjectCard implements IRectSetable {
 
         description.appendChild(text);
         return description;
+    }
+
+    private touchstartHandler(e: TouchEvent): void {
+        this.touchMovedAfterDown = false;
+    }
+
+    private touchmoveHandler(): void {
+        this.touchMovedAfterDown = true;
+    }
+
+    private touchendHandler(e: TouchEvent): void {
+        if (this.touchMovedAfterDown) { return; }
+        e.preventDefault();
+
+        if (document.activeElement === this.cardElm) {
+            this.linkClickHandler();
+        } else {
+            this.cardElm.focus();
+        }
+    }
+
+    private focusHandler(): void {
+        this.mouseoverHandler();
+    }
+
+    private blurHandler(): void {
+        this.mouseoutHandler();
     }
 
     private mouseoverHandler(): void {

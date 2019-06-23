@@ -126,7 +126,7 @@ class ImageView extends View {
         X.lineWidth = 3;
         X.stroke();
         X.fillStyle = "#ff3030";
-        X.font = "18px 'Roboto'";
+        X.font = "18px 'Roboto', sans-serif";
         X.textAlign = "center";
         X.textBaseline = "middle";
         X.fillText("Failed to load image", 0, 2);

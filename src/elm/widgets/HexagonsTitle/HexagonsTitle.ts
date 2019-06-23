@@ -56,7 +56,7 @@ class HexagonsTitle extends Widget {
         this.renderer = new HexagonsTitleRenderer(app, this);
         this.layers = this.createLayers();
         this.gradient = this.createGradient();
-        this.logo = new Logo();
+        this.logo = new Logo(this.width, this.height);
 
         this.scrollDist = 0;
         this.transitionInTimestep = SiteConfig.isMobile ? 1 : 0;
@@ -190,6 +190,7 @@ class HexagonsTitle extends Widget {
 
         this.isVertical = height > width;
         this.gradient = this.createGradient();
+        this.logo.resize(width, height);
     }
 
     private scrollHandler(): void {

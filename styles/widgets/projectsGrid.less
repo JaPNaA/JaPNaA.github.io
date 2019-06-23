@@ -1,3 +1,5 @@
+@import "../variables.less";
+
 .widget.ProjectsGrid {
     overflow-y: auto;
     position: relative;
@@ -27,9 +29,14 @@
         display: block;
         color: black;
         text-decoration: none;
+        outline: none;
 
         box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24),
             0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+
+        &:focus {
+            outline: 4px solid @theme-color-blue;
+        }
 
         .background {
             position: absolute;
@@ -81,8 +88,9 @@
             .title {
                 position: static;
                 font-weight: 700;
-                font-family: "Roboto";
+                font-family: "Roboto", sans-serif;
                 font-size: 2em;
+                margin-right: 16px;
                 margin-left: 16px;
             }
 
