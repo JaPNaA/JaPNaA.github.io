@@ -21,7 +21,8 @@ class SiteConfig_ {
         },
 
         view: {
-            overview: "assets/views/overview.html"
+            overview: "assets/views/overview.html",
+            about: "assets/views/about.html"
         },
 
         thingy: "",
