@@ -1,3 +1,5 @@
+import "../../../../styles/widgets/htmlView.less";
+
 import Widget from "../../../core/widget/widget";
 import WidgetMap from "../../../core/widget/widgetMap";
 import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";
@@ -12,7 +14,7 @@ class HTMLView extends Widget {
     public static widgetName: string = "HTMLView";
     public widgetName = HTMLView.widgetName;
 
-    private document?: IHTMLViewDocument;
+    private doc?: IHTMLViewDocument;
     private parser: HTMLViewParser;
     private url: string;
 
@@ -30,16 +32,27 @@ class HTMLView extends Widget {
     public async setup(): Promise<void> {
         super.setup();
 
-        const html = await SiteResources.loadTextPromise(this.url);
-        this.document = this.parser.parse(html);
-        this.document.appendTo(this.elm);
+        this.loadAndWrite()
+            .catch(err => this.writeError(err));
     }
 
     public async destory(): Promise<void> {
         super.destory();
-        if (this.document) {
-            await this.document.destory();
+        if (this.doc) {
+            await this.doc.destory();
         }
+    }
+
+    private async loadAndWrite(): Promise<void> {
+        const html = await SiteResources.loadTextPromise(this.url);
+        this.doc = this.parser.parse(html);
+        this.doc.appendTo(this.elm);
+    }
+
+    private writeError(err: Error) {
+        console.error(err);
+        this.elm.classList.add("loadError");
+        this.elm.appendChild(document.createTextNode("Failed to load. Reason: " + err.message));
     }
 }
 
