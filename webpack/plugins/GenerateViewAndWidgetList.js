@@ -1,4 +1,4 @@
-const pluginName = 'PrintOnBuild';
+const pluginName = 'GenerateViewAndWidgetList';
 const path = require("path");
 const fs = require("fs");
 
