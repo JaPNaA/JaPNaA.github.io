@@ -98,13 +98,14 @@ class Hexagon {
     }
 
     private moveIfInRadius(): void {
+        const dist = 0.225;
         const dx: number = this.x - 0.5;
         const dy: number = this.y - 0.5;
         const ang: number = Math.atan2(dy, dx);
 
-        if (Math.sqrt(dx * dx + dy * dy) < 0.2) {
-            this.x += Math.cos(ang) * 0.2;
-            this.y += Math.sin(ang) * 0.2;
+        if (Math.sqrt(dx * dx + dy * dy) < dist) {
+            this.x += Math.cos(ang) * dist;
+            this.y += Math.sin(ang) * dist;
         }
     }
 }
