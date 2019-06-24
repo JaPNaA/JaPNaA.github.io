@@ -38,10 +38,11 @@ class ImageViewImage {
 
         X.save();
 
-        X.shadowColor = "rgba(0,0,0,0.35)";
+        // box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.40), similar to @box-shadow-24dp
+        X.shadowColor = "rgba(0,0,0,0.40)";
         X.shadowBlur = 8;
         X.shadowOffsetX = 0;
-        X.shadowOffsetY = 4;
+        X.shadowOffsetY = 12;
 
         this.image.draw(X);
 

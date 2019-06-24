@@ -6,6 +6,7 @@
     // padding: 16px;
 
     @easeFastOutSlowIn: cubic-bezier(0.4, 0, 0.2, 1);
+    @transitionTime: 0.3s;
 
     .projectCard {
         padding: 16px;
@@ -31,11 +32,16 @@
         text-decoration: none;
         outline: none;
 
-        box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24),
-            0px 2px 8px 0px rgba(0, 0, 0, 0.12);
+        box-shadow: @box-shadow-6dp;
+        transition: box-shadow @transitionTime @easeFastOutSlowIn;
 
         &:focus {
             outline: 4px solid @theme-color-blue;
+        }
+
+        &:focus,
+        &.mouseover {
+            box-shadow: @box-shadow-8dp;
         }
 
         .background {
@@ -48,10 +54,11 @@
             background-position: center;
             background-size: cover;
 
-            transition: transform 0.3s @easeFastOutSlowIn;
+            transition: transform @transitionTime @easeFastOutSlowIn;
         }
 
-        &.mouseover .background {
+        &.mouseover .background,
+        &:focus .background {
             transform: scale(1.05);
         }
 
@@ -63,10 +70,11 @@
             height: 100%;
             background-color: #ffffff;
             opacity: 0.4;
-            transition: opacity 0.3s @easeFastOutSlowIn;
+            transition: opacity @transitionTime @easeFastOutSlowIn;
         }
 
-        &.mouseover .backgroundOverlay {
+        &.mouseover .backgroundOverlay,
+        &:focus .backgroundOverlay {
             opacity: 0.7;
         }
 
@@ -82,8 +90,8 @@
             top: @top;
             transform: translate(0, -@top);
 
-            transition: top 0.3s @easeFastOutSlowIn,
-                transform 0.3s @easeFastOutSlowIn;
+            transition: top @transitionTime @easeFastOutSlowIn,
+                transform @transitionTime @easeFastOutSlowIn;
 
             .title {
                 position: static;
@@ -100,12 +108,13 @@
                 opacity: 0;
                 padding: 16px;
                 height: 0;
-                transition: height 0.3s @easeFastOutSlowIn,
-                    opacity 0.3s @easeFastOutSlowIn;
+                transition: height @transitionTime @easeFastOutSlowIn,
+                    opacity @transitionTime @easeFastOutSlowIn;
             }
         }
 
-        &.mouseover .textContainer {
+        &.mouseover .textContainer,
+        &:focus .textContainer {
             .description {
                 opacity: 1;
                 height: 64px;
