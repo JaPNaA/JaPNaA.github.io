@@ -4,8 +4,9 @@ import Widget from "../../../core/widget/widget";
 import WidgetMap from "../../../core/widget/widgetMap";
 import EventHandlers from "../../../core/utils/events/eventHandlers";
 import Handler from "../../../core/utils/events/handler";
+import IIFrame from "./IIFrame";
 
-class IFrame extends Widget {
+class IFrame extends Widget implements IIFrame {
     public static widgetName = "iframe";
     public widgetName = IFrame.widgetName;
     protected elm: HTMLIFrameElement;

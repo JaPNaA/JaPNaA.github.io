@@ -13,6 +13,8 @@ import { Vec2 } from "../../../types/math/vec2";
 import TouchControls from "../../../components/touch/touchControls";
 import AppState from "../../../core/types/appState";
 import ImageViewRenderer from "./imageViewRenderer";
+import WidgetMap from "../../../core/widget/widgetMap";
+import IIFrame from "../../widgets/IFrame/IIFrame";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -164,6 +166,8 @@ class ImageView extends View {
         this.touchControls.onEndMove(this.endMoveHandler.bind(this));
         this.touchControls.onZoom(this.zoomHandler.bind(this));
         this.touchControls.onDoubleTap(this.doubleTapHandler.bind(this));
+
+        this.image.onSkyrim(this.skyrimHandler.bind(this));
     }
 
     private resizeHandler(): void {
@@ -250,6 +254,14 @@ class ImageView extends View {
     private resetImagePosition(): void {
         this.image.resetImageTransform();
         this.renderer.requestDraw();
+    }
+
+    private async skyrimHandler(): Promise<void> {
+        const iframe = new (await WidgetMap.get("IFrame"))(
+            "https://www.youtube-nocookie.com/embed/RrjJtYpOawU?start=61&autoplay=1&mute=1&controls=0&disablekb=1"
+        ) as IIFrame;
+        iframe.setup();
+        iframe.appendTo(this.elm);
     }
 }
 

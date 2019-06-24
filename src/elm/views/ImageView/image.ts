@@ -1,11 +1,15 @@
 import CanvasImage from "../../../components/canvas/canvasElements/canvasImage";
 import DragPhysics from "../../../components/canvas/canvasElements/physics/drag";
 import { Rect } from "../../../types/math/rect";
+import EventHandlers from "../../../core/utils/events/eventHandlers";
+import Handler from "../../../core/utils/events/handler";
 
 class ImageViewImage {
     public physics: DragPhysics;
+    public skyrimHandlers: EventHandlers;
     private image?: CanvasImage;
     private animateNextReset: boolean;
+    private didSkyrim: boolean;
 
     private static zoomFactor: number = 1.2;
 
@@ -15,7 +19,17 @@ class ImageViewImage {
             initFlickSmoothing: 0.3,
             flickFriction: 0.94
         });
+        this.didSkyrim = false;
+        this.skyrimHandlers = new EventHandlers();
         this.animateNextReset = false;
+    }
+
+    public onSkyrim(handler: Handler): void {
+        this.skyrimHandlers.add(handler);
+    }
+
+    public offSkyrim(handler: Handler): void {
+        this.skyrimHandlers.remove(handler);
     }
 
     public setImage(image: HTMLImageElement): void {
@@ -33,8 +47,10 @@ class ImageViewImage {
         if (!this.image) { return; }
 
         X.imageSmoothingEnabled = this.getScale() < 3;
-        // at some point, when it's zoomed in enough, open the skyrim intro, if the meme is still relevant
-        // <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/RrjJtYpOawU?start=61&autoplay=1&mute=1&controls=0&disablekb=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+        if (this.getScale() > 40e6) {
+            this.startSkyrim();
+        }
 
         X.save();
 
@@ -83,6 +99,12 @@ class ImageViewImage {
 
     public getRect(): Rect | undefined {
         return this.image && this.image.getRect();
+    }
+
+    private startSkyrim(): void {
+        if (this.didSkyrim) { return; }
+        this.skyrimHandlers.dispatch();
+        this.didSkyrim = true;
     }
 
     private getScale(): number {
