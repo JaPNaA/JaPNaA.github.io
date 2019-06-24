@@ -186,7 +186,6 @@ class HTMLViewDocument implements IHTMLViewDocument {
         const widgetClass = await WidgetMap.get(widgetName);
         WidgetFactory.create(widgetClass, this.getWidgetArguments(elm))
             .then(widget => {
-                widget.setup();
                 widget.appendTo(elm);
                 elm.classList.add("embededWidget");
                 this.widgets.push(widget);
