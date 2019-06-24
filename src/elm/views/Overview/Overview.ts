@@ -34,7 +34,11 @@ class Overview extends View {
 
         this.hexagonsTitle.setup();
         this.hexagonsTitle.appendToParent();
-        this.hexagonsTitle.setOverSize(0, 128);
+        if (SiteConfig.isMobile) {
+            this.hexagonsTitle.setOverSize(0, 0);
+        } else {
+            this.hexagonsTitle.setOverSize(0, 128);
+        }
         this.hexagonsTitle.registerEventHandlers();
 
         this.createStickyBar();
