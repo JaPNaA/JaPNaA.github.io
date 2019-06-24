@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 const pluginName = 'PrintOnBuild';
 const path = require("path");
 const fs = require("fs");
@@ -17,7 +15,7 @@ class GenerateViewAndWidgetList {
     constructor() {
         /**
          * A list of names of views
-         * @type {string[]}
+         * @type {(string | [string, string])[]}
          */
         this.views = [];
 
@@ -85,8 +83,8 @@ class GenerateViewAndWidgetList {
         const viewsDirectories = fs.readdirSync(contextViewsPath);
 
         for (const directory of viewsDirectories) {
-            if (fs.existsSync(contextViewsPath + "/" + directory + "/" + directory + ".ts")) {
-                this.views.push(directory);
+            if (fs.existsSync(this._getPathFor(contextViewsPath, directory))) {
+                this._addView(contextViewsPath, directory);
             }
         }
 
@@ -102,7 +100,7 @@ class GenerateViewAndWidgetList {
         const widgetDirectories = fs.readdirSync(contextWidgetsPath);
 
         for (const directory of widgetDirectories) {
-            if (fs.existsSync(contextWidgetsPath + "/" + directory + "/" + directory + ".ts")) {
+            if (fs.existsSync(this._getPathFor(contextWidgetsPath, directory))) {
                 this.widgets.push(directory);
             }
         }
@@ -115,7 +113,27 @@ class GenerateViewAndWidgetList {
      * @param {string} viewPath 
      */
     _updateListIfIsView(compiler, viewPath) {
-        this._updateListIfIs(this.views, viewPath);
+        const viewName = this._getDirName(viewPath);
+        const viewIndex = this.views.findIndex((value) => {
+            if (Array.isArray(value)) {
+                return value[0] === viewName;
+            } else {
+                return value === viewName;
+            }
+        });
+
+        if (viewIndex >= 0) {
+            if (!fs.existsSync(viewPath)) {
+                this.views.splice(viewIndex, 1);
+            }
+        } else {
+            try {
+                this._addView(compiler.context + "/" + PATH_TO_VIEWS, viewName);
+            } catch (err) {
+                // view doesn't exist, that's fine.
+            }
+        }
+
         this._updateViewMap(compiler);
     }
 
@@ -124,25 +142,34 @@ class GenerateViewAndWidgetList {
      * @param {string} widgetPath 
      */
     _updateListIfIsWidget(compiler, widgetPath) {
-        this._updateListIfIs(this.widgets, widgetPath);
+        const name = this._getFilenameWithoutExtension(widgetPath);
+        if (this._getDirName(widgetPath) !== name) { return; }
+
+        if (this.widgets.includes(name)) {
+            if (!fs.existsSync(widgetPath)) {
+                this.widgets.splice(this.widgets.indexOf(name), 1);
+            }
+        } else {
+            this.widgets.push(name);
+        }
+
         this._updateWidgetMap(compiler);
     }
 
     /**
-     * Updates a list if the path to a view or widget is valid
-     * @param {string[]} listOfIt
-     * @param {string} pathToIt
+     * Adds a view to the list
+     * @param {string} context
+     * @param {string} directory 
      */
-    _updateListIfIs(listOfIt, pathToIt) {
-        const name = this._getFilenameWithoutExtension(pathToIt);
-        if (this._getDirName(pathToIt) !== name) { return; }
+    _addView(context, directory) {
+        //public\s+static\s.*viewMatcher = (\/.*\/);
+        const file = fs.readFileSync(this._getPathFor(context, directory)).toString();
+        const match = file.match(/public\s+static\s.*viewMatcher = (\/.*\/);/);
 
-        if (listOfIt.includes(name)) {
-            if (!fs.existsSync(pathToIt)) {
-                listOfIt.splice(listOfIt.indexOf(name), 1);
-            }
+        if (match) {
+            this.views.push([directory, match[1]]);
         } else {
-            listOfIt.push(name);
+            this.views.push(directory);
         }
     }
 
@@ -152,7 +179,7 @@ class GenerateViewAndWidgetList {
     _updateViewMap(compiler) {
         fs.writeFileSync(
             compiler.context + "/" + PATH_TO_VIEWS + "/viewList.ts",
-            `export default ${JSON.stringify(this.views)};`
+            `const viewList: (string | [string, RegExp])[] = ${this._stringifyViews()}; export default viewList;`
         );
     }
 
@@ -188,6 +215,7 @@ class GenerateViewAndWidgetList {
      */
     _getChangedFiles(compiler) {
         /** @type {Webpack.Node.NodeWatchFileSystem} */
+        // @ts-ignore
         const watchFileSystem = compiler.watchFileSystem;
         return Object.keys(watchFileSystem.watcher.mtimes)
             .filter(watchfile =>
@@ -198,6 +226,29 @@ class GenerateViewAndWidgetList {
                 changedFile,
                 path.relative(compiler.context, changedFile)
             ]);
+    }
+
+    /**
+     * @param {string} context 
+     * @param {string} directory 
+     */
+    _getPathFor(context, directory) {
+        return context + "/" + directory + "/" + directory + ".ts";
+    }
+
+    /**
+     * @returns {string}
+     */
+    _stringifyViews() {
+        let str = [];
+        for (const view of this.views) {
+            if (Array.isArray(view)) {
+                str.push('["' + view[0] + '",' + view[1] + ']');
+            } else {
+                str.push('\"' + view + '\"');
+            }
+        }
+        return "[" + str.join(",") + "]";
     }
 }
 
