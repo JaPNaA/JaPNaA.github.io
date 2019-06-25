@@ -11,6 +11,7 @@ class Hexagon {
 
     private static initalizedStatic: boolean;
     private static img: HTMLImageElement;
+    private static imgPrerender: HTMLCanvasElement;
     private static imgLoaded: boolean;
     private static negativeHalfImgWidth: number;
     private static negativeHalfImgHeight: number;
@@ -54,7 +55,7 @@ class Hexagon {
     private drawHexagonImage(X: CanvasRenderingContext2D): void {
         X.save();
         this.transformCanvas(X);
-        X.drawImage(Hexagon.img, Hexagon.negativeHalfImgWidth, Hexagon.negativeHalfImgHeight, Hexagon.size, Hexagon.size);
+        X.drawImage(Hexagon.imgPrerender, Hexagon.negativeHalfImgWidth, Hexagon.negativeHalfImgHeight, Hexagon.size, Hexagon.size);
         X.restore();
     }
 
@@ -92,9 +93,18 @@ class Hexagon {
             this.negativeHalfImgWidth = -img.width / 2;
             this.negativeHalfImgHeight = -img.height / 2;
             this.imgLoaded = true;
+            this.createPrerender();
         });
 
         return img;
+    }
+
+    private static createPrerender(): void {
+        this.imgPrerender = document.createElement("canvas");
+        const X = this.imgPrerender.getContext("2d")!;
+        this.imgPrerender.width = this.img.width;
+        this.imgPrerender.height = this.img.height;
+        X.drawImage(this.img, 0, 0, this.img.width, this.img.height);
     }
 
     private moveIfInRadius(): void {
