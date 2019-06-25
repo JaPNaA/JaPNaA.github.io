@@ -1,4 +1,4 @@
-import { Rect, newRect } from "../../types/math/rect";
+import { Rect, newRect } from "../../types/math/Rect";
 import createArray from "../../utils/createArray";
 import { GridElementPosition, createGridElementPosition } from "./types/GridElementPosition";
 import { ElementData, createElementData } from "./types/ElementData";

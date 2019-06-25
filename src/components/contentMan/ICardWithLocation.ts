@@ -1,4 +1,4 @@
-import ICard from "../../types/project/card";
+import ICard from "../../types/project/ICard";
 
 export default interface ICardWithLocation {
     project: ICard;

@@ -1,12 +1,12 @@
-import "../../../../styles/widgets/htmlView.less";
+import "../../../../styles/widgets/HTMLView.less";
 
-import Widget from "../../../core/widget/widget";
-import WidgetMap from "../../../core/widget/widgetMap";
+import Widget from "../../../core/widget/Widget";
+import WidgetMap from "../../../core/widget/WidgetMap";
 import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";
-import IApp from "../../../core/types/app/iApp";
+import IApp from "../../../core/types/app/IApp";
 import IHTMLViewDocument from "../../../components/htmlViewParser/iHTMLViewDocument";
 import HTMLViewParserOptions from "../../../components/htmlViewParser/types/htmlViewParserOptions";
-import SiteResources from "../../../core/siteResources";
+import siteResources from "../../../core/siteResources";
 import defaultHtmlViewParserOptions from "./defaultHtmlViewParserOptions";
 
 class HTMLView extends Widget {
@@ -44,7 +44,7 @@ class HTMLView extends Widget {
     }
 
     private async loadAndWrite(): Promise<void> {
-        const html = await SiteResources.loadTextPromise(this.url);
+        const html = await siteResources.loadTextPromise(this.url);
         this.doc = this.parser.parse(html);
         this.doc.appendTo(this.elm);
     }

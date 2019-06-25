@@ -1,6 +1,6 @@
 import "../../../../styles/widgets/projectsGrid.less";
 
-import IApp from "../../../core/types/app/iApp";
+import IApp from "../../../core/types/app/IApp";
 import ProjectCardFactory from "./ProjectCardFactory";
 import ProjectCard from "./projectCard/ProjectCard";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
@@ -8,14 +8,14 @@ import IProjectLink from "../../../components/contentMan/IProjectLink";
 import ICardWithLocation from "../../../components/contentMan/ICardWithLocation";
 import isProjectLink from "../../../utils/isProjectLink";
 import isProjectCardWithLocation from "../../../utils/isProjectCardWithLocation";
-import Widget from "../../../core/widget/widget";
-import WidgetMap from "../../../core/widget/widgetMap";
+import Widget from "../../../core/widget/Widget";
+import WidgetMap from "../../../core/widget/WidgetMap";
 import ContentMan from "../../../components/contentMan/contentMan";
-import { Rect, newRect } from "../../../types/math/rect";
+import { Rect, newRect } from "../../../types/math/Rect";
 
 class ProjectsGrid extends Widget {
     protected elm: HTMLDivElement;
-    public static widgetName: string = "ProjectsGrid";
+    public static widgetName: string = "projectsGrid";
     public widgetName = ProjectsGrid.widgetName;
     private app: IApp;
 

@@ -1,13 +1,13 @@
 import "../../../../styles/components/cardV1.less";
 
-import ICard from "../../../types/project/card";
-import SiteConfig from "../../../siteConfig";
-import Display from "../../../types/project/display";
-import DisplayImg from "../../../types/project/displayImg";
+import ICard from "../../../types/project/ICard";
+import SiteConfig from "../../../SiteConfig";
+import Display from "../../../types/project/Display";
+import DisplayImg from "../../../types/project/DisplayImg";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
-import SiteResources from "../../../core/siteResources";
-import IApp from "../../../core/types/app/iApp";
-import IImageView from "../../../elm/views/ImageView/iImageView";
+import siteResources from "../../../core/siteResources";
+import IApp from "../../../core/types/app/IApp";
+import IImageView from "../../../elm/views/ImageView/IImageView";
 import getFirstDisplayImgSrc from "./getFirstDisplayImg";
 
 // TODO: refactor, along with it's .less companion!
@@ -182,7 +182,7 @@ class CardJSONv1Elm {
         if (display.src) {
             // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
             const src = SiteConfig.path.thingy + display.src;
-            const img = SiteResources.loadImage(src).copyImage();
+            const img = siteResources.loadImage(src).copyImage();
             img.classList.add("img");
             this.addImageClickHandler(img);
             parent.appendChild(img);

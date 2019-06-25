@@ -1,14 +1,14 @@
-import "../../../../styles/views/projectInfo.less";
+import "../../../../styles/views/ProjectInfo.less";
 
-import View from "../../../core/view/view";
-import ICard from "../../../types/project/card";
+import View from "../../../core/view/View";
+import ICard from "../../../types/project/ICard";
 import CardJSONv1Elm from "../../../components/jsonToElm/v1/card";
-import ViewMap from "../../../core/view/viewMap";
-import SiteConfig from "../../../siteConfig";
-import IApp from "../../../core/types/app/iApp";
-import SiteResources from "../../../core/siteResources";
-import IInfoJSON from "../../../types/project/infojson";
-import AppState from "../../../core/types/appState";
+import ViewMap from "../../../core/view/ViewMap";
+import SiteConfig from "../../../SiteConfig";
+import IApp from "../../../core/types/app/IApp";
+import siteResources from "../../../core/siteResources";
+import IInfoJSON from "../../../types/project/IInfojson";
+import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
 
 class ProjectInfoView extends View {
@@ -93,7 +93,7 @@ class ProjectInfoView extends View {
     }
 
     private async getCard(year: string, index: number): Promise<ICard> {
-        const resource = SiteResources.loadJSON(SiteConfig.path.content + year + ".json");
+        const resource = siteResources.loadJSON(SiteConfig.path.content + year + ".json");
         const promise = new Promise<IInfoJSON>(res =>
             resource.onLoad(e => res(e.data as IInfoJSON))
         );

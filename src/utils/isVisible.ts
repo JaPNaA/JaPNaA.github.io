@@ -1,4 +1,4 @@
-import { Rect, newRect } from "../types/math/rect";
+import { Rect, newRect } from "../types/math/Rect";
 
 export default function isVisible(elm: HTMLElement, viewport_?: Rect): boolean {
     const bbox = elm.getBoundingClientRect();

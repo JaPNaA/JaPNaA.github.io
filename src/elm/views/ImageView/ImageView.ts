@@ -1,19 +1,19 @@
-import "../../../../styles/views/imageView.less";
+import "../../../../styles/views/ImageView.less";
 
-import View from "../../../core/view/view";
-import IApp from "../../../core/types/app/iApp";
-import ViewMap from "../../../core/view/viewMap";
-import SiteResources from "../../../core/siteResources";
+import View from "../../../core/view/View";
+import IApp from "../../../core/types/app/IApp";
+import ViewMap from "../../../core/view/ViewMap";
+import siteResources from "../../../core/siteResources";
 import SimpleEasePhysics from "../../../components/canvas/canvasElements/physics/simpleEase";
-import ImageViewCloseButton from "./closeButton";
-import ImageViewImage from "./image";
+import ImageViewCloseButton from "./ImageViewCloseButton";
+import ImageViewImage from "./ImageViewImage";
 import wait from "../../../utils/wait";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
-import { Vec2 } from "../../../types/math/vec2";
+import { Vec2 } from "../../../types/math/Vec2";
 import TouchControls from "../../../components/touch/touchControls";
-import AppState from "../../../core/types/appState";
-import ImageViewRenderer from "./imageViewRenderer";
-import WidgetMap from "../../../core/widget/widgetMap";
+import AppState from "../../../core/types/AppState";
+import ImageViewRenderer from "./ImageViewRenderer";
+import WidgetMap from "../../../core/widget/WidgetMap";
 import IIFrame from "../../widgets/IFrame/IIFrame";
 
 class ImageView extends View {
@@ -77,7 +77,7 @@ class ImageView extends View {
     }
 
     public setImageSrc(src: string): void {
-        SiteResources.loadImage(src)
+        siteResources.loadImage(src)
             .onLoad(e => this.setImage(e.data))
             .onError(() => this.inErrorState = true);
     }

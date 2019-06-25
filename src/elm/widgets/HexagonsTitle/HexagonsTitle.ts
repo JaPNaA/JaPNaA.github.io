@@ -1,14 +1,14 @@
 import "../../../../styles/widgets/hexagonsTitle.less";
 
-import HexagonsLayer from "./hexagonsLayer";
-import SiteConfig from "../../../siteConfig";
-import SiteResources from "../../../core/siteResources";
-import Widget from "../../../core/widget/widget";
-import WidgetMap from "../../../core/widget/widgetMap";
-import Logo from "./logo";
-import HexagonsTitleRenderer from "./hexagonsTitleRenderer";
+import HexagonsLayer from "./HexagonsLayer";
+import SiteConfig from "../../../SiteConfig";
+import siteResources from "../../../core/siteResources";
+import Widget from "../../../core/widget/Widget";
+import WidgetMap from "../../../core/widget/WidgetMap";
+import Logo from "./Logo";
+import HexagonsTitleRenderer from "./HexagonsTitleRenderer";
 import { easeInOutQuart } from "../../../utils/easingFunctions";
-import IApp from "../../../core/types/app/iApp";
+import IApp from "../../../core/types/app/IApp";
 
 class HexagonsTitle extends Widget {
     public static widgetName = "hexagonsTitle";
@@ -80,7 +80,7 @@ class HexagonsTitle extends Widget {
         this.renderer.onResize(this.resizeHandler);
 
         // POSSIBLE BUG: destory before nextDone
-        SiteResources.nextDone().then(() => {
+        siteResources.nextDone().then(() => {
             this.loaded = true;
             this.renderer.clearTimer();
             this.renderer.requestDraw();

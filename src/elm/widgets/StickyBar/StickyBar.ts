@@ -1,8 +1,8 @@
 import "../../../../styles/widgets/stickyBar.less";
 
 import removeChildren from "../../../utils/removeChildren";
-import Widget from "../../../core/widget/widget";
-import WidgetMap from "../../../core/widget/widgetMap";
+import Widget from "../../../core/widget/Widget";
+import WidgetMap from "../../../core/widget/WidgetMap";
 
 class StickyBar extends Widget {
     public static widgetName = "stickyBar";

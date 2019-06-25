@@ -1,17 +1,17 @@
 import url from "url";
-import SiteConfig from "../../siteConfig";
-import IApp from "../../core/types/app/iApp";
-import ViewMap from "../../core/view/viewMap";
-import EmbededApp from "../../core/app/embededApp";
-import WidgetMap from "../../core/widget/widgetMap";
+import SiteConfig from "../../SiteConfig";
+import IApp from "../../core/types/app/IApp";
+import ViewMap from "../../core/view/ViewMap";
+import EmbededApp from "../../core/app/EmbededApp";
+import WidgetMap from "../../core/widget/WidgetMap";
 import parseAppStateURL from "../../core/utils/parseAppStateURL";
 import openNoopener from "../../core/utils/open/openNoopener";
 import createAppState from "../../core/utils/createAppState";
-import WidgetFactory from "../../core/widget/widgetFactory";
+import WidgetFactory from "../../core/widget/WidgetFactory";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import openFrameView from "../../utils/openFrameView";
 import IHTMLViewDocument from "./iHTMLViewDocument";
-import Widget from "../../core/widget/widget";
+import Widget from "../../core/widget/Widget";
 
 // TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 

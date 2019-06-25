@@ -1,11 +1,11 @@
 
 import "../../../../styles/widgets/global/global.less"
 
-import Widget from "../../../core/widget/widget";
-import App from "../../../app";
-import WidgetMap from "../../../core/widget/widgetMap";
-import MenuButton from "./menuButton";
-import TopLoadingBar from "./topLoadingBar";
+import Widget from "../../../core/widget/Widget";
+import App from "../../../App";
+import WidgetMap from "../../../core/widget/WidgetMap";
+import MenuButton from "./MenuButton";
+import TopLoadingBar from "./TopLoadingBar";
 
 /** Initalized at start of page */
 class GlobalWidgets extends Widget {

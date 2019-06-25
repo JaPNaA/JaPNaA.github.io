@@ -1,9 +1,9 @@
-import "../../../../styles/views/splashScreen.less";
+import "../../../../styles/views/SplashScreen.less";
 
-import View from "../../../core/view/view";
+import View from "../../../core/view/View";
 import wait from "../../../utils/wait";
-import ViewMap from "../../../core/view/viewMap";
-import IApp from "../../../core/types/app/iApp";
+import ViewMap from "../../../core/view/ViewMap";
+import IApp from "../../../core/types/app/IApp";
 
 class SplashScreen extends View {
     public static viewName = "SplashScreen";

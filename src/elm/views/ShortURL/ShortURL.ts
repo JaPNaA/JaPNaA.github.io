@@ -1,12 +1,12 @@
-import "../../../../styles/views/shortUrl.less";
+import "../../../../styles/views/ShortUrl.less";
 
-import View from "../../../core/view/view";
-import ViewMap from "../../../core/view/viewMap";
-import IApp from "../../../core/types/app/iApp";
+import View from "../../../core/view/View";
+import ViewMap from "../../../core/view/ViewMap";
+import IApp from "../../../core/types/app/IApp";
 import parseShortUrl from "../../../components/url/parseShortUrl";
-import AppState from "../../../core/types/appState";
+import AppState from "../../../core/types/AppState";
 import isUrlAbsolute from "../../../utils/isUrlAbsolute";
-import SiteConfig from "../../../siteConfig";
+import SiteConfig from "../../../SiteConfig";
 
 class ShortUrlView extends View {
     public static viewName = "ShortUrl";

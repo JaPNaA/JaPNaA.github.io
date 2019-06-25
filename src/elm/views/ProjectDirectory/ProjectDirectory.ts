@@ -1,22 +1,22 @@
-import "../../../../styles/views/projectDirectory.less";
+import "../../../../styles/views/ProjectDirectory.less";
 
-import View from "../../../core/view/view";
-import IApp from "../../../core/types/app/iApp";
-import ViewMap from "../../../core/view/viewMap";
-import SiteResources from "../../../core/siteResources";
-import SiteConfig from "../../../siteConfig";
-import getLink from "../../../utils/isLink";
+import View from "../../../core/view/View";
+import IApp from "../../../core/types/app/IApp";
+import ViewMap from "../../../core/view/ViewMap";
+import siteResources from "../../../core/siteResources";
+import SiteConfig from "../../../SiteConfig";
+import getLink from "../../../utils/getLink";
 import removeChildren from "../../../utils/removeChildren";
 import url from "url";
 import openPopup from "../../../core/utils/open/openPopup";
-import contentJSONPath from "../../../utils/paths/contentJson";
-import IInfoJSON from "../../../types/project/infojson";
+import contentJSONPath from "../../../utils/paths/contentJSONPath";
+import IInfoJSON from "../../../types/project/IInfojson";
 import isProjectCard from "../../../utils/isProjectCard";
-import ICard from "../../../types/project/card";
-import JSONResource from "../../../core/components/resourceLoader/resources/json";
-import AppState from "../../../core/types/appState";
+import ICard from "../../../types/project/ICard";
+import JSONResource from "../../../core/components/resourceLoader/resources/JSONResource";
+import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
-import IProjectInfoView from "../ProjectInfo/iProjectInfo";
+import IProjectInfoView from "../ProjectInfo/IProjectInfo";
 import createAppState from "../../../core/utils/createAppState";
 
 type LinkMatch = {
@@ -55,7 +55,7 @@ class ProjectDirectory extends View {
     public async setup() {
         super.setup();
 
-        SiteResources.loadXML(
+        siteResources.loadXML(
             this.contentHref,
             "text/html"
         ).onLoad(e => this.setPageContent(e.data));
@@ -162,7 +162,7 @@ class ProjectDirectory extends View {
     private changeContentToView(link: string): void {
         this.app.url.pushHistory(this);
         this.contentHref = link;
-        SiteResources.loadXML(link, "text/html")
+        siteResources.loadXML(link, "text/html")
             .onLoad(e => this.setPageContent(e.data));
     }
 
@@ -230,7 +230,7 @@ class ProjectDirectory extends View {
         if (!year) { return; }
 
         const data: JSONResource | null = await new Promise((res, rej) =>
-            SiteResources.loadJSON(contentJSONPath(year))
+            siteResources.loadJSON(contentJSONPath(year))
                 .onLoad(e => res(e))
                 .onError(e => res(null))
         );

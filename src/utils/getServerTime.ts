@@ -1,11 +1,11 @@
-import SiteResources from "../core/siteResources";
+import siteResources from "../core/siteResources";
 
 const PING = "/ping";
 
 export default function getServerTime(): Promise<Date> {
     const x = new XMLHttpRequest();
     x.open("GET", PING);
-    SiteResources.addResourceLoading();
+    siteResources.addResourceLoading();
 
     x.setRequestHeader('cache-control', 'no-cache, must-revalidate, post-check=0, pre-check=0');
     x.setRequestHeader('cache-control', 'max-age=0');
@@ -22,11 +22,11 @@ export default function getServerTime(): Promise<Date> {
                 res(new Date(date));
             }
 
-            SiteResources.addResourceLoaded();
+            siteResources.addResourceLoaded();
         });
         x.addEventListener("error", function () {
             rej();
-            SiteResources.addResourceLoaded();
+            siteResources.addResourceLoaded();
         });
     });
 

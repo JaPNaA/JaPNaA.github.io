@@ -1,9 +1,9 @@
-import "../../../../styles/views/test.less";
+import "../../../../styles/views/Test.less";
 
-import View from "../../../core/view/view";
-import IApp from "../../../core/types/app/iApp";
-import ViewMap from "../../../core/view/viewMap";
-import SiteResources from "../../../core/siteResources";
+import View from "../../../core/view/View";
+import IApp from "../../../core/types/app/IApp";
+import ViewMap from "../../../core/view/ViewMap";
+import siteResources from "../../../core/siteResources";
 
 class TestView extends View {
     public static viewName: string = "Test";
@@ -18,7 +18,7 @@ class TestView extends View {
         this.elm = document.createElement("div");
         this.elm.id = "test";
 
-        SiteResources.loadText("test-bundle.js")
+        siteResources.loadText("test-bundle.js")
             .onLoad(e => eval(e.data as string))
             .onError(() => this.elm.innerText = "test-bundle.js doesn't exist, cannot run tests.");
     }

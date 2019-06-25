@@ -1,8 +1,8 @@
-import "../../../../styles/views/browseProjects.less";
+import "../../../../styles/views/BrowseProjects.less";
 
-import View from "../../../core/view/view";
-import ViewMap from "../../../core/view/viewMap";
-import IApp from "../../../core/types/app/iApp";
+import View from "../../../core/view/View";
+import ViewMap from "../../../core/view/ViewMap";
+import IApp from "../../../core/types/app/IApp";
 import ProjectsGrid from "../../widgets/ProjectsGrid/ProjectsGrid";
 
 class BrowseProjects extends View {

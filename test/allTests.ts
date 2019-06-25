@@ -1,7 +1,7 @@
 import { TestList } from "./testFramework";
-import ParseAppStateURLTest from "./tests/parseAppStateURL";
-import ShortUrlTest from "./tests/shortUrl";
-import GetServerTimeTest from "./tests/getServerTime";
+import ParseAppStateURLTest from "./tests/ParseAppStateURLTest";
+import ShortUrlTest from "./tests/ShortUrlTest";
+import GetServerTimeTest from "./tests/GetServerTime";
 
 export default function createAllTests() {
     return new TestList([

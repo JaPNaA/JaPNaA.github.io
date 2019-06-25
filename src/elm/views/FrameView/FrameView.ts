@@ -1,14 +1,14 @@
-import "../../../../styles/views/frameView.less";
+import "../../../../styles/views/FrameView.less";
 
-import View from "../../../core/view/view";
-import IApp from "../../../core/types/app/iApp";
+import View from "../../../core/view/View";
+import IApp from "../../../core/types/app/IApp";
 import IFrame from "../../widgets/IFrame/IFrame";
-import ViewMap from "../../../core/view/viewMap";
-import SiteResources from "../../../core/siteResources";
-import SiteConfig from "../../../siteConfig";
+import ViewMap from "../../../core/view/ViewMap";
+import siteResources from "../../../core/siteResources";
+import SiteConfig from "../../../SiteConfig";
 import wait from "../../../utils/wait";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
-import AppState from "../../../core/types/appState";
+import AppState from "../../../core/types/AppState";
 
 // TODO: Add loading bar
 
@@ -116,7 +116,7 @@ class FrameView extends View {
         const closeButton = document.createElement("div");
         closeButton.classList.add("close");
 
-        const img = SiteResources.loadImage(SiteConfig.path.img.close).data;
+        const img = siteResources.loadImage(SiteConfig.path.img.close).data;
         closeButton.appendChild(img);
 
         this.header.appendChild(closeButton);

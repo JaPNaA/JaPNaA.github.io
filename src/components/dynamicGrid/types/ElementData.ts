@@ -1,4 +1,4 @@
-import { Rect } from "../../../types/math/rect";
+import { Rect } from "../../../types/math/Rect";
 
 export interface ElementData<T> {
     elm: T;

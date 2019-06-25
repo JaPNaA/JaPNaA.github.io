@@ -1,6 +1,6 @@
 import IRectSetable from "./types/IRectSetable";
 import DynamicGridCore from "./DynamicGridCore";
-import { Rect } from "../../types/math/rect";
+import { Rect } from "../../types/math/Rect";
 
 class DynamicGridDisplay<T extends IRectSetable> extends DynamicGridCore<T> {
     private rowHeight: number;

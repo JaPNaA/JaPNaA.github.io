@@ -1,13 +1,12 @@
-import "../../../../styles/views/overview.less";
+import "../../../../styles/views/Overview.less";
 
-import View from "../../../core/view/view";
-import ViewMap from "../../../core/view/viewMap";
+import View from "../../../core/view/View";
+import ViewMap from "../../../core/view/ViewMap";
 import HexagonsTitle from "../../widgets/HexagonsTitle/HexagonsTitle";
 import StickyBar from "../../widgets/StickyBar/StickyBar";
-import SiteConfig from "../../../siteConfig";
-import SiteResources from "../../../core/siteResources";
-import IApp from "../../../core/types/app/iApp";
-import removeChildren from "../../../utils/removeChildren";
+import SiteConfig from "../../../SiteConfig";
+import siteResources from "../../../core/siteResources";
+import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
 
 class Overview extends View {
@@ -55,8 +54,8 @@ class Overview extends View {
 
     private createStickyBar() {
         const stickyBar: StickyBar = new StickyBar();
-        const logoImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.path.img.logo).copyImage();
-        const hexagonImg: HTMLImageElement = SiteResources.loadImage(SiteConfig.path.img.hexagon).copyImage();
+        const logoImg: HTMLImageElement = siteResources.loadImage(SiteConfig.path.img.logo).copyImage();
+        const hexagonImg: HTMLImageElement = siteResources.loadImage(SiteConfig.path.img.hexagon).copyImage();
         const titleElm: HTMLDivElement = document.createElement("div");
 
         hexagonImg.classList.add("hexagon");

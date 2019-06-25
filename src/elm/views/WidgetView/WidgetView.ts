@@ -1,13 +1,13 @@
-import "../../../../styles/views/widgetView.less";
+import "../../../../styles/views/WidgetView.less";
 
-import View from "../../../core/view/view";
-import ViewMap from "../../../core/view/viewMap";
-import IApp from "../../../core/types/app/iApp";
-import AppState from "../../../core/types/appState";
-import WidgetMap from "../../../core/widget/widgetMap";
-import WidgetClass from "../../../core/types/widget/widgetClass";
-import WidgetFactory from "../../../core/widget/widgetFactory";
-import Widget from "../../../core/widget/widget";
+import View from "../../../core/view/View";
+import ViewMap from "../../../core/view/ViewMap";
+import IApp from "../../../core/types/app/IApp";
+import AppState from "../../../core/types/AppState";
+import WidgetMap from "../../../core/widget/WidgetMap";
+import WidgetClass from "../../../core/types/widget/WidgetClass";
+import WidgetFactory from "../../../core/widget/WidgetFactory";
+import Widget from "../../../core/widget/Widget";
 
 /**
  * A view for debugging and testing widgets

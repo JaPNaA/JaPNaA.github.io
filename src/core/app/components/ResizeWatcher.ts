@@ -1,7 +1,7 @@
-import EventHandlers from "../../utils/events/eventHandlers";
-import { Vec2, newVec2 } from "../../../types/math/vec2";
-import Handler from "../../utils/events/handler";
-import SiteConfig from "../../../siteConfig";
+import EventHandlers from "../../utils/events/EventHandlers";
+import { Vec2, newVec2 } from "../../../types/math/Vec2";
+import Handler from "../../utils/events/Handler";
+import SiteConfig from "../../../SiteConfig";
 
 type SizeGetter = () => [number, number];
 

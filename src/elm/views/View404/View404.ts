@@ -1,8 +1,8 @@
-import "../../../../styles/views/view404.less";
+import "../../../../styles/views/View404.less";
 
-import View from "../../../core/view/view";
-import IApp from "../../../core/types/app/iApp";
-import ViewMap from "../../../core/view/viewMap";
+import View from "../../../core/view/View";
+import IApp from "../../../core/types/app/IApp";
+import ViewMap from "../../../core/view/ViewMap";
 
 class View404 extends View {
     public static viewName = "View404";

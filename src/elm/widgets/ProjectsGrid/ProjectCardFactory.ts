@@ -1,4 +1,4 @@
-import IApp from "../../../core/types/app/iApp";
+import IApp from "../../../core/types/app/IApp";
 import ProjectV1CardCard from "./projectCard/ProjectV1CardCard";
 import ProjectLinkCard from "./projectCard/ProjectLinkCard";
 import ICardWithLocation from "../../../components/contentMan/ICardWithLocation";

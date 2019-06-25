@@ -1,6 +1,6 @@
 import CanvasElement from "./canvasElement";
-import EventHandlers from "../../../core/utils/events/eventHandlers";
-import Handler from "../../../core/utils/events/handler";
+import EventHandlers from "../../../core/utils/events/EventHandlers";
+import Handler from "../../../core/utils/events/Handler";
 
 class CanvasButton extends CanvasElement {
     private clickHandlers: EventHandlers;

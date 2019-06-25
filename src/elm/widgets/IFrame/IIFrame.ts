@@ -1,5 +1,5 @@
-import Handler from "../../../core/utils/events/handler";
-import Widget from "../../../core/widget/widget";
+import Handler from "../../../core/utils/events/Handler";
+import Widget from "../../../core/widget/Widget";
 
 export default interface IIFrame extends Widget {
     widgetName: string;

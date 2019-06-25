@@ -1,4 +1,4 @@
-import ICard from "../../../types/project/card";
+import ICard from "../../../types/project/ICard";
 
 export default function getFirstDisplayImgSrc(card: ICard): string | undefined {
     const displays = card.content.display;

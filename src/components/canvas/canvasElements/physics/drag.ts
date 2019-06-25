@@ -1,7 +1,7 @@
 import CanvasElementPhysics from "./physics";
 import absSum from "../../../../utils/math/absSum";
-import { Dim, newDim } from "../../../../types/math/dim";
-import { Rect } from "../../../../types/math/rect";
+import { Dim, createDim } from "../../../../types/math/Dim";
+import { Rect } from "../../../../types/math/Rect";
 
 class DragPhysics extends CanvasElementPhysics {
     private static changeThreshold: number = 0.0001;
@@ -38,8 +38,8 @@ class DragPhysics extends CanvasElementPhysics {
         this.transitionSpeed = options.transitionSpeed;
         this.initFlickSmoothing = options.initFlickSmoothing;
         this.flickFriction = options.flickFriction;
-        this.imageDim = newDim();
-        this.bounds = newDim();
+        this.imageDim = createDim();
+        this.bounds = createDim();
 
         this.lastX = this.tx = 0;
         this.lastY = this.ty = 0;

@@ -1,6 +1,6 @@
-import Widget from "../../../core/widget/widget";
-import WidgetMap from "../../../core/widget/widgetMap";
-import IApp from "../../../core/types/app/iApp";
+import Widget from "../../../core/widget/Widget";
+import WidgetMap from "../../../core/widget/WidgetMap";
+import IApp from "../../../core/types/app/IApp";
 import ContentMan from "../../../components/contentMan/contentMan";
 
 class LatestProjects extends Widget {

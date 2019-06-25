@@ -1,6 +1,6 @@
-import AppState from "../types/appState";
+import AppState from "../types/AppState";
 import url from "url";
-import AppStateBuilder from "./appStateBuilder";
+import AppStateBuilder from "./AppStateBuilder";
 
 export default function parseAppStateURL(href: string | url.UrlWithStringQuery): AppState | undefined {
     let cleanURL;

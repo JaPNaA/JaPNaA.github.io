@@ -1,5 +1,5 @@
-import ResourceLoader from "./components/resourceLoader/resourceLoader";
+import ResourceLoader from "./components/resourceLoader/ResourceLoader";
 
-const SiteResources: ResourceLoader = new ResourceLoader();
+const siteResources: ResourceLoader = new ResourceLoader();
 
-export default SiteResources;
+export default siteResources;

@@ -1,9 +1,9 @@
 import ProjectCard from "./ProjectCard";
-import ICard from "../../../../types/project/card";
-import IApp from "../../../../core/types/app/iApp";
+import ICard from "../../../../types/project/ICard";
+import IApp from "../../../../core/types/app/IApp";
 import getFirstDisplayImgSrc from "../../../../components/jsonToElm/v1/getFirstDisplayImg";
-import SiteConfig from "../../../../siteConfig";
-import SiteResources from "../../../../core/siteResources";
+import SiteConfig from "../../../../SiteConfig";
+import siteResources from "../../../../core/siteResources";
 
 class ProjectV1CardCard extends ProjectCard {
     public width: number;
@@ -37,7 +37,7 @@ class ProjectV1CardCard extends ProjectCard {
         if (firstDisplay) {
             const path = SiteConfig.path.thingy + firstDisplay;
             await new Promise(res => {
-                SiteResources.loadImage(path)
+                siteResources.loadImage(path)
                     .onLoad(e => {
                         this.height = Math.round(Math.sqrt(ProjectV1CardCard.size * e.data.height / e.data.width));
                         this.width = Math.round(Math.sqrt(ProjectV1CardCard.size * e.data.width / e.data.height));
@@ -54,7 +54,7 @@ class ProjectV1CardCard extends ProjectCard {
         const firstDisplay = getFirstDisplayImgSrc(this.card);
         if (!firstDisplay) { return super.createBackground(); }
         const path = SiteConfig.path.thingy + firstDisplay;
-        SiteResources.loadImage(path);
+        siteResources.loadImage(path);
 
         const background = super.createBackground();
         background.style.backgroundImage = "url(" + path + ")";

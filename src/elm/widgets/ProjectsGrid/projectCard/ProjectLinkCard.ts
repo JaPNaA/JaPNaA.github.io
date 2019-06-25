@@ -1,5 +1,5 @@
 import ProjectCard from "./ProjectCard";
-import IApp from "../../../../core/types/app/iApp";
+import IApp from "../../../../core/types/app/IApp";
 import openFrameView from "../../../../utils/openFrameView";
 
 class ProjectLinkCard extends ProjectCard {

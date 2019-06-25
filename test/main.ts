@@ -1,5 +1,5 @@
 import createAllTests from "./allTests";
-import TestReport from "./testReport";
+import TestReport from "./TestReport";
 
 const elm = document.getElementById("test") as HTMLDivElement;
 elm.innerText = "Testing...";

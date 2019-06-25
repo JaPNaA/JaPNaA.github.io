@@ -1,11 +1,10 @@
-import "../../../../styles/views/menu.less";
+import "../../../../styles/views/Menu.less";
 
-import View from "../../../core/view/view";
+import View from "../../../core/view/View";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
-import IApp from "../../../core/types/app/iApp";
-import SiteResources from "../../../core/siteResources";
-import SiteConfig from "../../../siteConfig";
+import IApp from "../../../core/types/app/IApp";
+import SiteConfig from "../../../SiteConfig";
 
 class Menu extends View {
     public static viewName: string = "Menu";
