@@ -59,6 +59,7 @@ abstract class LazyCanvasRenderer {
 
     public destory(): void {
         cancelAnimationFrame(this.reqnafHandle);
+        this.app.events.offResize(this.resizeHandler);
     }
 
     /**

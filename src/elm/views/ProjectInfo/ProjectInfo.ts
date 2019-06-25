@@ -20,6 +20,7 @@ class ProjectInfoView extends View {
 
     private project?: ICard;
     private loadingPromise?: Promise<void>;
+    private cardElm?: CardJSONv1Elm;
 
     private projectYear?: number;
     private projectIndex?: number;
@@ -61,13 +62,20 @@ class ProjectInfoView extends View {
         this.updateStateURL();
 
         // FOR VERSION 1 CARD
-        const elm: CardJSONv1Elm = new CardJSONv1Elm(this.app, this.project);
-        elm.setup();
-        elm.appendTo(this.elm);
-        elm.animateTransitionIn();
-        elm.addEventListeners();
+        this.cardElm = new CardJSONv1Elm(this.app, this.project);
+        this.cardElm.setup();
+        this.cardElm.appendTo(this.elm);
+        this.cardElm.animateTransitionIn();
+        this.cardElm.addEventListeners();
 
-        this.attachLinkClickHandler(elm.viewProjectButton);
+        this.attachLinkClickHandler(this.cardElm.viewProjectButton);
+    }
+
+    public async destory(): Promise<void> {
+        await super.destory();
+        if (this.cardElm) {
+            this.cardElm.destory();
+        }
     }
 
     private async loadProjectFromStateData(stateData: string): Promise<void> {
