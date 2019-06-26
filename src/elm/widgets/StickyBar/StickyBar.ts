@@ -8,6 +8,7 @@ class StickyBar extends Widget {
     public static widgetName = "stickyBar";
     public widgetName = StickyBar.widgetName;
     protected elm: HTMLDivElement;
+    private bar: HTMLDivElement;
     private text: HTMLDivElement;
     private polyOffset: number;
     private polyFixed: boolean;
@@ -18,6 +19,7 @@ class StickyBar extends Widget {
         super();
 
         this.elm = document.createElement("div");
+        this.bar = document.createElement("div");
         this.text = document.createElement("div");
         this.polyOffset = 0;
         this.polyFixed = false;
@@ -26,7 +28,9 @@ class StickyBar extends Widget {
     public setup() {
         super.setup();
         this.text.classList.add("text");
-        this.elm.appendChild(this.text);
+        this.bar.classList.add("bar");
+        this.bar.appendChild(this.text);
+        this.elm.appendChild(this.bar);
 
         if (!StickyBar.supportsStyleSticky) {
             this.elm.classList.add("poly");
@@ -41,15 +45,17 @@ class StickyBar extends Widget {
         }
     }
 
-    public setTitle(elm: HTMLElement): void {
+    public setTitle(bar: HTMLElement): void {
         removeChildren(this.text);
-        this.text.appendChild(elm);
+        this.text.appendChild(bar);
     }
 
     public appendTo(parent: HTMLElement) {
         this.destoryStickyPolyfill();
         super.appendTo(parent);
-        this.useStickyPolyfill();
+        if (!StickyBar.supportsStyleSticky) {
+            this.useStickyPolyfill();
+        }
     }
 
     private static checkSupportsStyleSticky(): boolean {
@@ -71,7 +77,7 @@ class StickyBar extends Widget {
     private stickyPolyfillScrollHandler() {
         if (!this.parent) { return; }
         if (!this.polyFixed) {
-            this.polyOffset = this.elm.offsetTop;
+            this.polyOffset = this.bar.offsetTop;
         }
 
         if (this.polyOffset < this.parent.scrollTop) {

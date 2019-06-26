@@ -9,10 +9,21 @@
     left: 0px;
     width: 100%;
     height: @height;
-    background-color: @theme-color;
-    background-image: @header-gradient;
-    z-index: 1;
-    box-shadow: @box-shadow-8dp;
+
+    .bar:extend(.widget.stickyBar) {
+        background-color: @theme-color;
+        background-image: @header-gradient;
+        z-index: 1;
+        box-shadow: @box-shadow-8dp;
+    }
+
+    &.poly .bar {
+        position: relative;
+    }
+
+    &.poly.polyFixed .bar {
+        position: fixed;
+    }
 
     .text {
         @padding: 16px;
@@ -29,14 +40,6 @@
         img {
             height: @text-height;
             width: auto;
-        }
-    }
-
-    &.poly {
-        position: relative;
-
-        &.polyFixed {
-            position: fixed;
         }
     }
 }
