@@ -1,6 +1,6 @@
 import CanvasButton from "../../../components/canvas/canvasElements/canvasButton";
 import siteResources from "../../../core/siteResources";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import ImageViewImage from "./ImageViewImage";
 import SimpleEasePhysics from "../../../components/canvas/canvasElements/physics/simpleEase";
 import { easeInOutCubic } from "../../../utils/easingFunctions";
@@ -24,7 +24,7 @@ class ImageViewCloseButton extends CanvasButton {
         this.imageViewImage = imageViewImage;
         this.loadHanders = new EventHandlers();
         this.image =
-            siteResources.loadImage(SiteConfig.path.img.closeWhite)
+            siteResources.loadImage(siteConfig.path.img.closeWhite)
                 .onLoad(() => this.loadHanders.dispatch())
                 .data;
         this.transitionProgress = 0;

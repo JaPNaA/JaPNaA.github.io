@@ -7,14 +7,14 @@ import SplashScreen from "./elm/views/SplashScreen/SplashScreen";
 import GlobalWidgets from "./elm/widgets/Global/Global";
 import ContentMan from "./components/contentMan/contentMan";
 import MainApp from "./core/app/MainApp";
-import SiteConfig from "./SiteConfig";
+import siteConfig from "./SiteConfig";
 
 class App extends MainApp {
     public view404 = "view404";
     public splashScreenView = SplashScreen;
     public indexView = "Overview";
     public autoRestoreState = true;
-    public title = SiteConfig.title;
+    public title = siteConfig.title;
 
     private globalWidget: GlobalWidgets;
 

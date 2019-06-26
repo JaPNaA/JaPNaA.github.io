@@ -1,7 +1,7 @@
 import "../../../../styles/components/cardV1.less";
 
 import ICard from "../../../types/project/ICard";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import Display from "../../../types/project/Display";
 import DisplayImg from "../../../types/project/DisplayImg";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
@@ -78,7 +78,7 @@ class CardJSONv1Elm {
         const src = getFirstDisplayImgSrc(this.card);
 
         if (src) {
-            background.style.backgroundImage = `url(${SiteConfig.path.thingy}${src})`;
+            background.style.backgroundImage = `url(${siteConfig.path.thingy}${src})`;
             this.elm.classList.add("backgroundImageExists");
             this.backgroundImageExists = true;
         }
@@ -181,7 +181,7 @@ class CardJSONv1Elm {
     private createDisplayImgIn(parent: HTMLElement, display: DisplayImg): void {
         if (display.src) {
             // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
-            const src = SiteConfig.path.thingy + display.src;
+            const src = siteConfig.path.thingy + display.src;
             const img = siteResources.loadImage(src).copyImage();
             img.classList.add("img");
             this.addImageClickHandler(img);
@@ -199,7 +199,7 @@ class CardJSONv1Elm {
     private createLinkIn(block: HTMLElement): void {
         const link = document.createElement("a");
         link.classList.add("link");
-        link.href = SiteConfig.path.thingy + this.card.content.link;
+        link.href = siteConfig.path.thingy + this.card.content.link;
         block.appendChild(link);
         this.viewProjectButton = link;
     }

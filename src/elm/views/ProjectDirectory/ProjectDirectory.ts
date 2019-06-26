@@ -4,7 +4,7 @@ import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
 import ViewMap from "../../../core/view/ViewMap";
 import siteResources from "../../../core/siteResources";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import getLink from "../../../utils/getLink";
 import removeChildren from "../../../utils/removeChildren";
 import url from "url";
@@ -46,9 +46,9 @@ class ProjectDirectory extends View {
         this.linkProjectMatchMap = new Map();
 
         if (state.stateData) {
-            this.contentHref = SiteConfig.path.thingy + "/" + state.stateData + "/";
+            this.contentHref = siteConfig.path.thingy + "/" + state.stateData + "/";
         } else {
-            this.contentHref = SiteConfig.path.thingy + SiteConfig.path.repo.thingy;
+            this.contentHref = siteConfig.path.thingy + siteConfig.path.repo.thingy;
         }
     }
 
@@ -240,7 +240,7 @@ class ProjectDirectory extends View {
         for (let i = 0; i < content.data.length; i++) {
             const entry = content.data[i];
             if (!isProjectCard(entry)) { continue; }
-            const entryLink = url.resolve(SiteConfig.path.thingy, entry.content.link);
+            const entryLink = url.resolve(siteConfig.path.thingy, entry.content.link);
             if (entryLink === link) {
                 return {
                     year: parseInt(year),

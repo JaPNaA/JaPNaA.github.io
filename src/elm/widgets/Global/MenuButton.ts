@@ -1,5 +1,5 @@
 import siteResources from "../../../core/siteResources";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
 import Widget from "../../../core/widget/Widget";
 import Menu from "../../views/Menu/Menu";
@@ -25,7 +25,7 @@ class MenuButton extends Widget {
 
     public setup() {
         super.setup();
-        const img = siteResources.loadImage(SiteConfig.path.img.hamburger).data;
+        const img = siteResources.loadImage(siteConfig.path.img.hamburger).data;
         this.elm.appendChild(img);
         this.addEventHandlers();
     }
@@ -60,7 +60,7 @@ class MenuButton extends Widget {
         const topView = this.app.views.top();
 
         if (topView) {
-            if (topView.canScroll() && !SiteConfig.isMobile) {
+            if (topView.canScroll() && !siteConfig.isMobile) {
                 this.elm.classList.add(MenuButton.scrollBarExistsClass);
             } else {
                 this.elm.classList.remove(MenuButton.scrollBarExistsClass);

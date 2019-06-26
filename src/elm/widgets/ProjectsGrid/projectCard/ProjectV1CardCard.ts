@@ -2,7 +2,7 @@ import ProjectCard from "./ProjectCard";
 import ICard from "../../../../types/project/ICard";
 import IApp from "../../../../core/types/app/IApp";
 import getFirstDisplayImgSrc from "../../../../components/jsonToElm/v1/getFirstDisplayImg";
-import SiteConfig from "../../../../SiteConfig";
+import siteConfig from "../../../../SiteConfig";
 import siteResources from "../../../../core/siteResources";
 
 class ProjectV1CardCard extends ProjectCard {
@@ -35,7 +35,7 @@ class ProjectV1CardCard extends ProjectCard {
     public async load(): Promise<void> {
         const firstDisplay = getFirstDisplayImgSrc(this.card);
         if (firstDisplay) {
-            const path = SiteConfig.path.thingy + firstDisplay;
+            const path = siteConfig.path.thingy + firstDisplay;
             await new Promise(res => {
                 siteResources.loadImage(path)
                     .onLoad(e => {
@@ -53,7 +53,7 @@ class ProjectV1CardCard extends ProjectCard {
     protected createBackground(): HTMLDivElement {
         const firstDisplay = getFirstDisplayImgSrc(this.card);
         if (!firstDisplay) { return super.createBackground(); }
-        const path = SiteConfig.path.thingy + firstDisplay;
+        const path = siteConfig.path.thingy + firstDisplay;
         siteResources.loadImage(path);
 
         const background = super.createBackground();

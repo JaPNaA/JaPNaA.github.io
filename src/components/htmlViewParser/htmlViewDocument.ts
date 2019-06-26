@@ -1,5 +1,5 @@
 import url from "url";
-import SiteConfig from "../../SiteConfig";
+import siteConfig from "../../SiteConfig";
 import IApp from "../../core/types/app/IApp";
 import ViewMap from "../../core/view/ViewMap";
 import EmbededApp from "../../core/app/EmbededApp";
@@ -60,7 +60,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
             const script = scripts[i];
             try {
                 const func = new Function("div", "id", "SiteConfig", script.innerHTML);
-                func(this.elm, idElementMap, SiteConfig);
+                func(this.elm, idElementMap, siteConfig);
             } catch (err) {
                 console.error(err);
                 this.hasErrors = true;

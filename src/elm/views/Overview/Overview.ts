@@ -4,7 +4,7 @@ import View from "../../../core/view/View";
 import ViewMap from "../../../core/view/ViewMap";
 import HexagonsTitle from "../../widgets/HexagonsTitle/HexagonsTitle";
 import StickyBar from "../../widgets/StickyBar/StickyBar";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
@@ -33,7 +33,7 @@ class Overview extends View {
 
         this.hexagonsTitle.setup();
         this.hexagonsTitle.appendToParent();
-        if (SiteConfig.isMobile) {
+        if (siteConfig.isMobile) {
             this.hexagonsTitle.setOverSize(0, 0);
         } else {
             this.hexagonsTitle.setOverSize(0, 128);
@@ -54,8 +54,8 @@ class Overview extends View {
 
     private createStickyBar() {
         const stickyBar: StickyBar = new StickyBar();
-        const logoImg: HTMLImageElement = siteResources.loadImage(SiteConfig.path.img.logo).copyImage();
-        const hexagonImg: HTMLImageElement = siteResources.loadImage(SiteConfig.path.img.hexagon).copyImage();
+        const logoImg: HTMLImageElement = siteResources.loadImage(siteConfig.path.img.logo).copyImage();
+        const hexagonImg: HTMLImageElement = siteResources.loadImage(siteConfig.path.img.hexagon).copyImage();
         const titleElm: HTMLDivElement = document.createElement("div");
 
         hexagonImg.classList.add("hexagon");
@@ -79,7 +79,7 @@ class Overview extends View {
         const container = document.createElement("div");
         container.classList.add("contentContainer");
 
-        this.loadHTMLView(SiteConfig.path.view.overview);
+        this.loadHTMLView(siteConfig.path.view.overview);
         container.appendChild(this.content);
         this.elm.appendChild(container);
     }

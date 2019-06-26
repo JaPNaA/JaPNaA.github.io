@@ -4,7 +4,7 @@ import View from "../../../core/view/View";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import wait from "../../../utils/wait";
 import IApp from "../../../core/types/app/IApp";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -121,7 +121,7 @@ class Menu extends View {
     private createCopyright(): HTMLDivElement {
         const copyright = document.createElement("div");
         copyright.classList.add("copy");
-        SiteConfig.getServerTime()
+        siteConfig.getServerTime()
             .then(e => copyright.innerHTML = `Copyright &copy; ${e.getUTCFullYear()} JaPNaA`);
         return copyright;
     }

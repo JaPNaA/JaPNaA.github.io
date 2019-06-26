@@ -1,5 +1,5 @@
-import SiteConfig from "../../SiteConfig";
+import siteConfig from "../../SiteConfig";
 
 export default function contentJSONPath(year: string | number): string {
-    return SiteConfig.path.content + year + ".json";
+    return siteConfig.path.content + year + ".json";
 }

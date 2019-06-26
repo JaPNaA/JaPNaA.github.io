@@ -4,7 +4,7 @@ import View from "../../../core/view/View";
 import ICard from "../../../types/project/ICard";
 import CardJSONv1Elm from "../../../components/jsonToElm/v1/card";
 import ViewMap from "../../../core/view/ViewMap";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
 import siteResources from "../../../core/siteResources";
 import IInfoJSON from "../../../types/project/IInfojson";
@@ -93,7 +93,7 @@ class ProjectInfoView extends View {
     }
 
     private async getCard(year: string, index: number): Promise<ICard> {
-        const resource = siteResources.loadJSON(SiteConfig.path.content + year + ".json");
+        const resource = siteResources.loadJSON(siteConfig.path.content + year + ".json");
         const promise = new Promise<IInfoJSON>(res =>
             resource.onLoad(e => res(e.data as IInfoJSON))
         );

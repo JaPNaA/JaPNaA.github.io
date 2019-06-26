@@ -1,6 +1,6 @@
 import IProject from "../../types/project/IProject";
 import siteResources from "../../core/siteResources";
-import SiteConfig from "../../SiteConfig";
+import siteConfig from "../../SiteConfig";
 import IIndex from "../../types/project/IIndex";
 import IInfoJSON from "../../types/project/IInfojson";
 import ICard from "../../types/project/ICard";
@@ -111,7 +111,7 @@ class ContentMan {
             } else {
                 yield {
                     name: name,
-                    href: SiteConfig.path.thingy + thingyPath + href
+                    href: siteConfig.path.thingy + thingyPath + href
                 };
             }
         }
@@ -164,7 +164,7 @@ class ContentMan {
             return this.projectsIndexPromise;
         } else {
             const prom = new Promise<IIndex>(res =>
-                siteResources.loadJSON(SiteConfig.path.contentIndex)
+                siteResources.loadJSON(siteConfig.path.contentIndex)
                     .onLoad(e => res(e.data as IIndex))
             );
             this.projectsIndexPromise = prom;
@@ -179,7 +179,7 @@ class ContentMan {
             return this.linksIndexPromise;
         } else {
             const prom = new Promise<LinksIndexJSON>(res =>
-                siteResources.loadJSON(SiteConfig.path.thingy + SiteConfig.path.repo.thingy + SiteConfig.path.repo.linksIndex)
+                siteResources.loadJSON(siteConfig.path.thingy + siteConfig.path.repo.thingy + siteConfig.path.repo.linksIndex)
                     .onLoad(e => res(e.data as LinksIndexJSON))
             );
             this.linksIndexPromise = prom;
@@ -190,7 +190,7 @@ class ContentMan {
     private static async getFileForYear(year: number | string): Promise<IInfoJSON> {
         const index = await this.getProjectsIndex();
         return new Promise<IInfoJSON>((res, rej) =>
-            siteResources.loadJSON(SiteConfig.path.content + this.replaceYearPath(index.pattern, year))
+            siteResources.loadJSON(siteConfig.path.content + this.replaceYearPath(index.pattern, year))
                 .onLoad(e => res(e.data as IInfoJSON))
                 .onError(() => rej(new Error("Failed to load file for year " + year)))
         );
@@ -198,7 +198,7 @@ class ContentMan {
 
     private static async getLinksForThingy(thingyPath: string): Promise<string[][]> {
         return new Promise<string[][]>((res, rej) =>
-            siteResources.loadJSON(SiteConfig.path.thingy + thingyPath + SiteConfig.path.repo.linksIndex)
+            siteResources.loadJSON(siteConfig.path.thingy + thingyPath + siteConfig.path.repo.linksIndex)
                 .onLoad(e => res(e.data as string[][]))
                 .onError(() => rej(new Error("Failed to load links in " + thingyPath)))
         );

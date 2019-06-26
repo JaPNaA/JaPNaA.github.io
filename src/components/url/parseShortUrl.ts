@@ -1,4 +1,4 @@
-import SiteConfig from "../../SiteConfig";
+import siteConfig from "../../SiteConfig";
 import siteResources from "../../core/siteResources";
 import ContentMan from "../contentMan/contentMan";
 
@@ -38,7 +38,7 @@ function projectByYearAndName(short: string): string {
         throw new Error("Invalid year");
     }
 
-    return SiteConfig.path.repo.thingy_ + (yearInt + 2016) + "/" + path;
+    return siteConfig.path.repo.thingy_ + (yearInt + 2016) + "/" + path;
 }
 
 async function redirectByMap(short: string): Promise<string> {
@@ -57,7 +57,7 @@ async function getMap(): Promise<Map<string, string>> {
 
 async function loadMap(): Promise<string> {
     return new Promise<string>(function (res, rej) {
-        siteResources.loadText(SiteConfig.path.redirectMap)
+        siteResources.loadText(siteConfig.path.redirectMap)
             .onLoad(e => {
                 if (e.data) {
                     res(e.data);

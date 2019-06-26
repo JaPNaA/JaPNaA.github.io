@@ -1,4 +1,4 @@
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import Hexagon from "./Hexagon";
 import HexagonsTitle from "./HexagonsTitle";
 
@@ -8,7 +8,7 @@ class HexagonsLayer {
     constructor(hexagonsTitle: HexagonsTitle, index: number) {
         this.hexagons = [];
 
-        for (let i = 0; i < SiteConfig.hexagonsTitle.hexagonsPerLayer; i++) {
+        for (let i = 0; i < siteConfig.hexagonsTitle.hexagonsPerLayer; i++) {
             this.hexagons.push(new Hexagon(hexagonsTitle, index));
         }
     }

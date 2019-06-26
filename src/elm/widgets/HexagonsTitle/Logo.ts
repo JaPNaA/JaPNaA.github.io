@@ -1,5 +1,5 @@
 import siteResources from "../../../core/siteResources";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import ImageResource from "../../../core/components/resourceLoader/resources/ImageResource";
 
 class Logo {
@@ -11,7 +11,7 @@ class Logo {
     private maxHeight: number = 0;
 
     constructor(maxWidth: number, maxHeight: number) {
-        this.resource = siteResources.loadImage(SiteConfig.path.img.logo);
+        this.resource = siteResources.loadImage(siteConfig.path.img.logo);
         this.img = this.resource.data;
         this.resize(maxWidth, maxHeight);
     }

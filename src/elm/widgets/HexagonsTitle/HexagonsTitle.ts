@@ -1,7 +1,7 @@
 import "../../../../styles/widgets/hexagonsTitle.less";
 
 import HexagonsLayer from "./HexagonsLayer";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import siteResources from "../../../core/siteResources";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
@@ -59,7 +59,7 @@ class HexagonsTitle extends Widget {
         this.logo = new Logo(this.width, this.height);
 
         this.scrollDist = 0;
-        this.transitionInTimestep = SiteConfig.isMobile ? 1 : 0;
+        this.transitionInTimestep = siteConfig.isMobile ? 1 : 0;
 
         this.registeredEventHandlers = false;
     }
@@ -105,7 +105,7 @@ class HexagonsTitle extends Widget {
     }
 
     public tick(deltaTime: number): void {
-        if (SiteConfig.isMobile || !this.loaded) { return; }
+        if (siteConfig.isMobile || !this.loaded) { return; }
         this.transitionInTimestep += deltaTime / HexagonsTitle.transitionInTime;
 
         if (this.transitionInTimestep > 1) {
@@ -129,10 +129,10 @@ class HexagonsTitle extends Widget {
 
         for (let i = 0; i < this.layers.length; i++) {
             const layer = this.layers[i];
-            const scale = SiteConfig.hexagonsTitle.zoomDistance * (i + 1) * (1 - t) + 1;
+            const scale = siteConfig.hexagonsTitle.zoomDistance * (i + 1) * (1 - t) + 1;
             X.save();
-            if (t < SiteConfig.hexagonsTitle.fadeInSpeed) {
-                X.globalAlpha = t * 1 / SiteConfig.hexagonsTitle.fadeInSpeed;
+            if (t < siteConfig.hexagonsTitle.fadeInSpeed) {
+                X.globalAlpha = t * 1 / siteConfig.hexagonsTitle.fadeInSpeed;
             }
             X.translate(this.width / 2, this.height / 2);
             X.scale(scale, scale);
@@ -154,7 +154,7 @@ class HexagonsTitle extends Widget {
     private createLayers(): HexagonsLayer[] {
         const layers: HexagonsLayer[] = [];
 
-        for (let i: number = 0; i < SiteConfig.hexagonsTitle.layers; i++) {
+        for (let i: number = 0; i < siteConfig.hexagonsTitle.layers; i++) {
             layers.push(new HexagonsLayer(this, i));
         }
 
@@ -194,7 +194,7 @@ class HexagonsTitle extends Widget {
     }
 
     private scrollHandler(): void {
-        if (SiteConfig.isMobile) { return; }
+        if (siteConfig.isMobile) { return; }
         this.scrollDist = this.parent.scrollTop;
         this.renderer.drawOnScroll();
     }

@@ -6,7 +6,7 @@ import IApp from "../../../core/types/app/IApp";
 import parseShortUrl from "../../../components/url/parseShortUrl";
 import AppState from "../../../core/types/AppState";
 import isUrlAbsolute from "../../../utils/isUrlAbsolute";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 
 class ShortUrlView extends View {
     public static viewName = "ShortUrl";
@@ -55,7 +55,7 @@ class ShortUrlView extends View {
         if (isUrlAbsolute(href)) {
             return href;
         } else {
-            return SiteConfig.path.thingy + href;
+            return siteConfig.path.thingy + href;
         }
     }
 }

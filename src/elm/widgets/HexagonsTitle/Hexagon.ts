@@ -1,4 +1,4 @@
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import HexagonsTitle from "./HexagonsTitle";
 import siteResources from "../../../core/siteResources";
 import ImageResource from "../../../core/components/resourceLoader/resources/ImageResource";
@@ -37,9 +37,9 @@ class Hexagon {
         this.scale = size * 0.3 + 0.3;
         this.scale *= this.scale;
         this.scale *= this.scale;
-        this.scale *= ((z + 1) / SiteConfig.hexagonsTitle.layers) *
-            SiteConfig.hexagonsTitle.hexagonsScale *
-            (this.y * this.y * SiteConfig.hexagonsTitle.lowPositionScaleBias + 0.5);
+        this.scale *= ((z + 1) / siteConfig.hexagonsTitle.layers) *
+            siteConfig.hexagonsTitle.hexagonsScale *
+            (this.y * this.y * siteConfig.hexagonsTitle.lowPositionScaleBias + 0.5);
 
         this.moveIfInRadius();
     }
@@ -85,7 +85,7 @@ class Hexagon {
     }
 
     private static createImg(): HTMLImageElement {
-        const resource: ImageResource = siteResources.loadImage(SiteConfig.path.img.hexagon);
+        const resource: ImageResource = siteResources.loadImage(siteConfig.path.img.hexagon);
         const img: HTMLImageElement = resource.data;
 
         this.imgLoaded = false;

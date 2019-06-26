@@ -1,6 +1,6 @@
 import { TestRunner } from "../testFramework";
 import parseShortUrl from "../../src/components/url/parseShortUrl";
-import SiteConfig from "../../src/SiteConfig";
+import siteConfig from "../../src/SiteConfig";
 import siteResources from "../../src/core/siteResources";
 import TextResource from "../../src/core/components/resourceLoader/resources/TextResource";
 
@@ -14,7 +14,7 @@ export default class ShortUrlTest extends TestRunner {
     }
 
     public setup(): void {
-        const text = new TextResource(siteResources.__debug_getHooks(), SiteConfig.path.redirectMap, true);
+        const text = new TextResource(siteResources.__debug_getHooks(), siteConfig.path.redirectMap, true);
         text.data = `
         jeep, https://www.google.ca/search?q=jeep&tbm=isch
          jeepsacar   ,       https://www.google.com/?q=jeep
@@ -22,12 +22,12 @@ export default class ShortUrlTest extends TestRunner {
         text.loaded = true;
 
         siteResources.__debug_setResource(
-            SiteConfig.path.redirectMap, text
+            siteConfig.path.redirectMap, text
         );
     }
 
     public async runTests(): Promise<void> {
-        const thingy_ = SiteConfig.path.repo.thingy_;
+        const thingy_ = siteConfig.path.repo.thingy_;
 
         this.testParseShortUrl(
             "_1minesweeperAI",

@@ -1,7 +1,7 @@
 import EventHandlers from "../../utils/events/EventHandlers";
 import { Vec2, newVec2 } from "../../../types/math/Vec2";
 import Handler from "../../utils/events/Handler";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 
 type SizeGetter = () => [number, number];
 
@@ -49,7 +49,7 @@ class ResizeWatcher {
      * resize normally
      */
     public resizeOrWatch(): void {
-        if (SiteConfig.isIOS) {
+        if (siteConfig.isIOS) {
             this.watchForResize();
         } else {
             const [newWidth, newHeight] = this.sizeGetter();

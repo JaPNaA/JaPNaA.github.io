@@ -1,11 +1,11 @@
 import { TestRunner } from "../testFramework";
-import SiteConfig from "../../src/SiteConfig";
+import siteConfig from "../../src/SiteConfig";
 
 export default class GetServerTimeTest extends TestRunner {
     public name = "getServerTime";
 
     public async runTests(): Promise<void> {
-        const time = await SiteConfig.getServerTime();
+        const time = await siteConfig.getServerTime();
         const diff = time.getTime() - Date.now();
         this.assertTrue(
             Math.abs(diff) < 30000,

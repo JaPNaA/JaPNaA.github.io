@@ -1,6 +1,6 @@
 import Hexagon from "../Hexagon";
 import siteResources from "../../../../core/siteResources";
-import SiteConfig from "../../../../SiteConfig";
+import siteConfig from "../../../../SiteConfig";
 import HexagonSystem from "./HexagonSystem";
 
 class HexagonRenderSystem extends HexagonSystem {
@@ -10,7 +10,7 @@ class HexagonRenderSystem extends HexagonSystem {
 
     constructor(hexagons: Hexagon[], X: CanvasRenderingContext2D) {
         super(hexagons);
-        const resource = siteResources.loadImage(SiteConfig.path.img.hexagon);
+        const resource = siteResources.loadImage(siteConfig.path.img.hexagon);
         this.X = X;
         this.hexagonImg = resource.data;
         this.hexagonImgPrerender = document.createElement("canvas");

@@ -5,7 +5,7 @@ import IApp from "../../../core/types/app/IApp";
 import IFrame from "../../widgets/IFrame/IFrame";
 import ViewMap from "../../../core/view/ViewMap";
 import siteResources from "../../../core/siteResources";
-import SiteConfig from "../../../SiteConfig";
+import siteConfig from "../../../SiteConfig";
 import wait from "../../../utils/wait";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import AppState from "../../../core/types/AppState";
@@ -72,7 +72,7 @@ class FrameView extends View {
 
         // tests for iOS: prevent bug where you can't scroll in an iframe
         // Apple, fix your browser!
-        if (SiteConfig.isIOS) {
+        if (siteConfig.isIOS) {
             location.replace(this.path);
             return;
         }
@@ -116,7 +116,7 @@ class FrameView extends View {
         const closeButton = document.createElement("div");
         closeButton.classList.add("close");
 
-        const img = siteResources.loadImage(SiteConfig.path.img.close).data;
+        const img = siteResources.loadImage(siteConfig.path.img.close).data;
         closeButton.appendChild(img);
 
         this.header.appendChild(closeButton);
