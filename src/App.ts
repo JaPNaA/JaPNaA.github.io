@@ -21,6 +21,12 @@ class App extends MainApp {
     constructor() {
         super();
         this.globalWidget = new GlobalWidgets(this);
+
+        if (siteConfig.isMobile) {
+            this.mainElm.classList.add("mobile");
+        } else {
+            this.mainElm.classList.add("notMobile");
+        }
     }
 
     public async setup(): Promise<void> {
