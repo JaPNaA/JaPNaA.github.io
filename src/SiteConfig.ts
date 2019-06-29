@@ -3,6 +3,8 @@ import isMobile from "./utils/isMobile";
 import isIOS from "./utils/isIOS";
 import getServerTime from "./utils/getServerTime";
 import { resolve } from "url";
+import connectionIsMetered from "./utils/connectionIsMetered";
+import LazyClassMap from "./core/components/lazyClassMap/LazyClassMap";
 
 class SiteConfig {
     public readonly title: string = "JaPNaA";
@@ -51,6 +53,8 @@ class SiteConfig {
     public isMobile: boolean;
     public isIOS: boolean;
 
+    public connectionIsMetered: boolean;
+
     private serverTime?: Date;
     private serverTimePromise: Promise<Date>;
 
@@ -71,16 +75,20 @@ class SiteConfig {
         this.isMobile = isMobile();
         this.isIOS = isIOS();
 
+        this.connectionIsMetered = connectionIsMetered();
+
         this.serverTimePromise = getServerTime();
         this.serverTimePromise.then(e => this.serverTime = e);
-        console.log(this.id, this.serverTimePromise);
+
+        if (this.connectionIsMetered) {
+            LazyClassMap.stopPrefetches();
+        }
     }
 
     public getServerTime(): Promise<Date> {
         if (this.serverTime) {
             return Promise.resolve(this.serverTime);
         } else {
-            console.log(this.id, this.serverTimePromise);
             return this.serverTimePromise;
         }
     }

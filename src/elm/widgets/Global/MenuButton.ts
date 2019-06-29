@@ -2,7 +2,8 @@ import siteResources from "../../../core/siteResources";
 import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
 import Widget from "../../../core/widget/Widget";
-import Menu from "../../views/Menu/Menu";
+import IMenu from "../../views/Menu/IMenu";
+import ViewMap from "../../../core/view/ViewMap";
 
 class MenuButton extends Widget {
     public static widgetName: string = "MenuButton";
@@ -80,16 +81,18 @@ class MenuButton extends Widget {
     private toggleMenu(): void {
         if (this.isLoadingMenu) { return; }
 
-        const existingMenu = this.app.views.getA(Menu);
+        const existingMenu = this.app.views.getA("Menu");
         if (existingMenu) {
             this.app.views.close(existingMenu);
         } else {
             this.isLoadingMenu = true;
-            this.app.views.open(Menu)
-                .then(menu => (menu as Menu).animateTransitionIn());
+            this.app.views.open("Menu")
+                .then(menu => (menu as IMenu).animateTransitionIn());
             this.isLoadingMenu = false;
         }
     }
 }
+
+ViewMap.prefetch("Menu");
 
 export default MenuButton;

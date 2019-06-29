@@ -8,6 +8,7 @@ import TextResource from "./resources/TextResource";
 import JSONResource from "./resources/JSONResource";
 import XMLResource from "./resources/XMLResource";
 import ResourceLoaderProgress from "../../types/ResourceLoaderProgress";
+import wait from "../../../utils/wait";
 
 type ResourceClass<T> = new (hooks: ResourceLoaderHooks, path: string, ...additionalArgs: any[]) => T;
 
@@ -62,6 +63,17 @@ class ResourceLoader {
 
     public offDone(handler: Handler): void {
         this.doneHandlers.remove(handler);
+    }
+
+    public async nextIdle(): Promise<void> {
+        while (true) {
+            await wait(50);
+            if (this.isDone()) {
+                break;
+            } else {
+                await this.nextDone();
+            }
+        }
     }
 
     public async nextDone(): Promise<void> {

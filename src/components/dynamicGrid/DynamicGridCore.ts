@@ -17,8 +17,6 @@ class DynamicGridCore<T> {
 
     /**
      * @param columns Number of columns in grid
-     * @param width The real pixel width of the grid
-     * @param rowHeight The real pixel height of a row
      * @param minElmWidth Min size of element on grid, used for optimization
      */
     constructor(columns: number, minElmWidth?: number) {
@@ -86,7 +84,7 @@ class DynamicGridCore<T> {
 
         if (!widestRange || widestRange.width < this.minElmWidth) {
             this.addGridRow();
-            return createGridElementPosition(0, this.gridRows - 1, width);
+            return createGridElementPosition(0, this.gridRows - 1, Math.min(width, this.gridColumns));
         }
 
         return widestRange;
