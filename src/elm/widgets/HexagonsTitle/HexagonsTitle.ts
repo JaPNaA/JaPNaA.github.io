@@ -34,7 +34,7 @@ class HexagonsTitle extends Widget {
     private gradient: CanvasGradient;
     private registeredEventHandlers: boolean;
 
-    private isVertical: boolean;
+    private drawLogoOver: boolean;
     private loaded: boolean;
 
     private transitionInTimestep: number;
@@ -50,7 +50,7 @@ class HexagonsTitle extends Widget {
         this.height = app.height;
         this.overSizeHeight = 0;
         this.overSizeWidth = 0;
-        this.isVertical = false;
+        this.drawLogoOver = false;
         this.loaded = false;
 
         this.renderer = new HexagonsTitleRenderer(app, this);
@@ -121,7 +121,7 @@ class HexagonsTitle extends Widget {
         X.fillStyle = this.gradient;
         X.fillRect(0, 0, this.width, this.height);
 
-        if (!this.isVertical) {
+        if (!this.drawLogoOver) {
             this.drawLogo(X);
         }
 
@@ -142,7 +142,7 @@ class HexagonsTitle extends Widget {
             X.restore();
         }
 
-        if (this.isVertical) {
+        if (this.drawLogoOver) {
             this.drawLogo(X);
         }
     }
@@ -188,7 +188,7 @@ class HexagonsTitle extends Widget {
         this.elm.style.width = width + "px";
         this.elm.style.height = height + "px";
 
-        this.isVertical = height > width;
+        this.drawLogoOver = height > width || height < 480;
         this.gradient = this.createGradient();
         this.logo.resize(width, height);
     }
