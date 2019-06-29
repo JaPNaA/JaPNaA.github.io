@@ -9,6 +9,7 @@ import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
 import IImageView from "../../../elm/views/ImageView/IImageView";
 import getFirstDisplayImgSrc from "./getFirstDisplayImg";
+import ViewMap from "../../../core/view/ViewMap";
 
 // TODO: refactor, along with it's .less companion!
 
@@ -228,5 +229,7 @@ class CardJSONv1Elm {
         });
     }
 }
+
+ViewMap.prefetch("ImageView");
 
 export default CardJSONv1Elm;
