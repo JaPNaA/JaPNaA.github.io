@@ -31,6 +31,10 @@ class BrowseProjects extends View {
         this.projectsGrid.destory();
     }
 
+    public canScroll(): boolean {
+        return this.projectsGrid.isOverflowing();
+    }
+
     private addEventHandlers(): void {
         this.events.onResize(this.updateWidgetSize.bind(this));
         this.updateWidgetSize();

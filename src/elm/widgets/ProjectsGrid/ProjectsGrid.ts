@@ -68,6 +68,10 @@ class ProjectsGrid extends Widget {
         this.elm.style.height = height + "px";
     }
 
+    public isOverflowing(): boolean {
+        return this.elm.scrollHeight > this.elm.clientHeight;
+    }
+
     private scrollHandler(): void {
         const bottomY = this.elm.scrollTop + this.elm.clientHeight;
         if (this.grid.isAfterFirstOpenRow(bottomY)) {
@@ -84,14 +88,19 @@ class ProjectsGrid extends Widget {
         while (true) {
             const card = await this.addNextCard();
 
-            if (card && card.isVisible(viewport)) {
-                count = 0;
-            } else {
-                count++;
-                // append 3 after detected end
-                if (count > 3) {
-                    break;
+            if (card) {
+                if (card.isVisible()) {
+                    count = 0;
+                } else {
+                    count++;
+                    // append 5 after detected end
+                    if (count > 5) {
+                        this.app.events.dispatchViewChange();
+                        break;
+                    }
                 }
+            } else {
+                break;
             }
         }
 
