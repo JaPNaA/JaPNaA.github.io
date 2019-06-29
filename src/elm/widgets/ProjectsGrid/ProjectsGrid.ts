@@ -66,6 +66,8 @@ class ProjectsGrid extends Widget {
 
         this.elm.style.width = width + "px";
         this.elm.style.height = height + "px";
+
+        this.addCardsIfAtEnd();
     }
 
     public isOverflowing(): boolean {
@@ -73,6 +75,10 @@ class ProjectsGrid extends Widget {
     }
 
     private scrollHandler(): void {
+        this.addCardsIfAtEnd();
+    }
+
+    private addCardsIfAtEnd(): void {
         const bottomY = this.elm.scrollTop + this.elm.clientHeight;
         if (this.grid.isAfterFirstOpenRow(bottomY)) {
             this.addCardsUntilScreenFull();
@@ -89,7 +95,7 @@ class ProjectsGrid extends Widget {
             const card = await this.addNextCard();
 
             if (card) {
-                if (card.isVisible()) {
+                if (card.isVisible(viewport)) {
                     count = 0;
                 } else {
                     count++;

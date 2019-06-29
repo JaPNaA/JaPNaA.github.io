@@ -3,12 +3,14 @@
 .widget.projectsGrid {
     overflow-y: auto;
     position: relative;
-    // padding: 16px;
 
     @easeFastOutSlowIn: cubic-bezier(0.4, 0, 0.2, 1);
     @transitionTime: 0.3s;
 
     .projectCard {
+        @media only screen and (max-width: 800px) {
+            padding: 2%;
+        }
         padding: 16px;
         box-sizing: border-box;
         display: block;

@@ -1,6 +1,7 @@
 import ProjectCard from "./ProjectCard";
 import IApp from "../../../../core/types/app/IApp";
 import openFrameView from "../../../../utils/openFrameView";
+import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
 
 class ProjectLinkCard extends ProjectCard {
     public width: number;
@@ -15,7 +16,7 @@ class ProjectLinkCard extends ProjectCard {
         this.elm.classList.add("link");
         this.width = size;
         this.height = size;
-        this.cardTitle = name.replace(/[a-zA-Z](?=[A-Z])/g, "$&\u200B");
+        this.cardTitle = addZeroWidthSpacesBetweenCamelCaseWords(name);
         this.cardDescription = href;
         this.href = href;
     }

@@ -4,6 +4,7 @@ import IApp from "../../../../core/types/app/IApp";
 import getFirstDisplayImgSrc from "../../../../components/jsonToElm/v1/getFirstDisplayImg";
 import siteConfig from "../../../../SiteConfig";
 import siteResources from "../../../../core/siteResources";
+import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
 
 class ProjectV1CardCard extends ProjectCard {
     public width: number;
@@ -27,7 +28,7 @@ class ProjectV1CardCard extends ProjectCard {
         this.width = 3;
         this.height = 3;
 
-        this.cardTitle = card.name;
+        this.cardTitle = addZeroWidthSpacesBetweenCamelCaseWords(card.name);
         this.cardDescription = card.content.description;
         this.href = "/projectinfo/" + this.year + "." + this.index;
     }
