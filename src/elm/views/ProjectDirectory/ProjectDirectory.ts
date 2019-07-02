@@ -10,7 +10,7 @@ import removeChildren from "../../../utils/removeChildren";
 import url from "url";
 import openPopup from "../../../core/utils/open/openPopup";
 import contentJSONPath from "../../../utils/paths/contentJSONPath";
-import IInfoJSON from "../../../types/project/IInfojson";
+import IInfoJSON from "../../../types/project/IInfoJSON";
 import isProjectCard from "../../../utils/isProjectCard";
 import ICard from "../../../types/project/ICard";
 import JSONResource from "../../../core/components/resourceLoader/resources/JSONResource";

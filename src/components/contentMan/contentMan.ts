@@ -2,7 +2,7 @@ import IProject from "../../types/project/IProject";
 import siteResources from "../../core/siteResources";
 import siteConfig from "../../SiteConfig";
 import IIndex from "../../types/project/IIndex";
-import IInfoJSON from "../../types/project/IInfojson";
+import IInfoJSON from "../../types/project/IInfoJSON";
 import ICard from "../../types/project/ICard";
 import isProjectCard from "../../utils/isProjectCard";
 import IProjectWithLocation from "./IProjectWithLocation";

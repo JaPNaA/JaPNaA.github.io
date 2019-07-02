@@ -7,7 +7,7 @@ import ViewMap from "../../../core/view/ViewMap";
 import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
 import siteResources from "../../../core/siteResources";
-import IInfoJSON from "../../../types/project/IInfojson";
+import IInfoJSON from "../../../types/project/IInfoJSON";
 import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
 
