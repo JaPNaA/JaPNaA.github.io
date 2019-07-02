@@ -16,8 +16,12 @@ class HexagonTickSystem extends HexagonSystem {
 
     public run(): void {
         const now = performance.now();
-        const deltaTime = (now - this.then) / 60;
+        let deltaTime = (now - this.then) / 60;
         this.then = now;
+
+        if (deltaTime > 10) {
+            deltaTime = 1;
+        }
 
         const boundWidth = this.width + Hexagon.baseWidth;
         const boundHeight = this.height + Hexagon.baseHeight;

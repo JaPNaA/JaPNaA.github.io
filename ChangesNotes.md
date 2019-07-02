@@ -15,3 +15,4 @@
 # TODO
   - Minify and extract css using https://webpack.js.org/plugins/mini-css-extract-plugin/
   - Fix project naming, enforce capitalization throughout code
+  - use HexagonsBackground widget
