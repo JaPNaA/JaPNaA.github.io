@@ -40,8 +40,8 @@ function extractYear(name) {
 }
 
 /**
- * @typedef {import("../src/types/project/infojson").default} IInfoJSON
- * @typedef {import("../src/types/project/card").default} ICard
+ * @typedef {import("../src/types/project/IInfoJSON").default} IInfoJSON
+ * @typedef {import("../src/types/project/ICard").default} ICard
  */
 /**
  * @param {IInfoJSON} obj 
