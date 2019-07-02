@@ -18,7 +18,7 @@ class TestView extends View {
         this.elm = document.createElement("div");
         this.elm.id = "test";
 
-        siteResources.loadText("test-bundle.js")
+        siteResources.loadText("bundles/test-bundle.js")
             .onLoad(e => eval(e.data as string))
             .onError(() => this.elm.innerText = "test-bundle.js doesn't exist, cannot run tests.");
     }

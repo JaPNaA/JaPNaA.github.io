@@ -5,10 +5,10 @@ module.exports = {
     name: "dist",
     entry: "./src/index.ts",
     output: {
-        path: path.resolve(__dirname, "docs"),
+        path: path.resolve(__dirname, "docs/bundles"),
         filename: 'bundle.js',
         chunkFilename: '[name].bundle.js',
-        publicPath: "/"
+        publicPath: "/bundles/"
     },
     module: {
         rules: [{
