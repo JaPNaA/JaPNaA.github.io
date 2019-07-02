@@ -35,5 +35,9 @@
     "typescript": "^3.4.5",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/marked": "^0.6.5",
+    "marked": "^0.6.3"
   }
 }

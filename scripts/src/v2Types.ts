@@ -1,4 +1,4 @@
-export type ProjectBodyElement = ProjectBodyImage | ProjectBodyText | ProjectBodyViewProject;
+export type ProjectBodyElement = ProjectBodyImage | ProjectBodyMarkdown | ProjectBodyViewProject;
 
 export interface ProjectBodyImage {
     type: "image";
@@ -6,8 +6,8 @@ export interface ProjectBodyImage {
     caption?: string;
 }
 
-export interface ProjectBodyText {
-    type: "text";
+export interface ProjectBodyMarkdown {
+    type: "markdown";
     text: string;
 }
 
@@ -19,6 +19,7 @@ export interface ProjectBodyViewProject {
 export interface Project {
     head: {
         name: string;
+        link?: string;
         tags?: string[];
         author?: string[];
         timestamp?: number;

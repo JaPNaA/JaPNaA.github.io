@@ -1,4 +1,5 @@
 # Sound Visualizer
+/Thingy_2018/SoundVisualizer
 ---
 [visualizer, sound, music, graphics]
 [by JaPNaA]
@@ -7,7 +8,7 @@ SEE your SOUNDS... yea... First project of 2018!
 
 <!img src="/Thingy_2018/0p/soundVisualizer.png" --"Dots and circles">
 
-<!view project at="/Thingy_2018/SoundVisualizer">
+<!view-project>
 
 
 
@@ -17,7 +18,7 @@ My first C++ project that has exceeded 400 lines of code... But I don't know how
 
 
 # JaPNaASite v3
-
+/
 ---
 [website, japnaa, site] [by JaPNaA, JaPNaA2]
 > Yes, this is the third time.
@@ -34,4 +35,8 @@ This is my website! It's the third revision and I worked on this for way too lon
 
 Oh, and I redid the format, so I can write stuff after the images too!
 
-<!view project at="/">
+```
+alert("Markdown! Woo!");
+```
+
+<!view-project>
