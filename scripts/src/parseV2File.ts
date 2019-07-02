@@ -81,11 +81,11 @@ function parseLinkStr(fullStr: string): string | undefined {
 
 function parseHeadStr(fullStr: string): { head: V2Header, headEndIndex: number } {
     const { headStr, headEndIndex } = getHeadStr(fullStr);
-    if (!headStr) { return { head: {}, headEndIndex: 0 }; }
     const lines = headStr.split("\n");
     const header: V2Header = {};
 
     for (const line of lines) {
+        if (!line) { continue; }
         parseHeaderLine(line, header);
     }
 
@@ -96,8 +96,11 @@ function parseHeaderLine(line: string, header: V2Header): void {
     for (const [startStr, applier] of headerLineMap) {
         if (line.startsWith(startStr)) {
             applier(line, startStr, header);
+            return;
         }
     }
+
+    console.warn("No matching header applier for:\n" + line + '\n');
 }
 
 function applyHeaderLineBackground(line: string, matchStr: string, header: V2Header): void {
@@ -153,12 +156,12 @@ function applyHeaderLineTimestamp(line: string, matchStr: string, header: V2Head
 }
 
 
-function getHeadStr(fullStr: string): { headStr: string | null, headEndIndex: number } {
+function getHeadStr(fullStr: string): { headStr: string , headEndIndex: number } {
     const startToken = headerStartRegex.exec(fullStr);
-    if (!startToken) { return { headStr: null, headEndIndex: 0 }; }
+    if (!startToken) { throw new Error("No head"); }
     const startTokenEndIndex = startToken.index + startToken[0].length;
     const endToken = headerEndRegex.exec(fullStr.slice(startTokenEndIndex));
-    if (!endToken) { return { headStr: null, headEndIndex: 0 }; }
+    if (!endToken) { throw new Error("No head"); }
 
     return {
         headStr: fullStr.substr(startTokenEndIndex, endToken.index),
