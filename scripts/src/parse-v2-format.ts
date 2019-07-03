@@ -4,6 +4,7 @@ import * as fsp from "./fsPromise";
 import { Project } from "./v2Types";
 
 const v2ContentPath = "./docs/assets/content/src/v2";
+const v2OutPath = "./docs/assets/content/v2";
 const projects: Project[] = [];
 let countTotal = 0;
 let countDone = 0;
@@ -64,8 +65,43 @@ function addCountTotal() {
 function updateCount() {
     process.stdout.write('\r' + countDone + " of " + countTotal + " jobs done...");
     if (countDone >= countTotal) {
-        console.log("\nDone!");
-        console.log(projects);
+        console.log("\nDone reading!");
+        writeOut();
+    }
+}
+
+function writeOut(): void {
+    const sortingMap: Map<number, Project[]> = new Map();
+
+    for (const project of projects) {
+        const year = new Date(project.head.timestamp).getUTCFullYear();
+        const arr = sortingMap.get(year);
+        if (arr) {
+            arr.push(project);
+        } else {
+            sortingMap.set(year, [project]);
+        }
+    }
+
+    if (!fs.existsSync(v2OutPath)) {
+        console.log("Creating " + v2OutPath);
+        fs.mkdirSync(v2OutPath);
+    }
+
+    console.log("Writing out...");
+
+    for (const [year, projects] of sortingMap) {
+        projects.sort((a, b) => a.head.timestamp - b.head.timestamp);
+        fs.writeFile(v2OutPath + '/' + year + '.json', JSON.stringify({
+            formatVersion: '2',
+            data: projects
+        }), function (err) {
+            if (err) {
+                console.error("Failed writing out year " + year, err);
+            }
+        });
+
+        console.log("Writing out year " + year);
     }
 }
 

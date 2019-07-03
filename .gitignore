@@ -4,6 +4,7 @@
 # these files are automatically built
 /docs/bundles/
 /docs/assets/content/index.json
+/docs/assets/content/v2
 /src/elm/views/viewList.ts
 /src/elm/widgets/widgetList.ts
 
