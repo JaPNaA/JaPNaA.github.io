@@ -31,8 +31,7 @@ marked.setOptions({
     gfm: true
 });
 
-function parseV2File(path: string): Project[] {
-    const v2Str = fs.readFileSync(path).toString();
+function parseV2String(v2Str: string): Project[] {
     const projectsStr = splitFileToProjects(v2Str);
     const projects: Project[] = [];
 
@@ -72,8 +71,8 @@ function parseNameStr(fullStr: string): string {
 
 function parseLinkStr(fullStr: string): string | undefined {
     const match = fullStr.trimLeft().match(linkRegex);
-    if (!match || !match[2]) {
-        console.warn("No link for project");
+    if (!match || !match[2] || headerEndRegex.test(match[2])) {
+        warn("No link for project");
         return;
     }
     return match[2];
@@ -102,7 +101,7 @@ function parseHeaderLine(line: string, header: V2Header): void {
         }
     }
 
-    console.warn("No matching header applier for:\n" + line + '\n');
+    warn("No matching header applier for:\n" + line + '\n');
 }
 
 function applyHeaderLineBackground(line: string, matchStr: string, header: V2Header): void {
@@ -292,4 +291,8 @@ function getAllFullMatches(regex: RegExp, str: string): RegExpExecArray[] {
     return matches;
 }
 
-export default parseV2File;
+function warn(str: string) {
+    console.warn("\nWARN: " + str);
+}
+
+export default parseV2String;
