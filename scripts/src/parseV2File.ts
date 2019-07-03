@@ -82,12 +82,14 @@ function parseLinkStr(fullStr: string): string | undefined {
 function parseHeadStr(fullStr: string): { head: V2Header, headEndIndex: number } {
     const { headStr, headEndIndex } = getHeadStr(fullStr);
     const lines = headStr.split("\n");
-    const header: V2Header = {};
+    const header: V2Header = {} as V2Header;
 
     for (const line of lines) {
         if (!line) { continue; }
         parseHeaderLine(line, header);
     }
+
+    if (!header.timestamp) { throw new Error("No timestamp provided"); }
 
     return { head: header, headEndIndex: headEndIndex };
 }
@@ -156,7 +158,7 @@ function applyHeaderLineTimestamp(line: string, matchStr: string, header: V2Head
 }
 
 
-function getHeadStr(fullStr: string): { headStr: string , headEndIndex: number } {
+function getHeadStr(fullStr: string): { headStr: string, headEndIndex: number } {
     const startToken = headerStartRegex.exec(fullStr);
     if (!startToken) { throw new Error("No head"); }
     const startTokenEndIndex = startToken.index + startToken[0].length;

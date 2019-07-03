@@ -19,10 +19,10 @@ export interface ProjectBodyViewProject {
 export interface Project {
     head: {
         name: string;
+        timestamp: number;
         link?: string;
         tags?: string[];
         author?: string[];
-        timestamp?: number;
         shortDescription?: string;
         background?: string[];
         textColor?: string;
@@ -35,7 +35,7 @@ export default interface V2Header {
     tags?: string[];
     author?: string[];
     shortDescription?: string;
-    timestamp?: number;
+    timestamp: number;
     background?: string[];
     textColor?: string;
 }
