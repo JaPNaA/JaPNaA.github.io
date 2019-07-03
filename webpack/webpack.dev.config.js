@@ -12,7 +12,7 @@ const testConfig = {
     name: "test",
     entry: "./test/main.ts",
     output: {
-        path: path.resolve(__dirname, "docs/bundles"),
+        path: path.resolve(__dirname, "../docs/bundles"),
         filename: "test-bundle.js",
         publicPath: "./test/"
     },

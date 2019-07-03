@@ -1,11 +1,11 @@
 const path = require("path");
-const GenerateViewAndWidgetList = require("./webpack/plugins/GenerateViewAndWidgetList");
+const GenerateViewAndWidgetList = require("./plugins/GenerateViewAndWidgetList");
 
 module.exports = {
     name: "dist",
     entry: "./src/index.ts",
     output: {
-        path: path.resolve(__dirname, "docs/bundles"),
+        path: path.resolve(__dirname, "../docs/bundles"),
         filename: 'bundle.js',
         chunkFilename: '[name].bundle.js',
         publicPath: "/bundles/"
@@ -15,7 +15,7 @@ module.exports = {
             test: /\.tsx?$/,
             loaders: [
                 "ts-loader",
-                path.resolve(__dirname, "webpack/loaders/stripConsoleLogs")
+                path.resolve(__dirname, "./loaders/stripConsoleLogs")
             ],
             exclude: /node_modules/
         }, {
