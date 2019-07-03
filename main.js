@@ -2,6 +2,8 @@
 const webpack = require("webpack");
 const fs = require("fs");
 const path = require("path");
+const hs = require("http-server");
+const portfinder = require("portfinder");
 
 const scriptsConfig = require("./webpack/webpack.scripts.config");
 
@@ -11,6 +13,7 @@ const watch = process.argv[3] && process.argv[3].toLowerCase()[0] === 'w';
 if (mode === "dev") {
     const devConfig = require("./webpack/webpack.dev.config");
     startWebpack(devConfig);
+    startHttpServers();
 } else if (mode === "prod") {
     const prodConfig = require("./webpack/webpack.config");
     startWebpack(prodConfig);
@@ -22,7 +25,7 @@ if (mode === "dev") {
 
 
 function startWebpack(config) {
-    setWatch(config, false);
+    setWatch(config, false); // watch: true in the config seems to mess things up
 
     if (watch) {
         console.log("webpack is watching the files...");
@@ -86,6 +89,32 @@ function joinConfigs(a, b) {
         }
     }
 }
+
+// --- http-server ---
+
+function startHttpServers() {
+    portfinder.basePort = 8080;
+    const server = hs.createServer({
+        root: path.resolve(__dirname, "./docs")
+    });
+    const server2 = hs.createServer({
+        root: path.resolve(__dirname, "../../../Thingy"),
+        cors: "*"
+    });
+    findPort();
+
+    function findPort() {
+        portfinder.getPort(function (err, port) {
+            if (err) { throw err; }
+            server.listen(port);
+            // there doesn't seem to be a way to check if the following works, so let's just cross our fingers
+            server2.listen(port + 1);
+            console.log("Listening on ports " + port + " and " + (port + 1));
+        });
+    }
+}
+
+// --- clean ---
 
 function cleanProject() {
     const files = fs.readFileSync(".gitignore").toString().split("\n");
