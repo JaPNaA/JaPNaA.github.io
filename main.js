@@ -19,9 +19,11 @@ if (mode === "dev") {
     startWebpack(prodConfig);
 } else if (mode === "clean") {
     cleanProject();
+} else if (mode === "scripts") {
+    startWebpack([]);
 } else {
     console.error("unknown mode '" + mode + "'");
-    console.log("Available modes: dev (w), prod (w), clean");
+    console.log("Available modes: dev (w), prod (w), scripts (w), clean");
     console.log("Add 'w' as third argument for watch");
 }
 

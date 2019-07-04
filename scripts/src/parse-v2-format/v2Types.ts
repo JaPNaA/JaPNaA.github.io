@@ -28,7 +28,7 @@ export interface Project {
         textColor?: string;
     };
 
-    body: ProjectBodyElement[];
+    body: ProjectBodyElement[] | string;
 }
 
 export default interface V2Header {

@@ -92,17 +92,57 @@ function writeOut(): void {
 
     for (const [year, projects] of sortingMap) {
         projects.sort((a, b) => a.head.timestamp - b.head.timestamp);
-        fs.writeFile(v2OutPath + '/' + year + '.json', JSON.stringify({
-            formatVersion: '2',
-            data: projects
-        }), function (err) {
-            if (err) {
-                console.error("Failed writing out year " + year, err);
-            }
-        });
-
-        console.log("Writing out year " + year);
+        writeOutProject(year, projects);
     }
 }
 
-// console.log(JSON.stringify(parseV2File("./docs/assets/content/test.md")));
+function writeOutProject(year: number, projects: Project[]) {
+    console.log("Writing out year " + year);
+
+    for (const project of projects) {
+        if (Array.isArray(project.body)) {
+            const name = writeOutProjectBody(project);
+            project.body = name;
+        }
+    }
+
+    fs.writeFile(v2OutPath + '/' + year + '.json', JSON.stringify({
+        formatVersion: '2',
+        data: projects
+    }), function (err) {
+        if (err) {
+            console.error("Failed writing out year " + year, err);
+        }
+    });
+}
+
+/**
+ * Writes the project body to a file
+ * @param project project
+ * @returns path to the file
+ */
+function writeOutProjectBody(project: Project): string {
+    const date = formatDate(new Date(project.head.timestamp));
+    const name = project.head.name.replace(/\W/, '-').toLowerCase();
+    const filename = date + "-" + name + '.json';
+
+    fs.writeFile(
+        v2OutPath + '/' + filename,
+        JSON.stringify(project.body),
+        function (err) {
+            if (err) {
+                console.error("Failed writing out project body " + filename, err);
+            }
+        }
+    );
+
+    console.log("Writing out project body " + filename);
+
+    return filename;
+}
+
+function formatDate(date: Date): string {
+    return date.getUTCFullYear() + "-" +
+        date.getUTCMonth().toString().padStart(2, '0') + "-" +
+        date.getUTCDate().toString().padStart(2, '0');
+}
