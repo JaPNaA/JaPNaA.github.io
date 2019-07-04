@@ -7,7 +7,7 @@ const portfinder = require("portfinder");
 
 const scriptsConfig = require("./webpack/webpack.scripts.config");
 
-const mode = process.argv[2].toLowerCase();
+const mode = process.argv[2] && process.argv[2].toLowerCase();
 const watch = process.argv[3] && process.argv[3].toLowerCase()[0] === 'w';
 
 if (mode === "dev") {
@@ -21,6 +21,8 @@ if (mode === "dev") {
     cleanProject();
 } else {
     console.error("unknown mode '" + mode + "'");
+    console.log("Available modes: dev (w), prod (w), clean");
+    console.log("Add 'w' as third argument for watch");
 }
 
 

@@ -1,4 +1,3 @@
-import fs from "fs";
 import V2Header, { Project, ProjectBodyElement } from "./v2Types";
 import marked from "marked";
 

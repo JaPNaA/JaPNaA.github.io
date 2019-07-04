@@ -2,6 +2,7 @@
   "name": "japnaa.github.io",
   "version": "4.0.0",
   "description": "A site for my things",
+  "main": "main.js",
   "directories": {
     "doc": "docs"
   },
@@ -11,7 +12,7 @@
     "build-dev": "webpack --config webpack.dev.config.js",
     "serve": "http-server docs -p 8080",
     "serve2": "http-server ../../../Thingy -p 8081 --cors=\"*\"",
-    "clean": "rm docs/bundles/*.js || echo Nothing to clean",
+    "clean": "node ",
     "update-index-json": "node ./scripts/update-index-json.js",
     "deploy-staging": "./scripts/deploy-staging.sh"
   },
