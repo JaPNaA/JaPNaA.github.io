@@ -1,15 +1,18 @@
 import parseV2String from "./parseV2File";
 import fs from "fs";
-import * as fsp from "./fsPromise";
-import { Project } from "./v2Types";
+import * as fsp from "../utils/fsPromise";
+import { V2Project, V2ProjectListing } from "../utils/v2Types";
+import paths from "../utils/paths";
+import getLastV1No from "../utils/getLastV1No";
 
-const v2ContentPath = "./docs/assets/content/src/v2";
-const v2OutPath = "./docs/assets/content/v2";
-const projects: Project[] = [];
+const projects: V2Project[] = [];
 let countTotal = 0;
 let countDone = 0;
 
-recursiveReadFiles(v2ContentPath);
+let no = 0;
+let noPromise = getLastV1No().then(e => no = e);;
+
+recursiveReadFiles(paths.v2Content);
 
 function recursiveReadFiles(path: string): void {
     const files = fs.readdirSync(path);
@@ -71,7 +74,7 @@ function updateCount() {
 }
 
 function writeOut(): void {
-    const sortingMap: Map<number, Project[]> = new Map();
+    const sortingMap: Map<number, V2Project[]> = new Map();
 
     for (const project of projects) {
         const year = new Date(project.head.timestamp).getUTCFullYear();
@@ -83,33 +86,41 @@ function writeOut(): void {
         }
     }
 
-    if (!fs.existsSync(v2OutPath)) {
-        console.log("Creating " + v2OutPath);
-        fs.mkdirSync(v2OutPath);
+    if (!fs.existsSync(paths.v2Out)) {
+        console.log("Creating " + paths.v2Out);
+        fs.mkdirSync(paths.v2Out);
     }
 
     console.log("Writing out...");
 
-    for (const [year, projects] of sortingMap) {
+    const years = Array.from(sortingMap.keys()).sort((a, b) => a - b);
+
+    for (const year of years) {
+        const projects = sortingMap.get(year)!;
         projects.sort((a, b) => a.head.timestamp - b.head.timestamp);
         writeOutProject(year, projects);
     }
 }
 
-function writeOutProject(year: number, projects: Project[]) {
+async function writeOutProject(year: number, projects: V2Project[]) {
     console.log("Writing out year " + year);
+
+    await noPromise;
 
     for (const project of projects) {
         if (Array.isArray(project.body)) {
             const name = writeOutProjectBody(project);
             project.body = name;
         }
+        project.head.no = ++no;
     }
 
-    fs.writeFile(v2OutPath + '/' + year + '.json', JSON.stringify({
+    const projectListing: V2ProjectListing = {
         formatVersion: '2',
         data: projects
-    }), function (err) {
+    };
+
+    fs.writeFile(paths.v2Out + '/' + year + '.json', JSON.stringify(projectListing), function (err) {
         if (err) {
             console.error("Failed writing out year " + year, err);
         }
@@ -121,13 +132,13 @@ function writeOutProject(year: number, projects: Project[]) {
  * @param project project
  * @returns path to the file
  */
-function writeOutProjectBody(project: Project): string {
+function writeOutProjectBody(project: V2Project): string {
     const date = formatDate(new Date(project.head.timestamp));
     const name = project.head.name.replace(/\W/, '-').toLowerCase();
     const filename = date + "-" + name + '.json';
 
     fs.writeFile(
-        v2OutPath + '/' + filename,
+        paths.v2Out + '/' + filename,
         JSON.stringify(project.body),
         function (err) {
             if (err) {

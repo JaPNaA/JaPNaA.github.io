@@ -1,4 +1,4 @@
-import V2Header, { Project, ProjectBodyElement } from "./v2Types";
+import { InputV2Header, V2Project, V2ProjectBodyElement } from "../utils/v2Types";
 import marked from "marked";
 
 const projectSplitRegex = /(^|\n)#.+\n/g;
@@ -9,7 +9,7 @@ const headerEndRegex = /---+/;
 const nameRegex = /^#(.+)\n/;
 const linkRegex = /(^|\n)#.+\n(.*)\n/;
 
-const headerLineMap: Map<string, (line: string, matchStr: string, header: V2Header) => void> = new Map([
+const headerLineMap: Map<string, (line: string, matchStr: string, header: InputV2Header) => void> = new Map([
     ["[", applyHeaderLineTags],
     [">", applyHeaderLineShortDescription],
     ["@", applyHeaderLineTimestamp],
@@ -20,7 +20,7 @@ const headerTagsRegex = /\[.+?\]/g;
 const headerByTagRegex = /^by\s+/;
 
 const customTagRegex = /<!([\w-]+)\s?(.*?)>/g;
-const customTagMap: Map<string, (args: string, projectLink?: string) => ProjectBodyElement> = new Map([
+const customTagMap: Map<string, (args: string, projectLink?: string) => V2ProjectBodyElement> = new Map([
     ["img", parseCustomTagImage],
     ["view-project", parseCustomTagViewProject]
 ]);
@@ -30,9 +30,9 @@ marked.setOptions({
     gfm: true
 });
 
-function parseV2String(v2Str: string): Project[] {
+function parseV2String(v2Str: string): V2Project[] {
     const projectsStr = splitFileToProjects(v2Str);
-    const projects: Project[] = [];
+    const projects: V2Project[] = [];
 
     for (const projectStr of projectsStr) {
         projects.push(parseProjectStr(projectStr));
@@ -41,7 +41,7 @@ function parseV2String(v2Str: string): Project[] {
     return projects;
 }
 
-function parseProjectStr(projectStr: string): Project {
+function parseProjectStr(projectStr: string): V2Project {
     const name = parseNameStr(projectStr);
     const link = parseLinkStr(projectStr);
     const { head, headEndIndex } = parseHeadStr(projectStr);
@@ -51,6 +51,7 @@ function parseProjectStr(projectStr: string): Project {
         head: {
             name: name,
             link: link,
+            no: -1, // the actual number to be assigned later
             author: head.author,
             background: head.background,
             shortDescription: head.shortDescription,
@@ -77,10 +78,10 @@ function parseLinkStr(fullStr: string): string | undefined {
     return match[2];
 }
 
-function parseHeadStr(fullStr: string): { head: V2Header, headEndIndex: number } {
+function parseHeadStr(fullStr: string): { head: InputV2Header, headEndIndex: number } {
     const { headStr, headEndIndex } = getHeadStr(fullStr);
     const lines = headStr.split("\n");
-    const header: V2Header = {} as V2Header;
+    const header: InputV2Header = {} as InputV2Header;
 
     for (const line of lines) {
         if (!line) { continue; }
@@ -92,7 +93,7 @@ function parseHeadStr(fullStr: string): { head: V2Header, headEndIndex: number }
     return { head: header, headEndIndex: headEndIndex };
 }
 
-function parseHeaderLine(line: string, header: V2Header): void {
+function parseHeaderLine(line: string, header: InputV2Header): void {
     for (const [startStr, applier] of headerLineMap) {
         if (line.startsWith(startStr)) {
             applier(line, startStr, header);
@@ -103,7 +104,7 @@ function parseHeaderLine(line: string, header: V2Header): void {
     warn("No matching header applier for:\n" + line + '\n');
 }
 
-function applyHeaderLineBackground(line: string, matchStr: string, header: V2Header): void {
+function applyHeaderLineBackground(line: string, matchStr: string, header: InputV2Header): void {
     const background = line.slice(matchStr.length).trim().split(commaSplitRegex);
     if (header.background) {
         header.background = header.background.concat(background);
@@ -112,15 +113,15 @@ function applyHeaderLineBackground(line: string, matchStr: string, header: V2Hea
     }
 }
 
-function applyHeaderLineColor(line: string, matchStr: string, header: V2Header): void {
+function applyHeaderLineColor(line: string, matchStr: string, header: InputV2Header): void {
     header.textColor = line.slice(matchStr.length).trim();
 }
 
-function applyHeaderLineShortDescription(line: string, matchStr: string, header: V2Header): void {
+function applyHeaderLineShortDescription(line: string, matchStr: string, header: InputV2Header): void {
     header.shortDescription = line.slice(matchStr.length).trim();
 }
 
-function applyHeaderLineTags(line: string, matchStr: string, header: V2Header): void {
+function applyHeaderLineTags(line: string, matchStr: string, header: InputV2Header): void {
     const brackets = line.match(headerTagsRegex);
     if (!brackets) {
         throw new Error("Syntax Error: No closing ]");
@@ -146,7 +147,7 @@ function applyHeaderLineTags(line: string, matchStr: string, header: V2Header): 
     }
 }
 
-function applyHeaderLineTimestamp(line: string, matchStr: string, header: V2Header): void {
+function applyHeaderLineTimestamp(line: string, matchStr: string, header: InputV2Header): void {
     const timestamp = parseInt(line.slice(matchStr.length).trim());
     if (isNaN(timestamp)) {
         throw new Error("Timestamp not a number: \n" + line + '\n');
@@ -187,14 +188,14 @@ function splitFileToProjects(v2Str: string): string[] {
 }
 
 
-function parseBodyStr(fullStr: string, headEndIndex: number, projectLink?: string): ProjectBodyElement[] {
+function parseBodyStr(fullStr: string, headEndIndex: number, projectLink?: string): V2ProjectBodyElement[] {
     const bodyStr = fullStr.slice(headEndIndex).trim();
     return parseBodyMarkdown(parseAllCustomTags(bodyStr, projectLink));
 }
 
-function parseAllCustomTags(bodyStr: string, projectLink?: string): (string | ProjectBodyElement)[] {
+function parseAllCustomTags(bodyStr: string, projectLink?: string): (string | V2ProjectBodyElement)[] {
     const matches = getAllFullMatches(customTagRegex, bodyStr);
-    const arr: (string | ProjectBodyElement)[] = [];
+    const arr: (string | V2ProjectBodyElement)[] = [];
     let lastIndex = 0;
 
     for (const match of matches) {
@@ -210,7 +211,7 @@ function parseAllCustomTags(bodyStr: string, projectLink?: string): (string | Pr
     return arr;
 }
 
-function parseCustomTag(match: RegExpExecArray, projectLink?: string): ProjectBodyElement {
+function parseCustomTag(match: RegExpExecArray, projectLink?: string): V2ProjectBodyElement {
     const tagName = match[1];
     const args = match[2];
     const parser = customTagMap.get(tagName);
@@ -221,7 +222,7 @@ function parseCustomTag(match: RegExpExecArray, projectLink?: string): ProjectBo
     }
 }
 
-function parseCustomTagImage(args: string): ProjectBodyElement {
+function parseCustomTagImage(args: string): V2ProjectBodyElement {
     const srcRegex = /src=("([^"]+)"|([^\s]+))/;
     const captionRegex = /--"([^"]+)"/;
 
@@ -242,7 +243,7 @@ function parseCustomTagImage(args: string): ProjectBodyElement {
     };
 }
 
-function parseCustomTagViewProject(args: string, projectLink?: string): ProjectBodyElement {
+function parseCustomTagViewProject(args: string, projectLink?: string): V2ProjectBodyElement {
     if (!projectLink) { throw new Error("No link to project"); }
     return {
         type: "view-project",
@@ -250,8 +251,8 @@ function parseCustomTagViewProject(args: string, projectLink?: string): ProjectB
     };
 }
 
-function parseBodyMarkdown(arr: (ProjectBodyElement | string)[]): ProjectBodyElement[] {
-    const finalArr: ProjectBodyElement[] = [];
+function parseBodyMarkdown(arr: (V2ProjectBodyElement | string)[]): V2ProjectBodyElement[] {
+    const finalArr: V2ProjectBodyElement[] = [];
 
     for (const item of arr) {
         if (typeof item === 'string') {
@@ -267,7 +268,7 @@ function parseBodyMarkdown(arr: (ProjectBodyElement | string)[]): ProjectBodyEle
     return finalArr;
 }
 
-function parseMarkdownString(str: string): ProjectBodyElement | null {
+function parseMarkdownString(str: string): V2ProjectBodyElement | null {
     const parsed = marked.parse(str);
     if (parsed) {
         return {
