@@ -1,10 +1,10 @@
-import IProject from "./IProject";
-import ICardContent from "./ICardContent";
+import IV1Project from "./IV1Project";
+import IV1CardContent from "./IV1CardContent";
 
-interface ICard extends IProject {
+interface IV1Card extends IV1Project {
     type: "card";
     /** Content of card */
-    content: ICardContent,
+    content: IV1CardContent,
     /** Tags of project, can be searched for */
     tags: string[];
     /** Name of project */
@@ -15,4 +15,4 @@ interface ICard extends IProject {
     no: number;
 }
 
-export default ICard;
+export default IV1Card;

@@ -2,14 +2,14 @@ import * as fsp from "./fsPromise";
 import paths from "./paths";
 import { getAllYearFiles } from "./getAllYearFiles";
 import { V2ProjectListing, isV2ProjectListing } from "./v2Types";
-import IInfoJSON from "../../../src/types/project/v1/IInfoJSON";
+import IV1InfoJSON from "../../../src/types/project/v1/IV1InfoJSON";
 import { getV1InfoJSONRange } from "./getV1InfoJSONRange";
 
 let cached: undefined | number = undefined;
 let max: number = 0;
 
 async function readFile(path: string) {
-    const obj: V2ProjectListing | IInfoJSON = await fsp.readFile(path)
+    const obj: V2ProjectListing | IV1InfoJSON = await fsp.readFile(path)
         .then(e => e.toString())
         .then(e => JSON.parse(e));
 

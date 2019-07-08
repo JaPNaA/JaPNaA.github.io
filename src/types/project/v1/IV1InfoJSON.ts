@@ -1,8 +1,8 @@
-import IProject from "./IProject";
+import IV1Project from "./IV1Project";
 
-interface IInfoJSON {
+interface IV1InfoJSON {
     /** Where all the main data is stored */
-    data: IProject[];
+    data: IV1Project[];
     meta: {
         /** Link to previous data */
         previous: string;
@@ -15,4 +15,4 @@ interface IInfoJSON {
     }
 }
 
-export default IInfoJSON;
+export default IV1InfoJSON;

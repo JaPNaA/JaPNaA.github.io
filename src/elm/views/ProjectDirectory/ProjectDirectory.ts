@@ -10,9 +10,9 @@ import removeChildren from "../../../utils/removeChildren";
 import url from "url";
 import openPopup from "../../../core/utils/open/openPopup";
 import contentJSONPath from "../../../utils/paths/contentJSONPath";
-import IInfoJSON from "../../../types/project/v1/IInfoJSON";
+import IV1InfoJSON from "../../../types/project/v1/IV1InfoJSON";
 import isProjectCard from "../../../utils/isProjectCard";
-import ICard from "../../../types/project/v1/ICard";
+import IV1Card from "../../../types/project/v1/IV1Card";
 import JSONResource from "../../../core/components/resourceLoader/resources/JSONResource";
 import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
@@ -22,7 +22,7 @@ import createAppState from "../../../core/utils/createAppState";
 type LinkMatch = {
     year: number,
     index: number,
-    data: ICard
+    data: IV1Card
 };
 
 class ProjectDirectory extends View {
@@ -235,7 +235,7 @@ class ProjectDirectory extends View {
                 .onError(e => res(null))
         );
         if (!data) { return; }
-        const content = data.data as IInfoJSON;
+        const content = data.data as IV1InfoJSON;
 
         for (let i = 0; i < content.data.length; i++) {
             const entry = content.data[i];

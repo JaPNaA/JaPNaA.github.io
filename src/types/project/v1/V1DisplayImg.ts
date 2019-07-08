@@ -1,4 +1,4 @@
-interface DisplayImg {
+interface V1DisplayImg {
     /** Type of item */
     type: "img";
     /** Title of image, shown on hover, and when image doesn't load */
@@ -7,4 +7,4 @@ interface DisplayImg {
     src?: string;
 };
 
-export default DisplayImg;
+export default V1DisplayImg;

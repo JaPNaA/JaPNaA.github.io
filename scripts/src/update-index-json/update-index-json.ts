@@ -1,7 +1,7 @@
 import * as fsp from "../utils/fsPromise";
 import fs from "fs";
 import path from "path";
-import IInfoJSON from "../../../src/types/project/v1/IInfoJSON";
+import IV1InfoJSON from "../../../src/types/project/v1/IV1InfoJSON";
 import { V2ProjectListing, isV2ProjectListing } from "../utils/v2Types";
 import paths from "../utils/paths";
 import { getAllYearFiles } from "../utils/getAllYearFiles";
@@ -44,7 +44,7 @@ function extractYearFromPath(filePath: string) {
     return parseInt(match[0]);
 }
 
-function createMetadata(year: number, obj: V2ProjectListing | IInfoJSON, filePath: string) {
+function createMetadata(year: number, obj: V2ProjectListing | IV1InfoJSON, filePath: string) {
     const relativePath = path.relative(paths.contentRoot, filePath);
     if (isV2ProjectListing(obj)) {
         return createMetadataV2(year, obj, relativePath);
@@ -58,7 +58,7 @@ function createMetadataV2(year: number, obj: V2ProjectListing, path: string): st
     return `"${year}":[${min},${max},"${path}"]`;
 }
 
-function createMetadataV1(year: number, obj: IInfoJSON, path: string): string {
+function createMetadataV1(year: number, obj: IV1InfoJSON, path: string): string {
     const { max, min } = getV1InfoJSONRange(obj);
     return `"${year}":[${min},${max},"${path}"]`;
 }

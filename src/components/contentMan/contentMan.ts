@@ -1,9 +1,9 @@
-import IProject from "../../types/project/v1/IProject";
+import IV1Project from "../../types/project/v1/IV1Project";
 import siteResources from "../../core/siteResources";
 import siteConfig from "../../SiteConfig";
-import IIndex from "../../types/project/v1/IIndex";
-import IInfoJSON from "../../types/project/v1/IInfoJSON";
-import ICard from "../../types/project/v1/ICard";
+import IIndex from "../../types/project/IIndex";
+import IV1InfoJSON from "../../types/project/v1/IV1InfoJSON";
+import IV1Card from "../../types/project/v1/IV1Card";
 import isProjectCard from "../../utils/isProjectCard";
 import IProjectWithLocation from "./IProjectWithLocation";
 import IProjectLink from "./IProjectLink";
@@ -22,7 +22,7 @@ class ContentMan {
 
     public static setup(): void { }
 
-    public static async getCardByNumber(no: number): Promise<ICard | null> {
+    public static async getCardByNumber(no: number): Promise<IV1Card | null> {
         const index = await this.getProjectsIndex();
         const years = Object.keys(index.meta);
 
@@ -143,14 +143,14 @@ class ContentMan {
         }
     }
 
-    public static async *cardGeneratorOldest(): AsyncIterableIterator<IProject> {
+    public static async *cardGeneratorOldest(): AsyncIterableIterator<IV1Project> {
         const gen = this.cardGeneratorOldestWithLocation();
         for await (const item of gen) {
             yield item.project;
         }
     }
 
-    public static async *cardGeneratorLatest(): AsyncIterableIterator<IProject> {
+    public static async *cardGeneratorLatest(): AsyncIterableIterator<IV1Project> {
         const gen = this.cardGeneratorLatestWithLocation();
         for await (const item of gen) {
             yield item.project;
@@ -187,11 +187,11 @@ class ContentMan {
         }
     }
 
-    private static async getFileForYear(year: number | string): Promise<IInfoJSON> {
+    private static async getFileForYear(year: number | string): Promise<IV1InfoJSON> {
         const index = await this.getProjectsIndex();
-        return new Promise<IInfoJSON>((res, rej) =>
+        return new Promise<IV1InfoJSON>((res, rej) =>
             siteResources.loadJSON(siteConfig.path.content + this.getPathForYear(index, year))
-                .onLoad(e => res(e.data as IInfoJSON))
+                .onLoad(e => res(e.data as IV1InfoJSON))
                 .onError(() => rej(new Error("Failed to load file for year " + year)))
         );
     }

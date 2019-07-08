@@ -1,13 +1,13 @@
 import "../../../../styles/views/ProjectInfo.less";
 
 import View from "../../../core/view/View";
-import ICard from "../../../types/project/v1/ICard";
+import IV1Card from "../../../types/project/v1/IV1Card";
 import CardJSONv1Elm from "../../../components/jsonToElm/v1/card";
 import ViewMap from "../../../core/view/ViewMap";
 import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
 import siteResources from "../../../core/siteResources";
-import IInfoJSON from "../../../types/project/v1/IInfoJSON";
+import IV1InfoJSON from "../../../types/project/v1/IV1InfoJSON";
 import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
 
@@ -18,7 +18,7 @@ class ProjectInfoView extends View {
 
     protected elm: HTMLDivElement;
 
-    private project?: ICard;
+    private project?: IV1Card;
     private loadingPromise?: Promise<void>;
     private cardElm?: CardJSONv1Elm;
 
@@ -34,7 +34,7 @@ class ProjectInfoView extends View {
         }
     }
 
-    public setProject(project: ICard, year: number, index: number): void {
+    public setProject(project: IV1Card, year: number, index: number): void {
         this.project = project;
         this.projectYear = year;
         this.projectIndex = index;
@@ -92,13 +92,13 @@ class ProjectInfoView extends View {
         this.loadingPromise = undefined;
     }
 
-    private async getCard(year: string, index: number): Promise<ICard> {
+    private async getCard(year: string, index: number): Promise<IV1Card> {
         const resource = siteResources.loadJSON(siteConfig.path.content + year + ".json");
-        const promise = new Promise<IInfoJSON>(res =>
-            resource.onLoad(e => res(e.data as IInfoJSON))
+        const promise = new Promise<IV1InfoJSON>(res =>
+            resource.onLoad(e => res(e.data as IV1InfoJSON))
         );
 
-        return (await promise).data[index] as ICard;
+        return (await promise).data[index] as IV1Card;
     }
 
     private attachLinkClickHandler(elm: HTMLAnchorElement) {

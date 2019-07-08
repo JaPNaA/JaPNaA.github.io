@@ -1,4 +1,4 @@
-interface IProject {
+interface IV1Project {
     /** Type of item */
     type: "card" | "text";
     // content
@@ -11,4 +11,4 @@ interface IProject {
     jsformat?: boolean;
 }
 
-export default IProject;
+export default IV1Project;

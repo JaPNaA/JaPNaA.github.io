@@ -1,9 +1,9 @@
 import "../../../../styles/components/cardV1.less";
 
-import ICard from "../../../types/project/v1/ICard";
+import IV1Card from "../../../types/project/v1/IV1Card";
 import siteConfig from "../../../SiteConfig";
-import Display from "../../../types/project/v1/Display";
-import DisplayImg from "../../../types/project/v1/DisplayImg";
+import DisplayV1 from "../../../types/project/v1/V1Display";
+import V1DisplayImg from "../../../types/project/v1/V1DisplayImg";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
@@ -20,12 +20,12 @@ class CardJSONv1Elm {
 
     private app: IApp;
     private elm: HTMLDivElement;
-    private card: ICard;
+    private card: IV1Card;
     private backgroundImageExists: boolean;
 
     private container: HTMLDivElement = null as unknown as HTMLDivElement;
 
-    public constructor(app: IApp, card: ICard) {
+    public constructor(app: IApp, card: IV1Card) {
         this.app = app;
         this.card = card;
         this.elm = document.createElement("div");
@@ -162,7 +162,7 @@ class CardJSONv1Elm {
         }
     }
 
-    private createDisplayIn(display: Display, block: HTMLElement): void {
+    private createDisplayIn(display: DisplayV1, block: HTMLElement): void {
         const displayElm = document.createElement("div");
         displayElm.classList.add("display");
 
@@ -171,7 +171,7 @@ class CardJSONv1Elm {
         block.appendChild(displayElm);
     }
 
-    private createDisplayTypeIn(parent: HTMLElement, display: Display): void {
+    private createDisplayTypeIn(parent: HTMLElement, display: DisplayV1): void {
         if (display.type === "img") {
             this.createDisplayImgIn(parent, display);
         } else if (display.type === "iframe") {
@@ -179,7 +179,7 @@ class CardJSONv1Elm {
         }
     }
 
-    private createDisplayImgIn(parent: HTMLElement, display: DisplayImg): void {
+    private createDisplayImgIn(parent: HTMLElement, display: V1DisplayImg): void {
         if (display.src) {
             // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
             const src = siteConfig.path.thingy + display.src;

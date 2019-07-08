@@ -1,5 +1,5 @@
 import ProjectCard from "./ProjectCard";
-import ICard from "../../../../types/project/v1/ICard";
+import IV1Card from "../../../../types/project/v1/IV1Card";
 import IApp from "../../../../core/types/app/IApp";
 import getFirstDisplayImgSrc from "../../../../components/jsonToElm/v1/getFirstDisplayImg";
 import siteConfig from "../../../../SiteConfig";
@@ -17,9 +17,9 @@ class ProjectV1CardCard extends ProjectCard {
 
     private year: number;
     private index: number
-    private card: ICard;
+    private card: IV1Card;
 
-    constructor(app: IApp, card: ICard, year: number, index: number) {
+    constructor(app: IApp, card: IV1Card, year: number, index: number) {
         super(app);
         this.card = card;
         this.year = year;

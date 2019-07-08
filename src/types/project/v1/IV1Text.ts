@@ -1,6 +1,6 @@
-import IProject from "./IProject";
+import IV1Project from "./IV1Project";
 
-interface IText extends IProject {
+interface IV1Text extends IV1Project {
     type: "text";
     /** Title of text */
     title: string;
@@ -8,4 +8,4 @@ interface IText extends IProject {
     content: string;
 }
 
-export default IText;
+export default IV1Text;

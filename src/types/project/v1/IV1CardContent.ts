@@ -1,12 +1,12 @@
-import Display from "./Display";
+import DisplayV1 from "./V1Display";
 
-interface ICardContent {
+interface IV1CardContent {
     /** Link to item showcased */
     link: string,
     /** Description of card, goes under the name */
     description: string,
     /** Images and stuff */
-    display: Display[];
+    display: DisplayV1[];
 };
 
-export default ICardContent;
+export default IV1CardContent;

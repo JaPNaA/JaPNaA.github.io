@@ -1,8 +1,8 @@
 import View from "../../../core/view/View";
-import ICard from "../../../types/project/v1/ICard";
+import IV1Card from "../../../types/project/v1/IV1Card";
 
 interface IProjectInfoView extends View {
-    setProject(project: ICard, year: number, index: number): void;
+    setProject(project: IV1Card, year: number, index: number): void;
 }
 
 export default IProjectInfoView;
