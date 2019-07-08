@@ -11,7 +11,7 @@ let countTotal = 0;
 let countDone = 0;
 
 let no = 0;
-let noPromise = getLastV1No().then(e => no = e);;
+let noPromise = getLastV1No().then(e => no = e);
 
 recursiveReadFiles(paths.v2Content);
 

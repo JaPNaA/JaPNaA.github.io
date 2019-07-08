@@ -1,4 +1,4 @@
-import { V2ProjectListing } from "./v2Types";
+import { V2ProjectListing } from "../../../src/types/project/v2/V2Types";
 
 export function getV2ProjectListingRange(obj: V2ProjectListing): { max: number | null, min: number | null } {
     let max = null;

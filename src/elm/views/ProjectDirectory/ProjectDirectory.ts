@@ -11,7 +11,7 @@ import url from "url";
 import openPopup from "../../../core/utils/open/openPopup";
 import contentJSONPath from "../../../utils/paths/contentJSONPath";
 import IV1InfoJSON from "../../../types/project/v1/IV1InfoJSON";
-import isProjectCard from "../../../utils/isProjectCard";
+import isProjectV1Card from "../../../utils/isProjectCard";
 import IV1Card from "../../../types/project/v1/IV1Card";
 import JSONResource from "../../../core/components/resourceLoader/resources/JSONResource";
 import AppState from "../../../core/types/AppState";
@@ -239,7 +239,7 @@ class ProjectDirectory extends View {
 
         for (let i = 0; i < content.data.length; i++) {
             const entry = content.data[i];
-            if (!isProjectCard(entry)) { continue; }
+            if (!isProjectV1Card(entry)) { continue; }
             const entryLink = url.resolve(siteConfig.path.thingy, entry.content.link);
             if (entryLink === link) {
                 return {
