@@ -1,9 +1,9 @@
 import "../../../../styles/components/cardV1.less";
 
-import ICard from "../../../types/project/ICard";
+import ICard from "../../../types/project/v1/ICard";
 import siteConfig from "../../../SiteConfig";
-import Display from "../../../types/project/Display";
-import DisplayImg from "../../../types/project/DisplayImg";
+import Display from "../../../types/project/v1/Display";
+import DisplayImg from "../../../types/project/v1/DisplayImg";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";

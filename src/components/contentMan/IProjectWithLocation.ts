@@ -1,4 +1,4 @@
-import IProject from "../../types/project/IProject";
+import IProject from "../../types/project/v1/IProject";
 
 export default interface IProjectWithLocation {
     project: IProject;

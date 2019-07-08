@@ -2,7 +2,7 @@ import * as fsp from "./fsPromise";
 import paths from "./paths";
 import { getAllYearFiles } from "./getAllYearFiles";
 import { V2ProjectListing, isV2ProjectListing } from "./v2Types";
-import IInfoJSON from "../../../src/types/project/IInfoJSON";
+import IInfoJSON from "../../../src/types/project/v1/IInfoJSON";
 import { getV1InfoJSONRange } from "./getV1InfoJSONRange";
 
 let cached: undefined | number = undefined;

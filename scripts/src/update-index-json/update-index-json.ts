@@ -1,7 +1,7 @@
 import * as fsp from "../utils/fsPromise";
 import fs from "fs";
 import path from "path";
-import IInfoJSON from "../../../src/types/project/IInfoJSON";
+import IInfoJSON from "../../../src/types/project/v1/IInfoJSON";
 import { V2ProjectListing, isV2ProjectListing } from "../utils/v2Types";
 import paths from "../utils/paths";
 import { getAllYearFiles } from "../utils/getAllYearFiles";

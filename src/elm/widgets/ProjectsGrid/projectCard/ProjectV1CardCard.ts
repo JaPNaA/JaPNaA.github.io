@@ -1,5 +1,5 @@
 import ProjectCard from "./ProjectCard";
-import ICard from "../../../../types/project/ICard";
+import ICard from "../../../../types/project/v1/ICard";
 import IApp from "../../../../core/types/app/IApp";
 import getFirstDisplayImgSrc from "../../../../components/jsonToElm/v1/getFirstDisplayImg";
 import siteConfig from "../../../../SiteConfig";

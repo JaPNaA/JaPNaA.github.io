@@ -1,13 +1,13 @@
 import "../../../../styles/views/ProjectInfo.less";
 
 import View from "../../../core/view/View";
-import ICard from "../../../types/project/ICard";
+import ICard from "../../../types/project/v1/ICard";
 import CardJSONv1Elm from "../../../components/jsonToElm/v1/card";
 import ViewMap from "../../../core/view/ViewMap";
 import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
 import siteResources from "../../../core/siteResources";
-import IInfoJSON from "../../../types/project/IInfoJSON";
+import IInfoJSON from "../../../types/project/v1/IInfoJSON";
 import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
 
