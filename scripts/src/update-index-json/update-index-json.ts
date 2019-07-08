@@ -35,7 +35,7 @@ async function readFile(path: string): Promise<void> {
     if (minYear === null || year < minYear) { minYear = year; }
     if (maxYear === null || year > maxYear) { maxYear = year; }
 
-    metaDatas.push(createMetadata(year, file));
+    metaDatas.push(createMetadata(year, file, path));
 }
 
 function extractYearFromPath(filePath: string) {
@@ -44,27 +44,28 @@ function extractYearFromPath(filePath: string) {
     return parseInt(match[0]);
 }
 
-function createMetadata(year: number, obj: V2ProjectListing | IInfoJSON) {
+function createMetadata(year: number, obj: V2ProjectListing | IInfoJSON, filePath: string) {
+    const relativePath = path.relative(paths.contentRoot, filePath);
     if (isV2ProjectListing(obj)) {
-        return createMetadataV2(year, obj);
+        return createMetadataV2(year, obj, relativePath);
     } else {
-        return createMetadataV1(year, obj);
+        return createMetadataV1(year, obj, relativePath);
     }
 }
 
-function createMetadataV2(year: number, obj: V2ProjectListing): string {
+function createMetadataV2(year: number, obj: V2ProjectListing, path: string): string {
     const { max, min } = getV2ProjectListingRange(obj);
-    return `"${year}":[${min},${max}]`;
+    return `"${year}":[${min},${max},"${path}"]`;
 }
 
-function createMetadataV1(year: number, obj: IInfoJSON): string {
+function createMetadataV1(year: number, obj: IInfoJSON, path: string): string {
     const { max, min } = getV1InfoJSONRange(obj);
-    return `"${year}":[${min},${max}]`;
+    return `"${year}":[${min},${max},"${path}"]`;
 }
 
 function writeIndexFile(): void {
     fs.writeFileSync(
         paths.index,
-        `{"start":${minYear},"end":${maxYear},"pattern":"[year].json","meta":{${metaDatas.sort().join(",")}}}`
+        `{"start":${minYear},"end":${maxYear},"meta":{${metaDatas.sort().join(",")}}}`
     );
 }

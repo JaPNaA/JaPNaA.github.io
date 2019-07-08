@@ -190,7 +190,7 @@ class ContentMan {
     private static async getFileForYear(year: number | string): Promise<IInfoJSON> {
         const index = await this.getProjectsIndex();
         return new Promise<IInfoJSON>((res, rej) =>
-            siteResources.loadJSON(siteConfig.path.content + this.replaceYearPath(index.pattern, year))
+            siteResources.loadJSON(siteConfig.path.content + this.getPathForYear(index, year))
                 .onLoad(e => res(e.data as IInfoJSON))
                 .onError(() => rej(new Error("Failed to load file for year " + year)))
         );
@@ -204,8 +204,8 @@ class ContentMan {
         );
     }
 
-    private static replaceYearPath(pattern: string, year: number | string): string {
-        return pattern.replace("[year]", year.toString());
+    private static getPathForYear(index: IIndex, year: number | string): string {
+        return index.meta[year][2];
     }
 }
 

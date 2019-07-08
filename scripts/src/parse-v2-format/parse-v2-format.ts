@@ -4,6 +4,7 @@ import * as fsp from "../utils/fsPromise";
 import { V2Project, V2ProjectListing } from "../utils/v2Types";
 import paths from "../utils/paths";
 import getLastV1No from "../utils/getLastV1No";
+import path from 'path';
 
 const projects: V2Project[] = [];
 let countTotal = 0;
@@ -136,9 +137,10 @@ function writeOutProjectBody(project: V2Project): string {
     const date = formatDate(new Date(project.head.timestamp));
     const name = project.head.name.replace(/\W/, '-').toLowerCase();
     const filename = date + "-" + name + '.json';
+    const finalPath = paths.v2Out + '/' + filename;
 
     fs.writeFile(
-        paths.v2Out + '/' + filename,
+        finalPath,
         JSON.stringify(project.body),
         function (err) {
             if (err) {
@@ -149,7 +151,7 @@ function writeOutProjectBody(project: V2Project): string {
 
     console.log("Writing out project body " + filename);
 
-    return filename;
+    return path.relative(paths.contentRoot, finalPath);
 }
 
 function formatDate(date: Date): string {
