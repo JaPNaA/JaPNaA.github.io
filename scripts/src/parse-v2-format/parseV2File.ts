@@ -1,4 +1,4 @@
-import { InputV2Header, V2Project, V2ProjectBodyElement } from "../utils/v2Types";
+import { InputV2Header, V2ProjectBodyElement, V2Project } from "../../../src/types/project/v2/V2Types";
 import marked from "marked";
 
 const projectSplitRegex = /(^|\n)#.+\n/g;

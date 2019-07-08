@@ -1,7 +1,7 @@
 import parseV2String from "./parseV2File";
 import fs from "fs";
 import * as fsp from "../utils/fsPromise";
-import { V2Project, V2ProjectListing } from "../utils/v2Types";
+import { V2Project, V2ProjectListing } from "../../../src/types/project/v2/V2Types";
 import paths from "../utils/paths";
 import getLastV1No from "../utils/getLastV1No";
 import path from 'path';

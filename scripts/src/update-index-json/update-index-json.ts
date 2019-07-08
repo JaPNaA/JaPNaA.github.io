@@ -1,15 +1,13 @@
 import * as fsp from "../utils/fsPromise";
 import fs from "fs";
 import path from "path";
-import IV1InfoJSON from "../../../src/types/project/v1/IV1InfoJSON";
-import { V2ProjectListing, isV2ProjectListing } from "../utils/v2Types";
+import IV1InfoJSON from "../../../src/types/project/v1/IV1InfoJSON"
 import paths from "../utils/paths";
 import { getAllYearFiles } from "../utils/getAllYearFiles";
 import { getV1InfoJSONRange } from "../utils/getV1InfoJSONRange";
 import { getV2ProjectListingRange } from "../utils/getV2ProjectListingRange";
-
-const ROOT_PATH = paths.contentRoot;
-const OUT = paths.index;
+import { V2ProjectListing } from "../../../src/types/project/v2/V2Types";
+import isV2ProjectListing from "../../../src/utils/isV2ProjectListing";
 
 let minYear: null | number = null;
 let maxYear: null | number = null;

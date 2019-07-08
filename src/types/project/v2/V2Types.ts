@@ -47,7 +47,3 @@ export interface V2ProjectListing {
     formatVersion: '2';
     data: V2Project[];
 }
-
-export function isV2ProjectListing(x: any): x is V2ProjectListing {
-    return x && x.formatVersion === '2';
-}
