@@ -9,20 +9,19 @@ import getLink from "../../../utils/getLink";
 import removeChildren from "../../../utils/removeChildren";
 import url from "url";
 import openPopup from "../../../core/utils/open/openPopup";
-import contentJSONPath from "../../../utils/paths/contentJSONPath";
-import IV1InfoJSON from "../../../types/project/v1/IV1InfoJSON";
 import isProjectV1Card from "../../../utils/isProjectCard";
-import IV1Card from "../../../types/project/v1/IV1Card";
-import JSONResource from "../../../core/components/resourceLoader/resources/JSONResource";
 import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
 import IProjectInfoView from "../ProjectInfo/IProjectInfo";
 import createAppState from "../../../core/utils/createAppState";
+import ContentMan from "../../../components/contentMan/contentMan";
+import isV2Project from "../../../utils/isV2Project";
+import V1Or2Card from "../../../components/contentMan/V1Or2Card";
 
 type LinkMatch = {
     year: number,
     index: number,
-    data: IV1Card
+    data: V1Or2Card
 };
 
 class ProjectDirectory extends View {
@@ -229,24 +228,29 @@ class ProjectDirectory extends View {
 
         if (!year) { return; }
 
-        const data: JSONResource | null = await new Promise((res, rej) =>
-            siteResources.loadJSON(contentJSONPath(year))
-                .onLoad(e => res(e))
-                .onError(e => res(null))
-        );
+        const { data } = await ContentMan.getFileForYear(year);
         if (!data) { return; }
-        const content = data.data as IV1InfoJSON;
 
-        for (let i = 0; i < content.data.length; i++) {
-            const entry = content.data[i];
-            if (!isProjectV1Card(entry)) { continue; }
-            const entryLink = url.resolve(siteConfig.path.thingy, entry.content.link);
-            if (entryLink === link) {
-                return {
-                    year: parseInt(year),
-                    index: i,
-                    data: entry
-                };
+        for (let i = 0; i < data.length; i++) {
+            const entry = data[i];
+            if (isProjectV1Card(entry)) {
+                const entryLink = url.resolve(siteConfig.path.thingy, entry.content.link);
+                if (entryLink === link) {
+                    return {
+                        year: parseInt(year),
+                        index: i,
+                        data: entry
+                    };
+                }
+            } else if (isV2Project(entry) && entry.head.link) {
+                const entryLink = url.resolve(siteConfig.path.thingy, entry.head.link);
+                if (entryLink === link) {
+                    return {
+                        year: parseInt(year),
+                        index: i,
+                        data: entry
+                    };
+                }
             }
         }
 

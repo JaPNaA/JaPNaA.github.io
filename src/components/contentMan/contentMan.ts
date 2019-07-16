@@ -4,7 +4,7 @@ import IIndex from "../../types/project/IIndex";
 import IV1InfoJSON from "../../types/project/v1/IV1InfoJSON";
 import isProjectV1Card from "../../utils/isProjectCard";
 import IProjectLink from "./IProjectLink";
-import { V2ProjectListing } from "../../types/project/v2/V2Types";
+import { V2ProjectListing, V2Project, V2ProjectBodyElement } from "../../types/project/v2/V2Types";
 import IWithLocation from "./IWithLocation";
 import isV2ProjectListing from "../../utils/isV2ProjectListing";
 import V1Or2Card from "./V1Or2Card";
@@ -53,6 +53,14 @@ class ContentMan {
     public static async getCardByYearAndIndex(year: number | string, cardIndex: number): Promise<V1Or2Project> {
         const list = await this.getFileForYear(year);
         return list.data[cardIndex];
+    }
+
+    public static async getV2CardBody(project: V2Project): Promise<V2ProjectBodyElement[]> {
+        if (typeof project.body === "string") {
+            return siteResources.loadJSONPromise(siteConfig.path.content + project.body);
+        } else {
+            return project.body;
+        }
     }
 
     public static async *cardAndLinkGeneratorOldestWithLocation(): AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink> {
@@ -179,6 +187,15 @@ class ContentMan {
         }
     }
 
+    public static async getFileForYear(year: number | string): Promise<IV1InfoJSON | V2ProjectListing> {
+        const index = await this.getProjectsIndex();
+        return new Promise((res, rej) =>
+            siteResources.loadJSON(siteConfig.path.content + this.getPathForYear(index, year))
+                .onLoad(e => res(e.data))
+                .onError(() => rej(new Error("Failed to load file for year " + year)))
+        );
+    }
+
     private static async getProjectsIndex(): Promise<IIndex> {
         if (this.projectsIndex) {
             return this.projectsIndex;
@@ -207,15 +224,6 @@ class ContentMan {
             this.linksIndexPromise = prom;
             return prom;
         }
-    }
-
-    private static async getFileForYear(year: number | string): Promise<IV1InfoJSON | V2ProjectListing> {
-        const index = await this.getProjectsIndex();
-        return new Promise((res, rej) =>
-            siteResources.loadJSON(siteConfig.path.content + this.getPathForYear(index, year))
-                .onLoad(e => res(e.data))
-                .onError(() => rej(new Error("Failed to load file for year " + year)))
-        );
     }
 
     private static async getLinksForThingy(thingyPath: string): Promise<string[][]> {
