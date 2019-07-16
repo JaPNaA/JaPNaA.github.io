@@ -10,22 +10,25 @@ import IApp from "../../../core/types/app/IApp";
 import IImageView from "../../../elm/views/ImageView/IImageView";
 import getFirstDisplayImgSrc from "./getFirstDisplayImg";
 import ViewMap from "../../../core/view/ViewMap";
+import Widget from "../../../core/widget/Widget";
 
 // TODO: refactor, along with it's .less companion!
 
-class CardJSONv1Elm {
+class CardJSONv1Elm extends Widget {
     private static transitionInTimeout: number = 3000;
+
+    protected elm: HTMLDivElement;
 
     public viewProjectButton: HTMLAnchorElement = null as unknown as HTMLAnchorElement;
 
     private app: IApp;
-    private elm: HTMLDivElement;
     private card: IV1Card;
     private backgroundImageExists: boolean;
 
     private container: HTMLDivElement = null as unknown as HTMLDivElement;
 
     public constructor(app: IApp, card: IV1Card) {
+        super();
         this.app = app;
         this.card = card;
         this.elm = document.createElement("div");
@@ -33,6 +36,7 @@ class CardJSONv1Elm {
     }
 
     public setup() {
+        super.setup();
         this.resizeHandler = this.resizeHandler.bind(this);
         this.app.events.onResize(this.resizeHandler);
         this.parse();
@@ -41,10 +45,6 @@ class CardJSONv1Elm {
 
     public destory() {
         this.app.events.offResize(this.resizeHandler);
-    }
-
-    public appendTo(parent: HTMLElement): void {
-        parent.append(this.elm);
     }
 
     public animateTransitionIn(): void {

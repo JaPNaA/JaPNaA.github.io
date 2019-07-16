@@ -27,7 +27,7 @@ abstract class LazyClassMap<T> {
         try {
             await this.importWithName(name);
         } catch (err) {
-            console.warn("Failed to prefetch " + name);
+            console.warn("Failed to prefetch " + name, err);
         }
     }
 

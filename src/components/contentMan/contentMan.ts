@@ -50,6 +50,11 @@ class ContentMan {
         return null;
     }
 
+    public static async getCardByYearAndIndex(year: number | string, cardIndex: number): Promise<V1Or2Project> {
+        const list = await this.getFileForYear(year);
+        return list.data[cardIndex];
+    }
+
     public static async *cardAndLinkGeneratorOldestWithLocation(): AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink> {
         const linksIndex = await this.getLinksIndex();
 
