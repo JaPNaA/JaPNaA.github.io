@@ -10,6 +10,12 @@ import siteResources from "../../../core/siteResources";
 import IV1InfoJSON from "../../../types/project/v1/IV1InfoJSON";
 import AppState from "../../../core/types/AppState";
 import openFrameView from "../../../utils/openFrameView";
+import ContentMan from "../../../components/contentMan/contentMan";
+import isV2Project from "../../../utils/isV2Project";
+import V1Or2Card from "../../../components/contentMan/V1Or2Card";
+import V1Or2Project from "../../../components/contentMan/V1Or2Project";
+import ProjectJSONv2Elm from "../../../components/jsonToElm/v2/project";
+import Widget from "../../../core/widget/Widget";
 
 class ProjectInfoView extends View {
     public static viewName = "ProjectInfo";
@@ -18,9 +24,9 @@ class ProjectInfoView extends View {
 
     protected elm: HTMLDivElement;
 
-    private project?: IV1Card;
+    private project?: V1Or2Card;
     private loadingPromise?: Promise<void>;
-    private cardElm?: CardJSONv1Elm;
+    private cardElm?: Widget;
 
     private projectYear?: number;
     private projectIndex?: number;
@@ -34,7 +40,7 @@ class ProjectInfoView extends View {
         }
     }
 
-    public setProject(project: IV1Card, year: number, index: number): void {
+    public setProject(project: V1Or2Card, year: number, index: number): void {
         this.project = project;
         this.projectYear = year;
         this.projectIndex = index;
@@ -61,14 +67,23 @@ class ProjectInfoView extends View {
 
         this.updateStateURL();
 
-        // FOR VERSION 1 CARD
-        this.cardElm = new CardJSONv1Elm(this.app, this.project);
-        this.cardElm.setup();
-        this.cardElm.appendTo(this.elm);
-        this.cardElm.animateTransitionIn();
-        this.cardElm.addEventListeners();
+        if (isV2Project(this.project)) {
+            const project = new ProjectJSONv2Elm(this.project);
+            project.setup();
+            project.appendTo(this.elm);
+            this.cardElm = project;
+        } else {
+            // FOR VERSION 1 CARD
+            const card = new CardJSONv1Elm(this.app, this.project);
+            card.setup();
+            card.appendTo(this.elm);
+            card.animateTransitionIn();
+            card.addEventListeners();
+            this.attachLinkClickHandler(card.viewProjectButton);
 
-        this.attachLinkClickHandler(this.cardElm.viewProjectButton);
+            this.cardElm = card;
+        }
+
     }
 
     public async destory(): Promise<void> {
@@ -87,18 +102,13 @@ class ProjectInfoView extends View {
             throw new Error("Invalid stateData format");
         }
 
-        this.setProject(await this.getCard(year, indexInt), yearInt, indexInt);
+        this.setProject(await this.getCard(year, indexInt) as V1Or2Card, yearInt, indexInt);
 
         this.loadingPromise = undefined;
     }
 
-    private async getCard(year: string, index: number): Promise<IV1Card> {
-        const resource = siteResources.loadJSON(siteConfig.path.content + year + ".json");
-        const promise = new Promise<IV1InfoJSON>(res =>
-            resource.onLoad(e => res(e.data as IV1InfoJSON))
-        );
-
-        return (await promise).data[index] as IV1Card;
+    private async getCard(year: string, index: number): Promise<V1Or2Project> {
+        return ContentMan.getCardByYearAndIndex(year, index);
     }
 
     private attachLinkClickHandler(elm: HTMLAnchorElement) {
