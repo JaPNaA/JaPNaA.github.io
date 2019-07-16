@@ -31,6 +31,17 @@ class GenerateViewAndWidgetList {
          */
         this._initalized = false;
 
+        /**
+         * Previous view map string
+         * @type {string}
+         */
+        this._prevViewMap = null;
+        /**
+         * Previous widget map string
+         * @type {string}
+         */
+        this._prevWidgetMap = null;
+
         this._startTime = Date.now();
         this._prevTimestamps = {};
     }
@@ -177,20 +188,22 @@ class GenerateViewAndWidgetList {
      * @param {Webpack.Compiler} compiler 
      */
     _updateViewMap(compiler) {
-        fs.writeFileSync(
-            compiler.context + "/" + PATH_TO_VIEWS + "/viewList.ts",
-            `const viewList: (string | [string, RegExp])[] = ${this._stringifyViews()}; export default viewList;`
-        );
+        const file = `const viewList: (string | [string, RegExp])[] = ${this._stringifyViews()}; export default viewList;`;
+        if (file !== this._prevViewMap) {
+            fs.writeFileSync(compiler.context + "/" + PATH_TO_VIEWS + "/viewList.ts", file);
+        }
+        this._prevViewMap = file;
     }
 
     /**
      * @param {Webpack.Compiler} compiler 
      */
     _updateWidgetMap(compiler) {
-        fs.writeFileSync(
-            compiler.context + "/" + PATH_TO_WIDGETS + "/widgetList.ts",
-            `export default ${JSON.stringify(this.widgets)};`
-        );
+        const file = `export default ${JSON.stringify(this.widgets)};`;
+        if (file !== this._prevWidgetMap) {
+            fs.writeFileSync(compiler.context + "/" + PATH_TO_WIDGETS + "/widgetList.ts", file);
+        }
+        this._prevWidgetMap = file;
     }
 
     /**
