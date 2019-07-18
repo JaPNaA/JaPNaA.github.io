@@ -11,16 +11,19 @@ import IImageView from "../../../elm/views/ImageView/IImageView";
 import getFirstDisplayImgSrc from "./getFirstDisplayImg";
 import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
+import WidgetMap from "../../../core/widget/WidgetMap";
 
 // TODO: refactor, along with it's .less companion!
 
 class CardJSONv1Elm extends Widget {
-    private static transitionInTimeout: number = 3000;
+    public static widgetName = "cardJSONv1Elm";
+    public widgetName = CardJSONv1Elm.widgetName;
 
     protected elm: HTMLDivElement;
 
     public viewProjectButton: HTMLAnchorElement = null as unknown as HTMLAnchorElement;
 
+    private static transitionInTimeout: number = 3000;
     private app: IApp;
     private card: IV1Card;
     private backgroundImageExists: boolean;
@@ -230,6 +233,7 @@ class CardJSONv1Elm extends Widget {
     }
 }
 
+WidgetMap.add(CardJSONv1Elm);
 ViewMap.prefetch("ImageView");
 
 export default CardJSONv1Elm;
