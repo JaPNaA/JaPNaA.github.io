@@ -20,6 +20,10 @@ abstract class Widget {
         this.parent = parent;
         parent.appendChild(this.elm);
     }
+
+    public canScroll(): boolean {
+        return this.elm.scrollHeight > this.elm.clientHeight;
+    }
 }
 
 export default Widget;
