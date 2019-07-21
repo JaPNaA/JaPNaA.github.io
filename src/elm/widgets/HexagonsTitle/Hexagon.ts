@@ -7,6 +7,7 @@ class Hexagon {
     private static size: number = 1080;
     private static expectedNegativeHalfImgWidth: number = -Hexagon.size / 2;
     private static expectedNegativeHalfImgHeight: number = -Hexagon.size / 2;
+    private static prerenderSize = 256;
     private static expectedHexagonColor: string = "rgba(0,189,114,0.65)";
 
     private static initalizedStatic: boolean = false;
@@ -102,9 +103,9 @@ class Hexagon {
     private static createPrerender(img: HTMLImageElement): void {
         this.imgPrerender = document.createElement("canvas");
         const X = this.imgPrerender.getContext("2d")!;
-        this.imgPrerender.width = img.width;
-        this.imgPrerender.height = img.height;
-        X.drawImage(img, 0, 0, img.width, img.height);
+        this.imgPrerender.width = this.prerenderSize;
+        this.imgPrerender.height = this.prerenderSize;
+        X.drawImage(img, 0, 0, this.prerenderSize, this.prerenderSize);
     }
 
     private moveIfInRadius(): void {
