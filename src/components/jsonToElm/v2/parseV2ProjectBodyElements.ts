@@ -46,7 +46,7 @@ function parseMarkdown(item: V2ProjectBodyMarkdown): HTMLDivElement {
 function parseViewProject(item: V2ProjectBodyViewProject): HTMLDivElement {
     const a = document.createElement("a");
     a.innerText = "View Project";
-    a.href = item.href;
+    a.href = siteConfig.path.thingy + item.href;
 
     const elm = document.createElement("div");
     elm.classList.add("view-project");

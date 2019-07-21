@@ -7,6 +7,8 @@ import IApp from "../../../core/types/app/IApp";
 import ContentMan from "../../contentMan/contentMan";
 import HexagonsCorner from "./hexagons/HexagonsCorner";
 import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
+import isCSSPropertyImage from "../../../utils/isCSSPropertyImage";
+import siteConfig from "../../../SiteConfig";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -35,6 +37,11 @@ class ProjectJSONv2Elm extends Widget {
         this.title = this.createTitle(project.head.name);
         this.body = this.createBody();
         this.hexagons = new HexagonsCorner(app);
+
+        // todo: this.project.head.author
+        // todo: this.project.head.no
+        // todo: this.project.head.tags
+        // todo: this.project.head.timestamp
     }
 
     public canScroll(): boolean {
@@ -44,6 +51,7 @@ class ProjectJSONv2Elm extends Widget {
     public setup(): void {
         super.setup();
         this.loadBody();
+        this.applyStyles();
 
         this.elm.appendChild(this.backgroundContainer);
         this.backgroundContainer.appendChild(this.contentContainer);
@@ -99,6 +107,31 @@ class ProjectJSONv2Elm extends Widget {
     private async loadBody(): Promise<void> {
         const body = await ContentMan.getV2CardBody(this.project);
         this.body.appendChild(parseV2ProjectBodyElements(body));
+    }
+
+    private applyStyles(): void {
+        if (this.project.head.background) {
+            // loop backwards, so the first properties that work stays
+            for (let i = this.project.head.background.length - 1; i >= 0; i--) {
+                const background = this.project.head.background[i];
+                if (isCSSPropertyImage(background)) {
+                    this.backgroundContainer.style.backgroundImage =
+                        this.makePathAbsoluteIfIsLink(background);
+                } else {
+                    this.backgroundContainer.style.backgroundColor = background;
+                }
+            }
+        }
+
+        if (this.project.head.textColor) {
+            this.elm.style.color = this.project.head.textColor;
+        }
+    }
+
+    private makePathAbsoluteIfIsLink(property: string): string {
+        if (!property.toLowerCase().startsWith("url(")) { return property; }
+        const url = property.slice(4, -1);
+        return "url(" + siteConfig.path.thingy + url + ")";
     }
 
     private scrollHandler(): void {
