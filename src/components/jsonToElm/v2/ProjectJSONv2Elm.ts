@@ -7,7 +7,7 @@ import IApp from "../../../core/types/app/IApp";
 import ContentMan from "../../contentMan/contentMan";
 import HexagonsCorner from "./hexagons/HexagonsCorner";
 import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
-import isCSSPropertyImage from "../../../utils/isCSSPropertyImage";
+import isCSSPropertyImage from "../../../utils/css/isCSSPropertyImage";
 import siteConfig from "../../../SiteConfig";
 import getHueFromRGB from "../../../utils/color/getHueFromRGB";
 import extractRGBFromCSSrgbFunction from "../../../utils/color/extractRGBFromCSSrgbFunction";
@@ -15,6 +15,7 @@ import isRGBColorDark from "../../../utils/color/isRGBColorDark";
 import darkenRGB from "../../../utils/color/darkenRGB";
 import rgbToString from "../../../utils/color/toRGBString";
 import Hexagon from "./hexagons/Hexagon";
+import prependCSSUrl from "../../../utils/css/prependCSSUrl";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -128,7 +129,7 @@ class ProjectJSONv2Elm extends Widget {
                 const background = this.project.head.background[i];
                 if (isCSSPropertyImage(background)) {
                     this.backgroundContainer.style.backgroundImage =
-                        this.makePathAbsoluteIfIsLink(background);
+                        prependCSSUrl(siteConfig.path.thingy, background);
                 } else {
                     this.backgroundContainer.style.backgroundColor = background;
                 }
@@ -160,12 +161,6 @@ class ProjectJSONv2Elm extends Widget {
 
             this.hue = getHueFromRGB(r, g, b) || this.hue;
         }
-    }
-
-    private makePathAbsoluteIfIsLink(property: string): string {
-        if (!property.toLowerCase().startsWith("url(")) { return property; }
-        const url = property.slice(4, -1);
-        return "url(" + siteConfig.path.thingy + url + ")";
     }
 
     private scrollHandler(): void {

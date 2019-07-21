@@ -1,6 +1,10 @@
 import IApp from "../../../../core/types/app/IApp";
 import { V2Project } from "../../../../types/project/v2/V2Types";
 import ProjectCardCard from "./ProjectCardCard";
+import isCSSPropertyImage from "../../../../utils/css/isCSSPropertyImage";
+import getImageSrcFromCSSProperty from "../../../../utils/css/getImageSrcFromCSSProperty";
+import siteConfig from "../../../../SiteConfig";
+import prependCSSUrl from "../../../../utils/css/prependCSSUrl";
 
 class ProjectV2ProjectCard extends ProjectCardCard<V2Project> {
     constructor(app: IApp, card: V2Project, year: number, index: number) {
@@ -13,18 +17,29 @@ class ProjectV2ProjectCard extends ProjectCardCard<V2Project> {
 
     protected getCardDescription(card: V2Project): string {
         return card.head.shortDescription || card.head.link ||
-            (card.head.author && "by " + card.head.author[0]) || 
+            (card.head.author && "by " + card.head.author[0]) ||
             "";
     }
 
     protected getBackgroundImage(): string | undefined {
         if (!this.card.head.background) { return; }
-        for (const bg of this.card.head.background) {
-            const match = bg.match(/^url\((.+)\)$/);
-            if (match) {
-                return match[1];
+        for (let i = this.card.head.background.length; i >= 0; i--) {
+            const bg = this.card.head.background[i];
+            if (isCSSPropertyImage(bg)) {
+                return bg;
             }
         }
+    }
+
+    protected getBackgroundImageSrcFromBackgroundImage(bgImage: string): string | undefined {
+        const src = getImageSrcFromCSSProperty(bgImage);
+        if (src) {
+            return siteConfig.path.thingy + src;
+        }
+    }
+
+    protected setBackgroundImage(elm: HTMLElement, bgImage: string) {
+        elm.style.backgroundImage = prependCSSUrl(siteConfig.path.thingy, bgImage);
     }
 }
 
