@@ -6,6 +6,7 @@ import WidgetMap from "../../../core/widget/WidgetMap";
 import IApp from "../../../core/types/app/IApp";
 import ContentMan from "../../contentMan/contentMan";
 import HexagonsCorner from "./hexagons/HexagonsCorner";
+import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -96,7 +97,8 @@ class ProjectJSONv2Elm extends Widget {
     }
 
     private async loadBody(): Promise<void> {
-        this.body.innerText = JSON.stringify(await ContentMan.getV2CardBody(this.project));
+        const body = await ContentMan.getV2CardBody(this.project);
+        this.body.appendChild(parseV2ProjectBodyElements(body));
     }
 
     private scrollHandler(): void {

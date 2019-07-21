@@ -1,7 +1,7 @@
 import Widget from "../../../core/widget/Widget";
 import IApp from "../../../core/types/app/IApp";
 import { V2Project } from "../../../types/project/v2/V2Types";
-import ProjectJSONv2Elm from "../../../components/jsonToElm/v2/project";
+import ProjectJSONv2Elm from "../../../components/jsonToElm/v2/ProjectJSONv2Elm";
 
 class ProjectInfoV2 extends Widget {
     public static widgetName = "projectInfoV2";
