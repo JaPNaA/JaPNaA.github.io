@@ -5,6 +5,7 @@ import { V2Project } from "../../../types/project/v2/V2Types";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import IApp from "../../../core/types/app/IApp";
 import ContentMan from "../../contentMan/contentMan";
+import HexagonsCorner from "./hexagons/HexagonsCorner";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -19,7 +20,7 @@ class ProjectJSONv2Elm extends Widget {
     private mainContent: HTMLDivElement;
     private title: HTMLHeadingElement;
     private body: HTMLDivElement;
-    private hexagons: HTMLDivElement;
+    private hexagons: HexagonsCorner;
 
     constructor(app: IApp, project: V2Project) {
         super();
@@ -32,7 +33,7 @@ class ProjectJSONv2Elm extends Widget {
         this.mainContent = this.createMainContent();
         this.title = this.createTitle(project.head.name);
         this.body = this.createBody();
-        this.hexagons = this.createHexagons();
+        this.hexagons = new HexagonsCorner(app);
     }
 
     public canScroll(): boolean {
@@ -48,7 +49,7 @@ class ProjectJSONv2Elm extends Widget {
         this.contentContainer.appendChild(this.mainContent);
         this.mainContent.appendChild(this.title);
         this.mainContent.appendChild(this.body);
-        this.backgroundContainer.appendChild(this.hexagons);
+        this.hexagons.appendTo(this.backgroundContainer);
 
         this.addEventHandlers();
     }
@@ -92,13 +93,6 @@ class ProjectJSONv2Elm extends Widget {
         const body = document.createElement("div");
         body.classList.add("body");
         return body;
-    }
-
-    private createHexagons(): HTMLDivElement {
-        const hexagons = document.createElement("div");
-        hexagons.classList.add("hexagons");
-        // todo
-        return hexagons;
     }
 
     private async loadBody(): Promise<void> {
