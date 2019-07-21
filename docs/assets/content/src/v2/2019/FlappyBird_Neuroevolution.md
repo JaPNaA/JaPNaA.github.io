@@ -3,6 +3,7 @@
 ---
 [machine learning, ai, flappy bird, genetic algorithm, neural network, neuroevolution, tensorflow]
 [by JaPNaA]
+> A machine learning to play Flappy Bird
 @1558401320302
 background url(/Thingy_2019/0p/neuroevolutionFlappyBird.png)
 ---
