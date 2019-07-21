@@ -29,6 +29,7 @@ export interface V2Project {
         shortDescription?: string;
         background?: string[];
         textColor?: string;
+        accentColor?: string;
     };
 
     body: V2ProjectBody;
@@ -41,6 +42,7 @@ export interface InputV2Header {
     timestamp: number;
     background?: string[];
     textColor?: string;
+    accentColor?: string;
 }
 
 export interface V2ProjectListing {

@@ -10,9 +10,9 @@ class HexagonsCornerRenderer extends LazyCanvasRenderer {
 
     private static widthBreakpoint = 576;
 
-    constructor(app: IApp, hexagons: Hexagon[]) {
+    constructor(app: IApp, hue: number, hexagons: Hexagon[]) {
         super(app);
-        this.prerender = new HexagonPrerender(96, 96, Math.random() * 360);
+        this.prerender = new HexagonPrerender(96, 96, hue);
         this.renderSystem = new HexagonRenderSystem(this, this.prerender, hexagons);
         this.prerender.prerender()
             .then(() => this.requestDraw());

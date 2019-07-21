@@ -9,6 +9,12 @@ import HexagonsCorner from "./hexagons/HexagonsCorner";
 import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
 import isCSSPropertyImage from "../../../utils/isCSSPropertyImage";
 import siteConfig from "../../../SiteConfig";
+import getHueFromRGB from "../../../utils/color/getHueFromRGB";
+import extractRGBFromCSSrgbFunction from "../../../utils/color/extractRGBFromCSSrgbFunction";
+import isRGBColorDark from "../../../utils/color/isRGBColorDark";
+import darkenRGB from "../../../utils/color/darkenRGB";
+import rgbToString from "../../../utils/color/toRGBString";
+import Hexagon from "./hexagons/Hexagon";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -25,6 +31,8 @@ class ProjectJSONv2Elm extends Widget {
     private body: HTMLDivElement;
     private hexagons: HexagonsCorner;
 
+    private hue: number;
+
     constructor(app: IApp, project: V2Project) {
         super();
         this.app = app;
@@ -36,12 +44,17 @@ class ProjectJSONv2Elm extends Widget {
         this.mainContent = this.createMainContent();
         this.title = this.createTitle(project.head.name);
         this.body = this.createBody();
-        this.hexagons = new HexagonsCorner(app);
+        this.hue = siteConfig.hexagonBaseHue;
+
+        this.applyStyles();
+
+        this.hexagons = new HexagonsCorner(app, this.hue);
 
         // todo: this.project.head.author
         // todo: this.project.head.no
         // todo: this.project.head.tags
         // todo: this.project.head.timestamp
+        // todo: this.project.head.accentColor
     }
 
     public canScroll(): boolean {
@@ -51,7 +64,6 @@ class ProjectJSONv2Elm extends Widget {
     public setup(): void {
         super.setup();
         this.loadBody();
-        this.applyStyles();
 
         this.elm.appendChild(this.backgroundContainer);
         this.backgroundContainer.appendChild(this.contentContainer);
@@ -125,6 +137,28 @@ class ProjectJSONv2Elm extends Widget {
 
         if (this.project.head.textColor) {
             this.elm.style.color = this.project.head.textColor;
+        }
+
+        if (this.project.head.accentColor) {
+            this.applyAccentColor(this.project.head.accentColor);
+        }
+    }
+
+    private applyAccentColor(accentColor: string) {
+        this.title.style.color = accentColor;
+
+        if (this.title.style.color) {
+            const [r, g, b] = extractRGBFromCSSrgbFunction(this.title.style.color);
+            if (isRGBColorDark(r, g, b)) {
+                const darkened = darkenRGB(r, g, b, 0.3);
+                this.title.style.textShadow = "none";
+                this.title.style.color = rgbToString(darkened[0], darkened[1], darkened[2]);
+            } else {
+                // very hard to pull off tinted white text
+                this.title.style.color = "#ffffff";
+            }
+
+            this.hue = getHueFromRGB(r, g, b) || this.hue;
         }
     }
 

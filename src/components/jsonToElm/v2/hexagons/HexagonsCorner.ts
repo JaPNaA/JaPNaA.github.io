@@ -16,12 +16,12 @@ class HexagonsCorner extends Widget {
     private renderer: HexagonsCornerRenderer;
     private app: IApp;
 
-    constructor(app: IApp) {
+    constructor(app: IApp, hue: number) {
         super();
         this.app = app;
         this.elm = this.createElm();
         this.hexagons = [];
-        this.renderer = new HexagonsCornerRenderer(app, this.hexagons);
+        this.renderer = new HexagonsCornerRenderer(app, hue, this.hexagons);
         this.setup();
     }
 

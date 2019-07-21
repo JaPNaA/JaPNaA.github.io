@@ -49,6 +49,8 @@ class SiteConfig {
         fadeInSpeed: 0.2
     };
 
+    public readonly hexagonBaseHue = 149;
+
     public isHandheld: boolean;
     public isMobile: boolean;
     public isIOS: boolean;

@@ -7,8 +7,6 @@ class HexagonPrerender {
     public height: number;
     public hue: number;
 
-    private static hexagonBaseHue: number = 149; // todo: move to siteconfig
-
     constructor(width: number, height: number, hue: number) {
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.width = width;
@@ -21,7 +19,7 @@ class HexagonPrerender {
         const hexagon = await siteResources.loadImagePromise(siteConfig.path.img.hexagon);
 
         X.save();
-        X.filter = "hue-rotate(" + (this.hue - HexagonPrerender.hexagonBaseHue) + "deg)";
+        X.filter = "hue-rotate(" + (this.hue - siteConfig.hexagonBaseHue) + "deg)";
         X.drawImage(
             hexagon,
             0, 0, hexagon.width, hexagon.height,

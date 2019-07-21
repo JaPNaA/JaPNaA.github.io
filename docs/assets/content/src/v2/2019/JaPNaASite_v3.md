@@ -6,6 +6,7 @@
 > Yes, this is the third time, and there come many changes. Good or not? We'll see.
 @1562115496056
 background linear-gradient(169deg, #00e573, #00e5a8), #00e58e
+accent #fd908b
 ---
 
 JaPNaASite revision 3.

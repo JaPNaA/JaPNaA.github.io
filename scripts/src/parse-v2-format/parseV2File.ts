@@ -15,7 +15,8 @@ const headerLineMap: Map<string, (line: string, matchStr: string, header: InputV
     [">", applyHeaderLineShortDescription],
     ["@", applyHeaderLineTimestamp],
     ["background ", applyHeaderLineBackground],
-    ["color ", applyHeaderLineColor]
+    ["color ", applyHeaderLineColor],
+    ["accent ", applyHeaderLineAccent]
 ]);
 const headerTagsRegex = /\[.+?\]/g;
 const headerByTagRegex = /^by\s+/;
@@ -58,7 +59,8 @@ function parseProjectStr(projectStr: string): V2Project {
             shortDescription: head.shortDescription,
             tags: head.tags,
             textColor: head.textColor,
-            timestamp: head.timestamp
+            timestamp: head.timestamp,
+            accentColor: head.accentColor
         },
         body: body
     };
@@ -116,6 +118,10 @@ function applyHeaderLineBackground(line: string, matchStr: string, header: Input
 
 function applyHeaderLineColor(line: string, matchStr: string, header: InputV2Header): void {
     header.textColor = line.slice(matchStr.length).trim();
+}
+
+function applyHeaderLineAccent(line: string, matchStr: string, header: InputV2Header): void {
+    header.accentColor = line.slice(matchStr.length).trim();
 }
 
 function applyHeaderLineShortDescription(line: string, matchStr: string, header: InputV2Header): void {
