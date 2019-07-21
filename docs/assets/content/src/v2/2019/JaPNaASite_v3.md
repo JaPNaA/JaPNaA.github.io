@@ -5,7 +5,7 @@
 [by JaPNaA]
 > Yes, this is the third time, and there come many changes. Good or not? We'll see.
 @1562115496056
-background linear-gradient(169deg, #00ff80, #00ffbb), #00ff9e
+background linear-gradient(169deg, #00e573, #00e5a8), #00e58e
 ---
 
 JaPNaASite revision 3.
