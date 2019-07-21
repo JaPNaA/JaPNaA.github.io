@@ -3,6 +3,7 @@ import marked from "marked";
 
 const projectSplitRegex = /(^|\n)#.+\n/g;
 const commaSplitRegex = /\s*,\s*/g;
+const commaSplitUnlessInBracketsRegex = /\s*,\s*(?![^\(\)]*\))/g;
 const headerStartRegex = /(^|\n)#.+\n.*\n*---+/;
 const headerEndRegex = /---+/;
 
@@ -105,7 +106,7 @@ function parseHeaderLine(line: string, header: InputV2Header): void {
 }
 
 function applyHeaderLineBackground(line: string, matchStr: string, header: InputV2Header): void {
-    const background = line.slice(matchStr.length).trim().split(commaSplitRegex);
+    const background = line.slice(matchStr.length).trim().split(commaSplitUnlessInBracketsRegex);
     if (header.background) {
         header.background = header.background.concat(background);
     } else {
