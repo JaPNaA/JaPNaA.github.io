@@ -18,6 +18,9 @@ class TouchControls {
     private tapHandlers: EventHandlers<Vec2>;
     private doubleTapHandlers: EventHandlers<Vec2>;
 
+    private prevCenterX?: number;
+    private prevCenterY?: number;
+
     constructor(elm: HTMLElement) {
         this.elm = elm;
         this.touchMap = new Map();
@@ -35,7 +38,6 @@ class TouchControls {
 
     public setup(): void {
         this.addEventHandlers();
-        //
     }
 
     public destory(): void {
@@ -105,8 +107,12 @@ class TouchControls {
             this.touchMap.delete(touch.identifier);
         }
 
+        this.prevCenterX = undefined;
+        this.prevCenterY = undefined;
+
         if (this.touchMap.size === 0) {
             this.endMoveHandlers.dispatch();
+
             if (!this.touchMoved) {
                 const touch = e.changedTouches[0];
                 const touchVec = newVec2(touch.clientX, touch.clientY);
@@ -160,6 +166,15 @@ class TouchControls {
         const centerY = (touchA.clientY + touchB.clientY) / 2;
 
         this.zoomHandlers.dispatch([currDist / prevDist, newVec2(centerX, centerY)]);
+
+        if (this.prevCenterX && this.prevCenterY) {
+            const dx = centerX - this.prevCenterX;
+            const dy = centerY - this.prevCenterY;
+            this.moveHandlers.dispatch(newVec2(dx, dy));
+        }
+
+        this.prevCenterX = centerX;
+        this.prevCenterY = centerY;
     }
 }
 
