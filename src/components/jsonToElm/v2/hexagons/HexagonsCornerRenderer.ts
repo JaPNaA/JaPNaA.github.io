@@ -23,7 +23,7 @@ class HexagonsCornerRenderer extends LazyCanvasRenderer {
     }
 
     protected getNewSize(): [number, number] {
-        let width = innerWidth / 3;
+        let width = innerWidth * (2 / 3);
         if (width < HexagonsCornerRenderer.widthBreakpoint) {
             if (innerWidth > HexagonsCornerRenderer.widthBreakpoint) {
                 width = HexagonsCornerRenderer.widthBreakpoint;

@@ -6,7 +6,7 @@ class Hexagon {
         do {
             this.x = Math.random();
             this.y = Math.random();
-        } while (this.y > 0.9 * this.x * this.x + 0.1);
+        } while (this.y > 2 * this.x * this.x + 0.1);
     }
 }
 
