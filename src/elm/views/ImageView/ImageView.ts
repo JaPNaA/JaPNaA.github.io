@@ -15,6 +15,7 @@ import AppState from "../../../core/types/AppState";
 import ImageViewRenderer from "./ImageViewRenderer";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import IIFrame from "../../widgets/IFrame/IIFrame";
+import siteConfig from "../../../SiteConfig";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";

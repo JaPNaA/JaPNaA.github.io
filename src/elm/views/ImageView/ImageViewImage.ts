@@ -3,6 +3,7 @@ import DragPhysics from "../../../components/canvas/canvasElements/physics/drag"
 import { Rect } from "../../../types/math/Rect";
 import EventHandlers from "../../../core/utils/events/EventHandlers";
 import Handler from "../../../core/utils/events/Handler";
+import siteConfig from "../../../SiteConfig";
 
 class ImageViewImage {
     public physics: DragPhysics;
@@ -55,10 +56,12 @@ class ImageViewImage {
         X.save();
 
         // box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.40), similar to @box-shadow-24dp
-        X.shadowColor = "rgba(0,0,0,0.40)";
-        X.shadowBlur = 8;
-        X.shadowOffsetX = 0;
-        X.shadowOffsetY = 12;
+        if (!siteConfig.isMobile) { // significantly smoother on mobile without shadow
+            X.shadowColor = "rgba(0,0,0,0.40)";
+            X.shadowBlur = 8;
+            X.shadowOffsetX = 0;
+            X.shadowOffsetY = 12;
+        }
 
         this.image.draw(X);
 

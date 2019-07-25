@@ -40,10 +40,12 @@ class ImageViewCloseButton extends CanvasButton {
 
     public draw(X: CanvasRenderingContext2D): void {
         X.save();
-        X.shadowColor = "rgba(0,0,0,0.35)";
-        X.shadowBlur = 8;
-        X.shadowOffsetX = 0;
-        X.shadowOffsetY = 0;
+        if (!siteConfig.isMobile) {
+            X.shadowColor = "rgba(0,0,0,0.35)";
+            X.shadowBlur = 8;
+            X.shadowOffsetX = 0;
+            X.shadowOffsetY = 0;
+        }
         X.globalCompositeOperation = "difference";
 
         X.drawImage(this.image, this.rect.x, this.rect.y, this.rect.width, this.rect.height);

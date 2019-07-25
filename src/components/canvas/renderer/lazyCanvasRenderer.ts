@@ -21,13 +21,13 @@ abstract class LazyCanvasRenderer {
     private isDrawing: boolean;
     private resizeHandlers: EventHandlers;
 
-    constructor(app: IApp, width: number, height: number);
+    constructor(app: IApp, width: number, height: number, opaque?: boolean);
     constructor(app: IApp);
-    constructor(app: IApp, width?: number, height?: number) {
+    constructor(app: IApp, width?: number, height?: number, opaque?: boolean) {
         this.canvas = document.createElement("canvas");
         this.app = app;
 
-        const X = this.canvas.getContext("2d");
+        const X = this.canvas.getContext("2d", { alpha: !opaque });
         if (!X) { throw new Error("Canvas not supported"); }
         this.X = X;
 
