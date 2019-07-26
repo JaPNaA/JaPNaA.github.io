@@ -12,15 +12,15 @@ const watch = process.argv[3] && process.argv[3].toLowerCase()[0] === 'w';
 
 if (mode === "dev") {
     const devConfig = require("./webpack/webpack.dev.config");
-    startWebpack(devConfig);
+    startWebpack(devConfig, "development");
     startHttpServers();
 } else if (mode === "prod") {
     const prodConfig = require("./webpack/webpack.config");
-    startWebpack(prodConfig);
+    startWebpack(prodConfig, "production");
 } else if (mode === "clean") {
     cleanProject();
 } else if (mode === "scripts") {
-    startWebpack([]);
+    startWebpack([], "development");
 } else if (mode === "serve") {
     startHttpServers();
 } else {
@@ -30,7 +30,7 @@ if (mode === "dev") {
 }
 
 
-function startWebpack(config) {
+function startWebpack(config, mode) {
     setWatch(config, false); // watch: true in the config seems to mess things up
 
     if (watch) {
@@ -38,6 +38,8 @@ function startWebpack(config) {
     }
 
     const joinedConfigs = joinConfigs(config, scriptsConfig);
+    setMode(joinedConfigs, mode);
+
     /** @type {import("webpack").MultiCompiler} */
     const compiler = webpack(joinedConfigs, function (err, stats) {
         if (err) {
@@ -78,6 +80,16 @@ function setWatch(config, watch) {
     }
 
     config.watch = watch;
+}
+
+function setMode(config, mode) {
+    if (Array.isArray(config)) {
+        for (const item of config) {
+            item.mode = mode;
+        }
+    }
+
+    config.mode = mode;
 }
 
 function joinConfigs(a, b) {
