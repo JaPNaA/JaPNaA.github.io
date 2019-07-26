@@ -32,8 +32,10 @@ class HTMLView extends Widget {
     public async setup(): Promise<void> {
         super.setup();
 
-        this.loadAndWrite()
-            .catch(err => this.writeError(err));
+        const prom = this.loadAndWrite();
+        prom.catch(err => this.writeError(err));
+
+        await prom;
     }
 
     public async destory(): Promise<void> {

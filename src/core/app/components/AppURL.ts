@@ -17,6 +17,8 @@ class AppURL implements IAppURL {
     private history: AppStateHistory; //* This can be removed, but it could be useful in the future?
     private frozen: boolean;
 
+    private currView?: View;
+
     constructor(app: BaseApp, appEvents: AppEvents) {
         this.app = app;
         this.appEvents = appEvents;
@@ -39,19 +41,36 @@ class AppURL implements IAppURL {
 
     public pushHistory(view: View): void {
         const state = this.createAppState(view);
+
+        if (this.currView && this.currView !== view) {
+            this.updateViewIfIsCurrent(this.currView);
+        }
+
         this.history.push(state);
         this.pushState(view.viewName, state);
+
+        this.currView = view;
+    }
+
+    public updateViewIfIsCurrent(view: View): void {
+        if (view !== this.currView) { return; }
+        this.updateView(view);
     }
 
     public update(): void {
         const topView = this.app.views.firstFullTop();
         if (!topView) { return; }
-        const viewState = topView.getState();
-        const historyEntry = this.history.findByID(topView.id);
+        this.updateView(topView);
+    }
+
+    private updateView(view: View) {
+        const historyEntry = this.history.findByID(view.id);
+        const state = this.createAppState(view);
 
         if (!historyEntry) { throw new Error("Cannot update state with unregistered view"); }
-        this.setURLState(topView.viewName, this.createAppState(topView));
-        historyEntry.stateData = viewState;
+        this.setURLState(view.viewName, state);
+        historyEntry.stateData = state.stateData;
+        historyEntry.privateData = state.privateData;
     }
 
     private attachEventHandlers(): void {
@@ -71,8 +90,6 @@ class AppURL implements IAppURL {
         const parsedURL = parseAppStateURL(newURL);
         if (!parsedURL) { console.warn("URL has no state"); return; }
         const state = event.state && JSON.parse(event.state);
-
-        console.log(state);
 
         this.frozen = true;
         this.app.views.closeAllViews();
@@ -103,7 +120,7 @@ class AppURL implements IAppURL {
             stateData: view.getState(),
             directURL: this.controller.currentURL,
             id: view.id,
-            privateData: view.privateData
+            privateData: view.getPrivateData()
         };
     }
 }

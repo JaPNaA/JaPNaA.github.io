@@ -14,10 +14,11 @@ abstract class View {
     public showMenuButton: boolean = true;
 
     public id: number;
-    public privateData: any;
 
+    protected privateData: any;
     protected app: IApp;
     protected events: EventManager;
+
     private destoryHandlers: EventHandlers;
 
     constructor(app: IApp, state: AppState) {
@@ -26,7 +27,7 @@ abstract class View {
         this.destoryHandlers = new EventHandlers();
 
         this.id = state.id || View.vidCounter++;
-        this.privateData = state.privateData;
+        this.privateData = state.privateData || {};
     }
 
     public setup(): void {
@@ -76,6 +77,11 @@ abstract class View {
     /** Gets the view state for the URL */
     public getState(): string | undefined { return; }
 
+    /** Gets the private data for view */
+    public getPrivateData(): any {
+        return this.privateData;
+    }
+
     /** Add destory handler */
     public onDestory(handler: Handler): void {
         this.destoryHandlers.add(handler);
@@ -87,7 +93,7 @@ abstract class View {
     }
 
     /** Updates the URL state */
-    protected updateStateURL(): void {
+    protected updateState(): void {
         this.app.url.update();
     }
 }

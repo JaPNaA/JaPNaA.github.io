@@ -9,6 +9,7 @@ import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
 import AppState from "../../../core/types/AppState";
+import SaveScroll from "../../../components/viewPrivateData/SaveScroll";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -22,16 +23,21 @@ class Overview extends View {
 
     private hexagonsTitle: HexagonsTitle;
 
+    private saveScroll: SaveScroll;
+
     constructor(app: IApp, state: AppState) {
         super(app, state);
         this.elm = document.createElement("div");
         this.content = this.createContent();
         this.hexagonsTitle = new HexagonsTitle(app, this.elm);
+
+        this.saveScroll = new SaveScroll(this.privateData, this.elm);
     }
 
     public setup(): void {
         super.setup();
 
+        this.saveScroll.setup();
         this.hexagonsTitle.setup();
         this.hexagonsTitle.appendToParent();
         if (siteConfig.isMobile) {
@@ -46,11 +52,17 @@ class Overview extends View {
     }
 
     public async destory(): Promise<void> {
+        this.saveScroll.destory();
         super.destory();
         this.hexagonsTitle.destory();
         if (this.htmlView) {
             await this.htmlView.destory();
         }
+    }
+
+    public getPrivateData(): any {
+        this.saveScroll.updatePrivateData();
+        return super.getPrivateData();
     }
 
     private createStickyBar() {
@@ -85,10 +97,12 @@ class Overview extends View {
         this.elm.appendChild(container);
     }
 
-    private loadHTMLView(url: string): void {
+    private async loadHTMLView(url: string): Promise<void> {
         this.htmlView = new HTMLView(this.app, url);
-        this.htmlView.setup();
+        await this.htmlView.setup();
         this.htmlView.appendTo(this.content);
+
+        this.saveScroll.apply();
     }
 }
 

@@ -68,7 +68,7 @@ class ProjectInfoView extends View implements IProjectInfoView {
             throw new Error("Project not set");
         }
 
-        this.updateStateURL();
+        this.updateState();
 
         if (isProjectV1Card(this.project)) {
             this.widget = new ProjectInfoV1(this.app, this.project);

@@ -10,7 +10,7 @@ class URLController {
     private initalSearch: string;
     private initalURL: string;
     private initalHash: string;
-    
+
     private stateEmpty: boolean;
     private siteTitle: string;
 
@@ -57,14 +57,12 @@ class URLController {
         document.title = title;
     }
 
-
     public clearState(): void {
         history.replaceState(
             null, this.siteTitle, "/"
         );
         this.currentURL = "/";
     }
-
 
     private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
         const viewNameEnc = encodeURIComponent(viewName.toLowerCase());
