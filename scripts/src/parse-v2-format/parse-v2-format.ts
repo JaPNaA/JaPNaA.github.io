@@ -135,7 +135,7 @@ async function writeOutProject(year: number, projects: V2Project[]) {
  */
 function writeOutProjectBody(project: V2Project): string {
     const date = formatDate(new Date(project.head.timestamp));
-    const name = project.head.name.replace(/\W/, '-').toLowerCase();
+    const name = project.head.name.replace(/\W/g, '-').toLowerCase();
     const filename = date + "-" + name + '.json';
     const finalPath = paths.v2Out + '/' + filename;
 

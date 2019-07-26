@@ -6,14 +6,20 @@ type ParserFunction = (item: any) => HTMLDivElement;
 const typeParserMap: { [x: string]: ParserFunction } = {
     "image": parseImage,
     "markdown": parseMarkdown,
-    "view-project": parseViewProject
+    "view-project": parseViewProject,
+    "view-source": parseViewSource
 }
 
 function parseV2ProjectBodyElements(elements: V2ProjectBodyElement[]): DocumentFragment {
     const frag = document.createDocumentFragment();
 
     for (const element of elements) {
-        frag.appendChild(typeParserMap[element.type](element));
+        const fn = typeParserMap[element.type];
+        if (!fn) {
+            console.warn("Unknown element type " + element.type + ". Element ignored");
+            continue;
+        }
+        frag.appendChild(fn(element));
     }
 
     return frag;
@@ -50,6 +56,18 @@ function parseViewProject(item: V2ProjectBodyViewProject): HTMLDivElement {
 
     const elm = document.createElement("div");
     elm.classList.add("view-project");
+    elm.appendChild(a);
+    return elm;
+}
+
+
+function parseViewSource(item: V2ProjectBodyViewProject): HTMLDivElement {
+    const a = document.createElement("a");
+    a.innerText = "View Source";
+    a.href = item.href;
+
+    const elm = document.createElement("div");
+    elm.classList.add("view-source");
     elm.appendChild(a);
     return elm;
 }

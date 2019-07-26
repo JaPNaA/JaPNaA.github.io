@@ -1,4 +1,8 @@
-export type V2ProjectBodyElement = V2ProjectBodyImage | V2ProjectBodyMarkdown | V2ProjectBodyViewProject;
+export type V2ProjectBodyElement = 
+    V2ProjectBodyImage |
+    V2ProjectBodyMarkdown |
+    V2ProjectBodyViewProject |
+    V2ProjectBodyViewSource;
 
 export type V2ProjectBody = V2ProjectBodyElement[] | string;
 
@@ -15,6 +19,11 @@ export interface V2ProjectBodyMarkdown {
 
 export interface V2ProjectBodyViewProject {
     type: "view-project";
+    href: string;
+}
+
+export interface V2ProjectBodyViewSource {
+    type: "view-source";
     href: string;
 }
 

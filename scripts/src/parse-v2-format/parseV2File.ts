@@ -1,7 +1,7 @@
 import { InputV2Header, V2ProjectBodyElement, V2Project } from "../../../src/types/project/v2/V2Types";
 import marked from "marked";
 
-const projectSplitRegex = /(^|\n)#.+\n/g;
+const projectSplitRegex = /(^|\n)#[^#].+\n/g;
 const commaSplitRegex = /\s*,\s*/g;
 const commaSplitUnlessInBracketsRegex = /\s*,\s*(?![^\(\)]*\))/g;
 const headerStartRegex = /(^|\n)#.+\n.*\n*---+/;
@@ -24,7 +24,8 @@ const headerByTagRegex = /^by\s+/;
 const customTagRegex = /<!([\w-]+)\s?(.*?)>/g;
 const customTagMap: Map<string, (args: string, projectLink?: string) => V2ProjectBodyElement> = new Map([
     ["img", parseCustomTagImage],
-    ["view-project", parseCustomTagViewProject]
+    ["view-project", parseCustomTagViewProject],
+    ["view-source", parseCustomTagViewSource]
 ]);
 
 marked.setOptions({
@@ -256,6 +257,48 @@ function parseCustomTagViewProject(args: string, projectLink?: string): V2Projec
         type: "view-project",
         href: projectLink
     };
+}
+function parseCustomTagViewSource(args: string, projectLink?: string): V2ProjectBodyElement {
+    if (!projectLink) { throw new Error("No link to project"); }
+    const repoMatcher = /\/?([^\/]+)/;
+    const repoMatch = projectLink.match(repoMatcher);
+    if (!repoMatch) { throw new Error("Don't know how to handle that link"); }
+    const repo = repoMatch[1];
+    const pathInRepo = projectLink.slice(repoMatch[0].length);
+
+    if (pathInRepo) {
+        return {
+            type: "view-source",
+            href: "https://github.com/JaPNaA/" + repo + "/tree/master" + pathInRepo
+        };
+    } else {
+        return {
+            type: "view-source",
+            href: "https://github.com/JaPNaA/" + repo
+        };
+    }
+}
+
+
+function parseCustomTagViewSource(args: string, projectLink?: string): V2ProjectBodyElement {
+    if (!projectLink) { throw new Error("No link to project"); }
+    const repoMatcher = /\/?([^\/]+)/;
+    const repoMatch = projectLink.match(repoMatcher);
+    if (!repoMatch) { throw new Error("Don't know how to handle that link"); }
+    const repo = repoMatch[1];
+    const pathInRepo = projectLink.slice(repoMatch[0].length);
+
+    if (pathInRepo) {
+        return {
+            type: "view-source",
+            href: "https://github.com/JaPNaA/" + repo + "/tree/master" + pathInRepo
+        };
+    } else {
+        return {
+            type: "view-source",
+            href: "https://github.com/JaPNaA/" + repo
+        };
+    }
 }
 
 function parseBodyMarkdown(arr: (V2ProjectBodyElement | string)[]): V2ProjectBodyElement[] {

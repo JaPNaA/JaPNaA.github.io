@@ -14,7 +14,6 @@ import extractRGBFromCSSrgbFunction from "../../../utils/color/extractRGBFromCSS
 import isRGBColorDark from "../../../utils/color/isRGBColorDark";
 import darkenRGB from "../../../utils/color/darkenRGB";
 import rgbToString from "../../../utils/color/toRGBString";
-import Hexagon from "./hexagons/Hexagon";
 import prependCSSUrl from "../../../utils/css/prependCSSUrl";
 
 class ProjectJSONv2Elm extends Widget {
@@ -67,11 +66,11 @@ class ProjectJSONv2Elm extends Widget {
         this.loadBody();
 
         this.elm.appendChild(this.backgroundContainer);
+        this.hexagons.appendTo(this.backgroundContainer);
         this.backgroundContainer.appendChild(this.contentContainer);
         this.contentContainer.appendChild(this.mainContent);
         this.mainContent.appendChild(this.title);
         this.mainContent.appendChild(this.body);
-        this.hexagons.appendTo(this.backgroundContainer);
 
         this.addEventHandlers();
     }
