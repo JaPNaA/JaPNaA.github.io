@@ -1,5 +1,6 @@
 import URLRestorer from "./URLRestorer";
 import IApp from "../../types/app/IApp";
+import AppState from "../../types/AppState";
 
 
 class URLController {
@@ -35,23 +36,23 @@ class URLController {
         this.siteTitle = title;
     }
 
-    public setState(viewName: string, viewStateData?: string): void {
-        const { title, url } = this.getTitleAndURLFromViewState(viewName, viewStateData);
+    public setState(viewName: string, state: AppState): void {
+        const { title, url } = this.getTitleAndURLFromViewState(viewName, state.stateData);
 
-        history.replaceState(null, title, url);
+        history.replaceState(JSON.stringify(state), title, url);
         this.currentURL = url;
         document.title = title;
         this.stateEmpty = false;
     }
 
-    public pushState(viewName: string, viewStateData?: string): void {
+    public pushState(viewName: string, state: AppState): void {
         if (this.stateEmpty) {
-            return this.setState(viewName, viewStateData);
+            return this.setState(viewName, state);
         }
 
-        const { title, url } = this.getTitleAndURLFromViewState(viewName, viewStateData);
+        const { title, url } = this.getTitleAndURLFromViewState(viewName, state.stateData);
 
-        history.pushState(null, title, url);
+        history.pushState(JSON.stringify(state), title, url);
         this.currentURL = url;
         document.title = title;
     }

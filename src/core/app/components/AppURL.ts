@@ -5,6 +5,7 @@ import View from "../../view/View";
 import BaseApp from "../BaseApp";
 import AppStateHistory from "../../components/history/AppStateHistory";
 import parseAppStateURL from "../../utils/parseAppStateURL";
+import AppState from "../../types/AppState";
 
 class AppURL implements IAppURL {
     public restored: boolean = false;
@@ -13,7 +14,7 @@ class AppURL implements IAppURL {
     private appEvents: AppEvents;
 
     private controller: URLController;
-    private history: AppStateHistory;
+    private history: AppStateHistory; //* This can be removed, but it could be useful in the future?
     private frozen: boolean;
 
     constructor(app: BaseApp, appEvents: AppEvents) {
@@ -37,15 +38,9 @@ class AppURL implements IAppURL {
     }
 
     public pushHistory(view: View): void {
-        const viewState = view.getState();
-        this.history.push({
-            viewName: view.viewName,
-            stateData: viewState,
-            directURL: this.controller.currentURL,
-            id: view.id,
-            privateData: view.privateData
-        });
-        this.pushState(view.viewName, viewState);
+        const state = this.createAppState(view);
+        this.history.push(state);
+        this.pushState(view.viewName, state);
     }
 
     public update(): void {
@@ -55,7 +50,7 @@ class AppURL implements IAppURL {
         const historyEntry = this.history.findByID(topView.id);
 
         if (!historyEntry) { throw new Error("Cannot update state with unregistered view"); }
-        this.setURLState(topView.viewName, viewState);
+        this.setURLState(topView.viewName, this.createAppState(topView));
         historyEntry.stateData = viewState;
     }
 
@@ -75,13 +70,13 @@ class AppURL implements IAppURL {
         const newURL = location.href;
         const parsedURL = parseAppStateURL(newURL);
         if (!parsedURL) { console.warn("URL has no state"); return; }
-        const state = this.history.find(parsedURL);
+        const state = event.state && JSON.parse(event.state);
+
+        console.log(state);
 
         this.frozen = true;
         this.app.views.closeAllViews();
         this.controller.currentURL = newURL;
-
-        if (!state) { debugger; }
 
         if (state) {
             await this.controller.restore.view(this.app, state);
@@ -92,14 +87,24 @@ class AppURL implements IAppURL {
         this.frozen = false;
     }
 
-    private setURLState(viewName: string, stateData?: string) {
+    private setURLState(viewName: string, state: AppState) {
         if (this.frozen) { return; }
-        this.controller.setState(viewName, stateData);
+        this.controller.setState(viewName, state);
     }
 
-    private pushState(viewName: string, stateData?: string) {
+    private pushState(viewName: string, state: AppState) {
         if (this.frozen) { return; }
-        this.controller.pushState(viewName, stateData);
+        this.controller.pushState(viewName, state);
+    }
+
+    private createAppState(view: View): AppState {
+        return {
+            viewName: view.viewName,
+            stateData: view.getState(),
+            directURL: this.controller.currentURL,
+            id: view.id,
+            privateData: view.privateData
+        };
     }
 }
 
