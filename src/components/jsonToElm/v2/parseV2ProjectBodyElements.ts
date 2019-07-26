@@ -39,6 +39,11 @@ function parseImage(item: V2ProjectBodyImage): HTMLDivElement {
         elm.appendChild(caption);
     }
 
+    if (item.pixels) {
+        img.style.imageRendering = "pixelated";
+        img.style.imageRendering = "crisp-edges";
+    }
+
     return elm;
 }
 

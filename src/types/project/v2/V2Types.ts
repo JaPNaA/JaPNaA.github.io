@@ -9,6 +9,7 @@ export type V2ProjectBody = V2ProjectBodyElement[] | string;
 export interface V2ProjectBodyImage {
     type: "image";
     src: string;
+    pixels?: true;
     caption?: string;
 }
 

@@ -1,5 +1,6 @@
 import { InputV2Header, V2ProjectBodyElement, V2Project } from "../../../src/types/project/v2/V2Types";
 import marked from "marked";
+import MapWithGetAndDelete from "../utils/MapWithGetAndDelete";
 
 const projectSplitRegex = /(^|\n)#[^#].+\n/g;
 const commaSplitRegex = /\s*,\s*/g;
@@ -230,23 +231,27 @@ function parseCustomTag(match: RegExpExecArray, projectLink?: string): V2Project
     }
 }
 
-function parseCustomTagImage(args: string): V2ProjectBodyElement {
-    const srcRegex = /src=("([^"]+)"|([^\s]+))/;
-    const captionRegex = /--"([^"]+)"/;
+function parseCustomTagImage(argsString: string): V2ProjectBodyElement {
+    const args = parseArgs(argsString);
 
-    const srcMatch = args.match(srcRegex);
-    if (!srcMatch) { throw new Error("Image without src"); }
-    const src = srcMatch[2] || srcMatch[1];
+    const src = args.getAndDelete("src");
+    if (!src || src === true) { throw new Error("Image without src"); }
 
-    const captionMatch = args.match(captionRegex);
-    let caption: string | undefined;
-    if (captionMatch) {
-        caption = captionMatch[1];
+    let caption = args.getAndDelete("--");
+    if (caption === true) {
+        caption = undefined;
+    }
+
+    let pixels = Boolean(args.getAndDelete("pixels"));
+
+    for (const [key, val] of args) {
+        console.warn("Unknown arg key '" + key + "' for custom tag image");
     }
 
     return {
         type: "image",
         caption: caption,
+        pixels: pixels || undefined,
         src: src
     };
 }
@@ -258,27 +263,6 @@ function parseCustomTagViewProject(args: string, projectLink?: string): V2Projec
         href: projectLink
     };
 }
-function parseCustomTagViewSource(args: string, projectLink?: string): V2ProjectBodyElement {
-    if (!projectLink) { throw new Error("No link to project"); }
-    const repoMatcher = /\/?([^\/]+)/;
-    const repoMatch = projectLink.match(repoMatcher);
-    if (!repoMatch) { throw new Error("Don't know how to handle that link"); }
-    const repo = repoMatch[1];
-    const pathInRepo = projectLink.slice(repoMatch[0].length);
-
-    if (pathInRepo) {
-        return {
-            type: "view-source",
-            href: "https://github.com/JaPNaA/" + repo + "/tree/master" + pathInRepo
-        };
-    } else {
-        return {
-            type: "view-source",
-            href: "https://github.com/JaPNaA/" + repo
-        };
-    }
-}
-
 
 function parseCustomTagViewSource(args: string, projectLink?: string): V2ProjectBodyElement {
     if (!projectLink) { throw new Error("No link to project"); }
@@ -339,6 +323,51 @@ function getAllFullMatches(regex: RegExp, str: string): RegExpExecArray[] {
     }
 
     return matches;
+}
+
+function parseArgs(argsString: string): MapWithGetAndDelete<string, string | true> {
+    const args = splitAtWhitespacesUnlessInQuotes(argsString);
+    const argMap = new MapWithGetAndDelete<string, string | true>();
+
+    for (const arg of args) {
+        const parsed = parseArg(arg);
+        argMap.set(parsed[0], parsed[1]);
+    }
+
+    return argMap;
+}
+
+function parseArg(arg: string): [string, string | true] {
+    const argRegex = /^(.+?)(="(.+)"|=(.+)|"(.+)")?$/;
+    const match = arg.match(argRegex);
+    if (!match) { throw new Error("Invalid arg"); }
+    return [match[1], match[3] || match[4] || match[5] || true];
+}
+
+function splitAtWhitespacesUnlessInQuotes(str: string): string[] {
+    let currStr = "";
+    let quote = undefined;
+    let arr = [];
+
+    for (const char of str) {
+        if (/\s/.test(char) && quote === undefined) {
+            arr.push(currStr);
+            currStr = "";
+            continue;
+        } else if (char === '"' || char === "'") {
+            if (quote === char) {
+                quote = undefined;
+            } else if (quote === undefined) {
+                quote = char;
+            }
+        }
+
+        currStr += char;
+    }
+
+    if (currStr) { arr.push(currStr); }
+
+    return arr;
 }
 
 function warn(str: string) {
