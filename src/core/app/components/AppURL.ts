@@ -43,6 +43,7 @@ class AppURL implements IAppURL {
             stateData: viewState,
             directURL: this.controller.currentURL,
             id: view.id,
+            privateData: view.privateData
         });
         this.pushState(view.viewName, viewState);
     }
@@ -78,6 +79,7 @@ class AppURL implements IAppURL {
 
         this.frozen = true;
         this.app.views.closeAllViews();
+        this.controller.currentURL = newURL;
 
         if (!state) { debugger; }
 

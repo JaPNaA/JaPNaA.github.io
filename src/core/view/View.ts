@@ -14,6 +14,7 @@ abstract class View {
     public showMenuButton: boolean = true;
 
     public id: number;
+    public privateData: any;
 
     protected app: IApp;
     protected events: EventManager;
@@ -25,6 +26,7 @@ abstract class View {
         this.destoryHandlers = new EventHandlers();
 
         this.id = state.id || View.vidCounter++;
+        this.privateData = state.privateData;
     }
 
     public setup(): void {
