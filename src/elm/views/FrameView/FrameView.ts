@@ -32,7 +32,7 @@ class FrameView extends View {
     private startHistoryLength: number = 0;
 
     constructor(app: IApp, state: AppState) {
-        super(app);
+        super(app, state);
         this.path = state.stateData;
 
         if (state.directURL) {

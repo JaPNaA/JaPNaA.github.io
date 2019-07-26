@@ -4,6 +4,7 @@ import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
 import ViewMap from "../../../core/view/ViewMap";
 import siteResources from "../../../core/siteResources";
+import AppState from "../../../core/types/AppState";
 
 class TestView extends View {
     public static viewName: string = "Test";
@@ -13,8 +14,8 @@ class TestView extends View {
 
     protected elm: HTMLDivElement;
 
-    constructor(app: IApp) {
-        super(app);
+    constructor(app: IApp, state: AppState) {
+        super(app, state);
         this.elm = document.createElement("div");
         this.elm.id = "test";
 

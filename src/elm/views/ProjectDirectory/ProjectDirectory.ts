@@ -38,7 +38,7 @@ class ProjectDirectory extends View {
     private linkProjectMatchMap: Map<string, LinkMatch | undefined>;
 
     constructor(app: IApp, state: AppState) {
-        super(app)
+        super(app, state);
         this.elm = document.createElement("div");
         this.title = this.createTitle();
         this.pageContent = this.createPageContent();

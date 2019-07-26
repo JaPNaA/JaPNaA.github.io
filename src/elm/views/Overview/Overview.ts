@@ -8,6 +8,7 @@ import siteConfig from "../../../SiteConfig";
 import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
+import AppState from "../../../core/types/AppState";
 
 class Overview extends View {
     public static viewName = "Overview";
@@ -21,8 +22,8 @@ class Overview extends View {
 
     private hexagonsTitle: HexagonsTitle;
 
-    constructor(app: IApp) {
-        super(app);
+    constructor(app: IApp, state: AppState) {
+        super(app, state);
         this.elm = document.createElement("div");
         this.content = this.createContent();
         this.hexagonsTitle = new HexagonsTitle(app, this.elm);

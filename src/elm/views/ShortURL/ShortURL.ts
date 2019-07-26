@@ -19,8 +19,8 @@ class ShortUrlView extends View {
     private newHref?: string;
 
     constructor(app: IApp, state: AppState) {
-        super(app);
-        console.log(state);
+        super(app, state);
+
         if (state.directURL === undefined) { throw new Error("No hash provided"); }
 
         this.elm = document.createElement("div");

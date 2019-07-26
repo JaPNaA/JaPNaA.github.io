@@ -4,6 +4,7 @@ import View from "../../../core/view/View";
 import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
 import ProjectsGrid from "../../widgets/ProjectsGrid/ProjectsGrid";
+import AppState from "../../../core/types/AppState";
 
 class BrowseProjects extends View {
     public static viewName = "BrowseProjects";
@@ -13,8 +14,8 @@ class BrowseProjects extends View {
     protected elm: HTMLDivElement;
     private projectsGrid: ProjectsGrid;
 
-    constructor(app: IApp) {
-        super(app);
+    constructor(app: IApp, state: AppState) {
+        super(app, state);
         this.elm = document.createElement("div");
         this.projectsGrid = new ProjectsGrid(this.app);
     }

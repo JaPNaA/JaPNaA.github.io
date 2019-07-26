@@ -28,7 +28,7 @@ class ProjectInfoView extends View implements IProjectInfoView {
     private projectIndex?: number;
 
     constructor(app: IApp, state: AppState) {
-        super(app);
+        super(app, state);
         this.elm = document.createElement("div");
 
         if (state.stateData) {

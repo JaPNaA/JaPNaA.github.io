@@ -33,7 +33,7 @@ class WidgetView extends View {
     private widget?: Widget;
 
     constructor(app: IApp, state: AppState) {
-        super(app);
+        super(app, state);
         this.elm = document.createElement("div");
 
         if (state.stateData) {

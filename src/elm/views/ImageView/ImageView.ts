@@ -39,7 +39,7 @@ class ImageView extends View {
     private inErrorState: boolean;
 
     constructor(app: IApp, state: AppState) {
-        super(app);
+        super(app, state);
         this.elm = document.createElement("div");
         this.renderer = new ImageViewRenderer(app, this);
 

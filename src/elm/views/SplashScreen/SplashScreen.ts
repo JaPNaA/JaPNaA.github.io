@@ -4,6 +4,7 @@ import View from "../../../core/view/View";
 import wait from "../../../utils/wait";
 import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
+import AppState from "../../../core/types/AppState";
 
 class SplashScreen extends View {
     public static viewName = "SplashScreen";
@@ -12,8 +13,8 @@ class SplashScreen extends View {
 
     public showMenuButton: boolean = false;
 
-    constructor(app: IApp) {
-        super(app);
+    constructor(app: IApp, state: AppState) {
+        super(app, state);
         this.elm = document.createElement("div");
     }
 

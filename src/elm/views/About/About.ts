@@ -5,6 +5,7 @@ import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
 import siteConfig from "../../../SiteConfig";
+import AppState from "../../../core/types/AppState";
 
 class About extends View {
     protected elm: HTMLElement;
@@ -14,8 +15,8 @@ class About extends View {
 
     private contentContainer: HTMLDivElement;
 
-    constructor(app: IApp) {
-        super(app);
+    constructor(app: IApp, state: AppState) {
+        super(app, state);
         this.elm = document.createElement("div");
         this.contentContainer = this.createContentContainer();
         this.elm.appendChild(this.contentContainer);

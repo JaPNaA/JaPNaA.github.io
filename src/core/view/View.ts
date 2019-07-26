@@ -2,26 +2,29 @@ import IApp from "../types/app/IApp";
 import EventManager from "./components/EventManager";
 import EventHandlers from "../utils/events/EventHandlers";
 import Handler from "../utils/events/Handler";
+import AppState from "../types/AppState";
 
 abstract class View {
     private static vidCounter = 0;
 
     protected abstract elm: HTMLElement;
 
-    public id: number = View.vidCounter++;
-    public isFullPage: boolean;
+    public isFullPage: boolean = false;
     public viewName: string = null as any as string;
     public showMenuButton: boolean = true;
+
+    public id: number;
 
     protected app: IApp;
     protected events: EventManager;
     private destoryHandlers: EventHandlers;
 
-    constructor(app: IApp) {
+    constructor(app: IApp, state: AppState) {
         this.app = app;
         this.events = new EventManager(app.events);
         this.destoryHandlers = new EventHandlers();
-        this.isFullPage = false;
+
+        this.id = state.id || View.vidCounter++;
     }
 
     public setup(): void {

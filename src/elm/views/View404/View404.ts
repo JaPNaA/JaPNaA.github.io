@@ -3,6 +3,7 @@ import "../../../../styles/views/View404.less";
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
 import ViewMap from "../../../core/view/ViewMap";
+import AppState from "../../../core/types/AppState";
 
 class View404 extends View {
     public static viewName = "View404";
@@ -18,8 +19,8 @@ class View404 extends View {
     private width: number;
     private height: number;
 
-    constructor(app: IApp) {
-        super(app);
+    constructor(app: IApp, state: AppState) {
+        super(app, state);
 
         this.elm = document.createElement("div");
 
