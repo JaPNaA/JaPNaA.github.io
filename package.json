@@ -8,11 +8,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js --display-modules && npm run update-index-json",
-    "build-dev": "webpack --config webpack.dev.config.js",
-    "serve": "http-server docs -p 8080",
-    "serve2": "http-server ../../../Thingy -p 8081 --cors=\"*\"",
-    "clean": "node ",
+    "build": "node . prod",
+    "build-dev": "node . dev w",
+    "serve": "node . serve",
+    "clean": "node . clean",
     "update-index-json": "node ./scripts/update-index-json.js",
     "deploy-staging": "./scripts/deploy-staging.sh"
   },

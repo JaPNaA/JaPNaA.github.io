@@ -21,9 +21,11 @@ if (mode === "dev") {
     cleanProject();
 } else if (mode === "scripts") {
     startWebpack([]);
+} else if (mode === "serve") {
+    startHttpServers();
 } else {
     console.error("unknown mode '" + mode + "'");
-    console.log("Available modes: dev (w), prod (w), scripts (w), clean");
+    console.log("Available modes: dev (w), prod (w), scripts (w), clean, serve");
     console.log("Add 'w' as third argument for watch");
 }
 
