@@ -1,33 +1,34 @@
-import ViewMap from "../../view/ViewMap";
+import URLRestorer from "./URLRestorer";
 import IApp from "../../types/app/IApp";
-import AppState from "../../types/AppState";
-import parseAppStateURL from "../../utils/parseAppStateURL";
+
 
 class URLController {
-    public restored: boolean;
     public currentURL: string;
+    public restore: URLRestorer;
 
-    private shouldRestore: boolean;
     private initalSearch: string;
     private initalURL: string;
     private initalHash: string;
-
+    
     private stateEmpty: boolean;
     private siteTitle: string;
 
     constructor() {
-        this.siteTitle = document.title;
+        this.restore = new URLRestorer();
 
-        this.initalURL = location.href;
+        this.siteTitle = document.title;
         this.currentURL = location.href;
+        this.stateEmpty = true;
+
         this.initalSearch = location.search;
         this.initalHash = location.hash;
-
-        this.shouldRestore = false;
-        this.stateEmpty = true;
-        this.restored = false;
+        this.initalURL = location.href;
 
         this.setToOldURL();
+    }
+
+    public restoreFromRedirect(app: IApp): Promise<void> {
+        return this.restore.fromURL(app, this.initalURL);
     }
 
     public setTitle(title: string) {
@@ -55,27 +56,6 @@ class URLController {
         document.title = title;
     }
 
-    public async restoreFromRedirect(app: IApp): Promise<void> {
-        if (!this.shouldRestore) { return; }
-        return this.restoreFromURL(app, this.initalURL);
-    }
-
-    public async restoreFromURL(app: IApp, url: string): Promise<void> {
-        const urlParsed = parseAppStateURL(url);
-        if (!urlParsed) { return; }
-
-        urlParsed.directURL = url;
-        await this.restore(app, urlParsed);
-
-        if (!this.restored && app.view404) {
-            app.views.openBehind(app.view404);
-            this.restored = true;
-        }
-    }
-
-    public restore(app: IApp, state: AppState): Promise<void> {
-        return this.restoreView(app, state);
-    }
 
     public clearState(): void {
         history.replaceState(
@@ -84,15 +64,6 @@ class URLController {
         this.currentURL = "/";
     }
 
-    private async restoreView(app: IApp, state: AppState): Promise<void> {
-        try {
-            const viewClass = await ViewMap.get(state.viewName);
-            app.views.openBehind(viewClass, state);
-            this.restored = true;
-        } catch (err) {
-            this.restored = false;
-        }
-    }
 
     private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
         const viewNameEnc = encodeURIComponent(viewName.toLowerCase());
@@ -114,10 +85,10 @@ class URLController {
 
         if (urlparams.get("fromredirect") === '1' && initalURL) {
             this.initalURL = initalURL;
-            this.shouldRestore = true;
+            this.restore._canRestore = true;
             history.replaceState(null, this.siteTitle, initalURL);
         } else if (this.initalHash) {
-            this.shouldRestore = true;
+            this.restore._canRestore = true;
             history.replaceState(null, this.siteTitle, "/" + this.initalHash);
         }
     }
