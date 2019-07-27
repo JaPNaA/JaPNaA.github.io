@@ -62,7 +62,7 @@ If you want to know what all of these stats mean, then uhh, here you go!:
         - healthRegeneration, maxHealth, bodyDamage, bulletSpeed, bulletPenetration, bulletDamage, reload, movementSpeed
         - These affect the likeliness that a tank will choose to increase their respective stats
     - **care**: How much a tank cares about it's babies. This affects the amount XP they give, and how they set the babies' `TimeToNewTeam` timer
-    - **class**: ignore that **TODO: remove `class` from the simulation**
+    - **class**: An object that represents the Tank's canon's angle/width/length, etc.
     - **comfortableDistance**: How close until the tank backs off from it's target
     - **idealDistance**: How close until the tank stops moving towards it's target
     - **levelToReproduction**: The level the tank must reach before it searches for a mate
