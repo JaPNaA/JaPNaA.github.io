@@ -1,5 +1,7 @@
 set -e
 
+npm run clean
+
 # clear build directory
 if [ -d "./build" ]
 then
@@ -8,8 +10,9 @@ fi
 mkdir build
 
 # build
-npm run clean
 npm run build
+npm run parse-v2-format
+npm run update-index-json
 cp -r docs/* build
 
 # do the git stuff (Adapted from Microsoft/monaco-editor)

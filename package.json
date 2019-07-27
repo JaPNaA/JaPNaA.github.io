@@ -12,7 +12,8 @@
     "build-dev": "node . dev w",
     "serve": "node . serve",
     "clean": "node . clean",
-    "update-index-json": "node ./scripts/update-index-json.js",
+    "parse-v2-format": "node ./scripts/build/parse-v2-format.js",
+    "update-index-json": "node ./scripts/build/update-index-json.js",
     "deploy-staging": "./scripts/deploy-staging.sh"
   },
   "repository": {

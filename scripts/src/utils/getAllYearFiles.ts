@@ -14,7 +14,10 @@ export function getAllYearFiles(): string[] {
     const files: string[] = [];
 
     for (const inDir of IN_DIRS) {
-        const dirFiles = fs.readdirSync(inDir);
+        let dirFiles;
+        try { dirFiles = fs.readdirSync(inDir); }
+        catch (err) { continue; }
+
         for (const dirFile of dirFiles) {
             if (yearFilePattern.test(dirFile)) {
                 files.push(inDir + "/" + dirFile);
