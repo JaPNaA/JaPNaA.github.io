@@ -12,6 +12,7 @@ import ProjectInfoV1 from "./ProjectInfoV1";
 import isV2Project from "../../../utils/isV2Project";
 import ProjectInfoV2 from "./ProjectInfoV2";
 import Widget from "../../../core/widget/Widget";
+import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 
 class ProjectInfoView extends View implements IProjectInfoView {
     public static viewName = "ProjectInfo";
@@ -19,6 +20,8 @@ class ProjectInfoView extends View implements IProjectInfoView {
     public isFullPage: boolean = true;
 
     protected elm: HTMLDivElement;
+
+    private static readonly transitionInTime = 150;
 
     private project?: V1Or2Project;
     private loadingPromise?: Promise<void>;
@@ -55,6 +58,10 @@ class ProjectInfoView extends View implements IProjectInfoView {
             return this.widget.canScroll();
         }
         return false;
+    }
+
+    public transitionFadeIn(): Promise<void> {
+        return triggerTransitionIn(this.elm, ProjectInfoView.transitionInTime);
     }
 
     public async setup(): Promise<void> {

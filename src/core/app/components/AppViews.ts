@@ -83,6 +83,13 @@ class AppViews implements IAppViews {
         this.activeViews.length = 0;
     }
 
+    public closeAllViewsExcept(execption: View): void {
+        for (const view of this.activeViews) {
+            if (view === execption) { continue; }
+            this.close(view);
+        }
+    }
+
     public close(view: View): void {
         const i: number = this.activeViews.indexOf(view);
         if (i < 0) { throw new Error("Attempt to remove view not in activeViews"); }

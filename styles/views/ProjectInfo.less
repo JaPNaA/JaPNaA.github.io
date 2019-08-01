@@ -1,5 +1,15 @@
 .main .ProjectInfo {
-    background: rgb(0, 0, 0);
+    // background: rgb(0, 0, 0);
+    background: transparent;
     padding: 0;
     overflow-y: auto;
+
+    &.beforeTransitionIn {
+        opacity: 0;
+
+        &.afterTransitionIn {
+            transition: 0.15s ease;
+            opacity: 1;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-export default function triggerTransitionIn(elm: HTMLElement, timeout: number) {
+export default function triggerTransitionIn(elm: HTMLElement, timeout: number): Promise<void> {
     elm.classList.add("beforeTransitionIn");
 
     requestAnimationFrame(() =>
@@ -7,8 +7,11 @@ export default function triggerTransitionIn(elm: HTMLElement, timeout: number) {
         )
     );
 
-    setTimeout(() => {
-        elm.classList.remove("beforeTransitionIn");
-        elm.classList.remove("afterTransitionIn");
-    }, timeout);
+    return new Promise(function(res) {
+        setTimeout(() => {
+            elm.classList.remove("beforeTransitionIn");
+            elm.classList.remove("afterTransitionIn");
+            res();
+        }, timeout);
+    });
 }

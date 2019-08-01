@@ -38,11 +38,13 @@ abstract class ProjectCard implements IRectSetable {
             this.cardElm.href = this.href;
         }
 
+        const passiveOption = { passive: true };
+
         this.cardElm.addEventListener("mouseover", this.mouseoverHandler.bind(this));
         this.cardElm.addEventListener("mouseout", this.mouseoutHandler.bind(this));
-        this.cardElm.addEventListener("touchstart", this.touchstartHandler.bind(this));
-        this.cardElm.addEventListener("touchmove", this.touchmoveHandler.bind(this));
-        this.cardElm.addEventListener("touchend", this.touchendHandler.bind(this));
+        this.cardElm.addEventListener("touchstart", this.touchstartHandler.bind(this), passiveOption);
+        this.cardElm.addEventListener("touchmove", this.touchmoveHandler.bind(this), passiveOption);
+        this.cardElm.addEventListener("touchend", this.touchendHandler.bind(this), passiveOption);
         this.cardElm.addEventListener("focus", this.focusHandler.bind(this));
         this.cardElm.addEventListener("blur", this.blurHandler.bind(this));
         this.cardElm.addEventListener("click", this.clickHandler.bind(this));

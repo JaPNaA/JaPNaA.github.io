@@ -32,6 +32,7 @@ class ProjectsGrid extends Widget {
     private addingToScreenFull: boolean;
 
     private cardGenerator: AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink>;
+    private cardFactory?: ProjectCardFactory;
 
     constructor(app: IApp, cardGenerator?: AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink>) {
         super();

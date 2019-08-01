@@ -3,6 +3,7 @@ import V1Or2Card from "../../../components/contentMan/V1Or2Card";
 
 interface IProjectInfoView extends View {
     setProject(project: V1Or2Card, year: number, index: number): void;
+    transitionFadeIn(): Promise<void>;
 }
 
 export default IProjectInfoView;
