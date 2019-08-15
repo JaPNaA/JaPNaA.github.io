@@ -6,6 +6,8 @@ import wait from "../../../utils/wait";
 import IApp from "../../../core/types/app/IApp";
 import siteConfig from "../../../SiteConfig";
 import AppState from "../../../core/types/AppState";
+import SettingsWidget from "../../widgets/Settings/Settings";
+import Widget from "../../../core/widget/Widget";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -19,10 +21,13 @@ class Menu extends View {
 
     private contents: HTMLDivElement;
     private background: HTMLDivElement;
+    private widgets: Widget[];
 
     constructor(app: IApp, state: AppState) {
         super(app, state);
         this.elm = document.createElement("div");
+        this.widgets = [];
+
         this.background = this.createBackground();
         this.contents = this.createContents();
     }
@@ -35,6 +40,10 @@ class Menu extends View {
 
     public async destory(): Promise<void> {
         await super.destory();
+
+        for (const widget of this.widgets) {
+            widget.destory();
+        }
 
         this.background.removeEventListener("click", this.backgroundClickHandler);
         await wait(Menu.transitionOutTimeout);
@@ -66,6 +75,8 @@ class Menu extends View {
             this.createButtonThatOpens("About", "About me"),
             this.createButtonThatOpens("BrowseProjects", "Browse Projects"),
             this.createButtonThatOpens("ProjectDirectory", "Project Directory"),
+            // this.createSeparator(),
+            this.createSettingsWidget(),
             this.createCopyright()
         ];
 
@@ -92,6 +103,12 @@ class Menu extends View {
         return heading;
     }
 
+    private createSeparator(): HTMLHRElement {
+        const hr = document.createElement("hr");
+        hr.classList.add("separator");
+        return hr;
+    }
+
     private createButtonThatOpens(viewName: string, label: string): HTMLDivElement {
         const button = document.createElement("div");
         button.classList.add("viewButton");
@@ -111,6 +128,16 @@ class Menu extends View {
         });
 
         return button;
+    }
+
+    private createSettingsWidget(): HTMLDivElement {
+        const elm = document.createElement("div");
+        const settings = new SettingsWidget(siteConfig.settings);
+        elm.classList.add("settingsContainer");
+        settings.setup();
+        settings.appendTo(elm);
+        this.widgets.push(settings);
+        return elm;
     }
 
     private createActiveCircle(): HTMLDivElement {

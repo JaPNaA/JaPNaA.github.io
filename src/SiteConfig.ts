@@ -5,10 +5,10 @@ import getServerTime from "./utils/getServerTime";
 import { resolve } from "url";
 import connectionIsMetered from "./utils/connectionIsMetered";
 import LazyClassMap from "./core/components/lazyClassMap/LazyClassMap";
+import SiteSettings from "./SiteSettings";
 
 class SiteConfig {
     public readonly title: string = "JaPNaA";
-    public readonly id: number = Math.random();
 
     public readonly path = {
         base: "",
@@ -48,6 +48,9 @@ class SiteConfig {
         zoomDistance: 1.2,
         fadeInSpeed: 0.2
     };
+
+    public readonly localStorageSettingsKey = "JaPNaASiteSettings";
+    public settings = new SiteSettings();
 
     public readonly hexagonBaseHue = 149;
 

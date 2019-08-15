@@ -1,0 +1,29 @@
+.widget.settings {
+    .settingsEditor {
+        user-select: none;
+        -webkit-user-select: none;
+
+        .heading {
+            margin: 0;
+        }
+
+        .heading[depth="1"] {
+            font-size: 1.7em;
+        }
+
+        .heading[depth="2"] {
+            font-size: 1.4em;
+        }
+
+        .configItem {
+            margin: 8px 0px;
+
+            &.checkbox {
+                label,
+                input {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
