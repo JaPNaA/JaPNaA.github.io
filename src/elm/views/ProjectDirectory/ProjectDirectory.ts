@@ -1,22 +1,22 @@
 import "../../../../styles/views/ProjectDirectory.less";
 
-import View from "../../../core/view/View";
-import IApp from "../../../core/types/app/IApp";
-import ViewMap from "../../../core/view/ViewMap";
-import siteResources from "../../../core/siteResources";
-import siteConfig from "../../../SiteConfig";
-import getLink from "../../../utils/getLink";
-import removeChildren from "../../../utils/removeChildren";
-import url from "url";
-import openPopup from "../../../core/utils/open/openPopup";
-import isProjectV1Card from "../../../utils/isProjectCard";
 import AppState from "../../../core/types/AppState";
-import openFrameView from "../../../utils/openFrameView";
-import IProjectInfoView from "../ProjectInfo/IProjectInfo";
-import createAppState from "../../../core/utils/createAppState";
 import ContentMan from "../../../components/contentMan/contentMan";
+import createAppState from "../../../core/utils/createAppState";
+import getLink from "../../../utils/getLink";
+import IApp from "../../../core/types/app/IApp";
+import IProjectInfoView from "../ProjectInfo/IProjectInfo";
+import isProjectV1Card from "../../../utils/isProjectCard";
 import isV2Project from "../../../utils/isV2Project";
+import openFrameView from "../../../utils/openFrameView";
+import openPopup from "../../../core/utils/open/openPopup";
+import removeChildren from "../../../utils/removeChildren";
+import siteConfig from "../../../SiteConfig";
+import siteResources from "../../../core/siteResources";
+import url from "url";
 import V1Or2Card from "../../../components/contentMan/V1Or2Card";
+import View from "../../../core/view/View";
+import ViewMap from "../../../core/view/ViewMap";
 
 type LinkMatch = {
     year: number,
@@ -27,9 +27,10 @@ type LinkMatch = {
 class ProjectDirectory extends View {
     public static viewName = "ProjectDirectory";
     public viewName = ProjectDirectory.viewName;
-    protected elm: HTMLDivElement;
-
     public isFullPage = true;
+
+    protected elm: HTMLDivElement;
+    protected container: HTMLDivElement;
 
     private static defaultTitle = "Project directory";
     private title: HTMLDivElement;
@@ -40,6 +41,7 @@ class ProjectDirectory extends View {
     constructor(app: IApp, state: AppState) {
         super(app, state);
         this.elm = document.createElement("div");
+        this.container = this.createContainer();
         this.title = this.createTitle();
         this.pageContent = this.createPageContent();
         this.linkProjectMatchMap = new Map();
@@ -59,6 +61,8 @@ class ProjectDirectory extends View {
             "text/html"
         ).onLoad(e => this.setPageContent(e.data));
 
+        this.elm.appendChild(this.container);
+
         this.addEventHandlers();
     }
 
@@ -66,24 +70,30 @@ class ProjectDirectory extends View {
         return this.cleanPath();
     }
 
+    private createContainer(): HTMLDivElement {
+        const container = document.createElement("div");
+        container.classList.add("longTextContainer");
+        return container;
+    }
+
     private createTitle(): HTMLHeadingElement {
         const title = document.createElement("h1");
         title.classList.add("title");
         title.innerText = ProjectDirectory.defaultTitle;
-        this.elm.appendChild(title);
+        this.container.appendChild(title);
         return title;
     }
 
     private createPageContent(): HTMLDivElement {
         const pageContent = document.createElement("div");
         pageContent.classList.add("pageContent");
-        this.elm.appendChild(pageContent);
+        this.container.appendChild(pageContent);
         return pageContent;
     }
 
     private addEventHandlers() {
         this.linkClickHandler = this.linkClickHandler.bind(this);
-        this.elm.addEventListener("click", this.linkClickHandler);
+        this.container.addEventListener("click", this.linkClickHandler);
     }
 
     private cleanPath(): string {
