@@ -1,10 +1,11 @@
 import IInput from "./IInput";
 import siteConfig from "../../../SiteConfig";
+import Checkbox from "../Checkbox/Checkbox";
 
 type SubmitHandler<T> = (config: T) => void;
 
 interface InputTree {
-    [x: string]: HTMLInputElement | InputTree;
+    [x: string]: any | InputTree;
 }
 
 class SettingsEditor<T> {
@@ -135,26 +136,25 @@ class SettingsEditor<T> {
     private createBooleanInput(config: any, key: string, value: boolean): IInput {
         const elm = document.createElement("div");
         const label = document.createElement("label");
-        const input = document.createElement("input");
+        const input = new Checkbox();
         elm.classList.add("configItem");
         elm.classList.add("checkbox");
-        input.type = "checkbox";
-        input.checked = value;
+        input.setup();
+        input.setChecked(value);
         label.innerText = this.formatCamelCase(key);
-        elm.appendChild(input);
+        input.appendTo(elm);
         elm.appendChild(label);
 
-        const changeHandler = () => {
+        const changeHandler = (checked: boolean) => {
             this.changed = true;
-            config[key] = input.checked;
+            config[key] = checked;
         };
 
         label.addEventListener("click", () => {
-            input.checked = !input.checked;
-            changeHandler();
+            input.toggleChecked();
         });
 
-        input.addEventListener("change", changeHandler);
+        input.onChange(changeHandler);
 
         return { elm, input };
     }

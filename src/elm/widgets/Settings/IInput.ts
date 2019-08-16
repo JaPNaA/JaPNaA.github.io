@@ -1,4 +1,4 @@
 export default interface IInput {
-    input: HTMLInputElement,
+    input: any,
     elm: HTMLDivElement
 };
