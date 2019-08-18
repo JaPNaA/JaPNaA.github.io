@@ -15,6 +15,7 @@ import isRGBColorDark from "../../../utils/color/isRGBColorDark";
 import darkenRGB from "../../../utils/color/darkenRGB";
 import rgbToString from "../../../utils/color/toRGBString";
 import prependCSSUrl from "../../../utils/css/prependCSSUrl";
+import lightenRGB from "../../../utils/color/lightenRGB";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -24,12 +25,16 @@ class ProjectJSONv2Elm extends Widget {
     private project: V2Project;
     private app: IApp;
 
-    private backgroundContainer: HTMLDivElement;
+    private background: HTMLDivElement;
+    private hexagons: HexagonsCorner;
+    private hexagonsContainer: HTMLDivElement;
+    private backgroundImageContainer: HTMLDivElement;
+    private backgroundImage: HTMLDivElement;
+
     private contentContainer: HTMLDivElement;
     private mainContent: HTMLDivElement;
     private title: HTMLHeadingElement;
     private body: HTMLDivElement;
-    private hexagons: HexagonsCorner;
 
     private hue: number;
 
@@ -39,7 +44,10 @@ class ProjectJSONv2Elm extends Widget {
         this.project = project;
         this.elm = document.createElement("div");
 
-        this.backgroundContainer = this.createBackground();
+        this.background = this.createBackground();
+        this.hexagonsContainer = this.createHexagonsContainer();
+        this.backgroundImage = this.createBackgroundImage();
+        this.backgroundImageContainer = this.createBackgroundImageContainer();
         this.contentContainer = this.createContentContainer();
         this.mainContent = this.createMainContent();
         this.title = this.createTitle(project.head.name);
@@ -58,16 +66,20 @@ class ProjectJSONv2Elm extends Widget {
     }
 
     public canScroll(): boolean {
-        return this.backgroundContainer.clientHeight > this.elm.clientHeight;
+        return this.background.clientHeight > this.elm.clientHeight;
     }
 
     public setup(): void {
         super.setup();
         this.loadBody();
 
-        this.elm.appendChild(this.backgroundContainer);
-        this.hexagons.appendTo(this.backgroundContainer);
-        this.backgroundContainer.appendChild(this.contentContainer);
+        this.elm.appendChild(this.background);
+        this.background.appendChild(this.backgroundImageContainer);
+        this.backgroundImageContainer.appendChild(this.backgroundImage);
+        this.background.appendChild(this.hexagonsContainer);
+        this.hexagons.appendTo(this.hexagonsContainer);
+
+        this.background.appendChild(this.contentContainer);
         this.contentContainer.appendChild(this.mainContent);
         this.mainContent.appendChild(this.title);
         this.mainContent.appendChild(this.body);
@@ -75,10 +87,20 @@ class ProjectJSONv2Elm extends Widget {
         this.addEventHandlers();
     }
 
+    public destory() {
+        super.destory();
+        this.app.events.offResize(this.resizeHandler);
+    }
+
     private addEventHandlers(): void {
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
 
         this.setupScrollHandler();
+
+        this.resizeHandler = this.resizeHandler.bind(this);
+        this.app.events.onResize(this.resizeHandler);
+
+        this.resizeHandler();
     }
 
     private setupScrollHandler() {
@@ -89,6 +111,24 @@ class ProjectJSONv2Elm extends Widget {
         const background = document.createElement("div");
         background.classList.add("background");
         return background;
+    }
+
+    private createHexagonsContainer(): HTMLDivElement {
+        const hexagonsContainer = document.createElement("div");
+        hexagonsContainer.classList.add("hexagonsContainer");
+        return hexagonsContainer;
+    }
+
+    private createBackgroundImage(): HTMLDivElement {
+        const backgroundImage = document.createElement("div");
+        backgroundImage.classList.add("backgroundImage");
+        return backgroundImage;
+    }
+
+    private createBackgroundImageContainer(): HTMLDivElement {
+        const backgroundImageContainer = document.createElement("div");
+        backgroundImageContainer.classList.add("backgroundImageContainer");
+        return backgroundImageContainer;
     }
 
     private createContentContainer(): HTMLDivElement {
@@ -127,10 +167,10 @@ class ProjectJSONv2Elm extends Widget {
             for (let i = this.project.head.background.length - 1; i >= 0; i--) {
                 const background = this.project.head.background[i];
                 if (isCSSPropertyImage(background)) {
-                    this.backgroundContainer.style.backgroundImage =
+                    this.backgroundImage.style.backgroundImage =
                         prependCSSUrl(siteConfig.path.thingy, background);
                 } else {
-                    this.backgroundContainer.style.backgroundColor = background;
+                    this.backgroundImage.style.backgroundColor = background;
                 }
             }
         }
@@ -146,19 +186,23 @@ class ProjectJSONv2Elm extends Widget {
 
     private applyAccentColor(accentColor: string) {
         this.title.style.color = accentColor;
+        const formattedColor = this.title.style.color;
 
-        if (this.title.style.color) {
-            const [r, g, b] = extractRGBFromCSSrgbFunction(this.title.style.color);
+        if (formattedColor) {
+            const [r, g, b] = extractRGBFromCSSrgbFunction(formattedColor);
             if (isRGBColorDark(r, g, b)) {
                 const darkened = darkenRGB(r, g, b, 0.3);
                 this.title.style.textShadow = "none";
                 this.title.style.color = rgbToString(darkened[0], darkened[1], darkened[2]);
+                this.title.style.backgroundColor = "transparent";
             } else {
                 // very hard to pull off tinted white text
                 this.title.style.color = "#ffffff";
             }
 
             this.hue = getHueFromRGB(r, g, b) || this.hue;
+
+            this.background.style.backgroundColor = formattedColor;
         }
     }
 
@@ -168,6 +212,13 @@ class ProjectJSONv2Elm extends Widget {
         } else {
             this.body.classList.remove("hidden");
         }
+
+        this.backgroundImage.style.transform = "translateY(" + (this.elm.scrollTop / 2) + "px)";
+        this.hexagonsContainer.style.transform = "translateY(" + (-this.elm.scrollTop / 3) + "px)";
+    }
+
+    private resizeHandler(): void {
+        this.backgroundImageContainer.style.height = this.app.height + "px";
     }
 }
 
