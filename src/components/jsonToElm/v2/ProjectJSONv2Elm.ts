@@ -16,6 +16,8 @@ import darkenRGB from "../../../utils/color/darkenRGB";
 import rgbToString from "../../../utils/color/toRGBString";
 import prependCSSUrl from "../../../utils/css/prependCSSUrl";
 import lightenRGB from "../../../utils/color/lightenRGB";
+import ViewMap from "../../../core/view/ViewMap";
+import IImageView from "../../../elm/views/ImageView/IImageView";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -94,6 +96,7 @@ class ProjectJSONv2Elm extends Widget {
 
     private addEventHandlers(): void {
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
+        this.elm.addEventListener("click", this.clickHandler.bind(this));
 
         this.setupScrollHandler();
 
@@ -217,11 +220,24 @@ class ProjectJSONv2Elm extends Widget {
         this.hexagonsContainer.style.transform = "translateY(" + (-this.elm.scrollTop / 3) + "px)";
     }
 
+    private async clickHandler(e: MouseEvent): Promise<void> {
+        const img = e.target;
+        if (!(img instanceof HTMLImageElement)) { return; }
+
+        const imageView = await this.app.top().views.open("ImageView") as IImageView;
+        const bbox = img.getBoundingClientRect();
+
+        imageView.setInitalTransform(bbox.left, bbox.top, bbox.width / img.naturalWidth);
+        imageView.setImageSrc(img.src);
+        imageView.transitionIn();
+    }
+
     private resizeHandler(): void {
         this.backgroundImageContainer.style.height = this.app.height + "px";
     }
 }
 
+ViewMap.prefetch("ImageView");
 WidgetMap.add(ProjectJSONv2Elm);
 
 export default ProjectJSONv2Elm;
