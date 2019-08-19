@@ -97,6 +97,8 @@ class SiteConfig {
         if (this.connectionIsMetered) {
             LazyClassMap.stopPrefetches();
         }
+
+        this.restoreSettingsFromLocalStorage();
     }
 
     public getServerTime(): Promise<Date> {
@@ -116,6 +118,7 @@ class SiteConfig {
     }
 
     public _dispatchSettingsChanged(): void {
+        this.saveSettingsToLocalStorage();
         this.settingsChangeHandlers.dispatch();
     }
 
@@ -127,6 +130,38 @@ class SiteConfig {
                 obj[key] = resolve(base, obj[key]);
             } else if (typeof obj[key] === "object") {
                 this.insertBaseUrl(base, obj[key]);
+            }
+        }
+    }
+
+    private saveSettingsToLocalStorage(): void {
+        localStorage[this.localStorageSettingsKey] = JSON.stringify(this.settings);
+    }
+
+    private restoreSettingsFromLocalStorage(): void {
+        const storedStr = localStorage[this.localStorageSettingsKey];
+        if (!storedStr) { return; }
+
+        let storedConfig;
+        try {
+            storedConfig = JSON.parse(storedStr);
+        } catch (err) {
+            console.warn("Error while parsing localstorage; value ignored", err);
+            return;
+        }
+
+        this.restoreSettings(this.settings, storedConfig);
+    }
+
+    private restoreSettings(thisObj: any, otherObj: any): void {
+        const keys = Object.keys(thisObj);
+
+        for (const key of keys) {
+            if (typeof thisObj[key] !== typeof otherObj[key]) { continue; }
+            if (typeof otherObj[key] !== "object") {
+                thisObj[key] = otherObj[key];
+            } else {
+                this.restoreSettings(thisObj[key], otherObj[key]);
             }
         }
     }

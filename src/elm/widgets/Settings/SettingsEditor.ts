@@ -13,8 +13,6 @@ interface InputTree {
 class SettingsEditor<T> {
     public changed: boolean;
 
-    private static localStorageKey = siteConfig.localStorageSettingsKey;
-
     private elm: HTMLDivElement;
     private settings: T;
 
@@ -77,43 +75,6 @@ class SettingsEditor<T> {
     public remove(): void {
         if (!this.parent) { throw new Error("Was never appended"); }
         this.parent.removeChild(this.elm);
-    }
-
-    public saveConfigToLocalStorage(): void {
-        localStorage[SettingsEditor.localStorageKey] = JSON.stringify(this.settings);
-    }
-
-    public restoreConfigFromLocalStorage(): void {
-        const storedStr = localStorage[SettingsEditor.localStorageKey];
-        if (!storedStr) { return; }
-
-        let storedConfig;
-        try {
-            storedConfig = JSON.parse(storedStr);
-        } catch (err) {
-            console.warn("Error while parsing localstorage; value ignored", err);
-            return;
-        }
-
-        this.restoreConfig(this.settings, storedConfig, this.inputTree);
-    }
-
-    private restoreConfig(thisObj: any, otherObj: any, inputTree: InputTree): void {
-        const keys = Object.keys(thisObj);
-
-        for (const key of keys) {
-            if (typeof thisObj[key] !== typeof otherObj[key]) { continue; }
-            if (typeof otherObj[key] !== "object") {
-                thisObj[key] = otherObj[key];
-                if (typeof thisObj[key] === "boolean") {
-                    (inputTree[key] as HTMLInputElement).checked = otherObj[key];
-                } else {
-                    (inputTree[key] as HTMLInputElement).value = otherObj[key];
-                }
-            } else {
-                this.restoreConfig(thisObj[key], otherObj[key], inputTree[key] as InputTree);
-            }
-        }
     }
 
     private createConfigTree(name: string, config: any, inputTree: InputTree, depth: number = 1): HTMLDivElement {

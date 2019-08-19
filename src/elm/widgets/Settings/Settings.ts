@@ -22,7 +22,7 @@ class SiteSettingsWidget extends Widget {
 
     public setup(): void {
         super.setup();
-        this.editor.onChange(this.settingsChangeHandler);
+        this.editor.onChange(this.settingsChangeHandler.bind(this));
         this.editor.appendTo(this.elm);
     }
 
