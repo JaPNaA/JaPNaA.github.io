@@ -12,8 +12,6 @@ import V1Or2Project from "./V1Or2Project";
 
 type LinksIndexJSON = [number, string, string][];
 
-// TODO: Make this function like a lazyily evaluated array
-
 class ContentMan {
     static projectsIndex?: IIndex;
     static projectsIndexPromise: Promise<IIndex>;

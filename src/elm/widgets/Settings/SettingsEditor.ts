@@ -17,11 +17,25 @@ class SettingsEditor<T> {
 
     private elm: HTMLDivElement;
     private settings: T;
+
+    /**
+     * A tree of inputs, the same shape of T
+     */
     private inputTree: InputTree;
 
+    /**
+     * An array of bools, each bool represents an input's validity state, if
+     * all values in the array are true, the entire form is valid
+     */
     private inputValids: boolean[];
 
     private changeHandlers: EventHandlers;
+
+    private typeFunctionMap: { [x: string]: (config: any, key: string, value: any) => IInput } = {
+        "number": this.createNumberInput,
+        "boolean": this.createBooleanInput,
+        "string": this.createStringInput
+    }
 
     private parent?: Node;
 
@@ -44,25 +58,6 @@ class SettingsEditor<T> {
         this.parent = parent;
     }
 
-    public saveConfigToLocalStorage(): void {
-        localStorage[SettingsEditor.localStorageKey] = JSON.stringify(this.settings);
-    }
-
-    public restoreConfigFromLocalStorage(): void {
-        const storedStr = localStorage[SettingsEditor.localStorageKey];
-        let storedConfig;
-
-        if (!storedStr) { return; }
-
-        try {
-            storedConfig = JSON.parse(storedStr);
-        } catch (err) {
-            console.warn("Error while parsing localstorage; value ignored", err);
-        }
-
-        this.restoreConfig(this.settings, storedConfig, this.inputTree);
-    }
-
     public onChange(handler: Handler): void {
         this.changeHandlers.add(handler);
     }
@@ -71,9 +66,36 @@ class SettingsEditor<T> {
         this.changeHandlers.remove(handler);
     }
 
+    public isAllValid(): boolean {
+        for (const valid of this.inputValids) {
+            if (!valid) { return false; }
+        }
+
+        return true;
+    }
+
     public remove(): void {
         if (!this.parent) { throw new Error("Was never appended"); }
         this.parent.removeChild(this.elm);
+    }
+
+    public saveConfigToLocalStorage(): void {
+        localStorage[SettingsEditor.localStorageKey] = JSON.stringify(this.settings);
+    }
+
+    public restoreConfigFromLocalStorage(): void {
+        const storedStr = localStorage[SettingsEditor.localStorageKey];
+        if (!storedStr) { return; }
+
+        let storedConfig;
+        try {
+            storedConfig = JSON.parse(storedStr);
+        } catch (err) {
+            console.warn("Error while parsing localstorage; value ignored", err);
+            return;
+        }
+
+        this.restoreConfig(this.settings, storedConfig, this.inputTree);
     }
 
     private restoreConfig(thisObj: any, otherObj: any, inputTree: InputTree): void {
@@ -94,60 +116,42 @@ class SettingsEditor<T> {
         }
     }
 
-    private allInputsAreValid(): boolean {
-        for (const valid of this.inputValids) {
-            if (!valid) { return false; }
-        }
-
-        return true;
-    }
-
     private createConfigTree(name: string, config: any, inputTree: InputTree, depth: number = 1): HTMLDivElement {
         const section = document.createElement("div");
-        const heading = document.createElement("h2");
-        const keys = Object.keys(config);
-
         section.classList.add("section");
-        heading.classList.add("heading");
-        heading.setAttribute("depth", depth.toString());
-        heading.innerHTML = name;
+
+        const heading = this.createHeading(name, depth);
         section.appendChild(heading);
+
+        const keys = Object.keys(config);
 
         for (const key of keys) {
             const obj = config[key];
+            const type = typeof obj;
 
-            switch (typeof obj) {
-                case "number": {
-                    const { elm, input } = this.createNumberInput(config, key, obj);
-                    section.appendChild(elm)
-                    inputTree[key] = input;
-                    break;
-                }
-                case "string": {
-                    const { elm, input } = this.createStringInput(config, key, obj);
-                    section.appendChild(elm)
-                    inputTree[key] = input;
-                    break;
-                }
-                case "boolean": {
-                    const { elm, input } = this.createBooleanInput(config, key, obj);
-                    section.appendChild(elm)
-                    inputTree[key] = input;
-                    break;
-                }
-                case "object": {
-                    const elmBranch = {} as any;
-                    inputTree[key] = elmBranch;
-                    section.appendChild(this.createConfigTree(
-                        this.formatCamelCase(key),
-                        obj, elmBranch, depth + 1
-                    ));
-                    break;
-                }
+            if (type === "object") {
+                const elmBranch = {} as any;
+                inputTree[key] = elmBranch;
+                section.appendChild(this.createConfigTree(
+                    this.formatCamelCase(key),
+                    obj, elmBranch, depth + 1
+                ));
+            } else {
+                const { elm, input } = this.typeFunctionMap[type].call(this, config, key, obj);
+                section.appendChild(elm);
+                inputTree[key] = input;
             }
         }
 
         return section;
+    }
+
+    private createHeading(name: string, depth: number): HTMLHeadingElement {
+        const heading = document.createElement("h2");
+        heading.classList.add("heading");
+        heading.setAttribute("depth", depth.toString());
+        heading.innerHTML = name;
+        return heading;
     }
 
     private createNumberInput(config: any, key: string, value: number): IInput {

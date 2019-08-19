@@ -13,8 +13,6 @@ import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
 
-// TODO: refactor, along with it's .less companion!
-
 class CardJSONv1Elm extends Widget {
     public static widgetName = "cardJSONv1Elm";
     public widgetName = CardJSONv1Elm.widgetName;
