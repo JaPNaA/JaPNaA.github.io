@@ -1,8 +1,17 @@
 import AppState from "../types/AppState";
 import url from "url";
 import AppStateBuilder from "./AppStateBuilder";
+import siteConfig from "../../SiteConfig";
 
 export default function parseAppStateURL(href: string | url.UrlWithStringQuery): AppState | undefined {
+    if (siteConfig.isAtRoot) {
+        return parseAppStateURL_root(href);
+    } else {
+        return parseAppStateURL_hash(href);
+    }
+}
+
+function parseAppStateURL_root(href: string | url.UrlWithStringQuery): AppState | undefined {
     let cleanURL;
     const builder = new AppStateBuilder();
 
@@ -30,6 +39,22 @@ export default function parseAppStateURL(href: string | url.UrlWithStringQuery):
     try {
         return builder.build();
     } catch (err) {
+        return undefined;
+    }
+}
+
+function parseAppStateURL_hash(href: string | url.UrlWithStringQuery): AppState | undefined {
+    let cleanURL;
+
+    if (typeof href === "string") {
+        cleanURL = url.parse(href);
+    } else {
+        cleanURL = href;
+    }
+
+    if (cleanURL.hash) {
+        return parseAppStateURL_root(cleanURL.hash.slice(1));
+    } else {
         return undefined;
     }
 }

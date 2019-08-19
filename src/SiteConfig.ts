@@ -12,6 +12,7 @@ import Handler from "./core/utils/events/Handler";
 class SiteConfig {
     public readonly title: string = "JaPNaA";
 
+    public readonly isAtRoot: boolean;
     public readonly path = {
         base: "",
 
@@ -74,13 +75,18 @@ class SiteConfig {
         const base = location.origin + location.pathname;
         this.insertBaseUrl(base, this.path);
 
-        // matches localhost and ips, for debugging
+        this.isAtRoot = location.pathname === '/';
+
+        // matches localhost and IPs, for debugging
         const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
         if (match) {
             const port = parseInt(location.port);
             if (!isNaN(port)) {
                 this.path.thingy = match[0] + (port + 1);
             }
+        } else if (!this.isAtRoot) {
+            // if hosted somewhere else, and isn't at root, (staging url)
+            this.path.thingy = "https://japnaa.github.io/";
         }
 
         this.isHandheld = isHandheld();
@@ -168,5 +174,6 @@ class SiteConfig {
 }
 
 const siteConfig = new SiteConfig();
+console.log(siteConfig);
 
 export default siteConfig;

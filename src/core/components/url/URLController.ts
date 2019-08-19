@@ -1,6 +1,7 @@
 import URLRestorer from "./URLRestorer";
 import IApp from "../../types/app/IApp";
 import AppState from "../../types/AppState";
+import siteConfig from "../../../SiteConfig";
 
 
 class URLController {
@@ -39,7 +40,7 @@ class URLController {
     public setState(viewName: string, state: AppState): void {
         const { title, url } = this.getTitleAndURLFromViewState(viewName, state.stateData);
 
-        history.replaceState(JSON.stringify(state), title, url);
+        this.basedReplaceState(JSON.stringify(state), title, url);
         this.currentURL = url;
         document.title = title;
         this.stateEmpty = false;
@@ -52,13 +53,13 @@ class URLController {
 
         const { title, url } = this.getTitleAndURLFromViewState(viewName, state.stateData);
 
-        history.pushState(JSON.stringify(state), title, url);
+        this.basedPushState(JSON.stringify(state), title, url);
         this.currentURL = url;
         document.title = title;
     }
 
     public clearState(): void {
-        history.replaceState(
+        this.basedReplaceState(
             null, this.siteTitle, "/"
         );
         this.currentURL = "/";
@@ -79,6 +80,7 @@ class URLController {
     }
 
     private setToOldURL(): void {
+        if (!siteConfig.isAtRoot) { return; }
         const urlparams = new URLSearchParams(this.initalSearch);
         const initalURL = urlparams.get("u");
 
@@ -89,6 +91,22 @@ class URLController {
         } else if (this.initalHash) {
             this.restore._canRestore = true;
             history.replaceState(null, this.siteTitle, "/" + this.initalHash);
+        }
+    }
+
+    private basedReplaceState(state: any, title: string, url: string): void {
+        if (siteConfig.isAtRoot) {
+            history.replaceState(state, title, url);
+        } else {
+            history.replaceState(state, title, siteConfig.path.base + "#" + url);
+        }
+    }
+
+    private basedPushState(state: any, title: string, url: string): void {
+        if (siteConfig.isAtRoot) {
+            history.pushState(state, title, url);
+        } else {
+            history.pushState(state, title, siteConfig.path.base + "#" + url);
         }
     }
 }
