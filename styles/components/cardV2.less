@@ -1,6 +1,8 @@
 @import "../variables.less";
 
 .widget.projectJSONv2Elm {
+    @body-padding: 16px;
+
     position: absolute;
     top: 0;
     left: 0;
@@ -29,7 +31,7 @@
                 position: absolute;
                 width: 100%;
                 height: 100%;
-    
+
                 background-size: cover;
                 background-position: center;
                 // image-rendering: pixelated; // chrome
@@ -75,7 +77,8 @@
                 background: @background-color;
                 display: inline-block;
 
-                padding: 16px;
+                padding-top: @body-padding;
+                padding-bottom: @body-padding;
                 width: 100%;
 
                 box-sizing: border-box;
@@ -88,6 +91,11 @@
                     transform: translateY(16px);
                 }
 
+                & > div {
+                    padding-left: @body-padding;
+                    padding-right: @body-padding;
+                }
+
                 img {
                     width: 100%;
                 }
@@ -95,8 +103,7 @@
         }
     }
 
-
-    .body {
+    .contentContainer .mainContent .body {
         .image {
             font-size: 0.8em;
             margin-top: 1em;
@@ -105,6 +112,44 @@
             img {
                 box-shadow: @box-shadow-2dp;
                 margin-bottom: 0.4em;
+                cursor: pointer;
+            }
+        }
+
+        .view-project, .view-source {
+            background-color: @theme-color;
+            background-image: @header-gradient;
+
+            padding: 0;
+            margin-bottom: 1em;
+
+            a {
+                display: block;
+                color: @color;
+                box-shadow: none;
+
+                line-height: 42px;
+
+                cursor: pointer;
+
+                padding-left: @body-padding;
+                padding-right: @body-padding;
+
+                &::after {
+                    content: ">";
+                    display: inline-block;
+                    margin-left: 0px;
+                    opacity: 0;
+
+                    transition: 0.15s ease opacity, 0.15s ease margin-left;
+                }
+
+                &:hover {
+                    &::after {
+                        margin-left: 8px;
+                        opacity: 1;
+                    }
+                }
             }
         }
     }
