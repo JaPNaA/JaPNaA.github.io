@@ -95,10 +95,6 @@
                     padding-left: @body-padding;
                     padding-right: @body-padding;
                 }
-
-                img {
-                    width: 100%;
-                }
             }
         }
     }
@@ -106,17 +102,32 @@
     .contentContainer .mainContent .body {
         .image {
             font-size: 0.8em;
-            margin-top: 1em;
-            margin-bottom: 1em;
+            margin-top: 2em;
+            margin-bottom: 2em;
 
-            img {
-                box-shadow: @box-shadow-2dp;
-                margin-bottom: 0.4em;
-                cursor: pointer;
+            background-color: transparent;
+
+            text-align: center;
+
+            .image-inner {
+                display: inline-block;
+
+                img {
+                    box-shadow: @box-shadow-2dp;
+                    margin-bottom: 0.4em;
+                    max-width: 100%;
+                    cursor: pointer;
+                }
+
+                div {
+                    text-align: left;
+                    opacity: 0.8;
+                }
             }
         }
 
-        .view-project, .view-source {
+        .view-project,
+        .view-source {
             background-color: @theme-color;
             background-image: @header-gradient;
 
@@ -151,6 +162,33 @@
                     }
                 }
             }
+        }
+
+        hr {
+            border-color: @color;
+            border-top: 1px solid @color;
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+
+            width: 33%;
+
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 2em;
+            margin-bottom: 2em;
+        }
+
+        strong {
+            font-weight: 500;
+        }
+
+        code {
+            font-size: 16px;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            background-color: @background-color-darkened;
+            padding: 2px;
+            border-radius: 2px;
         }
     }
 }

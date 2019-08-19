@@ -29,14 +29,18 @@ function parseImage(item: V2ProjectBodyImage): HTMLDivElement {
     const elm = document.createElement("div");
     elm.classList.add("image");
 
+    const inner = document.createElement("div");
+    inner.classList.add("image-inner");
+    elm.appendChild(inner);
+
     const img = document.createElement("img");
     img.src = siteConfig.path.thingy + item.src;
-    elm.appendChild(img);
+    inner.appendChild(img);
 
     if (item.caption) {
         const caption = document.createElement("div");
         caption.innerHTML = item.caption;
-        elm.appendChild(caption);
+        inner.appendChild(caption);
     }
 
     if (item.pixels) {
