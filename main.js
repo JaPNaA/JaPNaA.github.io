@@ -67,9 +67,6 @@ function startWebpack(config, mode) {
             });
         }
     });
-
-
-    webpack.WatchIgnorePlugin
 }
 
 function setWatch(config, watch) {
@@ -77,9 +74,9 @@ function setWatch(config, watch) {
         for (const item of config) {
             item.watch = watch;
         }
+    } else {
+        config.watch = watch;
     }
-
-    config.watch = watch;
 }
 
 function setMode(config, mode) {
@@ -87,9 +84,9 @@ function setMode(config, mode) {
         for (const item of config) {
             item.mode = mode;
         }
+    } else {
+        config.mode = mode;
     }
-
-    config.mode = mode;
 }
 
 function joinConfigs(a, b) {
