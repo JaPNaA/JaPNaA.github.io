@@ -1,5 +1,6 @@
 const path = require("path");
 const GenerateViewAndWidgetList = require("./plugins/GenerateViewAndWidgetList");
+const webpack = require("webpack");
 
 module.exports = {
     name: "dist",
@@ -27,7 +28,12 @@ module.exports = {
         extensions: ['.ts', '.js', '.tsx']
     },
     target: "web",
-    plugins: [new GenerateViewAndWidgetList()],
+    plugins: [
+        new GenerateViewAndWidgetList(),
+        new webpack.optimize.MinChunkSizePlugin({
+            minChunkSize: 20 * 1024 // 20KiB
+        })
+    ],
 
     mode: "production",
     watch: false
