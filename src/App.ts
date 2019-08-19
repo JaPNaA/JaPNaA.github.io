@@ -8,7 +8,7 @@ import GlobalWidgets from "./elm/widgets/Global/Global";
 import ContentMan from "./components/contentMan/contentMan";
 import MainApp from "./core/app/MainApp";
 import siteConfig from "./SiteConfig";
-import SiteThemes from "./components/siteThemes/siteThemes";
+import SiteThemes from "./components/siteThemes/SiteThemes";
 
 class App extends MainApp {
     public view404 = "view404";
