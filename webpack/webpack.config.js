@@ -24,15 +24,20 @@ module.exports = {
             exclude: /node_modules/
         }, {
             test: /\.less$/,
-            loaders: [{
-                loader: MiniCssExtractPlugin.loader,
-                options: {
-                    // you can specify a publicPath here
-                    // by default it uses publicPath in webpackOptions.output
-                    publicPath: '../',
-                    hmr: process.env.NODE_ENV === 'development',
+            loaders: [
+                {
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                        // you can specify a publicPath here
+                        // by default it uses publicPath in webpackOptions.output
+                        publicPath: '../',
+                        hmr: process.env.NODE_ENV === 'development',
+                    },
                 },
-            }, 'css-loader', 'less-loader']
+                'css-loader',
+                'less-loader',
+                path.resolve(__dirname, "./loaders/stylesheetVarMacro")
+            ]
         }]
     },
     resolve: {
