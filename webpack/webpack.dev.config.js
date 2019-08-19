@@ -1,11 +1,15 @@
-const prodConfig = require("./webpack.config");
+const prodConfigs = require("./webpack.config");
 const path = require("path");
 
-const devConfig = {
-    ...prodConfig,
-    mode: "development",
-    watch: true,
-    devtool: 'inline-source-map'
+const devConfigs = [];
+
+for (const prodConfig of prodConfigs) {
+    devConfigs.push({
+        ...prodConfig,
+        mode: "development",
+        watch: true,
+        devtool: 'inline-source-map'
+    });
 }
 
 const testConfig = {
@@ -36,4 +40,4 @@ const testConfig = {
     watch: true
 };
 
-module.exports = [devConfig, testConfig];
+module.exports = [...devConfigs, testConfig];

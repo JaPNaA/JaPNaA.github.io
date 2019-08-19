@@ -5,7 +5,23 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const GenerateViewAndWidgetList = require("./plugins/GenerateViewAndWidgetList");
 
-module.exports = {
+const lessLoader = {
+    test: /\.less$/,
+    loaders: [
+        {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+                hmr: process.env.NODE_ENV === 'development',
+            },
+        },
+        'css-loader',
+        'less-loader',
+        path.resolve(__dirname, "./loaders/stylesheetVarMacro"),
+        path.resolve(__dirname, "./loaders/stylesheetDoubleDefineMacro")
+    ]
+};
+
+module.exports = [{
     name: "dist",
     entry: "./src/index.ts",
     output: {
@@ -15,33 +31,20 @@ module.exports = {
         publicPath: "/bundles/"
     },
     module: {
-        rules: [{
-            test: /\.tsx?$/,
-            loaders: [
-                "ts-loader",
-                path.resolve(__dirname, "./loaders/stripConsoleLogs")
-            ],
-            exclude: /node_modules/
-        }, {
-            test: /\.less$/,
-            loaders: [
-                {
-                    loader: MiniCssExtractPlugin.loader,
-                    options: {
-                        // you can specify a publicPath here
-                        // by default it uses publicPath in webpackOptions.output
-                        publicPath: '../',
-                        hmr: process.env.NODE_ENV === 'development',
-                    },
-                },
-                'css-loader',
-                'less-loader',
-                path.resolve(__dirname, "./loaders/stylesheetVarMacro")
-            ]
-        }]
+        rules: [
+            {
+                test: /\.tsx?$/,
+                loaders: [
+                    "ts-loader",
+                    path.resolve(__dirname, "./loaders/stripConsoleLogs")
+                ],
+                exclude: /node_modules/
+            },
+            lessLoader
+        ]
     },
     resolve: {
-        extensions: ['.ts', '.js', '.tsx']
+        extensions: ['.ts', '.js', '.tsx', '.less']
     },
     target: "web",
     plugins: [
@@ -59,4 +62,30 @@ module.exports = {
 
     mode: "production",
     watch: false
-};
+}, {
+    name: "darkModeCSS",
+    entry: "./styles/darkMode.less",
+    output: {
+        path: path.resolve(__dirname, "../docs/bundles"),
+        filename: '_uselessFile.js',
+        publicPath: "/bundles/"
+    },
+    module: {
+        rules: [lessLoader]
+    },
+    resolve: {
+        extensions: ['.less']
+    },
+    target: "web",
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: 'darkMode.css'
+        })
+    ],
+    optimization: {
+        minimizer: [new OptimizeCSSAssetsPlugin({})],
+    },
+
+    mode: "production",
+    watch: false
+}];
