@@ -79,6 +79,9 @@ class HexagonsTitle extends Widget {
         this.resizeHandler = this.resizeHandler.bind(this);
         this.renderer.onResize(this.resizeHandler);
 
+        this.settingsChangeHandler = this.settingsChangeHandler.bind(this);
+        siteConfig.onSettingsChanged(this.settingsChangeHandler);
+
         // POSSIBLE BUG: destory before nextDone
         siteResources.nextDone().then(() => {
             this.loaded = true;
@@ -93,8 +96,9 @@ class HexagonsTitle extends Widget {
         super.destory();
         this.renderer.destory();
         if (this.registeredEventHandlers) {
-            this.renderer.offResize(this.resizeHandler);
             this.parent.removeEventListener("scroll", this.scrollHandler);
+            this.renderer.offResize(this.resizeHandler);
+            siteConfig.offSettingsChanged(this.settingsChangeHandler);
         }
     }
 
@@ -164,8 +168,13 @@ class HexagonsTitle extends Widget {
     private createGradient(): CanvasGradient {
         // BUG: createGradient is called *after* drawing when resizing
         const gradient: CanvasGradient = this.renderer.getContext().createLinearGradient(0, 0, 0, this.height);
-        gradient.addColorStop(0, "#c2ffe3");
-        gradient.addColorStop(1, "#ffffff");
+        if (siteConfig.settings.darkMode) {
+            gradient.addColorStop(0, "#202020");
+            gradient.addColorStop(1, "#202020");
+        } else {
+            gradient.addColorStop(0, "#c2ffe3");
+            gradient.addColorStop(1, "#ffffff");
+        }
         return gradient;
     }
 
@@ -191,6 +200,11 @@ class HexagonsTitle extends Widget {
         this.drawLogoOver = height > width || height < 480;
         this.gradient = this.createGradient();
         this.logo.resize(width, height);
+    }
+
+    private settingsChangeHandler(): void {
+        this.gradient = this.createGradient();
+        this.renderer.requestDraw();
     }
 
     private scrollHandler(): void {

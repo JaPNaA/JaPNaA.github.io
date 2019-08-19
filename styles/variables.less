@@ -6,14 +6,18 @@
 @theme-color-cyan: #26ebff;
 @theme-color-green: #1cff3a;
 @theme-color-lime: #b4ff7a;
-@accent-color-dark-red: #c22000;
+@accent-color-dark-red: darken(@accent-color-red, 20%);
 @accent-color-red: #ff2a00;
-@accent-color-light-red: #ffc6ba;
+@accent-color-light-red: brighten(@accent-color-red, 20%);
 
 @background-color: #ffffff;
 @background-color-darkened: darken(@background-color, 5%);
 @background-black: #000000;
-@color: #000000;
+
+@color-black-dark: #000000;
+@color-black: #202020;
+@color: @color-black;
+@color-strong: @color-black-dark;
 @color-white: #d4d4d4;
 @color-white-bright: #ececec;
 

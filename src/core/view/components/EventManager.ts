@@ -1,6 +1,7 @@
 import IAppEvents from "../../types/app/IAppEvents";
 import Handler from "../../utils/events/Handler";
 import IAppEventsMan from "../../types/app/IAppEventsMan";
+import siteConfig from "../../../SiteConfig";
 
 class EventManager implements IAppEventsMan {
     private events: IAppEvents;
@@ -8,12 +9,14 @@ class EventManager implements IAppEventsMan {
     private viewChangeHandlers: Handler[];
     private resizeHandlers: Handler[];
     private keydownHandlers: Handler<KeyboardEvent>[];
+    private settingsChangeHandlers: Handler[];
 
     constructor(events: IAppEvents) {
         this.events = events;
         this.viewChangeHandlers = [];
         this.resizeHandlers = [];
         this.keydownHandlers = [];
+        this.settingsChangeHandlers = [];
     }
 
     public destory(): void {
@@ -23,6 +26,14 @@ class EventManager implements IAppEventsMan {
 
         for (const handler of this.resizeHandlers) {
             this.events.offResize(handler);
+        }
+
+        for (const handler of this.keydownHandlers) {
+            this.events.offKeydown(handler);
+        }
+
+        for (const handler of this.settingsChangeHandlers) {
+            siteConfig.offSettingsChanged(handler);
         }
     }
 
@@ -59,6 +70,18 @@ class EventManager implements IAppEventsMan {
         this.events.offKeydown(handler);
         this.keydownHandlers.splice(
             this.keydownHandlers.indexOf(handler), 1
+        );
+    }
+
+    public onSettingsChange(handler: Handler): void {
+        siteConfig.onSettingsChanged(handler);
+        this.settingsChangeHandlers.push(handler);
+    }
+
+    public offSettingsChange(handler: Handler): void {
+        siteConfig.offSettingsChanged(handler);
+        this.settingsChangeHandlers.splice(
+            this.settingsChangeHandlers.indexOf(handler), 1
         );
     }
 }
