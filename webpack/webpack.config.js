@@ -79,7 +79,7 @@ module.exports = [{
     target: "web",
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'darkMode.css'
+            filename: 'darkTheme.css'
         })
     ],
     optimization: {

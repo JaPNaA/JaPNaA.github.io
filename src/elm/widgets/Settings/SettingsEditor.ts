@@ -1,12 +1,14 @@
 import IInput from "./IInput";
 import siteConfig from "../../../SiteConfig";
 import Checkbox from "../Checkbox/Checkbox";
-
-type SubmitHandler<T> = (config: T) => void;
+import EventHandlers from "../../../core/utils/events/EventHandlers";
+import Handler from "../../../core/utils/events/Handler";
 
 interface InputTree {
     [x: string]: any | InputTree;
 }
+
+// todo: refactor this
 
 class SettingsEditor<T> {
     public changed: boolean;
@@ -19,6 +21,8 @@ class SettingsEditor<T> {
 
     private inputValids: boolean[];
 
+    private changeHandlers: EventHandlers;
+
     private parent?: Node;
 
     constructor(name: string, config: T) {
@@ -29,6 +33,8 @@ class SettingsEditor<T> {
         this.inputValids = [];
 
         this.inputTree = {};
+
+        this.changeHandlers = new EventHandlers();
 
         this.elm.appendChild(this.createConfigTree(name, this.settings, this.inputTree));
     }
@@ -42,12 +48,35 @@ class SettingsEditor<T> {
         localStorage[SettingsEditor.localStorageKey] = JSON.stringify(this.settings);
     }
 
+    public restoreConfigFromLocalStorage(): void {
+        const storedStr = localStorage[SettingsEditor.localStorageKey];
+        let storedConfig;
+
+        if (!storedStr) { return; }
+
+        try {
+            storedConfig = JSON.parse(storedStr);
+        } catch (err) {
+            console.warn("Error while parsing localstorage; value ignored", err);
+        }
+
+        this.restoreConfig(this.settings, storedConfig, this.inputTree);
+    }
+
+    public onChange(handler: Handler): void {
+        this.changeHandlers.add(handler);
+    }
+
+    public offChange(handler: Handler): void {
+        this.changeHandlers.remove(handler);
+    }
+
     public remove(): void {
         if (!this.parent) { throw new Error("Was never appended"); }
         this.parent.removeChild(this.elm);
     }
 
-    public restoreConfig(thisObj: any, otherObj: any, inputTree: InputTree): void {
+    private restoreConfig(thisObj: any, otherObj: any, inputTree: InputTree): void {
         const keys = Object.keys(thisObj);
 
         for (const key of keys) {
@@ -148,6 +177,7 @@ class SettingsEditor<T> {
         const changeHandler = (checked: boolean) => {
             this.changed = true;
             config[key] = checked;
+            this.changeHandlers.dispatch();
         };
 
         label.addEventListener("click", () => {
@@ -183,6 +213,7 @@ class SettingsEditor<T> {
                 this.inputValids[validIndex] = false;
             } else {
                 config[key] = parsed;
+                this.changeHandlers.dispatch();
             }
         });
 

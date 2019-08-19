@@ -6,7 +6,7 @@ import wait from "../../../utils/wait";
 import IApp from "../../../core/types/app/IApp";
 import siteConfig from "../../../SiteConfig";
 import AppState from "../../../core/types/AppState";
-import SettingsWidget from "../../widgets/Settings/Settings";
+import SiteSettingsWidget from "../../widgets/Settings/Settings";
 import Widget from "../../../core/widget/Widget";
 
 class Menu extends View {
@@ -132,7 +132,7 @@ class Menu extends View {
 
     private createSettingsWidget(): HTMLDivElement {
         const elm = document.createElement("div");
-        const settings = new SettingsWidget(siteConfig.settings);
+        const settings = new SiteSettingsWidget();
         elm.classList.add("settingsContainer");
         settings.setup();
         settings.appendTo(elm);

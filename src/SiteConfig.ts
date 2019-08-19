@@ -6,6 +6,8 @@ import { resolve } from "url";
 import connectionIsMetered from "./utils/connectionIsMetered";
 import LazyClassMap from "./core/components/lazyClassMap/LazyClassMap";
 import SiteSettings from "./SiteSettings";
+import EventHandlers from "./core/utils/events/EventHandlers";
+import Handler from "./core/utils/events/Handler";
 
 class SiteConfig {
     public readonly title: string = "JaPNaA";
@@ -19,6 +21,10 @@ class SiteConfig {
             hamburger: "assets/img/hamburger.svg",
             close: "assets/img/close.svg",
             closeWhite: "assets/img/close-white.svg"
+        },
+
+        theme: {
+            dark: "bundles/darkTheme.css"
         },
 
         view: {
@@ -62,6 +68,7 @@ class SiteConfig {
 
     private serverTime?: Date;
     private serverTimePromise: Promise<Date>;
+    private settingsChangeHandlers: EventHandlers;
 
     constructor() {
         const base = location.origin + location.pathname;
@@ -85,6 +92,8 @@ class SiteConfig {
         this.serverTimePromise = getServerTime();
         this.serverTimePromise.then(e => this.serverTime = e);
 
+        this.settingsChangeHandlers = new EventHandlers();
+
         if (this.connectionIsMetered) {
             LazyClassMap.stopPrefetches();
         }
@@ -96,6 +105,18 @@ class SiteConfig {
         } else {
             return this.serverTimePromise;
         }
+    }
+
+    public onSettingsChanged(handler: Handler): void {
+        this.settingsChangeHandlers.add(handler);
+    }
+
+    public offSettingsChanged(handler: Handler): void {
+        this.settingsChangeHandlers.remove(handler);
+    }
+
+    public _dispatchSettingsChanged(): void {
+        this.settingsChangeHandlers.dispatch();
     }
 
     private insertBaseUrl(base: string, obj: { [x: string]: any }) {

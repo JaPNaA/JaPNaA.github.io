@@ -3,29 +3,34 @@ import "../../../../styles/widgets/settings.less";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import SettingsEditor from "./SettingsEditor";
+import SiteSettings from "../../../SiteSettings";
+import siteConfig from "../../../SiteConfig";
 
-class SettingsWidget<T> extends Widget {
+class SiteSettingsWidget extends Widget {
     public static widgetName = "settings";
-    public widgetName = SettingsWidget.widgetName;
+    public widgetName = SiteSettingsWidget.widgetName;
 
     protected elm: Element;
 
-    private obj: any;
-    private editor: SettingsEditor<T>;
+    private editor: SettingsEditor<SiteSettings>;
 
-    constructor(settingsObj: T) {
+    constructor() {
         super();
         this.elm = document.createElement("div");
-        this.editor = new SettingsEditor("Settings", settingsObj);
-        this.obj = settingsObj;
+        this.editor = new SettingsEditor("Settings", siteConfig.settings);
     }
 
-    public setup() {
+    public setup(): void {
         super.setup();
+        this.editor.onChange(this.settingsChangeHandler);
         this.editor.appendTo(this.elm);
+    }
+
+    private settingsChangeHandler(): void {
+        siteConfig._dispatchSettingsChanged();
     }
 }
 
-WidgetMap.add(SettingsWidget);
+WidgetMap.add(SiteSettingsWidget);
 
-export default SettingsWidget;
+export default SiteSettingsWidget;
