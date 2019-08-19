@@ -74,6 +74,9 @@
             }
 
             .body {
+                @easing: cubic-bezier(0.65, 0.05, 0.36, 1);
+                @transitionSpeed: 0.4s;
+
                 background: $$background-color;
                 display: inline-block;
 
@@ -84,7 +87,8 @@
                 box-sizing: border-box;
                 // box-shadow: @box-shadow-8dp;
 
-                transition: 0.4s cubic-bezier(0.65, 0.05, 0.36, 1);
+                transition: @transitionSpeed @easing transform,
+                    @transitionSpeed @easing opacity;
 
                 &.hidden {
                     opacity: 0;
@@ -185,7 +189,7 @@
 
         code {
             font-size: 16px;
-            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-family: "Consolas", "Courier New", Courier, monospace;
             background-color: $$background-color-darkened;
             padding: 2px;
             border-radius: 2px;
