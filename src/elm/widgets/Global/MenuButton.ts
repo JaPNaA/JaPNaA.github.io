@@ -28,6 +28,7 @@ class MenuButton extends Widget {
         super.setup();
         const img = siteResources.loadImage(siteConfig.path.img.hamburger).data;
         this.elm.appendChild(img);
+        this.elm.title = "Menu (Esc)";
         this.addEventHandlers();
     }
 
@@ -38,8 +39,12 @@ class MenuButton extends Widget {
 
     private addEventHandlers(): void {
         this.viewChangeHandler = this.viewChangeHandler.bind(this);
+        this.keydownHandler = this.keydownHandler.bind(this);
+
         this.app.events.onViewChange(this.viewChangeHandler);
         this.app.events.onResize(this.viewChangeHandler);
+        this.app.events.onKeydown(this.keydownHandler);
+
         siteResources.onDone(this.viewChangeHandler);
 
         this.elm.addEventListener("click", () => {
@@ -50,11 +55,18 @@ class MenuButton extends Widget {
     private removeEventHandlers(): void {
         this.app.events.offViewChange(this.viewChangeHandler);
         this.app.events.offResize(this.viewChangeHandler);
+        this.app.events.offKeydown(this.keydownHandler);
         siteResources.offDone(this.viewChangeHandler);
     }
 
     private viewChangeHandler() {
         this.updateState();
+    }
+
+    private keydownHandler(e: KeyboardEvent): void {
+        if (e.keyCode == 27) {
+            this.toggleMenu();
+        }
     }
 
     private updateState(): void {
