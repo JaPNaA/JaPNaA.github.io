@@ -12,17 +12,19 @@
     top: @margin-vertical;
     right: @margin-horizontal;
 
+    text-align: center;
+
     background-color: rgba(255, 255, 255, 0.15);
     border-radius: 2px;
+
+    cursor: pointer;
+
+    transition: 0.1s ease right, 0.2s ease background-color;
 
     &.scrollBarExists {
         right: @margin-horizontal-scrollbar;
     }
 
-    text-align: center;
-    cursor: pointer;
-
-    transition: 0.2s ease background-color;
     &:hover {
         background-color: rgba(255, 255, 255, 0.6);
     }
