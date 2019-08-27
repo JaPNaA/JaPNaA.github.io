@@ -22,6 +22,10 @@ class SaveScroll {
     public apply(): void {
         this.elm.scrollBy(0, this.initalScrollTop);
     }
+
+    public hasScrolled(): boolean {
+        return this.initalScrollTop !== 0;
+    }
 }
 
 export default SaveScroll;

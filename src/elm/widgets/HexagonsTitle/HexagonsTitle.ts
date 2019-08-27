@@ -59,7 +59,7 @@ class HexagonsTitle extends Widget {
         this.logo = new Logo(this.width, this.height);
 
         this.scrollDist = 0;
-        this.transitionInTimestep = siteConfig.isMobile ? 1 : 0;
+        this.transitionInTimestep = 0;
 
         this.registeredEventHandlers = false;
     }
@@ -149,6 +149,10 @@ class HexagonsTitle extends Widget {
         if (this.drawLogoOver) {
             this.drawLogo(X);
         }
+    }
+
+    public preventTransitionIn(): void {
+        this.transitionInTimestep = 1;
     }
 
     public appendToParent(): void {

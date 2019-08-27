@@ -37,15 +37,20 @@ class Overview extends View {
     public setup(): void {
         super.setup();
 
-        this.saveScroll.setup();
         this.hexagonsTitle.setup();
         this.hexagonsTitle.appendToParent();
         if (siteConfig.isMobile) {
             this.hexagonsTitle.setOverSize(0, 0);
+            this.hexagonsTitle.preventTransitionIn();
         } else {
             this.hexagonsTitle.setOverSize(0, 128);
         }
         this.hexagonsTitle.registerEventHandlers();
+        
+        this.saveScroll.setup();
+        if (this.saveScroll.hasScrolled()) {
+            this.hexagonsTitle.preventTransitionIn();
+        }
 
         this.createStickyBar();
         this.loadAndWriteContent();
