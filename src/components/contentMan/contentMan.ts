@@ -6,7 +6,7 @@ import isProjectV1Card from "../../utils/isProjectCard";
 import IProjectLink from "./IProjectLink";
 import { V2ProjectListing, V2Project, V2ProjectBodyElement } from "../../types/project/v2/V2Types";
 import IWithLocation from "./IWithLocation";
-import isV2ProjectListing from "../../utils/isV2ProjectListing";
+import isV2ProjectListing from "../../utils/v2Project/isV2ProjectListing";
 import V1Or2Card from "./V1Or2Card";
 import V1Or2Project from "./V1Or2Project";
 

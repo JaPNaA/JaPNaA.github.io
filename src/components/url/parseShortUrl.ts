@@ -1,7 +1,7 @@
 import siteConfig from "../../SiteConfig";
 import siteResources from "../../core/siteResources";
 import ContentMan from "../contentMan/contentMan";
-import isV2Project from "../../utils/isV2Project";
+import isV2Project from "../../utils/v2Project/isV2Project";
 
 export default async function parseShortUrl(short: string): Promise<string | undefined> {
     const firstChar = short[0];

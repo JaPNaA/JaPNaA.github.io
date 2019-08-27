@@ -15,7 +15,7 @@ import IWithLocation from "../../../components/contentMan/IWithLocation";
 import V1Or2Card from "../../../components/contentMan/V1Or2Card";
 import IV1Card from "../../../types/project/v1/IV1Card";
 import { V2Project } from "../../../types/project/v2/V2Types";
-import isV2Project from "../../../utils/isV2Project";
+import isV2Project from "../../../utils/v2Project/isV2Project";
 
 class ProjectsGrid extends Widget {
     protected elm: HTMLDivElement;

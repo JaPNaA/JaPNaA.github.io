@@ -7,7 +7,7 @@ import { getAllYearFiles } from "../utils/getAllYearFiles";
 import { getV1InfoJSONRange } from "../utils/getV1InfoJSONRange";
 import { getV2ProjectListingRange } from "../utils/getV2ProjectListingRange";
 import { V2ProjectListing } from "../../../src/types/project/v2/V2Types";
-import isV2ProjectListing from "../../../src/utils/isV2ProjectListing";
+import isV2ProjectListing from "../../../src/utils/v2Project/isV2ProjectListing";
 
 let minYear: null | number = null;
 let maxYear: null | number = null;
