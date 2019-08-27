@@ -26,6 +26,10 @@ class ProjectV1CardCard extends ProjectCardCard<IV1Card> {
     private useStyles() {
         if (this.card.style) {
             this.cardElm.style.cssText = this.card.style;
+
+            if (this.cardElm.style.backgroundColor && !this.cardElm.style.color) {
+                this.cardElm.classList.add("textMustBeBlack");
+            }
         }
     }
 }

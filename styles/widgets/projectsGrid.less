@@ -7,6 +7,8 @@
     @easeFastOutSlowIn: cubic-bezier(0.4, 0, 0.2, 1);
     @transitionTime: 0.3s;
 
+    background-color: $$background-color-darkened;
+
     .projectCard {
         @media only screen and (max-width: 800px) {
             padding: 2%;
@@ -36,6 +38,10 @@
 
         box-shadow: @box-shadow-6dp;
         transition: box-shadow @transitionTime @easeFastOutSlowIn;
+
+        &.textMustBeBlack {
+            color: $$color-black;
+        }
 
         &:focus {
             outline: 4px solid @theme-color-blue;
@@ -114,6 +120,10 @@
                 transition: height @transitionTime @easeFastOutSlowIn,
                     opacity @transitionTime @easeFastOutSlowIn;
             }
+        }
+
+        &.textMustBeBlack .title {
+            color: $$color-black-dark;
         }
 
         &.mouseover .textContainer,
