@@ -12,12 +12,12 @@ class URLRestorer {
         this._canRestore = false;
     }
 
-    public async fromURL(app: IApp, url: string): Promise<void> {
+    public async fromURL(app: IApp, url: string, state?: AppState): Promise<void> {
         const urlParsed = parseAppStateURL(url);
         if (!urlParsed) { return; }
 
         urlParsed.directURL = url;
-        await this.view(app, urlParsed);
+        await this.view(app, state || urlParsed);
 
         if (!this.restored && app.view404) {
             await app.views.open(app.view404);

@@ -11,6 +11,7 @@ class URLController {
     private initalSearch: string;
     private initalURL: string;
     private initalHash: string;
+    private initalState: string;
 
     private stateEmpty: boolean;
     private siteTitle: string;
@@ -25,12 +26,20 @@ class URLController {
         this.initalSearch = location.search;
         this.initalHash = location.hash;
         this.initalURL = location.href;
+        this.initalState = history.state;
 
         this.setToOldURL();
     }
 
     public restoreFromRedirect(app: IApp): Promise<void> {
-        return this.restore.fromURL(app, this.initalURL);
+        let state: AppState | undefined = undefined;
+        try {
+            state = JSON.parse(this.initalState);
+        } catch (err) {
+            console.warn("Failed to get state", err);
+        }
+
+        return this.restore.fromURL(app, this.initalURL, state);
     }
 
     public setTitle(title: string) {
@@ -83,14 +92,19 @@ class URLController {
         if (!siteConfig.isAtRoot) { return; }
         const urlparams = new URLSearchParams(this.initalSearch);
         const initalURL = urlparams.get("u");
+        const state = urlparams.get("s");
+
+        if (state) {
+            this.initalState = state;
+        }
 
         if (urlparams.get("fromredirect") === '1' && initalURL) {
             this.initalURL = initalURL;
             this.restore._canRestore = true;
-            history.replaceState(null, this.siteTitle, initalURL);
+            history.replaceState(state, this.siteTitle, initalURL);
         } else if (this.initalHash) {
             this.restore._canRestore = true;
-            history.replaceState(null, this.siteTitle, "/" + this.initalHash);
+            history.replaceState(state, this.siteTitle, "/" + this.initalHash);
         }
     }
 

@@ -37,9 +37,11 @@ abstract class MainApp extends BaseApp {
 
     private addEventHandlers(): void {
         this.resizeHandler = this.resizeHandler.bind(this);
-        this.resizeWatcher.onResize(this.resizeHandler);
         this.keydownHandler = this.keydownHandler.bind(this);
+        this.beforeunloadHandler = this.beforeunloadHandler.bind(this);
+        this.resizeWatcher.onResize(this.resizeHandler);
         addEventListener("keydown", this.keydownHandler);
+        addEventListener("beforeunload", this.beforeunloadHandler);
     }
 
     private resizeHandler(newSize: Vec2): void {
@@ -50,6 +52,10 @@ abstract class MainApp extends BaseApp {
 
     private keydownHandler(event: KeyboardEvent): void {
         this.events.dispatchKeydown(event);
+    }
+
+    private beforeunloadHandler(): void {
+        this.url.update();
     }
 
     private async createSplashScreen(): Promise<void> {

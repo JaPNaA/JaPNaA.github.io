@@ -36,7 +36,7 @@
     <code> 404 noredirection </code>
 
     <script>
-        location.replace("/?u=" + encodeURIComponent(location.href) + "&fromredirect=1");
+        location.replace("/?u=" + encodeURIComponent(location.href) + "&s=" + encodeURIComponent(history.state) + "&fromredirect=1");
     </script>
 </body>
 
