@@ -109,25 +109,29 @@ class Menu extends View {
         return hr;
     }
 
-    private createButtonThatOpens(viewName: string, label: string): HTMLDivElement {
-        const button = document.createElement("div");
-        button.classList.add("viewButton");
+    private createButtonThatOpens(viewName: string, label: string): HTMLAnchorElement {
+        const anchor = document.createElement("a");
+        anchor.classList.add("viewButton");
+        anchor.href = siteConfig.path.base + viewName.toLowerCase();
+
         const labelElm = document.createElement("div");
         labelElm.classList.add("label");
         labelElm.innerText = label;
 
         if (this.isTopViewA(viewName)) {
-            button.classList.add("active");
-            button.appendChild(this.createActiveCircle());
+            anchor.classList.add("active");
+            anchor.appendChild(this.createActiveCircle());
         }
 
-        button.appendChild(labelElm);
+        anchor.appendChild(labelElm);
 
-        button.addEventListener("click", () => {
+        anchor.addEventListener("click", e => {
+            if (e.ctrlKey || e.shiftKey || e.altKey) { return; }
+            e.preventDefault();
             this.app.views.switchAndInit(viewName);
         });
 
-        return button;
+        return anchor;
     }
 
     private createSettingsWidget(): HTMLDivElement {
