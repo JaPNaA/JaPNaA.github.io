@@ -172,13 +172,8 @@ class HexagonsTitle extends Widget {
     private createGradient(): CanvasGradient {
         // BUG: createGradient is called *after* drawing when resizing
         const gradient: CanvasGradient = this.renderer.getContext().createLinearGradient(0, 0, 0, this.height);
-        if (siteConfig.settings.darkMode) {
-            gradient.addColorStop(0, "#202020");
-            gradient.addColorStop(1, "#202020");
-        } else {
-            gradient.addColorStop(0, "#c2ffe3");
-            gradient.addColorStop(1, "#ffffff");
-        }
+        gradient.addColorStop(0, "rgba(0, 255, 138, 0.239)");
+        gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         return gradient;
     }
 

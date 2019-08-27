@@ -27,6 +27,10 @@ class Logo {
         const imgWidth = this.img.width * scale;
         const imgHeight = this.img.height * scale;
 
+        X.save();
+        if (siteConfig.settings.darkMode) {
+            X.filter = "invert(1)";
+        }
         X.drawImage(
             this.img, // 0, 0, this.img.width, this.img.height,
             centerX - imgWidth / 2,
@@ -34,6 +38,7 @@ class Logo {
             imgWidth,
             imgHeight
         );
+        X.restore();
     }
 }
 
