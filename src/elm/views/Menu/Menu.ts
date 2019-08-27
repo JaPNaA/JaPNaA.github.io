@@ -8,6 +8,7 @@ import siteConfig from "../../../SiteConfig";
 import AppState from "../../../core/types/AppState";
 import SiteSettingsWidget from "../../widgets/Settings/Settings";
 import Widget from "../../../core/widget/Widget";
+import resolveUrl from "../../../utils/resolveUrl";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -112,7 +113,7 @@ class Menu extends View {
     private createButtonThatOpens(viewName: string, label: string): HTMLAnchorElement {
         const anchor = document.createElement("a");
         anchor.classList.add("viewButton");
-        anchor.href = siteConfig.path.base + viewName.toLowerCase();
+        anchor.href = resolveUrl("/" + viewName.toLowerCase());
 
         const labelElm = document.createElement("div");
         labelElm.classList.add("label");

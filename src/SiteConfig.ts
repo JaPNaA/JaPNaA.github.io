@@ -14,6 +14,7 @@ class SiteConfig {
 
     public readonly isAtRoot: boolean;
     public readonly path = {
+        /** With / at end */
         base: "",
 
         img: {
@@ -37,7 +38,9 @@ class SiteConfig {
 
         repo: {
             notRelative: true,
+            /** With / at end */
             thingy: "/Thingy/",
+            /** Requires #year after, no / */
             thingy_: "/Thingy_",
             linksIndex: "index.json"
         },

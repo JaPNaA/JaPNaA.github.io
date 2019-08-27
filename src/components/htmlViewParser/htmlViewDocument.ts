@@ -12,6 +12,7 @@ import LinkHandlingOptions from "./types/linkHandlingOptions";
 import openFrameView from "../../utils/openFrameView";
 import IHTMLViewDocument from "./iHTMLViewDocument";
 import Widget from "../../core/widget/Widget";
+import resolveUrl from "../../utils/resolveUrl";
 
 // TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 
@@ -77,7 +78,13 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
         const anchors = this.elm.getElementsByTagName("a");
         for (let i = 0; i < anchors.length; i++) {
-            anchors[i].addEventListener("click", e =>
+            const anchor = anchors[i];
+            const href = anchor.getAttribute("href");
+            if (!href) { continue; }
+
+            anchor.href = resolveUrl(href);
+
+            anchor.addEventListener("click", e =>
                 this.anchorClickHandler(anchors[i], e)
             );
         }
