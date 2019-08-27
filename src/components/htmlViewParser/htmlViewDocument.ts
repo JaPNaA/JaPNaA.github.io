@@ -193,13 +193,25 @@ class HTMLViewDocument implements IHTMLViewDocument {
     }
 
     private getWidgetArguments(elm: Element): any[] {
-        const args = elm.getAttribute("args");
-        if (!args) { return []; }
+        const argsAttr = elm.getAttribute("args");
+        const appArgAttr = elm.getAttribute("app-arg");
+        const args: any[] = [];
+
+        if (appArgAttr !== null) {
+            args.push(this.app);
+        }
+
+        if (!argsAttr) { return args; }
 
         try {
-            return JSON.parse("[" + args + "]");
+            const parsed = JSON.parse("[" + argsAttr + "]");
+            for (const parsedArg of parsed) {
+                args.push(parsedArg);
+            }
+            return args;
         } catch {
-            return [args];
+            args.push(argsAttr);
+            return args;
         }
     }
 }
