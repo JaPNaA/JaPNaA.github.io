@@ -1,23 +1,21 @@
 import "../../../../styles/components/cardV2.less";
 
-import Widget from "../../../core/widget/Widget";
 import { V2Project } from "../../../types/project/v2/V2Types";
-import WidgetMap from "../../../core/widget/WidgetMap";
-import IApp from "../../../core/types/app/IApp";
+import applyV2ProjectBackground from "../../../utils/v2Project/applyV2ProjectBackground";
 import ContentMan from "../../contentMan/contentMan";
-import HexagonsCorner from "./hexagons/HexagonsCorner";
-import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
-import isCSSPropertyImage from "../../../utils/css/isCSSPropertyImage";
-import siteConfig from "../../../SiteConfig";
-import getHueFromRGB from "../../../utils/color/getHueFromRGB";
-import extractRGBFromCSSrgbFunction from "../../../utils/color/extractRGBFromCSSrgbFunction";
-import isRGBColorDark from "../../../utils/color/isRGBColorDark";
 import darkenRGB from "../../../utils/color/darkenRGB";
-import rgbToString from "../../../utils/color/toRGBString";
-import prependCSSUrl from "../../../utils/css/prependCSSUrl";
-import lightenRGB from "../../../utils/color/lightenRGB";
-import ViewMap from "../../../core/view/ViewMap";
+import extractRGBFromCSSrgbFunction from "../../../utils/color/extractRGBFromCSSrgbFunction";
+import getHueFromRGB from "../../../utils/color/getHueFromRGB";
+import HexagonsCorner from "./hexagons/HexagonsCorner";
+import IApp from "../../../core/types/app/IApp";
 import IImageView from "../../../elm/views/ImageView/IImageView";
+import isRGBColorDark from "../../../utils/color/isRGBColorDark";
+import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
+import rgbToString from "../../../utils/color/toRGBString";
+import siteConfig from "../../../SiteConfig";
+import ViewMap from "../../../core/view/ViewMap";
+import Widget from "../../../core/widget/Widget";
+import WidgetMap from "../../../core/widget/WidgetMap";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -165,18 +163,7 @@ class ProjectJSONv2Elm extends Widget {
     }
 
     private applyStyles(): void {
-        if (this.project.head.background) {
-            // loop backwards, so the first properties that work stays
-            for (let i = this.project.head.background.length - 1; i >= 0; i--) {
-                const background = this.project.head.background[i];
-                if (isCSSPropertyImage(background)) {
-                    this.backgroundImage.style.backgroundImage =
-                        prependCSSUrl(siteConfig.path.thingy, background);
-                } else {
-                    this.backgroundImage.style.backgroundColor = background;
-                }
-            }
-        }
+        applyV2ProjectBackground(this.project, this.backgroundImage);
 
         if (this.project.head.textColor) {
             this.elm.style.color = this.project.head.textColor;
