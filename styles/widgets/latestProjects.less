@@ -1,0 +1,33 @@
+@import "../variables.less";
+
+.widget.latestProjects {
+    .latestProjectCard {
+        display: flex;
+        align-items: center;
+
+        height: 64px;
+        margin-bottom: 8px;
+
+        background-size: cover;
+        background-position: center;
+
+        cursor: pointer;
+
+        &.heroTransitionIn {
+            transition: @hero-transition-time @hero-zoom-easing;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .name {
+            margin-left: 16px;
+        }
+
+        &.heroTransitionIn .name {
+            opacity: 0;
+            transition: @hero-transition-time ease opacity;
+        }
+    }
+}

@@ -1,15 +1,18 @@
+import "../../../../styles/widgets/latestProjects.less";
+
+import { V2Project } from "../../../types/project/v2/V2Types";
 import ContentMan from "../../../components/contentMan/contentMan";
 import IApp from "../../../core/types/app/IApp";
-import isV2Project from "../../../utils/isV2Project";
+import isV2Project from "../../../utils/v2Project/isV2Project";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
+import LatestProjectCard from "./LatestProjectCard";
 import V1Or2Project from "../../../components/contentMan/V1Or2Project";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
-import LatestProjectCard from "./LatestProjectCard";
-import { V2Project } from "../../../types/project/v2/V2Types";
 
 class LatestProjects extends Widget {
-    public static widgetName = "LatestProjects";
+    public static widgetName = "latestProjects";
+    public widgetName = LatestProjects.widgetName;
 
     protected elm: HTMLDivElement;
 
