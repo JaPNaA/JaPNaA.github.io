@@ -1,33 +1,40 @@
 @import "../variables.less";
 
 .widget.latestProjects {
-    .latestProjectCard {
-        display: flex;
-        align-items: center;
+    .project {
+        @height: 64px;
 
-        height: 64px;
+        height: @height;
         margin-bottom: 8px;
 
-        background-size: cover;
-        background-position: center;
+        .latestProjectCard {
+            display: flex;
+            align-items: center;
 
-        cursor: pointer;
+            height: @height;
 
-        &.heroTransitionIn {
-            transition: @hero-transition-time @hero-zoom-easing;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-        }
+            background-size: cover;
+            background-position: center;
 
-        .name {
-            margin-left: 16px;
-        }
+            cursor: pointer;
 
-        &.heroTransitionIn .name {
-            opacity: 0;
-            transition: @hero-transition-time ease opacity;
+            &.heroTransitionIn {
+                transition: @hero-transition-time @hero-zoom-easing;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+            }
+
+            .name {
+                margin-left: 16px;
+                color: $$color-black;
+            }
+
+            &.heroTransitionIn .name {
+                opacity: 0;
+                transition: @hero-transition-time ease opacity;
+            }
         }
     }
 }
