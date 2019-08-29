@@ -10,6 +10,8 @@ const scriptsConfig = require("./webpack/webpack.scripts.config");
 const mode = process.argv[2] && process.argv[2].toLowerCase();
 const watch = process.argv[3] && process.argv[3].toLowerCase()[0] === 'w';
 
+console.log("Node version: " + process.version);
+
 if (mode === "dev") {
     const devConfig = require("./webpack/webpack.dev.config");
     startWebpack(devConfig, "development");

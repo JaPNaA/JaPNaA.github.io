@@ -29,12 +29,13 @@ export default function heroViewOpenTransition<T extends View>(
 
     requestAnimationFrame(() => requestAnimationFrame(async () => {
         const cssTransitionEnd = wait(siteConfig.heroTransitionInTime);
-        const viewClass = await getViewClassFromDescriptor(viewDescriptor);
-        const view = await createView(app, viewClass, newViewState);
 
-        view.setup();
         resetElementPosition(zoomTargetElm);
         zoomTargetElm.classList.add("heroTransitionIn");
+
+        const viewClass = await getViewClassFromDescriptor(viewDescriptor);
+        const view = await createView(app, viewClass, newViewState);
+        view.setup();
 
         await siteResources.nextDone();
         await cssTransitionEnd;

@@ -4,6 +4,7 @@ import { V2Project } from "../../../types/project/v2/V2Types";
 import applyV2ProjectBackground from "../../../utils/v2Project/applyV2ProjectBackground";
 import heroViewOpenTransition from "../../../utils/heroViewOpenTransition";
 import IProjectInfoView from "../../views/ProjectInfo/IProjectInfo";
+import siteResources from "../../../core/siteResources";
 
 class LatestProjectCard {
     private elm: HTMLDivElement;
@@ -46,7 +47,10 @@ class LatestProjectCard {
     }
 
     private applyBackground() {
-        applyV2ProjectBackground(this.project.project, this.elm);
+        const src = applyV2ProjectBackground(this.project.project, this.elm);
+        if (src) {
+            siteResources.loadImage(src);
+        }
     }
 
     private addEventHandlers(): void {
