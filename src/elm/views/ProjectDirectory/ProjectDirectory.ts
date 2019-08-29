@@ -8,7 +8,7 @@ import IApp from "../../../core/types/app/IApp";
 import IProjectInfoView from "../ProjectInfo/IProjectInfo";
 import isProjectV1Card from "../../../utils/isProjectCard";
 import isV2Project from "../../../utils/v2Project/isV2Project";
-import openFrameView from "../../../utils/openFrameView";
+import openFrameView from "../../../utils/view/openFrameView";
 import openPopup from "../../../core/utils/open/openPopup";
 import removeChildren from "../../../utils/removeChildren";
 import siteConfig from "../../../SiteConfig";

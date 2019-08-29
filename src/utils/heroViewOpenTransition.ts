@@ -28,7 +28,7 @@ export default function heroViewOpenTransition<T extends View>(
     fixElementPosition(zoomTargetElm);
 
     requestAnimationFrame(() => requestAnimationFrame(async () => {
-        const cssTransitionEnd = wait(siteConfig.heroTransitionInTime);
+        const cssTransitionEnd = wait(siteConfig.cssVars.heroTransitionInTime);
 
         resetElementPosition(zoomTargetElm);
         zoomTargetElm.classList.add("heroTransitionIn");

@@ -7,11 +7,11 @@ import V1DisplayImg from "../../../types/project/v1/V1DisplayImg";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
-import IImageView from "../../../elm/views/ImageView/IImageView";
 import getFirstDisplayImgSrc from "./getFirstDisplayImg";
 import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
+import openImageView from "../../../utils/view/openImageView";
 
 class CardJSONv1Elm extends Widget {
     public static widgetName = "cardJSONv1Elm";
@@ -220,14 +220,7 @@ class CardJSONv1Elm extends Widget {
     }
 
     private addImageClickHandler(image: HTMLImageElement): void {
-        image.addEventListener("click", async () => {
-            const imageView = await this.app.top().views.open("ImageView") as IImageView;
-            const bbox = image.getBoundingClientRect();
-
-            imageView.setInitalTransform(bbox.left, bbox.top, bbox.width / image.naturalWidth);
-            imageView.setImageSrc(image.src);
-            imageView.transitionIn();
-        });
+        image.addEventListener("click", () => openImageView(this.app, image));
     }
 }
 

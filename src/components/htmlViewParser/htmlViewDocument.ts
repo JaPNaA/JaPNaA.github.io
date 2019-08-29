@@ -9,10 +9,12 @@ import openNoopener from "../../core/utils/open/openNoopener";
 import createAppState from "../../core/utils/createAppState";
 import WidgetFactory from "../../core/widget/WidgetFactory";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
-import openFrameView from "../../utils/openFrameView";
+import openFrameView from "../../utils/view/openFrameView";
 import IHTMLViewDocument from "./iHTMLViewDocument";
 import Widget from "../../core/widget/Widget";
 import resolveUrl from "../../utils/resolveUrl";
+import removeChildren from "../../utils/removeChildren";
+import htmlCollectionToArray from "../../utils/convertToArray";
 
 // TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 
@@ -202,10 +204,16 @@ class HTMLViewDocument implements IHTMLViewDocument {
     private getWidgetArguments(elm: Element): any[] {
         const argsAttr = elm.getAttribute("args");
         const appArgAttr = elm.getAttribute("app-arg");
+        const childrenArgAttr = elm.getAttribute("children-arg");
         const args: any[] = [];
 
         if (appArgAttr !== null) {
             args.push(this.app);
+        }
+
+        if (childrenArgAttr !== null) {
+            args.push(htmlCollectionToArray(elm.children));
+            removeChildren(elm);
         }
 
         if (!argsAttr) { return args; }

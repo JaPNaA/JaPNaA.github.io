@@ -1,6 +1,6 @@
 import ProjectCard from "./ProjectCard";
 import IApp from "../../../../core/types/app/IApp";
-import openFrameView from "../../../../utils/openFrameView";
+import openFrameView from "../../../../utils/view/openFrameView";
 import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
 
 class ProjectLinkCard extends ProjectCard {

@@ -59,11 +59,15 @@ class SiteConfig {
         fadeInSpeed: 0.2
     };
 
+    public readonly cssVars = {
+        heroTransitionInTime: 800,
+        longTextContainerMaxWidth: 760
+    };
+
     public readonly localStorageSettingsKey = "JaPNaASiteSettings";
     public settings = new SiteSettings();
     
     public readonly hexagonBaseHue = 149;
-    public readonly heroTransitionInTime = 800;
 
     public isHandheld: boolean;
     public isMobile: boolean;

@@ -8,7 +8,6 @@ import extractRGBFromCSSrgbFunction from "../../../utils/color/extractRGBFromCSS
 import getHueFromRGB from "../../../utils/color/getHueFromRGB";
 import HexagonsCorner from "./hexagons/HexagonsCorner";
 import IApp from "../../../core/types/app/IApp";
-import IImageView from "../../../elm/views/ImageView/IImageView";
 import isRGBColorDark from "../../../utils/color/isRGBColorDark";
 import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
 import rgbToString from "../../../utils/color/toRGBString";
@@ -16,6 +15,7 @@ import siteConfig from "../../../SiteConfig";
 import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
+import openImageView from "../../../utils/view/openImageView";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -208,15 +208,9 @@ class ProjectJSONv2Elm extends Widget {
     }
 
     private async clickHandler(e: MouseEvent): Promise<void> {
-        const img = e.target;
-        if (!(img instanceof HTMLImageElement)) { return; }
-
-        const imageView = await this.app.top().views.open("ImageView") as IImageView;
-        const bbox = img.getBoundingClientRect();
-
-        imageView.setInitalTransform(bbox.left, bbox.top, bbox.width / img.naturalWidth);
-        imageView.setImageSrc(img.src);
-        imageView.transitionIn();
+        if (e.target instanceof HTMLImageElement) {
+            openImageView(this.app, e.target);
+        }
     }
 
     private resizeHandler(): void {
