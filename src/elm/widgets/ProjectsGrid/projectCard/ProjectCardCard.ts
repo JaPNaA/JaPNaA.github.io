@@ -3,10 +3,8 @@ import IApp from "../../../../core/types/app/IApp";
 import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
 import siteConfig from "../../../../SiteConfig";
 import siteResources from "../../../../core/siteResources";
-import wait from "../../../../utils/wait";
-import ViewMap from "../../../../core/view/ViewMap";
-import createAppState from "../../../../core/utils/createAppState";
 import IProjectInfoView from "../../../views/ProjectInfo/IProjectInfo";
+import heroViewOpenTransition from "../../../../utils/heroViewOpenTransition";
 
 abstract class ProjectCardCard<T> extends ProjectCard {
     public width: number;
@@ -74,35 +72,14 @@ abstract class ProjectCardCard<T> extends ProjectCard {
     }
 
     protected linkClickHandler(): void {
-        const bbox = this.cardElm.getBoundingClientRect();
-
-        this.cardElm.style.position = "fixed";
-        this.cardElm.style.top = bbox.top + "px";
-        this.cardElm.style.left = bbox.left + "px";
-        this.cardElm.style.width = bbox.width + "px";
-        this.cardElm.style.height = bbox.height + "px";
-
-        requestAnimationFrame(() => requestAnimationFrame(async () => {
-            const cssTransitionEnd = wait(ProjectCardCard.transitionInTime);
-
-            this.cardElm.classList.add("transitionIn");
-            this.cardElm.style.top = "";
-            this.cardElm.style.left = "";
-            this.cardElm.style.width = "";
-            this.cardElm.style.height = "";
-
-            const ProjectInfo = await ViewMap.get("ProjectInfo");
-            const projectInfo = new ProjectInfo(this.app, createAppState(ProjectInfo, this.year + "." + this.index)) as IProjectInfoView;
-            projectInfo.setup();
-
-            await siteResources.nextDone();
-            await cssTransitionEnd;
-
-            this.app.views.add(projectInfo);
-            projectInfo.transitionFadeIn().then(() =>
-                this.app.views.closeAllViewsExcept(projectInfo)
-            );
-        }));
+        heroViewOpenTransition<IProjectInfoView>(
+            this.app,
+            this.cardElm,
+            ProjectCardCard.transitionInTime,
+            "ProjectInfo",
+            this.year + "." + this.index,
+            view => view.transitionFadeIn()
+        );
     }
 }
 
