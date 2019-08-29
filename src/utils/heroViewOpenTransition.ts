@@ -7,6 +7,7 @@ import ViewMap from "../core/view/ViewMap";
 import ViewClass from "../core/types/view/ViewClass";
 import createAppState from "../core/utils/createAppState";
 import View from "../core/view/View";
+import siteConfig from "../SiteConfig";
 
 /**
  * Zoom in on an element and open a view
@@ -20,7 +21,6 @@ import View from "../core/view/View";
 export default function heroViewOpenTransition<T extends View>(
     app: IApp,
     zoomTargetElm: HTMLElement,
-    transitionTime: number,
     viewDescriptor: ViewDescriptor,
     newViewState: string | AppState,
     fadeInNewViewFn: (view: T) => Promise<void>
@@ -28,13 +28,13 @@ export default function heroViewOpenTransition<T extends View>(
     fixElementPosition(zoomTargetElm);
 
     requestAnimationFrame(() => requestAnimationFrame(async () => {
-        const cssTransitionEnd = wait(transitionTime);
+        const cssTransitionEnd = wait(siteConfig.heroTransitionInTime);
         const viewClass = await getViewClassFromDescriptor(viewDescriptor);
         const view = await createView(app, viewClass, newViewState);
 
         view.setup();
         resetElementPosition(zoomTargetElm);
-        zoomTargetElm.classList.add("transitionIn");
+        zoomTargetElm.classList.add("heroTransitionIn");
 
         await siteResources.nextDone();
         await cssTransitionEnd;

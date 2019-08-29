@@ -61,8 +61,9 @@ class SiteConfig {
 
     public readonly localStorageSettingsKey = "JaPNaASiteSettings";
     public settings = new SiteSettings();
-
+    
     public readonly hexagonBaseHue = 149;
+    public readonly heroTransitionInTime = 800;
 
     public isHandheld: boolean;
     public isMobile: boolean;

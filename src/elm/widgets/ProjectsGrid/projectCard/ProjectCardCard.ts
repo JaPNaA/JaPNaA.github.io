@@ -14,7 +14,6 @@ abstract class ProjectCardCard<T> extends ProjectCard {
     protected cardTitle: string;
     protected cardDescription: string;
 
-    private static readonly transitionInTime = 800;
     private static size: number = 20;
 
     private year: number;
@@ -22,6 +21,8 @@ abstract class ProjectCardCard<T> extends ProjectCard {
 
     private backgroundImage?: string;
     private backgroundImageSrc?: string;
+
+    private cardLinkClicked: boolean;
 
     constructor(app: IApp, card: T, year: number, index: number) {
         super(app);
@@ -35,6 +36,8 @@ abstract class ProjectCardCard<T> extends ProjectCard {
         this.cardTitle = addZeroWidthSpacesBetweenCamelCaseWords(this.getCardTitle(card));
         this.cardDescription = this.getCardDescription(card);
         this.href = "/projectinfo/" + this.year + "." + this.index;
+
+        this.cardLinkClicked = false;
     }
 
     public async load(): Promise<void> {
@@ -72,10 +75,12 @@ abstract class ProjectCardCard<T> extends ProjectCard {
     }
 
     protected linkClickHandler(): void {
+        if (this.cardLinkClicked) { return; }
+        this.cardLinkClicked = true;
+
         heroViewOpenTransition<IProjectInfoView>(
             this.app,
             this.cardElm,
-            ProjectCardCard.transitionInTime,
             "ProjectInfo",
             this.year + "." + this.index,
             view => view.transitionFadeIn()
