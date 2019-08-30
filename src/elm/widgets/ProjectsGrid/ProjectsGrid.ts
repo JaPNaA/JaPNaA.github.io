@@ -129,7 +129,6 @@ class ProjectsGrid extends Widget {
             const state = await this.cardGenerator.next();
             item = state.value;
             done = state.done;
-            console.log(item);
         } while (
             !isWithLocation(item) &&
             !isProjectLink(item) &&

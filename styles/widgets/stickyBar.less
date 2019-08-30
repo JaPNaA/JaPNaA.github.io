@@ -9,12 +9,13 @@
     left: 0px;
     width: 100%;
     height: @height;
+    z-index: 1;
 
     .bar:extend(.widget.stickyBar) {
         background-color: @theme-color;
         background-image: @header-gradient;
         z-index: 1;
-        box-shadow: @box-shadow-8dp;
+        box-shadow: @box-shadow-12dp;
     }
 
     &.poly .bar {

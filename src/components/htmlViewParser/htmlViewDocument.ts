@@ -87,7 +87,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
             anchor.href = resolveUrl(href);
 
             anchor.addEventListener("click", e =>
-                this.anchorClickHandler(anchors[i], e)
+                this.anchorClickHandler(anchor, e)
             );
         }
     }
