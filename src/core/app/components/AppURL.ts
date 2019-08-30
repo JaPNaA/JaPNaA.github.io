@@ -92,7 +92,6 @@ class AppURL implements IAppURL {
         const state = event.state && JSON.parse(event.state);
 
         this.frozen = true;
-        this.app.views.closeAllViews();
         this.controller.currentURL = newURL;
 
         if (state) {
