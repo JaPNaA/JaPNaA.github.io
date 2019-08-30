@@ -1,9 +1,9 @@
-import ProjectCard from "../ProjectCard";
+import BaseProjectCard from "../BaseProjectCard";
 import IApp from "../../../../core/types/app/IApp";
 import openFrameView from "../../../../utils/view/openFrameView";
 import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
 
-class ProjectLinkCard extends ProjectCard {
+class ProjectLinkCard extends BaseProjectCard {
     public width: number;
     public height: number;
     protected cardTitle: string;

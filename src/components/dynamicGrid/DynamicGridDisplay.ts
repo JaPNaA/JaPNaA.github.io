@@ -1,8 +1,8 @@
-import IRectSetable from "./types/IRectSetable";
+import IPositionable from "./types/IPositionable";
 import DynamicGridCore from "./DynamicGridCore";
 import { Rect } from "../../types/math/Rect";
 
-class DynamicGridDisplay<T extends IRectSetable> extends DynamicGridCore<T> {
+class DynamicGridDisplay<T extends IPositionable> extends DynamicGridCore<T> {
     private rowHeight: number;
     private columnWidth: number;
 
