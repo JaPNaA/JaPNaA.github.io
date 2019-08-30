@@ -6,6 +6,7 @@ import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
 import siteConfig from "../../../SiteConfig";
 import AppState from "../../../core/types/AppState";
+import SaveScroll from "../../../components/viewPrivateData/SaveScroll";
 
 class About extends View {
     protected elm: HTMLElement;
@@ -14,18 +15,23 @@ class About extends View {
     public isFullPage = true;
 
     private contentContainer: HTMLDivElement;
+    private saveScroll: SaveScroll;
 
     constructor(app: IApp, state: AppState) {
         super(app, state);
         this.elm = document.createElement("div");
         this.contentContainer = this.createContentContainer();
         this.elm.appendChild(this.contentContainer);
+
+        this.viewComponents.push(
+            this.saveScroll = new SaveScroll(this.privateData, this.elm)
+        );
     }
 
     public setup() {
         super.setup();
         const view = new HTMLView(this.app, siteConfig.path.view.about);
-        view.setup();
+        view.setup().then(() => this.saveScroll.apply());
         view.appendTo(this.contentContainer);
     }
 
