@@ -1,8 +1,8 @@
 .widget.MenuButton {
-    @margin-vertical: 16px;
-    @margin-horizontal: 16px;
-    @margin-horizontal-scrollbar: 32px;
-    @size: 64px - @margin-vertical * 2;
+    @margin-vertical: @sticky-bar-padding;
+    @margin-horizontal: @sticky-bar-padding;
+    @margin-horizontal-scrollbar: @margin-horizontal + 16px;
+    @size: @sticky-bar-height - @margin-vertical * 2;
     @icon-size: 20px;
 
     position: fixed;

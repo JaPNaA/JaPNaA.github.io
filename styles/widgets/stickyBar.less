@@ -1,14 +1,12 @@
 @import "../variables.less";
 
 .widget.stickyBar {
-    @height: 64px;
-
     position: -webkit-sticky;
     position: sticky;
     top: 0px;
     left: 0px;
     width: 100%;
-    height: @height;
+    height: @sticky-bar-height;
     z-index: 1;
 
     .bar:extend(.widget.stickyBar) {
@@ -27,12 +25,11 @@
     }
 
     .text {
-        @padding: 16px;
-        @text-height: @height - @padding * 2;
+        @text-height: @sticky-bar-height - @sticky-bar-padding * 2;
 
         color: $$color-white-bright;
         line-height: @text-height;
-        padding: @padding;
+        padding: @sticky-bar-padding;
         margin-left: 8px;
 
         font-size: 36px;
