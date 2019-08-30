@@ -9,6 +9,7 @@ import LatestProjectCard from "./LatestProjectCard";
 import V1Or2Project from "../../../components/contentMan/V1Or2Project";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
+import resolveUrl from "../../../utils/resolveUrl";
 
 class LatestProjects extends Widget {
     public static widgetName = "latestProjects";
@@ -18,6 +19,7 @@ class LatestProjects extends Widget {
 
     private latestProjectsList: HTMLDivElement;
     private heading: HTMLHeadingElement;
+    private viewMoreElm: HTMLDivElement;
 
     private app: IApp;
     private gen: AsyncIterableIterator<IWithLocation<V1Or2Project>>;
@@ -30,6 +32,7 @@ class LatestProjects extends Widget {
         this.elm = document.createElement("div");
         this.latestProjectsList = this.createLatestProjectsListElm();
         this.heading = this.createHeading();
+        this.viewMoreElm = this.createViewMoreElm();
 
         this.gen = ContentMan.cardGeneratorLatestWithLocation();
         this.latestProjectCardCreated = false;
@@ -41,6 +44,7 @@ class LatestProjects extends Widget {
         this.setupLatestProjects();
         this.elm.appendChild(this.heading);
         this.elm.appendChild(this.latestProjectsList);
+        this.elm.appendChild(this.viewMoreElm);
     }
 
     private createLatestProjectsListElm(): HTMLDivElement {
@@ -54,6 +58,20 @@ class LatestProjects extends Widget {
         heading.classList.add("heading");
         heading.innerText = "My Latest Projects";
         return heading;
+    }
+
+    private createViewMoreElm(): HTMLDivElement {
+        const div = document.createElement("div");
+        div.classList.add("viewMore");
+
+        const a = document.createElement("a");
+        a.classList.add("flatButton");
+        a.href = resolveUrl("/browseprojects");
+        a.innerText = "View More Projects";
+        a.addEventListener("click", this.onViewMoreClick.bind(this));
+        div.appendChild(a);
+        
+        return div;
     }
 
     private async setupLatestProjects(): Promise<void> {
@@ -80,6 +98,11 @@ class LatestProjects extends Widget {
             elm.innerText = "Unsupported project type. See this error? Please file a bug report!";
             this.latestProjectsList.appendChild(elm);
         }
+    }
+
+    private onViewMoreClick(e: MouseEvent): void {
+        e.preventDefault();
+        this.app.views.switchAndInit("BrowseProjects");
     }
 }
 

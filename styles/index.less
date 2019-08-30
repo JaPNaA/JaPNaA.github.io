@@ -11,9 +11,9 @@ a {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
 
     box-shadow: 0px 0px 0px 0px transparent inset;
+    transition: 0.15s ease box-shadow;
 
     .notMobile &:hover {
-        transition: 0.15s box-shadow ease;
         box-shadow: 0px -1.5px 0px 0px currentColor inset;
     }
 }
@@ -97,4 +97,22 @@ img {
     box-sizing: border-box;
     background-color: $$background-color;
     color: $$color;
+}
+
+.flatButton {
+    text-transform: uppercase;
+    font-weight: bold;
+
+    display: inline-block;
+    padding: 8px 12px;
+
+    transition: 0.15s ease background-color;
+
+    &:hover {
+        background-color: @background-light-gray;
+    }
+}
+
+.notMobile a.flatButton:hover {
+    box-shadow: none;
 }
