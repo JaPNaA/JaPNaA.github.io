@@ -1,3 +1,5 @@
+import "../../../../styles/widgets/projectCard.less";
+
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import isWithLocation from "../../../utils/isProjectCardWithLocation";
