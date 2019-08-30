@@ -41,9 +41,9 @@ export default function heroViewOpenTransition<T extends View>(
         await cssTransitionEnd;
 
         app.views.add(view);
-        fadeInNewViewFn(view as T).then(() => {
+        fadeInNewViewFn(view as T).then(() =>
             app.views.closeAllViewsExcept(view)
-        });
+        );
     }));
 }
 

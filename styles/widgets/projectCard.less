@@ -67,6 +67,12 @@
             transition: transform @transitionTime @easeFastOutSlowIn;
         }
 
+        &.v1.heroTransitionIn .background {
+            background-position: 66% 33%;
+            transition: background-position @transitionTime ease,
+                transform @transitionTime @easeFastOutSlowIn;
+        }
+
         &.mouseover .background,
         &:focus .background {
             transform: scale(1.05);
