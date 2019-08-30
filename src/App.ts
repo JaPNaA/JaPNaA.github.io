@@ -59,7 +59,7 @@ class App extends MainApp {
     private loadFonts(): void {
         const link = document.createElement("link");
         link.rel = "stylesheet";
-        link.href = "https://fonts.googleapis.com/css?family=Share+Tech+Mono|Open+Sans|Roboto";
+        link.href = "https://fonts.googleapis.com/css?family=Roboto:400,500,700|Share+Tech+Mono&display=swap";
         document.head.appendChild(link);
     }
 
