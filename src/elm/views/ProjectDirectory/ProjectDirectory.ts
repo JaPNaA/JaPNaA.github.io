@@ -70,6 +70,10 @@ class ProjectDirectory extends View {
         return this.cleanPath();
     }
 
+    public canScroll(): boolean {
+        return true; // in css -> overflow-y: scroll;
+    }
+
     private createContainer(): HTMLDivElement {
         const container = document.createElement("div");
         container.classList.add("longTextContainer");
