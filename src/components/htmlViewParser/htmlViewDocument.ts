@@ -1,3 +1,5 @@
+import "../../../styles/components/htmlViewDocument.less";
+
 import url from "url";
 import siteConfig from "../../SiteConfig";
 import IApp from "../../core/types/app/IApp";
@@ -182,23 +184,25 @@ class HTMLViewDocument implements IHTMLViewDocument {
     }
 
     private async replaceViewElement(elm: Element, viewName: string): Promise<void> {
+        elm.classList.add("embededView");
+
         const embededApp = new EmbededApp(this.app, elm);
         const stateData = elm.getAttribute("statedata");
         const viewClass = await ViewMap.get(viewName);
         embededApp.setup();
-        elm.classList.add("embededView");
         embededApp.views.open(viewClass, createAppState(viewClass, stateData || undefined));
+        elm.classList.add("loaded");
         this.embededApps.push(embededApp);
     }
 
     private async replaceWidgetElement(elm: Element, widgetName: string): Promise<void> {
+        elm.classList.add("embededWidget");
+
         const widgetClass = await WidgetMap.get(widgetName);
-        WidgetFactory.create(widgetClass, this.getWidgetArguments(elm))
-            .then(widget => {
-                widget.appendTo(elm);
-                elm.classList.add("embededWidget");
-                this.widgets.push(widget);
-            });
+        const widget = await WidgetFactory.create(widgetClass, this.getWidgetArguments(elm));
+        widget.appendTo(elm);
+        this.widgets.push(widget);
+        elm.classList.add("loaded");
     }
 
     private getWidgetArguments(elm: Element): any[] {

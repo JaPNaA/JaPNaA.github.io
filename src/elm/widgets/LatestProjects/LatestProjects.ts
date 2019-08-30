@@ -50,7 +50,7 @@ class LatestProjects extends Widget {
     }
 
     private createHeading(): HTMLHeadingElement {
-        const heading = document.createElement("h2");
+        const heading = document.createElement("h1");
         heading.classList.add("heading");
         heading.innerText = "My Latest Projects";
         return heading;
