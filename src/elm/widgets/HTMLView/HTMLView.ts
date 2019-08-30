@@ -49,6 +49,7 @@ class HTMLView extends Widget {
         const html = await siteResources.loadTextPromise(this.url);
         this.doc = this.parser.parse(html);
         this.doc.appendTo(this.elm);
+        await this.doc.ready();
     }
 
     private writeError(err: Error) {

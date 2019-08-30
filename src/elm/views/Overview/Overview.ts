@@ -46,7 +46,7 @@ class Overview extends View {
             this.hexagonsTitle.setOverSize(0, 128);
         }
         this.hexagonsTitle.registerEventHandlers();
-        
+
         this.saveScroll.setup();
         if (this.saveScroll.hasScrolled()) {
             this.hexagonsTitle.preventTransitionIn();
@@ -107,7 +107,14 @@ class Overview extends View {
         await this.htmlView.setup();
         this.htmlView.appendTo(this.content);
 
+        this.onLoadedHTMLView();
+    }
+
+    private onLoadedHTMLView(): void {
         this.saveScroll.apply();
+        siteResources.nextIdle().then(() =>
+            this.saveScroll.applyScrollDownWithTransition()
+        );
     }
 }
 

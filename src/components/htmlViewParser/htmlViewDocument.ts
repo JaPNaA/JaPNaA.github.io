@@ -29,6 +29,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
     private widgets: Widget[];
 
     private linkHandlingOptions?: LinkHandlingOptions;
+    private replaceElementsPromise?: Promise<void[]>;
 
     constructor(app: IApp, text: string) {
         this.app = app;
@@ -42,6 +43,14 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
     public appendTo(parent: Element): void {
         parent.appendChild(this.elm);
+    }
+
+    public ready(): Promise<any> {
+        if (this.replaceElementsPromise) {
+            return this.replaceElementsPromise;
+        } else {
+            return Promise.resolve();
+        }
     }
 
     public async destory(): Promise<void> {
@@ -100,6 +109,8 @@ class HTMLViewDocument implements IHTMLViewDocument {
         const viewStart = "view:";
         const widgetStart = "widget:";
 
+        const proms: Promise<void>[] = [];
+
         for (let i = 0; i < allElms.length; i++) {
             const elm = allElms[i];
             const tag = elm.tagName.toLowerCase();
@@ -108,12 +119,24 @@ class HTMLViewDocument implements IHTMLViewDocument {
                 const rest = tag.slice(start.length);
 
                 if (rest.startsWith(viewStart)) {
-                    this.replaceViewElement(elm, rest.slice(viewStart.length));
+                    proms.push(
+                        this.replaceViewElement(
+                            elm,
+                            rest.slice(viewStart.length)
+                        )
+                    );
                 } else if (rest.startsWith(widgetStart)) {
-                    this.replaceWidgetElement(elm, rest.slice(widgetStart.length));
+                    proms.push(
+                        this.replaceWidgetElement(
+                            elm,
+                            rest.slice(widgetStart.length)
+                        )
+                    );
                 }
             }
         }
+
+        this.replaceElementsPromise = Promise.all(proms);
     }
 
     private createScriptErrorWarning(): void {
