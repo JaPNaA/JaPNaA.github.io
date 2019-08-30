@@ -1,40 +1,18 @@
 @import "../variables.less";
 
 .widget.latestProjects {
-    .project {
-        @height: 64px;
+    .latestProjectCard {
+        display: inline-block;
 
-        height: @height;
-        margin-bottom: 8px;
+        @media only screen and (max-width: @long-text-container-max-width) {
+            height: 50vw;
+        }
 
-        .latestProjectCard {
-            display: flex;
-            align-items: center;
+        height: @long-text-container-max-width / 2;
+        width: 50%;
 
-            height: @height;
-
-            background-size: cover;
-            background-position: center;
-
-            cursor: pointer;
-
-            &.heroTransitionIn {
-                transition: @hero-transition-time @hero-zoom-easing;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-            }
-
-            .name {
-                margin-left: 16px;
-                color: $$color-black;
-            }
-
-            &.heroTransitionIn .name {
-                opacity: 0;
-                transition: @hero-transition-time ease opacity;
-            }
+        &.latest {
+            width: 100%;
         }
     }
 }

@@ -1,73 +1,43 @@
 import IApp from "../../../core/types/app/IApp";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
 import { V2Project } from "../../../types/project/v2/V2Types";
-import applyV2ProjectBackground from "../../../utils/v2Project/applyV2ProjectBackground";
-import heroViewOpenTransition from "../../../utils/heroViewOpenTransition";
-import IProjectInfoView from "../../views/ProjectInfo/IProjectInfo";
-import siteResources from "../../../core/siteResources";
+import ProjectCard from "../ProjectCard/ProjectCard";
 
 class LatestProjectCard {
     private elm: HTMLDivElement;
-    private nameElm: HTMLDivElement;
 
     private app: IApp;
-    private project: IWithLocation<V2Project>;
-
-    private clicked: boolean;
+    private projectCard: ProjectCard;
 
     constructor(app: IApp, projectWithLocation: IWithLocation<V2Project>) {
         this.app = app;
-        this.project = projectWithLocation;
 
-        this.elm = document.createElement("div");
-        this.elm.classList.add("latestProjectCard");
-
-        this.nameElm = this.createNameElm();
-
-        this.clicked = false;
+        this.elm = this.createElm();
+        this.projectCard = new ProjectCard(app, projectWithLocation);
     }
 
     public setup(): void {
-        this.elm.appendChild(this.nameElm);
+        this.projectCard.setup();
+        this.projectCard.projectCard.load();
+        this.projectCard.appendTo(this.elm);
+    }
 
-        this.applyBackground();
+    public destroy(): void {
+        this.projectCard.destory();
+    }
 
-        this.addEventHandlers();
+    public setAsLatest(): void {
+        this.elm.classList.add("latest");
     }
 
     public appendTo(parent: HTMLElement) {
         parent.appendChild(this.elm);
     }
 
-    private createNameElm(): HTMLDivElement {
-        const nameElm = document.createElement("div");
-        nameElm.classList.add("name");
-        nameElm.innerText = this.project.project.head.name;
-        return nameElm;
-    }
-
-    private applyBackground() {
-        const src = applyV2ProjectBackground(this.project.project, this.elm);
-        if (src) {
-            siteResources.loadImage(src);
-        }
-    }
-
-    private addEventHandlers(): void {
-        this.elm.addEventListener("click", this.clickHandler.bind(this));
-    }
-
-    private clickHandler(): void {
-        if (this.clicked) { return; }
-        this.clicked = true;
-
-        heroViewOpenTransition<IProjectInfoView>(
-            this.app,
-            this.elm,
-            "ProjectInfo",
-            this.project.year + "." + this.project.index,
-            view => view.transitionFadeIn()
-        );
+    private createElm(): HTMLDivElement {
+        const elm = document.createElement("div");
+        elm.classList.add("latestProjectCard");
+        return elm;
     }
 }
 

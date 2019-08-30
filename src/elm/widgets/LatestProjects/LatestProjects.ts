@@ -21,16 +21,18 @@ class LatestProjects extends Widget {
 
     private app: IApp;
     private gen: AsyncIterableIterator<IWithLocation<V1Or2Project>>;
+    private latestProjectCardCreated: boolean;
 
     constructor(app: IApp) {
         super();
+        this.app = app;
+
         this.elm = document.createElement("div");
         this.latestProjectsList = this.createLatestProjectsListElm();
         this.heading = this.createHeading();
 
-        this.app = app;
-
         this.gen = ContentMan.cardGeneratorLatestWithLocation();
+        this.latestProjectCardCreated = false;
     }
 
     public setup(): void {
@@ -56,25 +58,28 @@ class LatestProjects extends Widget {
 
     private async setupLatestProjects(): Promise<void> {
         for (let i = 0; i < 3; i++) {
-            this.latestProjectsList.appendChild(await this.createNextLatestProject());
+            await this.addNextLatestProject();
         }
     }
 
-    private async createNextLatestProject(): Promise<HTMLDivElement> {
+    private async addNextLatestProject(): Promise<void> {
         const project = (await this.gen.next()).value;
-        const elm = document.createElement("div");
-        elm.classList.add("project");
 
         if (isV2Project(project.project)) {
             const card = new LatestProjectCard(this.app, project as IWithLocation<V2Project>);
             card.setup();
-            card.appendTo(elm);
-        } else {
-            elm.classList.add("error");
-            elm.innerText = "Unsupported project type";
-        }
+            card.appendTo(this.latestProjectsList);
 
-        return elm;
+            if (!this.latestProjectCardCreated) {
+                card.setAsLatest();
+                this.latestProjectCardCreated = true;
+            }
+        } else {
+            const elm = document.createElement("div");
+            elm.classList.add("error");
+            elm.innerText = "Unsupported project type. See this error? Please file a bug report!";
+            this.latestProjectsList.appendChild(elm);
+        }
     }
 }
 
