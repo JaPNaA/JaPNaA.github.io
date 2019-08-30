@@ -3,6 +3,7 @@ import EventManager from "./components/EventManager";
 import EventHandlers from "../utils/events/EventHandlers";
 import Handler from "../utils/events/Handler";
 import AppState from "../types/AppState";
+import ViewComponent from "./ViewComponent";
 
 abstract class View {
     private static vidCounter = 0;
@@ -18,6 +19,7 @@ abstract class View {
     protected privateData: any;
     protected app: IApp;
     protected events: EventManager;
+    protected viewComponents: ViewComponent[];
 
     private destoryHandlers: EventHandlers;
 
@@ -28,6 +30,7 @@ abstract class View {
 
         this.id = state.id || View.vidCounter++;
         this.privateData = state.privateData || {};
+        this.viewComponents = [];
     }
 
     public setup(): void {
@@ -37,6 +40,10 @@ abstract class View {
 
         if (this.isFullPage) {
             this.app.url.pushHistory(this);
+        }
+
+        for (const component of this.viewComponents) {
+            component.setup();
         }
 
         this.app.focus();
@@ -52,6 +59,10 @@ abstract class View {
         this.destoryHandlers.dispatch();
         this.events.destory();
         this.elm.classList.add("destory");
+
+        for (const component of this.viewComponents) {
+            component.destory();
+        }
     }
 
     /** Appends scene element to element */
@@ -79,6 +90,10 @@ abstract class View {
 
     /** Gets the private data for view */
     public getPrivateData(): any {
+        for (const component of this.viewComponents) {
+            component.updatePrivateData();
+        }
+
         return this.privateData;
     }
 
