@@ -16,4 +16,5 @@ export default interface IAppViews {
     closeAllViewsExcept(view: View): void;
     close(view: View): void;
     getA(view: ViewMetadata | string): View | undefined;
+    getById(id: number): View | undefined;
 }

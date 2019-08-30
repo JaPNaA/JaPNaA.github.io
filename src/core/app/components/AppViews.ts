@@ -105,6 +105,10 @@ class AppViews implements IAppViews {
         }
     }
 
+    public getById(id: number): View | undefined {
+        return this.activeViews.find(view => view.id === id);
+    }
+
     private triggerClose(view: View) {
         view.destory().then(() => {
             view.removeFrom(this.mainElm);
