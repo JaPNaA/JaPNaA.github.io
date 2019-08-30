@@ -31,6 +31,10 @@ class App extends MainApp {
             this.mainElm.classList.add("notMobile");
         }
 
+        if (!siteConfig.developmentMode || siteConfig.isMobile) {
+            this.loadFonts();
+        }
+
         this.updateTheme();
     }
 
@@ -50,6 +54,13 @@ class App extends MainApp {
 
     private settingsChangeHandler(): void {
         this.updateTheme();
+    }
+
+    private loadFonts(): void {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://fonts.googleapis.com/css?family=Share+Tech+Mono|Open+Sans|Roboto";
+        document.head.appendChild(link);
     }
 
     private updateTheme(): void {

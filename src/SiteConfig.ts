@@ -13,6 +13,8 @@ class SiteConfig {
     public readonly title: string = "JaPNaA";
 
     public readonly isAtRoot: boolean;
+    public readonly developmentMode: boolean;
+
     public readonly path = {
         /** With / at end */
         base: "",
@@ -66,7 +68,7 @@ class SiteConfig {
 
     public readonly localStorageSettingsKey = "JaPNaASiteSettings";
     public settings = new SiteSettings();
-    
+
     public readonly hexagonBaseHue = 149;
 
     public isHandheld: boolean;
@@ -96,6 +98,8 @@ class SiteConfig {
             // if hosted somewhere else, and isn't at root, (staging url)
             this.path.thingy = "https://japnaa.github.io/";
         }
+
+        this.developmentMode = Boolean(match);
 
         this.isHandheld = isHandheld();
         this.isMobile = isMobile();
