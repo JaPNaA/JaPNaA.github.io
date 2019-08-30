@@ -1,6 +1,7 @@
 import { easeOutExp } from "../../utils/easingFunctions";
+import ViewComponent from "../../core/view/ViewComponent";
 
-class SaveScroll {
+class SaveScroll extends ViewComponent {
     private static readonly scrollTransitionSpeed = 800;
 
     private privateData: { scrollTop: number };
@@ -8,6 +9,8 @@ class SaveScroll {
     private elm: HTMLElement;
 
     constructor(privateData: any, elm: HTMLElement) {
+        super();
+
         this.privateData = privateData;
         this.initalScrollTop = privateData.scrollTop || 0;
         this.elm = elm;

@@ -31,7 +31,9 @@ class Overview extends View {
         this.content = this.createContent();
         this.hexagonsTitle = new HexagonsTitle(app, this.elm);
 
-        this.saveScroll = new SaveScroll(this.privateData, this.elm);
+        this.viewComponents.push(
+            this.saveScroll = new SaveScroll(this.privateData, this.elm)
+        );
     }
 
     public setup(): void {
@@ -47,7 +49,6 @@ class Overview extends View {
         }
         this.hexagonsTitle.registerEventHandlers();
 
-        this.saveScroll.setup();
         if (this.saveScroll.hasScrolled()) {
             this.hexagonsTitle.preventTransitionIn();
         }
@@ -57,7 +58,6 @@ class Overview extends View {
     }
 
     public async destory(): Promise<void> {
-        this.saveScroll.destory();
         super.destory();
         this.hexagonsTitle.destory();
         if (this.htmlView) {
@@ -66,7 +66,6 @@ class Overview extends View {
     }
 
     public getPrivateData(): any {
-        this.saveScroll.updatePrivateData();
         return super.getPrivateData();
     }
 
