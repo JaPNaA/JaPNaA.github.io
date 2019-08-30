@@ -9,14 +9,28 @@
 
     background-color: $$background-color-darkened;
 
+    .positionableProjectCard {
+        display: block;
+        position: absolute;
+    }
+
+    .projectCardContainer {
+        width: 100%;
+        height: 100%;
+    }
+
     .projectCard {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        padding: 16px;
         @media only screen and (max-width: 800px) {
             padding: 2%;
         }
-        padding: 16px;
+
         box-sizing: border-box;
-        display: block;
-        position: absolute;
 
         &.link .description {
             word-wrap: break-word;
@@ -121,7 +135,7 @@
                     opacity @transitionTime @easeFastOutSlowIn;
             }
         }
-        
+
         &.v1 .title {
             color: inherit;
         }
@@ -129,7 +143,6 @@
         &.textMustBeBlack .title {
             color: $$color-black-dark;
         }
-
 
         &.mouseover .textContainer,
         &:focus .textContainer {

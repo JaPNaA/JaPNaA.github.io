@@ -2,7 +2,6 @@ import "../../../../styles/widgets/projectsGrid.less";
 
 import IApp from "../../../core/types/app/IApp";
 import ProjectCardFactory from "../ProjectCard/ProjectCardFactory";
-import ProjectCard from "../ProjectCard/ProjectCard";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
 import IProjectLink from "../../../components/contentMan/IProjectLink";
 import isProjectLink from "../../../utils/isProjectLink";
@@ -13,6 +12,8 @@ import ContentMan from "../../../components/contentMan/contentMan";
 import { Rect, newRect } from "../../../types/math/Rect";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
 import V1Or2Card from "../../../components/contentMan/V1Or2Card";
+import PositionableProjectCard from "./PositionableProjectCard";
+import ProjectCardInitData from "../ProjectCard/ProjectCardInitData";
 
 class ProjectsGrid extends Widget {
     protected elm: HTMLDivElement;
@@ -24,14 +25,14 @@ class ProjectsGrid extends Widget {
     private static readonly minColumns = 4;
     private static readonly initalColumns = 11;
 
-    private projectCards: ProjectCard[];
-    private grid: DynamicGridDisplay<ProjectCard>;
+    private projectCards: PositionableProjectCard[];
+    private grid: DynamicGridDisplay<PositionableProjectCard>;
     private addingToScreenFull: boolean;
 
     private cardGenerator: AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink>;
     private cardFactory?: ProjectCardFactory;
 
-    constructor(app: IApp, cardGenerator?: AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink>) {
+    constructor(app: IApp, cardGenerator?: AsyncIterableIterator<ProjectCardInitData>) {
         super();
         this.app = app;
         this.elm = document.createElement("div");
@@ -54,7 +55,7 @@ class ProjectsGrid extends Widget {
             Math.floor(width / ProjectsGrid.minColWidth)
         );
         const scrollTarget = this.grid.getFirstElementAt(this.elm.scrollTop);
-        const scrollTargetDY = scrollTarget ? scrollTarget.getDY() : 0;
+        const scrollTargetDY = scrollTarget ? scrollTarget.getClientRect().y : 0;
 
         if (this.grid.gridColumns !== columns) {
             this.grid.resizeGridColumns(columns);
@@ -62,7 +63,7 @@ class ProjectsGrid extends Widget {
         this.grid.resizeElementSize(100, width / columns);
 
         if (scrollTarget) {
-            const dy = scrollTarget.getDY();
+            const dy = scrollTarget.getClientRect().y;
             this.elm.scrollBy(0, dy - scrollTargetDY);
         }
 
@@ -120,14 +121,15 @@ class ProjectsGrid extends Widget {
         return newRect(bbox.left, bbox.top, bbox.width, bbox.height);
     }
 
-    private async addNextCard(): Promise<ProjectCard | undefined> {
-        let item: IWithLocation<V1Or2Card> | IProjectLink;
+    private async addNextCard(): Promise<PositionableProjectCard | undefined> {
+        let item: ProjectCardInitData;
         let done = false;
 
         do {
             const state = await this.cardGenerator.next();
             item = state.value;
             done = state.done;
+            console.log(item);
         } while (
             !isWithLocation(item) &&
             !isProjectLink(item) &&
@@ -136,29 +138,20 @@ class ProjectsGrid extends Widget {
 
         if (done) {
             return undefined;
-        } else if (isWithLocation(item)) {
-            return await this.createAndAddCard(item);
-        } else if (isProjectLink(item)) {
-            return await this.addLink(item.name, item.href);
         }
+
+        const card = new PositionableProjectCard(this.app, item);
+        await this.addCard(card);
+        return card;
     }
 
-    private addLink(name: string, href: string): Promise<ProjectCard> {
-        const link = ProjectCardFactory.createLink(this.app, name, href);
-        return this.addCard(link);
-    }
-
-    private createAndAddCard(card: IWithLocation<V1Or2Card>): Promise<ProjectCard> {
-        return this.addCard(ProjectCardFactory.createCard(this.app, card));
-    }
-
-    private async addCard(projectCard: ProjectCard): Promise<ProjectCard> {
-        this.projectCards.push(projectCard);
-        projectCard.appendTo(this.elm);
-        projectCard.setup();
-        await projectCard.load();
-        this.grid.addElement(projectCard, projectCard.width, projectCard.height);
-        return projectCard;
+    private async addCard(positionableProjectCard: PositionableProjectCard): Promise<PositionableProjectCard> {
+        this.projectCards.push(positionableProjectCard);
+        positionableProjectCard.appendTo(this.elm);
+        positionableProjectCard.setup();
+        await positionableProjectCard.projectCard.load();
+        this.grid.addElement(positionableProjectCard, positionableProjectCard.projectCard.width, positionableProjectCard.projectCard.height);
+        return positionableProjectCard;
     }
 }
 

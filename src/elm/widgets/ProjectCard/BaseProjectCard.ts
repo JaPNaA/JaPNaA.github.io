@@ -1,5 +1,3 @@
-import isVisible from "../../../utils/isVisible";
-import { Rect } from "../../../types/math/Rect";
 import IApp from "../../../core/types/app/IApp";
 
 abstract class BaseProjectCard {
@@ -50,10 +48,6 @@ abstract class BaseProjectCard {
         this.cardElm.addEventListener("focus", this.focusHandler.bind(this));
         this.cardElm.addEventListener("blur", this.blurHandler.bind(this));
         this.cardElm.addEventListener("click", this.clickHandler.bind(this));
-    }
-
-    public isVisible(viewport?: Rect): boolean {
-        return isVisible(this.elm, viewport);
     }
 
     public appendTo(parent: HTMLElement): void {

@@ -1,40 +1,39 @@
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
-import IWithLocation from "../../../components/contentMan/IWithLocation";
-import V1Or2Card from "../../../components/contentMan/V1Or2Card";
-import ProjectLink from "./ProjectLink";
 import isWithLocation from "../../../utils/isProjectCardWithLocation";
 import BaseProjectCard from "./BaseProjectCard";
 import ProjectCardFactory from "./ProjectCardFactory";
 import IApp from "../../../core/types/app/IApp";
+import ProjectCardInitData from "./ProjectCardInitData";
 
 /**
  * ProjectCardFactory, but as a Widget
  */
 class ProjectCard extends Widget {
-    public static widgetName = "projectCard";
+    public static widgetName = "projectCardContainer";
     public widgetName = ProjectCard.widgetName;
+    public projectCard: BaseProjectCard;
 
     protected elm: HTMLDivElement;
 
     private app: IApp;
-    private projectCard: BaseProjectCard;
 
-    constructor(app: IApp, card: IWithLocation<V1Or2Card> | ProjectLink) {
+    constructor(app: IApp, initData: ProjectCardInitData) {
         super();
 
         this.app = app;
         this.elm = document.createElement("div");
 
-        if (isWithLocation(card)) {
-            this.projectCard = ProjectCardFactory.createCard(app, card)
+        if (isWithLocation(initData)) {
+            this.projectCard = ProjectCardFactory.createCard(app, initData)
         } else {
-            this.projectCard = ProjectCardFactory.createLink(app, card.name, card.href);
+            this.projectCard = ProjectCardFactory.createLink(app, initData.name, initData.href);
         }
     }
 
     public setup() {
         super.setup();
+        this.projectCard.setup();
         this.projectCard.appendTo(this.elm);
     }
 }
