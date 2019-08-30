@@ -26,6 +26,7 @@ class HTMLViewParser {
             doc.runScripts();
         }
 
+        doc.moveStyleElementsToHead();
         doc.setLinkHandlingMethod(this.options);
         doc.replaceElements();
 

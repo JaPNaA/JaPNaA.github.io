@@ -1,12 +1,25 @@
 <japnaa:widget:latestprojects app-arg></japnaa:widget:latestprojects>
 <br>
-<p>
+
+<div>
     <japnaa:widget:randomquotes app-arg children-arg>
         <quotes>
-            <quote> // TODO </quote>
+            <quote> // TODO <span joke></span> </quote>
+            <quote> [object Object] <span joke></span> </quote>
         </quotes>
         <img src="/assets/img/profilePicture.png">
     </japnaa:widget:randomquotes>
 
-    <h3> <a href="/about"> About me </a> </h3>
-</p>
+    <div style="text-align: right;">
+        <a href="/about" class="flatButton"> About me </a>
+    </div>
+</div>
+
+<style>
+    .html-parsed span[joke]::after {
+        content: "(that was a joke)";
+        display: block;
+        opacity: 0.4;
+        font-size: 0.6em;
+    }
+</style>

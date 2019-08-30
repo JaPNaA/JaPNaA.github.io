@@ -27,6 +27,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
     private app: IApp;
     private embededApps: EmbededApp[];
     private widgets: Widget[];
+    private styleElms: HTMLStyleElement[];
 
     private linkHandlingOptions?: LinkHandlingOptions;
     private replaceElementsPromise?: Promise<void[]>;
@@ -36,6 +37,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
         this.hasErrors = false;
         this.embededApps = [];
         this.widgets = [];
+        this.styleElms = [];
 
         this.elm = this.parseHTML(text);
         this.elm.classList.add("html-parsed");
@@ -63,6 +65,10 @@ class HTMLViewDocument implements IHTMLViewDocument {
             widget.destory();
         }
 
+        for (const style of this.styleElms) {
+            document.head.removeChild(style);
+        }
+
         await Promise.all(destoryPromises);
     }
 
@@ -83,6 +89,15 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
         if (this.hasErrors) {
             this.createScriptErrorWarning();
+        }
+    }
+
+    public moveStyleElementsToHead(): void {
+        const styles = htmlCollectionToArray(this.elm.getElementsByTagName("style"));
+
+        for (const style of styles) {
+            document.head.appendChild(style);
+            this.styleElms.push(style);
         }
     }
 
