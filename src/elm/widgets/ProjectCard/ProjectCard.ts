@@ -1,7 +1,7 @@
-import isVisible from "../../../../utils/isVisible";
-import { Rect } from "../../../../types/math/Rect";
-import IRectSetable from "../../../../components/dynamicGrid/types/IRectSetable";
-import IApp from "../../../../core/types/app/IApp";
+import isVisible from "../../../utils/isVisible";
+import { Rect } from "../../../types/math/Rect";
+import IRectSetable from "../../../components/dynamicGrid/types/IRectSetable";
+import IApp from "../../../core/types/app/IApp";
 
 abstract class ProjectCard implements IRectSetable {
     public abstract width: number;

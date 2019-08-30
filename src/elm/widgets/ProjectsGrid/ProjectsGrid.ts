@@ -1,8 +1,8 @@
 import "../../../../styles/widgets/projectsGrid.less";
 
 import IApp from "../../../core/types/app/IApp";
-import ProjectCardFactory from "./ProjectCardFactory";
-import ProjectCard from "./projectCard/ProjectCard";
+import ProjectCardFactory from "../ProjectCard/ProjectCardFactory";
+import ProjectCard from "../ProjectCard/ProjectCard";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
 import IProjectLink from "../../../components/contentMan/IProjectLink";
 import isProjectLink from "../../../utils/isProjectLink";
@@ -13,9 +13,6 @@ import ContentMan from "../../../components/contentMan/contentMan";
 import { Rect, newRect } from "../../../types/math/Rect";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
 import V1Or2Card from "../../../components/contentMan/V1Or2Card";
-import IV1Card from "../../../types/project/v1/IV1Card";
-import { V2Project } from "../../../types/project/v2/V2Types";
-import isV2Project from "../../../utils/v2Project/isV2Project";
 
 class ProjectsGrid extends Widget {
     protected elm: HTMLDivElement;
@@ -140,29 +137,19 @@ class ProjectsGrid extends Widget {
         if (done) {
             return undefined;
         } else if (isWithLocation(item)) {
-            if (isV2Project(item.project)) {
-                return await this.addV2(item as IWithLocation<V2Project>);
-            } else {
-                return await this.addV1(item as IWithLocation<IV1Card>);
-            }
+            return await this.createAndAddCard(item);
         } else if (isProjectLink(item)) {
             return await this.addLink(item.name, item.href);
         }
     }
 
-    private addV1(card: IWithLocation<IV1Card>): Promise<ProjectCard> {
-        const v1 = ProjectCardFactory.createV1(this.app, card);
-        return this.addCard(v1);
-    }
-
-    private addV2(project: IWithLocation<V2Project>) {
-        const v2 = ProjectCardFactory.createV2(this.app, project);
-        return this.addCard(v2);
-    }
-
     private addLink(name: string, href: string): Promise<ProjectCard> {
         const link = ProjectCardFactory.createLink(this.app, name, href);
         return this.addCard(link);
+    }
+
+    private createAndAddCard(card: IWithLocation<V1Or2Card>): Promise<ProjectCard> {
+        return this.addCard(ProjectCardFactory.createCard(this.app, card));
     }
 
     private async addCard(projectCard: ProjectCard): Promise<ProjectCard> {

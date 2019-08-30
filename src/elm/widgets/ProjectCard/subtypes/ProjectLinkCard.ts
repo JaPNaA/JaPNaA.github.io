@@ -1,4 +1,4 @@
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "../ProjectCard";
 import IApp from "../../../../core/types/app/IApp";
 import openFrameView from "../../../../utils/view/openFrameView";
 import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
