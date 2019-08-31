@@ -11,11 +11,11 @@ import IApp from "../../../core/types/app/IApp";
 import isRGBColorDark from "../../../utils/color/isRGBColorDark";
 import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
 import rgbToString from "../../../utils/color/toRGBString";
-import siteConfig from "../../../SiteConfig";
 import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import openImageView from "../../../utils/view/openImageView";
+import Hexagon from "../../hexagons/Hexagon";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -52,11 +52,11 @@ class ProjectJSONv2Elm extends Widget {
         this.mainContent = this.createMainContent();
         this.title = this.createTitle(project.head.name);
         this.body = this.createBody();
-        this.hue = siteConfig.hexagonBaseHue;
+        this.hue = Hexagon.baseHue;
 
         this.applyStyles();
 
-        this.hexagons = new HexagonsCorner(app, this.hue);
+        this.hexagons = new HexagonsCorner(app, this.elm, this.hue);
 
         // todo: this.project.head.author
         // todo: this.project.head.no
@@ -83,6 +83,8 @@ class ProjectJSONv2Elm extends Widget {
         this.contentContainer.appendChild(this.mainContent);
         this.mainContent.appendChild(this.title);
         this.mainContent.appendChild(this.body);
+
+        this.hexagons.setup();
 
         this.addEventHandlers();
     }
@@ -204,7 +206,6 @@ class ProjectJSONv2Elm extends Widget {
         }
 
         this.backgroundImage.style.transform = "translateY(" + (this.elm.scrollTop / 2) + "px)";
-        this.hexagonsContainer.style.transform = "translateY(" + (-this.elm.scrollTop / 3) + "px)";
     }
 
     private async clickHandler(e: MouseEvent): Promise<void> {

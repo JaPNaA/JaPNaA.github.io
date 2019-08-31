@@ -1,5 +1,6 @@
-import siteResources from "../../../../core/siteResources";
-import siteConfig from "../../../../SiteConfig";
+import siteResources from "../../core/siteResources";
+import siteConfig from "../../SiteConfig";
+import Hexagon from "./Hexagon";
 
 class HexagonPrerender {
     public canvas: HTMLCanvasElement;
@@ -17,9 +18,14 @@ class HexagonPrerender {
     public async prerender(): Promise<void> {
         const X = this.getContext2d();
         const hexagon = await siteResources.loadImagePromise(siteConfig.path.img.hexagon);
+        const hueRotation = this.hue - Hexagon.baseHue;
 
         X.save();
-        X.filter = "hue-rotate(" + (this.hue - siteConfig.hexagonBaseHue) + "deg)";
+
+        if (hueRotation !== 0) {
+            X.filter = "hue-rotate(" + (this.hue - Hexagon.baseHue) + "deg)";
+        }
+
         X.drawImage(
             hexagon,
             0, 0, hexagon.width, hexagon.height,

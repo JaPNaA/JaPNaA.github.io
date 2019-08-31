@@ -52,11 +52,13 @@ class SiteConfig {
         redirectMap: "assets/content/redirects.txt"
     }
 
-    public readonly hexagonsTitle = {
+    public readonly hexagons = {
         hexagonsPerLayer: 50,
         layers: 4,
-        hexagonsScale: 1.6,
-        lowPositionScaleBias: 0.75,
+        hexagonsSize: 0.32,
+        minHexagonSize: 0.4,
+        layerSizeFactor: 0.22,
+        positionScaleBias: 1,
         zoomDistance: 1.2,
         fadeInSpeed: 0.2
     };
@@ -68,8 +70,6 @@ class SiteConfig {
 
     public readonly localStorageSettingsKey = "JaPNaASiteSettings";
     public settings = new SiteSettings();
-
-    public readonly hexagonBaseHue = 149;
 
     public isHandheld: boolean;
     public isMobile: boolean;

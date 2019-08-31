@@ -1,26 +1,10 @@
-import LazyCanvasRenderer from "../../../canvas/renderer/lazyCanvasRenderer";
-import HexagonRenderSystem from "./HexagonRenderSystem";
-import IApp from "../../../../core/types/app/IApp";
-import HexagonPrerender from "./HexagonPrerender";
-import Hexagon from "./Hexagon";
+import HexagonsRenderer from "../../../hexagons/HexagonsRenderer";
+import HexagonLayer from "../../../hexagons/HexagonLayer";
+import HexagonType from "../../../hexagons/HexagonType";
 
-class HexagonsCornerRenderer extends LazyCanvasRenderer {
-    public renderSystem: HexagonRenderSystem;
-    public prerender: HexagonPrerender;
-
+class HexagonsCornerRenderer extends HexagonsRenderer {
     private static widthBreakpoint = 576;
-
-    constructor(app: IApp, hue: number, hexagons: Hexagon[]) {
-        super(app);
-        this.prerender = new HexagonPrerender(96, 96, hue);
-        this.renderSystem = new HexagonRenderSystem(this, this.prerender, hexagons);
-        this.prerender.prerender()
-            .then(() => this.requestDraw());
-    }
-
-    protected hasChanged(): boolean {
-        return false;
-    }
+    private static hexagonsAmount = 15;
 
     protected getNewSize(): [number, number] {
         let width = innerWidth * (2 / 3);
@@ -35,11 +19,9 @@ class HexagonsCornerRenderer extends LazyCanvasRenderer {
         return [width, innerHeight];
     }
 
-    protected draw(X: CanvasRenderingContext2D): void {
-        this.renderSystem.render(X);
+    protected createHexagonLayer(type: HexagonType, z: number): HexagonLayer {
+        return new HexagonLayer(type, z, HexagonsCornerRenderer.hexagonsAmount);
     }
-
-    protected tick(deltaTime: number): void { }
 }
 
 export default HexagonsCornerRenderer;

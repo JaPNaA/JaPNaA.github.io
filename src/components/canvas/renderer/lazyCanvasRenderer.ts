@@ -5,6 +5,9 @@ import isVisible from "../../../utils/isVisible";
 
 type Vec2 = [number, number];
 
+/**
+ * A class calls it's `draw` and `tick` only when nessassary
+ */
 abstract class LazyCanvasRenderer {
     public width: number;
     public height: number;

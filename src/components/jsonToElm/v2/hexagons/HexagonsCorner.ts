@@ -1,9 +1,9 @@
 import "../../../../../styles/widgets/hexagonsCorner.less";
 
-import Hexagon from "./Hexagon";
 import HexagonsCornerRenderer from "./HexagonsCornerRenderer";
 import IApp from "../../../../core/types/app/IApp";
 import Widget from "../../../../core/widget/Widget";
+import HexagonCornerHexagon from "./HexagonCornerHexagon";
 
 class HexagonsCorner extends Widget {
     public static widgetName: string = "hexagonsCorner";
@@ -11,25 +11,21 @@ class HexagonsCorner extends Widget {
 
     protected elm: HTMLElement;
 
-    private static readonly amount = 15;
-    private hexagons: Hexagon[];
+    private scrollableParent: HTMLElement;
     private renderer: HexagonsCornerRenderer;
     private app: IApp;
 
-    constructor(app: IApp, hue: number) {
+    constructor(app: IApp, scrollableParent: HTMLElement, hue: number) {
         super();
         this.app = app;
+        this.scrollableParent = scrollableParent;
+
         this.elm = this.createElm();
-        this.hexagons = [];
-        this.renderer = new HexagonsCornerRenderer(app, hue, this.hexagons);
-        this.setup();
+        this.renderer = new HexagonsCornerRenderer(app, HexagonCornerHexagon, hue);
     }
 
     public setup(): void {
         super.setup();
-        for (let i = 0; i < HexagonsCorner.amount; i++) {
-            this.hexagons.push(new Hexagon());
-        }
 
         this.renderer.appendTo(this.elm);
         this.renderer.requestDraw();
@@ -40,15 +36,23 @@ class HexagonsCorner extends Widget {
     public destory(): void {
         super.destory();
         this.app.events.offResize(this.resizeHandler);
+        this.scrollableParent.removeEventListener("scroll", this.scrollHandler);
     }
 
     private addEventHandlers(): void {
-        this.resizeHandler = this.resizeHandler.bind(this)
+        this.resizeHandler = this.resizeHandler.bind(this);
         this.app.events.onResize(this.resizeHandler);
+
+        this.scrollHandler = this.scrollHandler.bind(this);
+        this.scrollableParent.addEventListener("scroll", this.scrollHandler);
     }
 
     private resizeHandler(): void {
         this.renderer.updateSize();
+    }
+
+    private scrollHandler(): void {
+        this.renderer.scrolled(this.scrollableParent.scrollTop);
     }
 
     private createElm(): HTMLDivElement {

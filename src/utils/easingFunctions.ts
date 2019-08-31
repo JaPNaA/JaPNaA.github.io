@@ -86,5 +86,5 @@ export function easeOutExp(t: number): number {
 
 /** acceleration until halfway, then deceleration */
 export function easeInOutExp(t: number): number {
-    return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
+    return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) - EXP_CORRECTION : 2 - Math.pow(2, 10 - 10 * t) + EXP_CORRECTION) / 2;
 }

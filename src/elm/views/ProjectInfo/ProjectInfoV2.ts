@@ -9,13 +9,11 @@ class ProjectInfoV2 extends Widget {
 
     protected elm: HTMLDivElement;
 
-    private app: IApp;
     private projectElm: ProjectJSONv2Elm;
 
     constructor(app: IApp, project: V2Project) {
         super();
         this.elm = document.createElement("div");
-        this.app = app;
         this.projectElm = new ProjectJSONv2Elm(app, project);
     }
 

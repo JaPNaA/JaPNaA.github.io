@@ -1,6 +1,8 @@
 import { easeOutExp } from "../../utils/easingFunctions";
 import ViewComponent from "../../core/view/ViewComponent";
 
+// todo: if the user scrolls, don't scroll after load
+
 class SaveScroll extends ViewComponent {
     private static readonly scrollTransitionSpeed = 800;
 
