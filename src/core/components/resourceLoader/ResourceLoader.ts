@@ -22,7 +22,7 @@ class ResourceLoader {
     private doneHandlers: EventHandlers;
     private doneEventOnceHandlers: OnceHandlers;
     private newResourceHandlers: EventHandlers<Resource | undefined>;
-    private progressChange: EventHandlers;
+    private progressChangeHandlers: EventHandlers;
 
     constructor() {
         this.toBeLoaded = 0;
@@ -34,7 +34,7 @@ class ResourceLoader {
         this.newResourceHandlers = new EventHandlers();
         this.doneHandlers = new EventHandlers();
         this.doneEventOnceHandlers = new OnceHandlers();
-        this.progressChange = new EventHandlers();
+        this.progressChangeHandlers = new EventHandlers();
     }
 
     public getResource(name: string): Resource | undefined {
@@ -87,11 +87,11 @@ class ResourceLoader {
     }
 
     public onProgressChange(handler: Handler): void {
-        this.progressChange.add(handler);
+        this.progressChangeHandlers.add(handler);
     }
 
     public offProgressChange(handler: Handler): void {
-        this.progressChange.remove(handler);
+        this.progressChangeHandlers.remove(handler);
     }
 
     public loadImage(path: string): ImageResource {
@@ -130,7 +130,7 @@ class ResourceLoader {
     public addResourceLoading(): void {
         this.toBeLoaded++;
         this.newResourceHandlers.dispatch(undefined);
-        this.progressChange.dispatch();
+        this.progressChangeHandlers.dispatch();
     }
 
     /** For anything else that loads, but cannot be used with ResourceLoader */
@@ -173,7 +173,7 @@ class ResourceLoader {
         this.resources.set(path, resource as any as Resource);
         this.toBeLoaded++;
         this.newResourceHandlers.dispatch(resource as any as Resource);
-        this.progressChange.dispatch();
+        this.progressChangeHandlers.dispatch();
         return resource;
     }
 
@@ -188,7 +188,7 @@ class ResourceLoader {
     }
 
     private checkDone(): void {
-        this.progressChange.dispatch();
+        this.progressChangeHandlers.dispatch();
         if (this.isDone()) {
             this.onDoneHandler();
         }
