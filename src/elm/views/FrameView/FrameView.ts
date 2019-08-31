@@ -10,8 +10,9 @@ import wait from "../../../utils/wait";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import AppState from "../../../core/types/AppState";
 
-// TODO: Add loading bar
-
+/**
+ * Intended for use in own window
+ */
 class FrameView extends View {
     public static destoryTime = 400;
     public static transitionInTime = 400;
@@ -28,18 +29,10 @@ class FrameView extends View {
     private urlElm: HTMLDivElement;
 
     private path?: string;
-    private fromDirectURL: boolean;
-    private startHistoryLength: number = 0;
 
     constructor(app: IApp, state: AppState) {
         super(app, state);
         this.path = state.stateData;
-
-        if (state.directURL) {
-            this.fromDirectURL = true;
-        } else {
-            this.fromDirectURL = false;
-        }
 
         this.elm = document.createElement("div");
 
@@ -77,7 +70,6 @@ class FrameView extends View {
             return;
         }
 
-        this.startHistoryLength = history.length;
         this.iframe = new IFrame(this.path);
 
         this.header.classList.add("header");
@@ -142,16 +134,7 @@ class FrameView extends View {
     }
 
     private closeSelf() {
-        if (this.fromDirectURL) {
-            const dist = this.startHistoryLength - history.length;
-            if (dist >= 0) {
-                history.go(-2);
-            } else {
-                history.go(dist - 1);
-            }
-        } else {
-            this.app.views.close(this);
-        }
+        close();
     }
 }
 

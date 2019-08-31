@@ -1,11 +1,17 @@
-import IApp from "../../core/types/app/IApp";
-import IFrameView from "../../elm/views/FrameView/IFrameView";
 import ViewMap from "../../core/view/ViewMap";
+import resolveUrl from "../resolveUrl";
 
-export default async function openFrameView(app: IApp, href: string): Promise<IFrameView> {
-    const frameView = await app.views.open("FrameView", href) as IFrameView;
-    frameView.animateTransitionIn();
-    return frameView;
+export default async function openFrameView(href: string): Promise<void> {
+    const url = resolveUrl("/frameview/" + encodeURIComponent(href));
+    const newWindow = open(url, "_blank");
+
+    if (!newWindow) {
+        console.warn("Window could not be opened");
+        location.assign(url);
+        return;
+    }
+
+    newWindow.opener = null;
 }
 
 ViewMap.prefetch("FrameView");

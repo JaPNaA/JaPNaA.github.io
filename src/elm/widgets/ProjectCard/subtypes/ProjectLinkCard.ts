@@ -22,7 +22,7 @@ class ProjectLinkCard extends BaseProjectCard {
     }
 
     protected linkClickHandler(): void {
-        openFrameView(this.app, this.href);
+        openFrameView(this.href);
     }
 }
 

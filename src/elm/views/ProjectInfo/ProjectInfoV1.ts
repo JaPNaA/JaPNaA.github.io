@@ -13,11 +13,9 @@ class ProjectInfoV1 extends Widget {
     protected elm: HTMLDivElement;
 
     private cardElm: CardJSONv1Elm;
-    private app: IApp;
 
     constructor(app: IApp, project: IV1Card) {
         super();
-        this.app = app;
         this.elm = document.createElement("div");
         this.cardElm = new CardJSONv1Elm(app, project);
     }
@@ -48,8 +46,7 @@ class ProjectInfoV1 extends Widget {
 
     private linkClickHandler(elm: HTMLAnchorElement, event: MouseEvent) {
         const link = elm.href;
-        const topApp = this.app.top();
-        openFrameView(topApp, link);
+        openFrameView(link);
 
         event.preventDefault();
     }

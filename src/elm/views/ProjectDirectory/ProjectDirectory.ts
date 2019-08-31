@@ -157,7 +157,7 @@ class ProjectDirectory extends View {
         if (match) {
             this.openProjectView(match);
         } else {
-            openFrameView(this.app, link);
+            openFrameView(link);
         }
     }
 

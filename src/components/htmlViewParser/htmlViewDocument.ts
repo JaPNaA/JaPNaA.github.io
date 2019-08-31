@@ -196,7 +196,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
         if (!this.linkHandlingOptions) { return; }
 
         if (this.linkHandlingOptions.openFrameViewWithLinks) {
-            openFrameView(this.app, href);
+            openFrameView(href);
         } else if (this.linkHandlingOptions.dontLeavePage) {
             openNoopener(href);
         } else {
