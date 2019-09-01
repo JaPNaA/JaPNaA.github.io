@@ -66,7 +66,7 @@ class SiteConfig {
 
     public readonly cssVars = {
         heroTransitionInTime: 800,
-        longTextContainerMaxWidth: 760
+        longTextContainerMaxWidth: 768
     };
 
     public readonly localStorageSettingsKey = "JaPNaASiteSettings";
