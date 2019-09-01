@@ -1,6 +1,7 @@
 import ClassImporterFunction from "../../types/ClassImporterFunction";
 import siteResources from "../../siteResources";
-import wait from "../../../utils/wait";
+import ClassNotFoundError from "./ClassNotFoundError";
+import NoImporterError from "./NoImporterError";
 
 abstract class LazyClassMap<T> {
     private static doPrefetchs: boolean = true;
@@ -52,12 +53,12 @@ abstract class LazyClassMap<T> {
                     siteResources.addResourceLoading();
                     return (await this.importWithName(name.toLowerCase())).default;
                 } catch (err) {
-                    throw new Error("View \"" + name + "\" doesn't exist, tried importing.");
+                    throw new ClassNotFoundError(name);
                 } finally {
                     siteResources.addResourceLoaded();
                 }
             } else {
-                throw new Error("View \"" + name + "\" doesn't exist, no importer used.");
+                throw new NoImporterError();
             }
         }
 

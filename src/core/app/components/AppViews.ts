@@ -1,12 +1,16 @@
+import AppEvents from "./AppEvents";
+import BaseApp from "../BaseApp";
+import ClassNotFoundError from "../../components/lazyClassMap/ClassNotFoundError";
+import IAppViews from "../../types/app/IAppViews";
+import StateData from "../../types/StateData";
 import View from "../../view/View";
+import ViewDescriptor from "../../types/view/ViewDescriptor";
 import ViewMap from "../../view/ViewMap";
 import ViewMetadata from "../../types/view/ViewMetadata";
-import IAppViews from "../../types/app/IAppViews";
-import AppState from "../../types/AppState";
-import ViewDescriptor from "../../types/app/ViewDescriptor";
 import createAppState from "../../utils/createAppState";
-import BaseApp from "../BaseApp";
-import AppEvents from "./AppEvents";
+import errorToDetailedString from "../../utils/errorToDetailedString";
+import ViewWithFallbackStatus from "../../types/view/ViewWithFallbackStatus";
+import BeforeSetupCallback from "../../types/BeforeSetupCallback";
 
 // handles views
 
@@ -38,25 +42,34 @@ class AppViews implements IAppViews {
         }
     }
 
-    public async switchAndInit(viewDescriptor: ViewDescriptor, stateData?: string | AppState): Promise<View> {
-        const view = await this.createViewWithStatedata(viewDescriptor, stateData);
-        view.setup();
-        this.switch(view);
-        return view;
+    public async switchAndInit<T extends View>(
+        viewDescriptor: ViewDescriptor,
+        stateData?: StateData,
+        beforeSetupCallback?: BeforeSetupCallback<T>
+    ): Promise<View> {
+        const view = await this.createAndSetupViewWithFallbacks(viewDescriptor, stateData, beforeSetupCallback);
+        this.switch(view.view);
+        return view.view;
     }
 
-    public async open(viewDescriptor: ViewDescriptor, stateData?: string | AppState): Promise<View> {
-        const view = await this.createViewWithStatedata(viewDescriptor, stateData);
-        view.setup();
-        this.add(view);
-        return view;
+    public async open<T extends View>(
+        viewDescriptor: ViewDescriptor,
+        stateData?: StateData,
+        beforeSetupCallback?: BeforeSetupCallback<T>
+    ): Promise<View> {
+        const view = await this.createAndSetupViewWithFallbacks(viewDescriptor, stateData, beforeSetupCallback);
+        this.add(view.view);
+        return view.view;
     }
 
-    public async openBehind(viewDescriptor: ViewDescriptor, stateData?: string | AppState): Promise<View> {
-        const view = await this.createViewWithStatedata(viewDescriptor, stateData);
-        view.setup();
-        this.addBehind(view);
-        return view;
+    public async openBehind<T extends View>(
+        viewDescriptor: ViewDescriptor,
+        stateData?: StateData,
+        beforeSetupCallback?: BeforeSetupCallback<T>
+    ): Promise<View> {
+        const view = await this.createAndSetupViewWithFallbacks(viewDescriptor, stateData, beforeSetupCallback);
+        this.addBehind(view.view);
+        return view.view;
     }
 
     public switch(view: View): void {
@@ -109,16 +122,50 @@ class AppViews implements IAppViews {
         return this.activeViews.find(view => view.id === id);
     }
 
-    private triggerClose(view: View) {
-        view.destory().then(() => {
-            view.removeFrom(this.mainElm);
-        });
-        this.appEvents.dispatchViewChange();
+    public async createAndSetupViewWithFallbacks<T extends View>(
+        viewDescriptor: ViewDescriptor,
+        stateData?: StateData,
+        beforeSetupCallback?: BeforeSetupCallback<T>
+    ): Promise<ViewWithFallbackStatus> {
+        const viewWithFallbackStatus = await this.createViewWithFallbacks(viewDescriptor, stateData);
+
+        try {
+            if (beforeSetupCallback && !viewWithFallbackStatus.isFallback) {
+                beforeSetupCallback(viewWithFallbackStatus.view as T);
+            }
+            viewWithFallbackStatus.view.setup();
+        } catch (err) {
+            const view = await this.createViewCreationErrorView(err, viewDescriptor, stateData);
+            view.setup();
+            return { view, isFallback: true };
+        }
+
+        return viewWithFallbackStatus;
     }
 
-    private async createViewWithStatedata(
+    public async createViewWithFallbacks(viewDescriptor: ViewDescriptor, stateData?: StateData): Promise<ViewWithFallbackStatus> {
+        let view: View;
+        let isFallback: boolean;
+
+        try {
+            view = await this.createView(viewDescriptor, stateData);
+            isFallback = false;
+        } catch (err) {
+            console.warn(err);
+            isFallback = true;
+            if (err instanceof ClassNotFoundError && this.app.view404) {
+                view = await this.createView(this.app.view404);
+            } else {
+                view = await this.createViewCreationErrorView(err, viewDescriptor, stateData);
+            }
+        }
+
+        return { view, isFallback };
+    }
+
+    public async createView(
         descriptor: ViewDescriptor,
-        stateData?: string | AppState
+        stateData?: StateData
     ): Promise<View> {
         let viewClass;
         if (typeof descriptor === 'string') {
@@ -135,6 +182,35 @@ class AppViews implements IAppViews {
         }
 
         return new viewClass(this.app, appState);
+    }
+
+    private async createViewCreationErrorView(err: any, viewDescriptor?: ViewDescriptor, state?: StateData): Promise<View> {
+        if (!this.app.viewError) { throw err; }
+
+        return await this.createView(
+            this.app.viewError,
+            this.generateErrorString(err, viewDescriptor, state)
+        );
+    }
+
+    private triggerClose(view: View) {
+        view.destory().then(() => {
+            view.removeFrom(this.mainElm);
+        });
+        this.appEvents.dispatchViewChange();
+    }
+
+    private generateErrorString(err: any, viewDescriptor?: ViewDescriptor, state?: StateData): string {
+        let view;
+        if (typeof viewDescriptor === 'string' || typeof viewDescriptor === 'undefined') {
+            view = viewDescriptor;
+        } else {
+            view = viewDescriptor.viewName;
+        }
+
+        return errorToDetailedString(err) +
+            "\nview: " + view +
+            "\nstate: " + JSON.stringify(state)
     }
 }
 
