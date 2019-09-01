@@ -1,7 +1,6 @@
 import "../../../../styles/widgets/projectsGrid.less";
 
 import IApp from "../../../core/types/app/IApp";
-import ProjectCardFactory from "../ProjectCard/ProjectCardFactory";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
 import IProjectLink from "../../../components/contentMan/IProjectLink";
 import isProjectLink from "../../../utils/isProjectLink";
@@ -14,6 +13,8 @@ import IWithLocation from "../../../components/contentMan/IWithLocation";
 import V1Or2Card from "../../../components/contentMan/V1Or2Card";
 import PositionableProjectCard from "./PositionableProjectCard";
 import ProjectCardInitData from "../ProjectCard/ProjectCardInitData";
+
+// todo: predict amount of projects to load based on user scroll speed
 
 class ProjectsGrid extends Widget {
     protected elm: HTMLDivElement;
@@ -29,8 +30,10 @@ class ProjectsGrid extends Widget {
     private grid: DynamicGridDisplay<PositionableProjectCard>;
     private addingToScreenFull: boolean;
 
+    private width: number;
+    private height: number;
+
     private cardGenerator: AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink>;
-    private cardFactory?: ProjectCardFactory;
 
     constructor(app: IApp, cardGenerator?: AsyncIterableIterator<ProjectCardInitData>) {
         super();
@@ -40,6 +43,9 @@ class ProjectsGrid extends Widget {
         this.grid = new DynamicGridDisplay(ProjectsGrid.initalColumns, 100 /* percent */, app.width / ProjectsGrid.initalColumns, 2);
         this.cardGenerator = cardGenerator || ContentMan.cardAndLinkGeneratorLatestWithLocation();
         this.addingToScreenFull = false;
+
+        this.width = 0;
+        this.height = 0;
     }
 
     public async setup() {
@@ -54,8 +60,12 @@ class ProjectsGrid extends Widget {
             ProjectsGrid.minColumns,
             Math.floor(width / ProjectsGrid.minColWidth)
         );
+
         const scrollTarget = this.grid.getFirstElementAt(this.elm.scrollTop);
         const scrollTargetDY = scrollTarget ? scrollTarget.getClientRect().y : 0;
+
+        this.width = width;
+        this.height = height;
 
         if (this.grid.gridColumns !== columns) {
             this.grid.resizeGridColumns(columns);
@@ -118,7 +128,7 @@ class ProjectsGrid extends Widget {
 
     private getViewportRect(): Rect {
         const bbox = this.elm.getBoundingClientRect();
-        return newRect(bbox.left, bbox.top, bbox.width, bbox.height);
+        return newRect(bbox.left, bbox.top, this.width, this.height);
     }
 
     private async addNextCard(): Promise<PositionableProjectCard | undefined> {
