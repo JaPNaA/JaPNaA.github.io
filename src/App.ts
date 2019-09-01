@@ -14,6 +14,8 @@ class App extends MainApp {
     public view404 = "view404";
     public splashScreenView = SplashScreen;
     public indexView = "Overview";
+    public viewError = "ErrorView";
+
     public autoRestoreState = true;
     public title = siteConfig.title;
 
