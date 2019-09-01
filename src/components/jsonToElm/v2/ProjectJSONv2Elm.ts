@@ -201,14 +201,23 @@ class ProjectJSONv2Elm extends Widget {
     }
 
     private scrollHandler(): void {
-        if (this.elm.scrollTop <= 0) {
-            this.body.classList.add("hidden");
-        } else {
-            this.body.classList.remove("hidden");
-        }
+        this.updateBodyHiddenClass();
 
         if (!siteConfig.isMobile) {
             this.backgroundImage.style.transform = "translateY(" + (this.elm.scrollTop / 2) + "px)";
+        }
+    }
+
+    private resizeHandler(): void {
+        this.backgroundImageContainer.style.height = this.app.height + "px";
+        this.updateBodyHiddenClass();
+    }
+
+    private updateBodyHiddenClass() {
+        if (this.app.width <= siteConfig.cssVars.longTextContainerMaxWidth || this.elm.scrollTop > 0) {
+            this.body.classList.remove("hidden");
+        } else {
+            this.body.classList.add("hidden");
         }
     }
 
@@ -216,10 +225,6 @@ class ProjectJSONv2Elm extends Widget {
         if (e.target instanceof HTMLImageElement) {
             openImageView(this.app, e.target);
         }
-    }
-
-    private resizeHandler(): void {
-        this.backgroundImageContainer.style.height = this.app.height + "px";
     }
 }
 

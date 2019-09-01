@@ -54,14 +54,17 @@
         .mainContent {
             @title-height: 64px;
 
+            display: inline-block;
             text-align: left;
-            box-shadow: none;
-            max-width: 760px;
+            
+            max-width: @long-text-container-max-width;
             width: 100%;
+            
             padding-bottom: 33vh;
             padding-top: 66vh;
             transform: translateY(-@title-height / 2);
-            display: inline-block;
+
+            box-shadow: none;
 
             .title {
                 display: inline-block;
