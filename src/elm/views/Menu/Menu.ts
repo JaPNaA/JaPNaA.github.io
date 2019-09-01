@@ -169,7 +169,7 @@ class Menu extends View {
     }
 
     private isTopViewA(viewName: string): boolean {
-        const top = this.app.views.firstFullTop();
+        const top = this.app.views.topFull();
         if (!top) { return false; }
         return top.viewName === viewName;
     }
