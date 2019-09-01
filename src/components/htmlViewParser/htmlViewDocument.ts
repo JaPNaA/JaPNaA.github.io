@@ -171,15 +171,12 @@ class HTMLViewDocument implements IHTMLViewDocument {
             const appState = parseAppStateURL(parsed);
             if (appState) {
                 const opensWithLinks = this.linkHandlingOptions.openViewsWithLinks;
-                ViewMap.get(appState.viewName)
-                    .then(viewClass => {
-                        if (viewClass && opensWithLinks) {
-                            this.app.views.switchAndInit(viewClass, appState.stateData);
-                        } else {
-                            this.openLink(href);
-                        }
-                    })
-                    .catch(() => this.openLink(href));
+
+                if (opensWithLinks) {
+                    this.app.views.switchAndInit(appState.viewName, appState);
+                } else {
+                    this.openLink(href);
+                }
             } else {
                 this.openLink(href);
             }
@@ -226,9 +223,8 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
         const embededApp = new EmbededApp(this.app, elm);
         const stateData = elm.getAttribute("statedata");
-        const viewClass = await ViewMap.get(viewName);
         embededApp.setup();
-        embededApp.views.open(viewClass, createAppState(viewClass, stateData || undefined));
+        embededApp.views.open(viewName, stateData || undefined);
         elm.classList.add("loaded");
         this.embededApps.push(embededApp);
     }

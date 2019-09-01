@@ -1,11 +1,8 @@
-import ViewDescriptor from "../core/types/app/ViewDescriptor";
+import ViewDescriptor from "../core/types/view/ViewDescriptor";
 import AppState from "../core/types/AppState";
 import wait from "./wait";
 import IApp from "../core/types/app/IApp";
 import siteResources from "../core/siteResources";
-import ViewMap from "../core/view/ViewMap";
-import ViewClass from "../core/types/view/ViewClass";
-import createAppState from "../core/utils/createAppState";
 import View from "../core/view/View";
 import siteConfig from "../SiteConfig";
 
@@ -33,17 +30,18 @@ export default function heroViewOpenTransition<T extends View>(
         resetElementPosition(zoomTargetElm);
         zoomTargetElm.classList.add("heroTransitionIn");
 
-        const viewClass = await getViewClassFromDescriptor(viewDescriptor);
-        const view = await createView(app, viewClass, newViewState);
-        view.setup();
+        const viewWithFallbackStatus = await app.views.createAndSetupViewWithFallbacks(viewDescriptor, newViewState);
 
         await siteResources.nextDone();
         await cssTransitionEnd;
 
-        app.views.add(view);
-        fadeInNewViewFn(view as T).then(() =>
-            app.views.closeAllViewsExcept(view)
-        );
+        app.views.add(viewWithFallbackStatus.view);
+
+        if (!viewWithFallbackStatus.isFallback) {
+            fadeInNewViewFn(viewWithFallbackStatus.view as T).then(() =>
+                app.views.closeAllViewsExcept(viewWithFallbackStatus.view)
+            );
+        }
     }));
 }
 
@@ -62,20 +60,4 @@ function resetElementPosition(elm: HTMLElement) {
     elm.style.left = "";
     elm.style.width = "";
     elm.style.height = "";
-}
-
-async function getViewClassFromDescriptor(descriptor: ViewDescriptor): Promise<ViewClass> {
-    if (typeof descriptor === "string") {
-        return ViewMap.get(descriptor);
-    } else {
-        return descriptor;
-    }
-}
-
-async function createView(app: IApp, viewClass: ViewClass, state?: string | AppState): Promise<View> {
-    if (typeof state === "string" || typeof state === "undefined") {
-        return new viewClass(app, createAppState(viewClass, state));
-    } else {
-        return new viewClass(app, state);
-    }
 }

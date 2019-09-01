@@ -2,7 +2,6 @@ import "../../../../styles/views/ProjectDirectory.less";
 
 import AppState from "../../../core/types/AppState";
 import ContentMan from "../../../components/contentMan/contentMan";
-import createAppState from "../../../core/utils/createAppState";
 import getLink from "../../../utils/getLink";
 import IApp from "../../../core/types/app/IApp";
 import IProjectInfoView from "../ProjectInfo/IProjectInfo";
@@ -180,11 +179,10 @@ class ProjectDirectory extends View {
     }
 
     private async openProjectView(match: LinkMatch): Promise<void> {
-        const ProjectInfo = await ViewMap.get("ProjectInfo");
-        const view = new ProjectInfo(this.app, createAppState(ProjectInfo)) as IProjectInfoView;
-        view.setProject(match.data, match.year, match.index);
-        view.setup();
-        this.app.views.add(view);
+        await this.app.views.switchAndInit<IProjectInfoView>(
+            "ProjectInfo", undefined,
+            view => view.setProject(match.data, match.year, match.index)
+        );
     }
 
     private setPageContent(doc: Document) {
