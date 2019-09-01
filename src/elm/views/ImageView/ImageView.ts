@@ -15,7 +15,6 @@ import AppState from "../../../core/types/AppState";
 import ImageViewRenderer from "./ImageViewRenderer";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import IIFrame from "../../widgets/IFrame/IIFrame";
-import siteConfig from "../../../SiteConfig";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -241,6 +240,7 @@ class ImageView extends View {
     private closeButtonClickHandler(): void {
         if (this.fromDirectURL) {
             history.back();
+            window.close();
         } else {
             this.app.views.close(this);
         }

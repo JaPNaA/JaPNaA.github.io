@@ -1,13 +1,12 @@
 import LazyCanvasRenderer from "../../../components/canvas/renderer/lazyCanvasRenderer";
 import ImageView from "./ImageView";
 import IApp from "../../../core/types/app/IApp";
-import siteConfig from "../../../SiteConfig";
 
 class ImageViewRenderer extends LazyCanvasRenderer {
     private imageView: ImageView;
 
     constructor(app: IApp, imageView: ImageView) {
-        super(app, app.width, app.height, siteConfig.isMobile);
+        super(app, app.width, app.height, false);
         this.imageView = imageView;
         this.app.events.onResize(() => this.updateSize());
     }
