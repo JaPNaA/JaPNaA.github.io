@@ -105,13 +105,11 @@ class AppURL implements IAppURL {
 
     private setURLState(viewName: string, state: AppState) {
         if (this.frozen) { return; }
-        console.log("setState", viewName, state);
         this.controller.setState(viewName, state);
     }
 
     private pushState(viewName: string, state: AppState) {
         if (this.frozen) { return; }
-        console.log("pushState", viewName, state);
         this.controller.pushState(viewName, state);
     }
 
