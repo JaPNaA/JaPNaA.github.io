@@ -7,6 +7,7 @@ class EventManager implements IAppEventsMan {
     private events: IAppEvents;
 
     private viewChangeHandlers: Handler[];
+    private topViewChangeHandler: Handler[];
     private resizeHandlers: Handler[];
     private keydownHandlers: Handler<KeyboardEvent>[];
     private settingsChangeHandlers: Handler[];
@@ -14,6 +15,7 @@ class EventManager implements IAppEventsMan {
     constructor(events: IAppEvents) {
         this.events = events;
         this.viewChangeHandlers = [];
+        this.topViewChangeHandler = [];
         this.resizeHandlers = [];
         this.keydownHandlers = [];
         this.settingsChangeHandlers = [];
@@ -22,6 +24,10 @@ class EventManager implements IAppEventsMan {
     public destory(): void {
         for (const handler of this.viewChangeHandlers) {
             this.events.offViewChange(handler);
+        }
+
+        for (const handler of this.topViewChangeHandler) {
+            this.events.offTopFullViewChange(handler);
         }
 
         for (const handler of this.resizeHandlers) {
@@ -46,6 +52,17 @@ class EventManager implements IAppEventsMan {
         this.events.offViewChange(handler);
         this.viewChangeHandlers.splice(
             this.viewChangeHandlers.indexOf(handler), 1
+        );
+    }
+
+    public onTopFullViewChange(handler: Handler): void {
+        this.events.onTopFullViewChange(handler);
+    }
+
+    public offTopFullViewChange(handler: Handler): void {
+        this.events.offTopFullViewChange(handler);
+        this.topViewChangeHandler.splice(
+            this.topViewChangeHandler.indexOf(handler), 1
         );
     }
 
