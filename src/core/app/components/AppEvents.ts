@@ -7,11 +7,13 @@ class AppEvents implements IAppEvents {
     private resizeHandlers: EventHandlers;
     private viewChangeHandlers: EventHandlers;
     private keydownHandlers: EventHandlers<KeyboardEvent>
+    private topViewFullChangeHandlers: EventHandlers;
 
     constructor(app: BaseApp) {
         this.resizeHandlers = new EventHandlers();
         this.viewChangeHandlers = new EventHandlers();
         this.keydownHandlers = new EventHandlers();
+        this.topViewFullChangeHandlers = new EventHandlers();
     }
 
     public onViewChange(handler: Handler): void {
@@ -20,6 +22,14 @@ class AppEvents implements IAppEvents {
 
     public offViewChange(handler: Handler): void {
         this.viewChangeHandlers.remove(handler);
+    }
+
+    public onTopFullViewChange(handler: Handler): void {
+        this.topViewFullChangeHandlers.add(handler);
+    }
+
+    public offTopFullViewChange(handler: Handler): void {
+        this.topViewFullChangeHandlers.remove(handler);
     }
 
     public onResize(handler: Handler): void {
@@ -40,6 +50,10 @@ class AppEvents implements IAppEvents {
 
     public dispatchViewChange(): void {
         this.viewChangeHandlers.dispatch();
+    }
+
+    public dispatchTopFullViewChange(): void {
+        this.topViewFullChangeHandlers.dispatch();
     }
 
     public dispatchResize(): void {

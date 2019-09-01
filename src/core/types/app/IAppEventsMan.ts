@@ -3,6 +3,8 @@ import Handler from "../../utils/events/Handler";
 export default interface IAppEventsMan {
     onViewChange(handler: Handler): void;
     offViewChange(handler: Handler): void;
+    onTopFullViewChange(handler: Handler): void;
+    offTopFullViewChange(handler: Handler): void;
     onResize(handler: Handler): void;
     offResize(handler: Handler): void;
     onKeydown(handler: Handler<KeyboardEvent>): void;

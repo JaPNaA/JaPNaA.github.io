@@ -22,6 +22,8 @@ class AppViews implements IAppViews {
     private appEvents: AppEvents;
     private mainElm: HTMLElement;
 
+    private lastFullTopView: View | undefined;
+
     constructor(app: BaseApp, appEvents: AppEvents, mainElm: HTMLElement) {
         this.activeViews = [];
         this.app = app;
@@ -33,7 +35,7 @@ class AppViews implements IAppViews {
         return this.activeViews[this.activeViews.length - 1];
     }
 
-    public firstFullTop(): View | undefined {
+    public topFull(): View | undefined {
         for (let i = this.activeViews.length - 1; i >= 0; i--) {
             const view = this.activeViews[i];
             if (view.isFullPage) {
@@ -80,13 +82,13 @@ class AppViews implements IAppViews {
     public addBehind(view: View): void {
         view.appendAtStartTo(this.mainElm);
         this.activeViews.unshift(view);
-        this.appEvents.dispatchViewChange();
+        this.dispatchViewChange();
     }
 
     public add(view: View): void {
         view.appendTo(this.mainElm);
         this.activeViews.push(view);
-        this.appEvents.dispatchViewChange();
+        this.dispatchViewChange();
     }
 
     public closeAllViews(): void {
@@ -193,13 +195,6 @@ class AppViews implements IAppViews {
         );
     }
 
-    private triggerClose(view: View) {
-        view.destory().then(() => {
-            view.removeFrom(this.mainElm);
-        });
-        this.appEvents.dispatchViewChange();
-    }
-
     private generateErrorString(err: any, viewDescriptor?: ViewDescriptor, state?: StateData): string {
         let view;
         if (typeof viewDescriptor === 'string' || typeof viewDescriptor === 'undefined') {
@@ -207,10 +202,27 @@ class AppViews implements IAppViews {
         } else {
             view = viewDescriptor.viewName;
         }
-
+        
         return errorToDetailedString(err) +
-            "\nview: " + view +
-            "\nstate: " + JSON.stringify(state)
+        "\nview: " + view +
+        "\nstate: " + JSON.stringify(state)
+    }
+
+    private triggerClose(view: View) {
+        view.destory().then(() => {
+            view.removeFrom(this.mainElm);
+        });
+        this.dispatchViewChange();
+    }
+
+    private dispatchViewChange(): void {
+        this.appEvents.dispatchViewChange();
+
+        if (this.lastFullTopView !== this.topFull()) {
+            this.appEvents.dispatchTopFullViewChange();
+        }
+
+        this.lastFullTopView = this.topFull();
     }
 }
 

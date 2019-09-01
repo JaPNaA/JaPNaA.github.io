@@ -1,5 +1,5 @@
-import IAppEventsHandlers from "./IAppEventsMan";
+import IAppEventsMan from "./IAppEventsMan";
 
-export default interface IAppEvents extends IAppEventsHandlers {
+export default interface IAppEvents extends IAppEventsMan {
     dispatchViewChange(): void;
 }

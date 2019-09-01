@@ -58,7 +58,7 @@ class AppURL implements IAppURL {
     }
 
     public update(): void {
-        const topView = this.app.views.firstFullTop();
+        const topView = this.app.views.topFull();
         if (!topView) { return; }
         this.updateView(topView);
     }
@@ -74,14 +74,14 @@ class AppURL implements IAppURL {
     }
 
     private attachEventHandlers(): void {
-        this.viewChangeHandler = this.viewChangeHandler.bind(this);
-        this.appEvents.onViewChange(this.viewChangeHandler);
+        this.topFulViewChangeHandler = this.topFulViewChangeHandler.bind(this);
+        this.appEvents.onTopFullViewChange(this.topFulViewChangeHandler);
 
         this.popStateHandler = this.popStateHandler.bind(this);
         addEventListener("popstate", this.popStateHandler);
     }
 
-    private viewChangeHandler(): void {
+    private topFulViewChangeHandler(): void {
         this.update();
     }
 
@@ -105,11 +105,13 @@ class AppURL implements IAppURL {
 
     private setURLState(viewName: string, state: AppState) {
         if (this.frozen) { return; }
+        console.log("setState", viewName, state);
         this.controller.setState(viewName, state);
     }
 
     private pushState(viewName: string, state: AppState) {
         if (this.frozen) { return; }
+        console.log("pushState", viewName, state);
         this.controller.pushState(viewName, state);
     }
 

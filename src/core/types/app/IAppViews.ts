@@ -7,7 +7,7 @@ import BeforeSetupCallback from "../BeforeSetupCallback";
 
 export default interface IAppViews {
     top(): View | undefined;
-    firstFullTop(): View | undefined;
+    topFull(): View | undefined;
     getA(view: ViewMetadata | string): View | undefined;
     getById(id: number): View | undefined;
 
