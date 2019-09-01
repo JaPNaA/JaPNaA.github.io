@@ -16,6 +16,7 @@ import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import openImageView from "../../../utils/view/openImageView";
 import Hexagon from "../../hexagons/Hexagon";
+import siteConfig from "../../../SiteConfig";
 
 class ProjectJSONv2Elm extends Widget {
     public static widgetName = "projectJSONv2Elm";
@@ -206,7 +207,9 @@ class ProjectJSONv2Elm extends Widget {
             this.body.classList.remove("hidden");
         }
 
-        this.backgroundImage.style.transform = "translateY(" + (this.elm.scrollTop / 2) + "px)";
+        if (!siteConfig.isMobile) {
+            this.backgroundImage.style.transform = "translateY(" + (this.elm.scrollTop / 2) + "px)";
+        }
     }
 
     private async clickHandler(e: MouseEvent): Promise<void> {

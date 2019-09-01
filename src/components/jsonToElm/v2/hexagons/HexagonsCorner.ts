@@ -4,6 +4,7 @@ import HexagonsCornerRenderer from "./HexagonsCornerRenderer";
 import IApp from "../../../../core/types/app/IApp";
 import Widget from "../../../../core/widget/Widget";
 import HexagonCornerHexagon from "./HexagonCornerHexagon";
+import siteConfig from "../../../../SiteConfig";
 
 class HexagonsCorner extends Widget {
     public static widgetName: string = "hexagonsCorner";
@@ -37,15 +38,20 @@ class HexagonsCorner extends Widget {
         super.destory();
         this.renderer.destory();
         this.app.events.offResize(this.resizeHandler);
-        this.scrollableParent.removeEventListener("scroll", this.scrollHandler);
+
+        if (!siteConfig.isMobile) {
+            this.scrollableParent.removeEventListener("scroll", this.scrollHandler);
+        }
     }
 
     private addEventHandlers(): void {
         this.resizeHandler = this.resizeHandler.bind(this);
         this.app.events.onResize(this.resizeHandler);
 
-        this.scrollHandler = this.scrollHandler.bind(this);
-        this.scrollableParent.addEventListener("scroll", this.scrollHandler);
+        if (!siteConfig.isMobile) {
+            this.scrollHandler = this.scrollHandler.bind(this);
+            this.scrollableParent.addEventListener("scroll", this.scrollHandler);
+        }
     }
 
     private resizeHandler(): void {

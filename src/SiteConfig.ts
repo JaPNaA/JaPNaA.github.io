@@ -71,11 +71,11 @@ class SiteConfig {
     public readonly localStorageSettingsKey = "JaPNaASiteSettings";
     public settings = new SiteSettings();
 
-    public isHandheld: boolean;
-    public isMobile: boolean;
-    public isIOS: boolean;
+    public readonly isHandheld: boolean;
+    public readonly isMobile: boolean;
+    public readonly isIOS: boolean;
 
-    public connectionIsMetered: boolean;
+    public readonly connectionIsMetered: boolean;
 
     private serverTime?: Date;
     private serverTimePromise: Promise<Date>;
