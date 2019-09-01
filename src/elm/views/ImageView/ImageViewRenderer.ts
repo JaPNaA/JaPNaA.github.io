@@ -8,7 +8,7 @@ class ImageViewRenderer extends LazyCanvasRenderer {
     constructor(app: IApp, imageView: ImageView) {
         super(app, app.width, app.height, false);
         this.imageView = imageView;
-        this.app.events.onResize(() => this.updateSize());
+        this.onResize(() => this.updateSize());
     }
 
     protected hasChanged(): boolean {

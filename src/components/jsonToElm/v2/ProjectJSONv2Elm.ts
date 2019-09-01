@@ -91,6 +91,7 @@ class ProjectJSONv2Elm extends Widget {
 
     public destory() {
         super.destory();
+        this.hexagons.destory();
         this.app.events.offResize(this.resizeHandler);
     }
 

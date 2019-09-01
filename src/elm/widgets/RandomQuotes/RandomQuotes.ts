@@ -14,10 +14,10 @@ class RandomQuotes extends Widget {
     private childrenArg: Element[];
     protected elm: HTMLDivElement;
 
-    private imageContainer: HTMLDivElement;
-    private imageElm?: HTMLImageElement;
-    private quoteContainer: HTMLDivElement;
-    private quoteElm: HTMLDivElement;
+    private readonly imageContainer: HTMLDivElement;
+    private readonly imageElm?: HTMLImageElement;
+    private readonly quoteContainer: HTMLDivElement;
+    private readonly quoteElm: HTMLDivElement;
 
     private quotes: string[];
 
@@ -49,6 +49,11 @@ class RandomQuotes extends Widget {
         this.addEventHandlers();
     }
 
+    public destory(): void {
+        super.destory();
+        this.removeEventHandlers();
+    }
+
     private addEventHandlers(): void {
         this.resizeHandler = this.resizeHandler.bind(this);
         this.app.events.onResize(this.resizeHandler);
@@ -57,6 +62,10 @@ class RandomQuotes extends Widget {
         if (this.imageElm) {
             this.imageElm.addEventListener("click", this.imageClickHandler.bind(this));
         }
+    }
+
+    private removeEventHandlers(): void {
+        this.app.events.offResize(this.resizeHandler);
     }
 
     private getImageFromChildren(): HTMLImageElement | undefined {

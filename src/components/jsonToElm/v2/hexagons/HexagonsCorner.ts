@@ -35,6 +35,7 @@ class HexagonsCorner extends Widget {
 
     public destory(): void {
         super.destory();
+        this.renderer.destory();
         this.app.events.offResize(this.resizeHandler);
         this.scrollableParent.removeEventListener("scroll", this.scrollHandler);
     }
