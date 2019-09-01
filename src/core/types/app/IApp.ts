@@ -1,7 +1,7 @@
 import IAppURL from "./IAppURL";
 import IAppEvents from "./IAppEvents";
 import IAppViews from "./IAppViews";
-import ViewDescriptor from "./ViewDescriptor";
+import ViewDescriptor from "../view/ViewDescriptor";
 
 export default interface IApp {
     title: string;

@@ -1,4 +1,4 @@
-import ViewClass from "../view/ViewClass";
+import ViewClass from "./ViewClass";
 
 type ViewDescriptor = ViewClass | string;
 

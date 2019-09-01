@@ -1,4 +1,4 @@
-import ViewDescriptor from "../types/app/ViewDescriptor";
+import ViewDescriptor from "../types/view/ViewDescriptor";
 import siteResources from "../siteResources";
 import AppURL from "./components/AppURL";
 import BaseApp from "./BaseApp";

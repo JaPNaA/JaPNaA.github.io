@@ -1,6 +1,6 @@
 import IApp from "../types/app/IApp";
 import IAppURL from "../types/app/IAppURL";
-import ViewDescriptor from "../types/app/ViewDescriptor";
+import ViewDescriptor from "../types/view/ViewDescriptor";
 import AppEvents from "./components/AppEvents";
 import AppViews from "./components/AppViews";
 import getFirstScrollableParent from "../utils/getFirstScrollableParent";
