@@ -46,7 +46,7 @@ class ProjectDirectory extends View {
         this.linkProjectMatchMap = new Map();
 
         if (state.stateData) {
-            this.contentHref = siteConfig.path.thingy + "/" + state.stateData + "/";
+            this.contentHref = this.getHrefFromState(state.stateData);
         } else {
             this.contentHref = siteConfig.path.thingy + siteConfig.path.repo.thingy;
         }
@@ -67,6 +67,14 @@ class ProjectDirectory extends View {
 
     public getState(): string {
         return this.cleanPath();
+    }
+
+    public setState(state: undefined | string): boolean {
+        if (state) {
+            this.changeContentToView(this.getHrefFromState(state));
+        }
+
+        return true;
     }
 
     public canScroll(): boolean {
@@ -114,6 +122,10 @@ class ProjectDirectory extends View {
         } else {
             return "";
         }
+    }
+
+    private getHrefFromState(stateData: string): string {
+        return siteConfig.path.thingy + "/" + stateData + "/";
     }
 
     private linkClickHandler(event: MouseEvent) {

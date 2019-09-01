@@ -24,7 +24,11 @@ class URLRestorer {
             state.id !== undefined &&
             app.views.getById(state.id);
 
-        if (existingView && existingView.viewName === state.viewName) {
+        if (
+            existingView &&
+            existingView.viewName === state.viewName &&
+            existingView.setState(state.stateData)
+        ) {
             app.views.closeAllViewsExcept(existingView);
         } else {
             app.views.switchAndInit(state.viewName, state);

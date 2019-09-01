@@ -88,6 +88,9 @@ abstract class View {
     /** Gets the view state for the URL */
     public getState(): string | undefined { return; }
 
+    /** Sets the view's state from URL. Returns true if succeeds */
+    public setState(state: string | undefined): boolean { return false; }
+
     /** Gets the private data for view */
     public getPrivateData(): any {
         for (const component of this.viewComponents) {
