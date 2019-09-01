@@ -13,6 +13,7 @@ export default interface IApp {
     views: IAppViews;
 
     view404?: ViewDescriptor;
+    viewError?: ViewDescriptor;
 
     setup(): Promise<void>;
     destory(): Promise<void>;

@@ -8,6 +8,8 @@ import getFirstScrollableParent from "../utils/getFirstScrollableParent";
 abstract class BaseApp implements IApp {
     public abstract title: string;
     public view404?: ViewDescriptor;
+    public viewError?: ViewDescriptor;
+
     public width: number;
     public height: number;
 
