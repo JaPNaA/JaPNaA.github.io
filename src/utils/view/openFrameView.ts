@@ -1,4 +1,3 @@
-import ViewMap from "../../core/view/ViewMap";
 import resolveUrl from "../resolveUrl";
 
 export default async function openFrameView(href: string): Promise<void> {
@@ -13,5 +12,3 @@ export default async function openFrameView(href: string): Promise<void> {
 
     newWindow.opener = null;
 }
-
-ViewMap.prefetch("FrameView");
