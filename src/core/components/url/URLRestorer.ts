@@ -17,31 +17,20 @@ class URLRestorer {
 
         urlParsed.directURL = url;
         await this.view(app, state || urlParsed);
-
-        if (!this.restored && app.view404) {
-            await app.views.switchAndInit(app.view404);
-            this.restored = true;
-        }
     }
 
     public async view(app: IApp, state: AppState): Promise<void> {
-        try {
-            let existingView =
-                state.id !== undefined &&
-                app.views.getById(state.id);
+        let existingView =
+            state.id !== undefined &&
+            app.views.getById(state.id);
 
-            if (existingView && existingView.viewName === state.viewName) {
-                app.views.closeAllViewsExcept(existingView);
-            } else {
-                app.views.closeAllViews();
-                await app.views.open(state.viewName, state);
-            }
-
-            this.restored = true;
-        } catch (err) {
-            console.warn(err);
-            this.restored = false;
+        if (existingView && existingView.viewName === state.viewName) {
+            app.views.closeAllViewsExcept(existingView);
+        } else {
+            app.views.switchAndInit(state.viewName, state);
         }
+
+        this.restored = true;
     }
 }
 
