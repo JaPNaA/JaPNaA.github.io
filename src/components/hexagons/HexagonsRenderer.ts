@@ -53,11 +53,11 @@ abstract class HexagonsRenderer extends LazyCanvasRenderer {
     }
 
     protected tick(deltaTime: number): void {
-        const scrollFactor = -this.scrollTop / this.hexagonLayers.length;
+        const scrollFactor = -this.scrollTop / this.hexagonLayers.length * siteConfig.hexagons.parallaxIntensity;
 
         for (let i = 0; i < this.hexagonLayers.length; i++) {
             const layer = this.hexagonLayers[i];
-            layer.offsetTop = i * scrollFactor;
+            layer.offsetTop = (i + 1) * scrollFactor;
         }
     }
 

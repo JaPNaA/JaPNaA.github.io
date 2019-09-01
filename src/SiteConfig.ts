@@ -60,7 +60,8 @@ class SiteConfig {
         layerSizeFactor: 0.22,
         positionScaleBias: 1,
         zoomDistance: 1.2,
-        fadeInSpeed: 0.2
+        fadeInSpeed: 0.2,
+        parallaxIntensity: 0.5
     };
 
     public readonly cssVars = {
