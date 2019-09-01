@@ -84,7 +84,7 @@ class TopLoadingBar extends Widget {
 
         this.markDoneTimeout = window.setTimeout(
             this.markDone.bind(this),
-            TopLoadingBar.transitionSpeed
+            TopLoadingBar.timeToIdle
         );
     }
 
