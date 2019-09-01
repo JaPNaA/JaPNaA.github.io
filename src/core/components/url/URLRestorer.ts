@@ -31,7 +31,7 @@ class URLRestorer {
         ) {
             app.views.closeAllViewsExcept(existingView);
         } else {
-            app.views.switchAndInit(state.viewName, state);
+            await app.views.switchAndInit(state.viewName, state);
         }
 
         this.restored = true;
