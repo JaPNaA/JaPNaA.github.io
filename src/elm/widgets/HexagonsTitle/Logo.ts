@@ -44,7 +44,7 @@ class Logo {
             X.font = "16px 'Roboto', Arial";
             X.fillStyle = "#000000";
             X.fillText(
-                "You're using a pretty bad browser (probably Internet Explorer).",
+                "You're using a pretty bad browser (probably Internet Explorer 11).",
                 centerX - 128, centerY - 64
             );
             X.fillText(
