@@ -1,54 +1,75 @@
 export default async function applyPolyfills() {
+    const promises: Promise<void>[] = [];
+
     if (!location.origin) {
         // @ts-ignore
         location.origin = location.protocol + "//" + location.host;
     }
 
     if (!CanvasRenderingContext2D.prototype.resetTransform) {
-        applyPolyfill(import("./CanvasRenderingContext2d.resetTransform"));
+        applyPolyfill(promises, import("./CanvasRenderingContext2d.resetTransform"));
     }
 
     if (!window.URLSearchParams) {
-        applyPolyfill(import("./URLSearchParams"));
+        applyPolyfill(promises, import("./URLSearchParams"));
     }
 
     if (!Array.prototype.find) {
-        applyPolyfill(import("./Array.find"));
+        applyPolyfill(promises, import("./Array.find"));
     }
 
     // @ts-ignore
     if (!window.CSS) {
-        applyPolyfill(import("./CSS"));
+        applyPolyfill(promises, import("./CSS"));
     }
 
     if (!String.prototype.startsWith) {
-        applyPolyfill(import("./String.startsWith"));
+        applyPolyfill(promises, import("./String.startsWith"));
     }
 
     if (!String.prototype.endsWith) {
-        applyPolyfill(import("./String.endsWith"));
+        applyPolyfill(promises, import("./String.endsWith"));
     }
 
     if (!Element.prototype.scrollBy) {
-        applyPolyfill(import("./Element.scrollBy"));
+        applyPolyfill(promises, import("./Element.scrollBy"));
+    }
+
+    if (!('classList' in Element.prototype)) {
+        applyPolyfill(promises, import("./Element.classList"));
+    }
+
+    if (!history.pushState) {
+        applyPolyfill(promises, import("./History-states"));
+    }
+
+    if (!performance.now) {
+        applyPolyfill(promises, import("./Performance.now"));
+    }
+
+    if (!window.requestAnimationFrame) {
+        applyPolyfill(promises, import("./requestAnimationFrame"));
     }
 
     // @ts-ignore
     if (!window.Symbol) {
-        await applyPolyfill(import("./Symbol"));
+        await applyPolyfill(promises, import("./Symbol"));
     } else if (!Symbol.asyncIterator) {
-        await applyPolyfill(import("./Symbol.asyncIterator"));
+        await applyPolyfill(promises, import("./Symbol.asyncIterator"));
     }
 
     // @ts-ignore
     if (!window.Map) {
-        applyPolyfill(import("./Map"));
+        applyPolyfill(promises, import("./Map"));
     } else if (!Map.prototype[Symbol.iterator]) {
-        applyPolyfill(import("./Map.symbolIterator"));
+        applyPolyfill(promises, import("./Map.symbolIterator"));
     }
 
+    await Promise.all(promises);
 }
 
-function applyPolyfill(module: Promise<{ default: Function }>): Promise<void> {
-    return module.then(m => m.default());
+function applyPolyfill(promises: Promise<void>[], module: Promise<{ default: Function }>): Promise<void> {
+    const promise = module.then(m => m.default());
+    promises.push(promise);
+    return promise;
 }

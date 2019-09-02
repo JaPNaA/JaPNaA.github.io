@@ -54,14 +54,8 @@ class ProjectDirectory extends View {
 
     public async setup() {
         super.setup();
-
-        siteResources.loadXML(
-            this.contentHref,
-            "text/html"
-        ).onLoad(e => this.setPageContent(e.data));
-
+        this.loadContentHref();
         this.elm.appendChild(this.container);
-
         this.addEventHandlers();
     }
 
@@ -184,10 +178,15 @@ class ProjectDirectory extends View {
     }
 
     private changeContentToView(link: string): void {
-        this.app.url.pushHistory(this);
         this.contentHref = link;
-        siteResources.loadXML(link, "text/html")
-            .onLoad(e => this.setPageContent(e.data));
+        this.app.url.pushHistory(this);
+        this.loadContentHref();
+    }
+
+    private loadContentHref(): void {
+        siteResources.loadXML(this.contentHref, "text/html")
+            .onLoad(e => this.setPageContent(e.data))
+            .onError(e => location.replace(this.contentHref));
     }
 
     private async openProjectView(match: LinkMatch): Promise<void> {

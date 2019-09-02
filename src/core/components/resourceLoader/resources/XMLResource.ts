@@ -30,7 +30,12 @@ class XMLResource extends Resource<Document> {
             }
 
             const parser = new DOMParser();
-            this.data = parser.parseFromString(req.responseText, this.type);
+
+            try {
+                this.data = parser.parseFromString(req.responseText, this.type);
+            } catch (err) {
+                this.onErrorHandler(err);
+            }
 
             this.onLoadHandler();
         });

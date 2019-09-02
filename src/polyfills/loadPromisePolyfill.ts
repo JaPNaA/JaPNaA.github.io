@@ -11,7 +11,7 @@ export default function loadPromisePolyfill(cb: Function): void {
     x.addEventListener("load", function () {
         // @ts-ignore
         window.Promise = 
-            eval(x.response).default;
+            eval(x.responseText).default;
         cb();
     });
     x.send();
