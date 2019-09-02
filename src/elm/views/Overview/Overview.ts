@@ -9,13 +9,15 @@ import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
 import AppState from "../../../core/types/AppState";
-import SaveScroll from "../../../components/viewPrivateData/SaveScroll";
+import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
+import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
-class Overview extends View {
+class Overview extends View implements ISavableScroll {
     public static viewName = "Overview";
     public viewName = Overview.viewName;
-
     public isFullPage = true;
+
+    public scrollingElm: HTMLElement;
 
     protected elm: HTMLDivElement;
     private content: HTMLDivElement;
@@ -29,10 +31,11 @@ class Overview extends View {
         super(app, state);
         this.elm = document.createElement("div");
         this.content = this.createContent();
+        this.scrollingElm = this.elm;
         this.hexagonsTitle = new HexagonsTitle(app, this.elm);
 
         this.viewComponents.push(
-            this.saveScroll = new SaveScroll(this.privateData, this.elm)
+            this.saveScroll = new SaveScroll(this, this.privateData)
         );
     }
 

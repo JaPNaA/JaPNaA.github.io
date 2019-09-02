@@ -1,5 +1,6 @@
-import { easeOutExp } from "../../utils/easingFunctions";
-import ViewComponent from "../../core/view/ViewComponent";
+import { easeOutExp } from "../../../utils/easingFunctions";
+import ViewComponent from "../../../core/view/ViewComponent";
+import ISavableScroll from "./ISaveScrollable";
 
 // todo: if the user scrolls, don't scroll after load
 
@@ -8,14 +9,14 @@ class SaveScroll extends ViewComponent {
 
     private privateData: { scrollTop: number };
     private initalScrollTop: number;
-    private elm: HTMLElement;
+    private elm: Element;
 
-    constructor(privateData: any, elm: HTMLElement) {
+    constructor(target: ISavableScroll, privateData: any) {
         super();
 
         this.privateData = privateData;
         this.initalScrollTop = privateData.scrollTop || 0;
-        this.elm = elm;
+        this.elm = target.scrollingElm;
     }
 
     public setup(): void {
