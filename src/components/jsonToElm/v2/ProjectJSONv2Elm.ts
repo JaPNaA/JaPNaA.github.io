@@ -17,10 +17,13 @@ import WidgetMap from "../../../core/widget/WidgetMap";
 import openImageView from "../../../utils/view/openImageView";
 import Hexagon from "../../hexagons/Hexagon";
 import siteConfig from "../../../SiteConfig";
+import ISavableScroll from "../../viewPrivateData/saveScroll/ISaveScrollable";
 
-class ProjectJSONv2Elm extends Widget {
+class ProjectJSONv2Elm extends Widget implements ISavableScroll {
     public static widgetName = "projectJSONv2Elm";
     public widgetName = ProjectJSONv2Elm.widgetName;
+
+    public scrollingElm: HTMLElement;
     protected elm: HTMLDivElement;
 
     private project: V2Project;
@@ -43,7 +46,7 @@ class ProjectJSONv2Elm extends Widget {
         super();
         this.app = app;
         this.project = project;
-        this.elm = document.createElement("div");
+        this.scrollingElm = this.elm = document.createElement("div");
 
         this.background = this.createBackground();
         this.hexagonsContainer = this.createHexagonsContainer();

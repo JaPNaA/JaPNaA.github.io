@@ -2,10 +2,13 @@ import Widget from "../../../core/widget/Widget";
 import IApp from "../../../core/types/app/IApp";
 import { V2Project } from "../../../types/project/v2/V2Types";
 import ProjectJSONv2Elm from "../../../components/jsonToElm/v2/ProjectJSONv2Elm";
+import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
-class ProjectInfoV2 extends Widget {
+class ProjectInfoV2 extends Widget implements ISavableScroll {
     public static widgetName = "projectInfoV2";
     public widgetName = ProjectInfoV2.widgetName;
+
+    public scrollingElm: HTMLElement;
 
     protected elm: HTMLDivElement;
 
@@ -15,6 +18,7 @@ class ProjectInfoV2 extends Widget {
         super();
         this.elm = document.createElement("div");
         this.projectElm = new ProjectJSONv2Elm(app, project);
+        this.scrollingElm = this.projectElm.scrollingElm;
     }
 
     public canScroll(): boolean {

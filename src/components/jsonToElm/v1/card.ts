@@ -12,10 +12,13 @@ import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import openImageView from "../../../utils/view/openImageView";
+import ISavableScroll from "../../viewPrivateData/saveScroll/ISaveScrollable";
 
-class CardJSONv1Elm extends Widget {
+class CardJSONv1Elm extends Widget implements ISavableScroll {
     public static widgetName = "cardJSONv1Elm";
     public widgetName = CardJSONv1Elm.widgetName;
+
+    public scrollingElm: HTMLElement;
 
     protected elm: HTMLDivElement;
 
@@ -32,7 +35,7 @@ class CardJSONv1Elm extends Widget {
         super();
         this.app = app;
         this.card = card;
-        this.elm = document.createElement("div");
+        this.scrollingElm = this.elm = document.createElement("div");
         this.backgroundImageExists = false;
     }
 

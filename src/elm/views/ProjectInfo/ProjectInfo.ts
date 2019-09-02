@@ -13,6 +13,8 @@ import isV2Project from "../../../utils/v2Project/isV2Project";
 import ProjectInfoV2 from "./ProjectInfoV2";
 import Widget from "../../../core/widget/Widget";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
+import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
+import siteResources from "../../../core/siteResources";
 
 class ProjectInfoView extends View implements IProjectInfoView {
     public static viewName = "ProjectInfo";
@@ -25,10 +27,11 @@ class ProjectInfoView extends View implements IProjectInfoView {
 
     private project?: V1Or2Project;
     private loadingPromise?: Promise<void>;
-    private widget?: Widget;
+    private widget?: ProjectInfoV1 | ProjectInfoV2;
 
     private projectYear?: number;
     private projectIndex?: number;
+    private saveScroll?: SaveScroll;
 
     constructor(app: IApp, state: AppState) {
         super(app, state);
@@ -65,8 +68,6 @@ class ProjectInfoView extends View implements IProjectInfoView {
     }
 
     public async setup(): Promise<void> {
-        super.setup();
-
         if (this.loadingPromise) {
             await this.loadingPromise;
         }
@@ -74,8 +75,6 @@ class ProjectInfoView extends View implements IProjectInfoView {
         if (!this.project) {
             throw new Error("Project not set");
         }
-
-        this.updateState();
 
         if (isProjectV1Card(this.project)) {
             this.widget = new ProjectInfoV1(this.app, this.project);
@@ -85,8 +84,20 @@ class ProjectInfoView extends View implements IProjectInfoView {
             throw new Error("Unsupported type");
         }
 
+        this.viewComponents.push(
+            this.saveScroll = new SaveScroll(this.widget, this.privateData)
+        );
+
+        super.setup();
+        this.updateState();
+
         this.widget.setup();
         this.widget.appendTo(this.elm);
+
+        this.saveScroll.apply();
+
+        siteResources.nextDone()
+            .then(e => this.saveScroll!.applyScrollDownWithTransition());
     }
 
     public async destory(): Promise<void> {

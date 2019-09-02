@@ -5,10 +5,13 @@ import CardJSONv1Elm from "../../../components/jsonToElm/v1/card";
 import IApp from "../../../core/types/app/IApp";
 import openFrameView from "../../../utils/view/openFrameView";
 import Widget from "../../../core/widget/Widget";
+import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
-class ProjectInfoV1 extends Widget {
+class ProjectInfoV1 extends Widget implements ISavableScroll {
     public static widgetName = "projectInfoV1";
     public widgetName = ProjectInfoV1.widgetName;
+
+    public scrollingElm: HTMLElement;
 
     protected elm: HTMLDivElement;
 
@@ -18,6 +21,7 @@ class ProjectInfoV1 extends Widget {
         super();
         this.elm = document.createElement("div");
         this.cardElm = new CardJSONv1Elm(app, project);
+        this.scrollingElm = this.cardElm.scrollingElm;
     }
 
     public setup(): void {
