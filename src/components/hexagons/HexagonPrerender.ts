@@ -26,11 +26,13 @@ class HexagonPrerender {
             X.filter = "hue-rotate(" + (this.hue - Hexagon.baseHue) + "deg)";
         }
 
-        X.drawImage(
-            hexagon,
-            0, 0, hexagon.width, hexagon.height,
-            0, 0, this.width, this.height
-        );
+        X.drawImage(hexagon, 0, 0, this.width, this.height);
+
+        if (siteConfig.isEdge || siteConfig.isIE) {
+            X.clearRect(0, 0, this.width, this.height);
+            X.drawImage(hexagon, 0, 0, this.width, this.height);
+        }
+
         X.restore();
     }
 

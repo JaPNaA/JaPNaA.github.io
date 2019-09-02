@@ -1,10 +1,13 @@
-import App from "./App";
-import "./polyfills/polyfills";
+import loadPromisePolyfill from "./polyfills/loadPromisePolyfill";
+import applyPolyfills from "./polyfills/polyfills";
 
 // @ts-ignore
 __webpack_public_path__ = location.origin + location.pathname + "bundles/";
 
-const app = new App();
-app.setup();
+loadPromisePolyfill(() => applyPolyfills().then(async e => {
+    const App = (await import("./App")).default;
+    const app = new App();
+    app.setup();
 
-console.log(app);
+    console.log(app);
+}));

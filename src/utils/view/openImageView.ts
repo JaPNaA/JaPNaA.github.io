@@ -8,6 +8,9 @@ export default async function openImageView(app: IApp, img: HTMLImageElement): P
     if (siteConfig.isIOS) {
         // fixes weird iOS performance bug - runs much smoother if accessed using url
         openNoopener(resolveUrl("/imageview/" + img.src));
+    } else if (siteConfig.isIE) {
+        // IE + Canvas + Images = no
+        openNoopener(img.src);
     } else {
         const imageView = await app.top().views.open("ImageView") as IImageView;
         const bbox = img.getBoundingClientRect();

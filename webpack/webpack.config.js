@@ -21,6 +21,8 @@ const lessLoader = {
     ]
 };
 
+const promisePolyfillConfig = require("./webpack.polyfill.promise.js");
+
 module.exports = [{
     name: "dist",
     entry: "./src/index.ts",
@@ -88,4 +90,4 @@ module.exports = [{
 
     mode: "production",
     watch: false
-}];
+}, promisePolyfillConfig];

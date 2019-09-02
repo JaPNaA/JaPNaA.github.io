@@ -31,13 +31,35 @@ class Logo {
         if (siteConfig.settings.darkMode) {
             X.filter = "invert(1)";
         }
-        X.drawImage(
-            this.img, // 0, 0, this.img.width, this.img.height,
-            centerX - imgWidth / 2,
-            centerY - imgHeight / 2,
-            imgWidth,
-            imgHeight
-        );
+
+        if ((imgWidth === 0 || imgHeight === 0) && this.img.complete) {
+            try {
+                // IE randomly likes to throw `Unexpected call to method or property access.` here
+                X.drawImage(
+                    this.img,
+                    centerX - imgWidth / 2,
+                    centerY - imgHeight / 2
+                );
+            } catch (err) { }
+            X.font = "16px 'Roboto', Arial";
+            X.fillStyle = "#000000";
+            X.fillText(
+                "You're using a pretty bad browser (probably Internet Explorer).",
+                centerX - 128, centerY - 64
+            );
+            X.fillText(
+                "For that, you get a misaligned logo. (it's a feature not a bug)",
+                centerX - 128, centerY - 46
+            );
+        } else {
+            X.drawImage(
+                this.img,
+                centerX - imgWidth / 2,
+                centerY - imgHeight / 2,
+                imgWidth,
+                imgHeight
+            );
+        }
         X.restore();
     }
 }

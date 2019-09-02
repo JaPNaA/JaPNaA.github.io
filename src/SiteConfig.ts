@@ -1,13 +1,15 @@
-import isHandheld from "./utils/isHandheld";
-import isMobile from "./utils/isMobile";
-import isIOS from "./utils/isIOS";
-import getServerTime from "./utils/getServerTime";
-import { resolve } from "url";
-import connectionIsMetered from "./utils/connectionIsMetered";
-import LazyClassMap from "./core/components/lazyClassMap/LazyClassMap";
-import SiteSettings from "./SiteSettings";
 import EventHandlers from "./core/utils/events/EventHandlers";
 import Handler from "./core/utils/events/Handler";
+import LazyClassMap from "./core/components/lazyClassMap/LazyClassMap";
+import SiteSettings from "./SiteSettings";
+import connectionIsMetered from "./utils/isClient/connectionIsMetered";
+import getServerTime from "./utils/getServerTime";
+import isEdge from "./utils/isClient/isEdge";
+import isHandheld from "./utils/isClient/isHandheld";
+import isIE from "./utils/isClient/isIE";
+import isIOS from "./utils/isClient/isIOS";
+import isMobile from "./utils/isClient/isMobile";
+import { resolve } from "url";
 
 class SiteConfig {
     public readonly title: string = "JaPNaA";
@@ -75,6 +77,8 @@ class SiteConfig {
     public readonly isHandheld: boolean;
     public readonly isMobile: boolean;
     public readonly isIOS: boolean;
+    public readonly isEdge: boolean;
+    public readonly isIE: boolean;
 
     public readonly connectionIsMetered: boolean;
 
@@ -105,6 +109,8 @@ class SiteConfig {
         this.isHandheld = isHandheld();
         this.isMobile = isMobile();
         this.isIOS = isIOS();
+        this.isEdge = isEdge();
+        this.isIE = isIE();
 
         this.connectionIsMetered = connectionIsMetered();
 
