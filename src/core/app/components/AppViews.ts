@@ -135,7 +135,7 @@ class AppViews implements IAppViews {
             if (beforeSetupCallback && !viewWithFallbackStatus.isFallback) {
                 beforeSetupCallback(viewWithFallbackStatus.view as T);
             }
-            viewWithFallbackStatus.view.setup();
+            await viewWithFallbackStatus.view.setup();
         } catch (err) {
             const view = await this.createViewCreationErrorView(err, viewDescriptor, stateData);
             view.setup();
