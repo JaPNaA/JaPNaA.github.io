@@ -1,21 +1,15 @@
 export default async function applyPolyfills() {
+    if (!location.origin) {
+        // @ts-ignore
+        location.origin = location.protocol + "//" + location.host;
+    }
+
     if (!CanvasRenderingContext2D.prototype.resetTransform) {
         applyPolyfill(import("./CanvasRenderingContext2d.resetTransform"));
     }
 
     if (!window.URLSearchParams) {
         applyPolyfill(import("./URLSearchParams"));
-    }
-
-    // @ts-ignore
-    if (!window.Symbol) {
-        await applyPolyfill(import("./Symbol"));
-    } else if (!Symbol.asyncIterator) {
-        await applyPolyfill(import("./Symbol.asyncIterator"));
-    }
-
-    if (!Map.prototype[Symbol.iterator]) {
-        applyPolyfill(import("./Map.symbolIterator"));
     }
 
     if (!Array.prototype.find) {
@@ -38,6 +32,21 @@ export default async function applyPolyfills() {
     if (!Element.prototype.scrollBy) {
         applyPolyfill(import("./Element.scrollBy"));
     }
+
+    // @ts-ignore
+    if (!window.Symbol) {
+        await applyPolyfill(import("./Symbol"));
+    } else if (!Symbol.asyncIterator) {
+        await applyPolyfill(import("./Symbol.asyncIterator"));
+    }
+
+    // @ts-ignore
+    if (!window.Map) {
+        applyPolyfill(import("./Map"));
+    } else if (!Map.prototype[Symbol.iterator]) {
+        applyPolyfill(import("./Map.symbolIterator"));
+    }
+
 }
 
 function applyPolyfill(module: Promise<{ default: Function }>): Promise<void> {
