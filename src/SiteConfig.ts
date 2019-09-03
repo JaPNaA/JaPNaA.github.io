@@ -13,6 +13,7 @@ import { resolve } from "url";
 
 class SiteConfig {
     public readonly title: string = "JaPNaA";
+    public readonly viewStateSeparator = "?"; // could also be '/' or '#', if willing to sacrifice SEO
 
     public readonly isAtRoot: boolean;
     public readonly developmentMode: boolean;

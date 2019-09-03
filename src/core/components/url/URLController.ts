@@ -2,6 +2,7 @@ import URLRestorer from "./URLRestorer";
 import IApp from "../../types/app/IApp";
 import AppState from "../../types/AppState";
 import siteConfig from "../../../SiteConfig";
+import urlFromViewState from "../../../utils/urlFromViewState";
 
 class URLController {
     public currentURL: string;
@@ -74,17 +75,8 @@ class URLController {
     }
 
     private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
-        const viewNameEnc = encodeURIComponent(viewName.toLowerCase());
-        const title = this.siteTitle + "." + viewNameEnc;
-
-        let url = "/" + viewNameEnc;
-
-        if (viewStateData) {
-            const dataEnc = encodeURIComponent(viewStateData);
-            url += "/" + dataEnc;
-        }
-
-        return { url, title };
+        const title = this.siteTitle + "." + viewName;
+        return { title, url: urlFromViewState(viewName, viewStateData) };
     }
 
     private setToOldURL(): void {

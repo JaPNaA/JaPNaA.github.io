@@ -26,7 +26,7 @@ function parseAppStateURL_root(href: string | url.UrlWithStringQuery): AppState 
     if (!cleanURL.path) return;
     const cleanPath = cleanURL.path.slice(1);
 
-    const divisorIndex = cleanPath.indexOf('/');
+    const divisorIndex = cleanPath.indexOf(siteConfig.viewStateSeparator);
     if (divisorIndex < 0) {
         builder.viewName = cleanPath;
     } else {
