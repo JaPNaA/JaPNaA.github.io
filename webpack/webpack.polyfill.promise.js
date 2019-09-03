@@ -4,7 +4,7 @@ module.exports = {
     name: "promise-polyfill",
     entry: "./node_modules/promise-polyfill/src/index.js",
     output: {
-        path: path.resolve(__dirname, "../public/bundles"),
+        path: path.resolve(__dirname, "../build/bundles"),
         filename: 'promise-polyfill.js',
         publicPath: "/bundles/"
     },

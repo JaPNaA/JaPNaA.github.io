@@ -113,7 +113,7 @@ function joinConfigs(a, b) {
 function startHttpServers() {
     portfinder.basePort = 8080;
     const server = hs.createServer({
-        root: path.resolve(__dirname, "./public")
+        root: path.resolve(__dirname, "./build")
     });
     const server2 = hs.createServer({
         root: path.resolve(__dirname, "../../../Thingy"),

@@ -27,7 +27,7 @@ module.exports = [{
     name: "dist",
     entry: "./src/index.ts",
     output: {
-        path: path.resolve(__dirname, "../public/bundles"),
+        path: path.resolve(__dirname, "../build/bundles"),
         filename: 'bundle.js',
         chunkFilename: '[name].bundle.js',
         publicPath: "/bundles/"
@@ -58,6 +58,10 @@ module.exports = [{
             widgetList: {
                 pathToWidgets: "src/elm/widgets",
                 outFileName: "widgetList.ts"
+            },
+            copyDirectories: {
+                from: "public",
+                to: "build"
             }
         }),
         new webpack.optimize.MinChunkSizePlugin({
@@ -77,7 +81,7 @@ module.exports = [{
     name: "darkModeCSS",
     entry: "./styles/darkMode.less",
     output: {
-        path: path.resolve(__dirname, "../public/bundles"),
+        path: path.resolve(__dirname, "../build/bundles"),
         filename: '_uselessFile.js',
         publicPath: "/bundles/"
     },

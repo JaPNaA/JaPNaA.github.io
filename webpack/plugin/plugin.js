@@ -1,6 +1,7 @@
 const GenerateViewHTML = require("./htmlGeneration/GenerateViewHTML");
 const WidgetListGenerator = require("./listGeneration/WidgetListGenerator");
 const ViewListGenerator = require("./listGeneration/ViewListGenerator");
+const CopyDirectories = require("./CopyDirectories");
 
 const pluginName = 'GenerateViewAndWidgetList';
 const path = require("path");
@@ -19,7 +20,8 @@ const path = require("path");
 class Plugin {
     /**
      * @param { WidgetListGenerator.WidgetListOptions &
-     *          ViewListGenerator.ViewListOptions } options 
+     *          ViewListGenerator.ViewListOptions &
+     *          CopyDirectories.CopyDirectoriesOptions } options 
      */
     constructor(options) {
         /**
@@ -32,13 +34,15 @@ class Plugin {
         // --- Components ---
         this.widgetList = new WidgetListGenerator(options);
         this.viewList = new ViewListGenerator(options);
+        this.copyDirectories = new CopyDirectories(options);
 
         /**
          * @type {Component[]}
          */
         this.components = [
             this.widgetList,
-            this.viewList
+            this.viewList,
+            this.copyDirectories
         ];
 
         this.generateViewHTML = new GenerateViewHTML(this.viewList);

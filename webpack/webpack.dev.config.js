@@ -16,7 +16,7 @@ const testConfig = {
     name: "test",
     entry: "./test/main.ts",
     output: {
-        path: path.resolve(__dirname, "../public/bundles"),
+        path: path.resolve(__dirname, "../build/bundles"),
         filename: "test-bundle.js",
         publicPath: "./test/"
     },

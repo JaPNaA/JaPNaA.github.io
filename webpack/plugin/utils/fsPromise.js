@@ -51,6 +51,21 @@ module.exports = {
     },
 
     /**
+     * @param {string} path 
+     */
+    mkdir(path) {
+        return new Promise(function (res, rej) {
+            fs.mkdir(path, function (err) {
+                if (err) {
+                    rej(err);
+                } else {
+                    res();
+                }
+            });
+        });
+    },
+
+    /**
      * @param {string} from 
      * @param {string} to 
      * @returns {Promise<void>}
