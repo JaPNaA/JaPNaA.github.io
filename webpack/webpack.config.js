@@ -5,9 +5,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const Plugin = require("./plugin/plugin");
 
-// @ts-ignore
-const scriptFn = require("../scripts/build/bundle").scripts.default;
-
 const lessLoader = {
     test: /\.less$/,
     loaders: [
@@ -63,7 +60,10 @@ module.exports = [{
                 outFileName: "widgetList.ts"
             },
             runScript: {
-                fn: scriptFn,
+                fn: function () {
+                    // @ts-ignore
+                    require("../scripts/build/bundle").scripts.default();
+                },
                 once: true
             },
             copyDirectories: {

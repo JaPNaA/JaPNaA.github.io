@@ -35,9 +35,13 @@ const modeFunctionMap = {
     },
 
     runscripts() {
-        const scripts = require("./scripts/build/bundle");
-        // @ts-ignore
-        scripts.scripts.default();
+        try {
+            // @ts-ignore
+            require("./scripts/build/bundle").scripts.default;
+        } catch (err) {
+            console.error(err);
+            console.log(":: Has the project been built?")
+        }
     }
 };
 
