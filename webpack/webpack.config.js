@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const TerserJSPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const GenerateViewAndWidgetList = require("./plugins/GenerateViewAndWidgetList");
+const GenerateViewAndWidgetList = require("./plugin/plugin");
 
 const lessLoader = {
     test: /\.less$/,

@@ -1,0 +1,111 @@
+const fs = require("fs");
+const WidgetOrViewListGeneratorComponent = require("./WidgetOrViewListGeneratorComponent");
+
+const PATH_TO_VIEWS = "src/elm/views";
+const OUT_FILE_NAME = "viewList.ts";
+
+class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
+    constructor() {
+        super(PATH_TO_VIEWS, OUT_FILE_NAME);
+
+        /**
+         * A list of names of views
+         * @type {(string | [string, string])[]}
+         */
+        this.views = [];
+    }
+
+    /**
+     * Generates a source code for viewList
+     * @protected
+     * @override
+     * @returns {string}
+     */
+    generateListString() {
+        return `const viewList: (string | [string, RegExp])[] = ${this._stringifyViews()}; export default viewList;`;
+    }
+
+    /**
+     * Adds a view to the list
+     * @protected
+     * @override
+     * @param {string} context
+     * @param {string} directory
+     */
+    addItem(context, directory) {
+        const file = fs.readFileSync(this._applyPathPattern(context, directory)).toString();
+        const match = file.match(/public\s+static\s.*viewMatcher = (\/.*\/);/);
+
+        if (match) {
+            this.views.push([directory, match[1]]);
+        } else {
+            this.views.push(directory);
+        }
+    }
+
+    /**
+     * Updates an item in the list
+     * @protected
+     * @param {string} context
+     * @param {string} directory
+     */
+    updateItem(context, directory) {
+        let file;
+
+        try {
+            file = fs.readFileSync(this._applyPathPattern(context, directory)).toString();
+        } catch (err) {
+            this.removeItem(directory);
+            return;
+        }
+
+        const match = file.match(/public\s+static\s.*viewMatcher = (\/.*\/);/);
+        const index = this._indexOf(directory);
+
+        if (match) {
+            this.views[index] = [directory, match[1]];
+        } else {
+            this.views[index] = directory;
+        }
+    }
+
+    /**
+     * Removes an item in the list
+     * @protected
+     * @override
+     * @param {string} name
+     */
+    removeItem(name) {
+        const index = this._indexOf(name);
+        this.views.splice(index, 1);
+    }
+
+    /**
+     * Stringifies the list of views
+     * @private
+     * @returns {string}
+     */
+    _stringifyViews() {
+        let str = [];
+        for (const view of this.views) {
+            if (Array.isArray(view)) {
+                str.push('["' + view[0] + '",' + view[1] + ']');
+            } else {
+                str.push('\"' + view + '\"');
+            }
+        }
+        return "[" + str.join(",") + "]";
+    }
+
+    /**
+     * Gets the index of a view in `this.views`
+     * @private
+     * @param {string} name 
+     * @returns {number}
+     */
+    _indexOf(name) {
+        return this.views.findIndex(v => (Array.isArray(v) ? v[0] : v) === name);
+    }
+}
+
+module.exports = ViewListGenerator;
