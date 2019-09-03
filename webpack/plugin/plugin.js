@@ -1,3 +1,4 @@
+const GenerateViewHTML = require("./htmlGeneration/GenerateViewHTML");
 const WidgetListGenerator = require("./listGeneration/WidgetListGenerator");
 const ViewListGenerator = require("./listGeneration/ViewListGenerator");
 
@@ -16,16 +17,21 @@ const path = require("path");
  */
 
 class Plugin {
-    constructor() {
+    /**
+     * @param { WidgetListGenerator.WidgetListOptions &
+     *          ViewListGenerator.ViewListOptions } options 
+     */
+    constructor(options) {
         /**
          * Has the plugin has initalized?
          * @type {boolean}
          */
         this._initalized = false;
 
+
         // --- Components ---
-        this.widgetList = new WidgetListGenerator();
-        this.viewList = new ViewListGenerator();
+        this.widgetList = new WidgetListGenerator(options);
+        this.viewList = new ViewListGenerator(options);
 
         /**
          * @type {Component[]}
@@ -34,6 +40,9 @@ class Plugin {
             this.widgetList,
             this.viewList
         ];
+
+        this.generateViewHTML = new GenerateViewHTML(this.viewList);
+
 
         this._startTime = Date.now();
         this._prevTimestamps = {};
@@ -44,23 +53,28 @@ class Plugin {
      * @param {Webpack.Compiler} compiler 
      */
     apply(compiler) {
-        compiler.hooks.run.tap(pluginName, compilation => {
-            this._init(compilation);
-        });
-        compiler.hooks.watchRun.tap(pluginName, compilation => this._watchRunHandler(compilation));
+        compiler.hooks.run.tapPromise(pluginName, compilation => this._init(compilation));
+        compiler.hooks.watchRun.tapPromise(pluginName, compilation => this._watchRunHandler(compilation));
     }
 
     /**
      * Initalizes with the inital files
-     * @param {Webpack.Compiler} compiler 
+     * @param {Webpack.Compiler} compiler
+     * @returns {Promise<void[]>}
      */
     _init(compiler) {
         if (this._initalized) { return; }
         this._initalized = true;
 
+        const proms = [];
         for (const component of this.components) {
-            component.initalize(compiler);
+            const returnValue = component.initalize(compiler);
+            if (returnValue instanceof Promise) {
+                proms.push(returnValue);
+            }
         }
+
+        return Promise.all(proms);
     }
 
     /**
@@ -72,9 +86,15 @@ class Plugin {
 
         const changedFiles = this._getChangedFiles(compilation);
 
+        const proms = [];
         for (const component of this.components) {
-            component.filesChanged(compilation, changedFiles);
+            const returnValue = component.filesChanged(compilation, changedFiles);
+            if (returnValue instanceof Promise) {
+                proms.push(returnValue);
+            }
         }
+
+        return Promise.all(proms);
     }
 
     /**

@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const TerserJSPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const GenerateViewAndWidgetList = require("./plugin/plugin");
+const Plugin = require("./plugin/plugin");
 
 const lessLoader = {
     test: /\.less$/,
@@ -50,7 +50,16 @@ module.exports = [{
     },
     target: "web",
     plugins: [
-        new GenerateViewAndWidgetList(),
+        new Plugin({
+            viewList: {
+                pathToViews: "src/elm/views",
+                outFileName: "viewList.ts"
+            },
+            widgetList: {
+                pathToWidgets: "src/elm/widgets",
+                outFileName: "widgetList.ts"
+            }
+        }),
         new webpack.optimize.MinChunkSizePlugin({
             minChunkSize: 2 * 1024 // 2KiB
         }),

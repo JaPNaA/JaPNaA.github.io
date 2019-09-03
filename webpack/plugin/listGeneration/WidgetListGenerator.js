@@ -1,12 +1,15 @@
-const fs = require("fs");
 const WidgetOrViewListGeneratorComponent = require("./WidgetOrViewListGeneratorComponent");
 
-const PATH_TO_WIDGETS = "src/elm/widgets";
-const OUT_FILE_NAME = "widgetList.ts";
+/**
+ * @typedef { { widgetList: { pathToWidgets: string, outFileName: string } } } WidgetListOptions
+ */
 
 class WidgetListGenerator extends WidgetOrViewListGeneratorComponent {
-    constructor() {
-        super(PATH_TO_WIDGETS, OUT_FILE_NAME);
+    /**
+     * @param {WidgetListOptions} options 
+     */
+    constructor(options) {
+        super(options.widgetList.pathToWidgets, options.widgetList.outFileName);
 
         /**
          * A list of names of widgets

@@ -1,12 +1,16 @@
-const fs = require("fs");
+const fsPromise = require("../utils/fsPromise");
 const WidgetOrViewListGeneratorComponent = require("./WidgetOrViewListGeneratorComponent");
 
-const PATH_TO_VIEWS = "src/elm/views";
-const OUT_FILE_NAME = "viewList.ts";
+/**
+ * @typedef { { viewList: { pathToViews: string, outFileName: string } } } ViewListOptions
+ */
 
 class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
-    constructor() {
-        super(PATH_TO_VIEWS, OUT_FILE_NAME);
+    /**
+     * @param {ViewListOptions} options 
+     */
+    constructor(options) {
+        super(options.viewList.pathToViews, options.viewList.outFileName);
 
         /**
          * A list of names of views
@@ -85,7 +89,7 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
     removeItem(name) {
         const index = this._indexOf(name);
         if (index >= 0) {
-        this.views.splice(index, 1);
+            this.views.splice(index, 1);
             this.changed = true;
         }
     }
