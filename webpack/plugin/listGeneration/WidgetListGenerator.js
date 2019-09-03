@@ -29,6 +29,16 @@ class WidgetListGenerator extends WidgetOrViewListGeneratorComponent {
     }
 
     /**
+     * Checks if the list has widget in list
+     * @protected
+     * @param {string} name
+     * @returns {boolean}
+     */
+    has(name) {
+        return this.widgets.includes(name);
+    }
+
+    /**
      * Adds a widget to the list
      * @protected
      * @override
@@ -39,7 +49,6 @@ class WidgetListGenerator extends WidgetOrViewListGeneratorComponent {
         this.widgets.push(directory);
         this.changed = true;
     }
-
 
     /**
      * Updates an item in the list

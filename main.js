@@ -59,6 +59,7 @@ function startWebpack(config, mode) {
             }, function (err, stats) {
                 if (err) {
                     console.error(err);
+                    return;
                 }
                 console.log(stats.toString({
                     all: false,

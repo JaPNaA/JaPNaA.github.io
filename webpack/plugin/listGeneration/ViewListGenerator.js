@@ -30,6 +30,17 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
     }
 
     /**
+     * Checks if the list has item in list
+     * @abstract
+     * @protected
+     * @param {string} name
+     * @returns {boolean}
+     */
+    has(name) {
+        return this._indexOf(name) >= 0;
+    }
+
+    /**
      * Adds a view to the list
      * @protected
      * @override

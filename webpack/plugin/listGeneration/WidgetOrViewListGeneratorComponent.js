@@ -7,6 +7,8 @@ const dirname = require("../utils/dirname");
  * @typedef {import("webpack")} Webpack
  * @typedef {import("webpack").Compiler} Webpack.Compiler
  * @typedef {import("webpack/lib/node/NodeWatchFileSystem")} Webpack.Node.NodeWatchFileSystem
+ * 
+ * @typedef {(compiler: Webpack.Compiler) => void | Promise<void>} ChangeHandler
  */
 
 /**
@@ -42,7 +44,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
         /**
          * Event handlers when a change occurs
          * @private
-         * @type {Function[]}
+         * @type {ChangeHandler[]}
          */
         this._changeEventHandlers = [];
     }
@@ -83,20 +85,17 @@ class WidgetOrViewListGeneratorComponent extends Component {
 
         for (const [path] of filesChanged) {
             const name = dirname(path);
-            if (fsPromise.exists(this._applyPathPattern(compiler.context, name))) {
-                let returnValue;
-                if (this.has(name)) {
-                    returnValue = this.updateItem(compiler.context, name);
+            proms.push(fsPromise.exists(this._applyPathPattern(compiler.context, name)).then(exists => {
+                if (exists) {
+                    if (this.has(name)) {
+                        return this.updateItem(compiler.context, name);
+                    } else {
+                        return this.addItem(compiler.context, name);
+                    }
                 } else {
-                    returnValue = this.addItem(compiler.context, name);
+                    this.removeItem(name);
                 }
-
-                if (returnValue instanceof Promise) {
-                    proms.push(returnValue);
-                }
-            } else {
-                this.removeItem(name);
-            }
+            }));
         }
 
         await Promise.all(proms);
@@ -109,7 +108,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
 
     /**
      * Adds an event handler to the change event
-     * @param {Function} handler
+     * @param {ChangeHandler} handler
      */
     onChange(handler) {
         this._changeEventHandlers.push(handler);
@@ -176,20 +175,21 @@ class WidgetOrViewListGeneratorComponent extends Component {
                     path.join(compiler.context, this._pathToItems, this._outFileName),
                     listStr
                 ),
-                this._dispatchChange()
+                this._dispatchChange(compiler)
             ]);
         }
     }
 
     /**
+     * @param {Webpack.Compiler} compiler
      * @returns {Promise<any[]>}
      */
-    _dispatchChange() {
+    _dispatchChange(compiler) {
         /** @type {Promise[]} */
         const proms = [];
 
         for (const handle of this._changeEventHandlers) {
-            const returnValue = handle();
+            const returnValue = handle(compiler);
             if (returnValue instanceof Promise) {
                 proms.push(returnValue);
             }
