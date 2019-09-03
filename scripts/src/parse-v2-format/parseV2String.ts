@@ -34,7 +34,7 @@ marked.setOptions({
     gfm: true
 });
 
-function parseV2String(v2Str: string): V2Project[] {
+export default function parseV2String(v2Str: string): V2Project[] {
     const projectsStr = splitFileToProjects(v2Str);
     const projects: V2Project[] = [];
 
@@ -373,5 +373,3 @@ function splitAtWhitespacesUnlessInQuotes(str: string): string[] {
 function warn(str: string) {
     console.warn("\nWARN: " + str);
 }
-
-export default parseV2String;
