@@ -145,11 +145,11 @@ async function cleanProject() {
         if (partialFileName.startsWith("#")) {
             if (partialFileName === "# START-REMOVABLE-FILES") {
                 shouldClean = true;
-                continue;
             } else if (partialFileName === "# END-REMOVABLE-FILES") {
                 shouldClean = false;
-                continue;
             }
+
+            continue;
         }
 
         if (!shouldClean) { continue; }
