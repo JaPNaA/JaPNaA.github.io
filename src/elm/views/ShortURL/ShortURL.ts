@@ -7,6 +7,7 @@ import parseShortUrl from "../../../components/url/parseShortUrl";
 import AppState from "../../../core/types/AppState";
 import isUrlAbsolute from "../../../utils/isUrlAbsolute";
 import siteConfig from "../../../SiteConfig";
+import LazyClassMap from "../../../core/components/lazyClassMap/LazyClassMap";
 
 class ShortUrlView extends View {
     public static viewName = "ShortUrl";
@@ -29,6 +30,9 @@ class ShortUrlView extends View {
 
     public setup(): void {
         super.setup();
+
+        LazyClassMap.stopPrefetches();
+
         let redirectingWith = "Redirecting with hash <code>" + this.hash + "</code>";
         this.elm.innerHTML = redirectingWith + "...";
 
@@ -43,6 +47,11 @@ class ShortUrlView extends View {
                 this.elm.innerHTML = "Could not redirect from <code>" +
                     this.hash + "</code>,<br>" + e;
             });
+    }
+
+    public async destory(): Promise<void> {
+        await super.destory();
+        siteConfig.resetPrefetchStatus();
     }
 
     private async redirect(): Promise<void> {

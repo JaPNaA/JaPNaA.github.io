@@ -120,10 +120,7 @@ class SiteConfig {
 
         this.settingsChangeHandlers = new EventHandlers();
 
-        if (this.connectionIsMetered) {
-            LazyClassMap.stopPrefetches();
-        }
-
+        this.resetPrefetchStatus();
         this.restoreSettingsFromLocalStorage();
     }
 
@@ -132,6 +129,14 @@ class SiteConfig {
             return Promise.resolve(this.serverTime);
         } else {
             return this.serverTimePromise;
+        }
+    }
+
+    public resetPrefetchStatus(): void {
+        if (this.connectionIsMetered) {
+            LazyClassMap.stopPrefetches();
+        } else {
+            LazyClassMap.continuePrefetches();
         }
     }
 
