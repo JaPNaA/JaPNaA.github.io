@@ -1,9 +1,9 @@
-// @ts-nocheck
 const webpack = require("webpack");
-const fs = require("fs");
 const path = require("path");
 const hs = require("http-server");
 const portfinder = require("portfinder");
+const deleteDirectory = require("./webpack/plugin/utils/deleteDirectory");
+const fsPromise = require("./webpack/plugin/utils/fsPromise");
 
 const scriptsConfig = require("./webpack/webpack.scripts.config");
 
@@ -43,6 +43,7 @@ function startWebpack(config, mode) {
     setMode(joinedConfigs, mode);
 
     /** @type {import("webpack").MultiCompiler} */
+    // @ts-ignore
     const compiler = webpack(joinedConfigs, function (err, stats) {
         if (err) {
             console.log(err);
@@ -116,6 +117,7 @@ function startHttpServers() {
     });
     const server2 = hs.createServer({
         root: path.resolve(__dirname, "../../../Thingy"),
+        // @ts-ignore
         cors: "*"
     });
     findPort();
@@ -133,8 +135,8 @@ function startHttpServers() {
 
 // --- clean ---
 
-function cleanProject() {
-    const files = fs.readFileSync(".gitignore").toString().split("\n");
+async function cleanProject() {
+    const files = (await fsPromise.readFile(".gitignore")).toString().split("\n");
     let shouldClean = false;
 
     for (const file of files) {
@@ -153,69 +155,14 @@ function cleanProject() {
         if (!shouldClean) { continue; }
         let filePath = path.join(__dirname, partialFileName);
 
-        if (fs.existsSync(filePath)) {
-            if (fs.statSync(filePath).isDirectory()) {
+        fsPromise.stat(filePath).then(stats => {
+            if (stats.isDirectory()) {
                 console.log("Removing directory " + filePath);
-                recursiveRemoveDirectory(filePath, rmCallback);
+                deleteDirectory(filePath);
             } else {
                 console.log("Removing file " + filePath);
-                fs.unlink(filePath, rmCallback);
+                fsPromise.unlink(filePath);
             }
-        }
-    }
-}
-
-function recursiveRemoveDirectory(dirPath, cb) {
-    let remaining = 0;
-    let rmdirRetries = 0;
-
-    function update() {
-        if (remaining <= 0) {
-            remove();
-        }
-    }
-
-    function remove() {
-        fs.rmdir(dirPath, function (err) {
-            if (rmdirRetries > 3) {
-                console.error(err);
-                return;
-            }
-            if (err) {
-                remove();
-                rmdirRetries++;
-            }
-        });
-    }
-
-    fs.readdir(dirPath, function (err, files) {
-        if (err) { throw err; }
-        let any = false;
-        for (const file of files) {
-            any = true;
-            remaining++;
-            const filePath = path.join(dirPath, file);
-            fs.stat(filePath, function (err, stats) {
-                if (err) { throw err; }
-                if (stats.isDirectory()) {
-                    recursiveRemoveDirectory(filePath, function () {
-                        remaining--;
-                        update();
-                    });
-                } else {
-                    fs.unlink(filePath, rmCallback);
-                    remaining--;
-                    update();
-                }
-            });
-        }
-
-        if (!any) { update(); }
-    });
-}
-
-function rmCallback(err) {
-    if (err) {
-        console.error(err);
+        }).catch(err => console.log("File " + filePath + " already doesn't exist"));
     }
 }

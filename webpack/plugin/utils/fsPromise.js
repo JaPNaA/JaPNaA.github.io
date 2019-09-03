@@ -19,22 +19,6 @@ module.exports = {
 
     /**
      * @param {string} path 
-     * @param {Buffer | string} data 
-     */
-    writeFile(path, data) {
-        return new Promise(function (res, rej) {
-            fs.writeFile(path, data, function (err) {
-                if (err) {
-                    rej();
-                } else {
-                    res();
-                }
-            });
-        });
-    },
-
-    /**
-     * @param {string} path 
      * @returns {Promise<Buffer>}
      */
     readFile(path) {
@@ -51,6 +35,71 @@ module.exports = {
 
     /**
      * @param {string} path 
+     * @param {Buffer | string} data 
+     * @returns {Promise<void>}
+     */
+    writeFile(path, data) {
+        return new Promise(function (res, rej) {
+            fs.writeFile(path, data, function (err) {
+                if (err) {
+                    rej(err);
+                } else {
+                    res();
+                }
+            });
+        });
+    },
+
+    /**
+     * @param {string} from 
+     * @param {string} to 
+     * @returns {Promise<void>}
+     */
+    copyFile(from, to) {
+        return new Promise(function (res, rej) {
+            fs.copyFile(from, to, function (err) {
+                if (err) {
+                    rej(err);
+                } else {
+                    res();
+                }
+            });
+        });
+    },
+
+    /**
+     * @param {string} path 
+     * @returns {Promise<void>}
+     */
+    unlink(path) {
+        return new Promise(function (res, rej) {
+            fs.unlink(path, function (err) {
+                if (err) {
+                    rej(err);
+                } else {
+                    res();
+                }
+            });
+        });
+    },
+
+    /**
+     * @param {string} path 
+     */
+    rmdir(path) {
+        return new Promise(function (res, rej) {
+            fs.rmdir(path, function (err) {
+                if (err) {
+                    rej(err);
+                } else {
+                    res();
+                }
+            });
+        });
+    },
+
+    /**
+     * @param {string} path 
      * @returns {Promise<boolean>}
      */
     exists(path) {
@@ -58,6 +107,22 @@ module.exports = {
             fs.access(path, fs.constants.F_OK, function (err) {
                 if (err) { res(false); }
                 else { res(true); }
+            });
+        });
+    },
+
+    /**
+     * @param {string} path 
+     * @returns {Promise<fs.Stats>}
+     */
+    stat(path) {
+        return new Promise(function (res, rej) {
+            fs.stat(path, function (err, stats) {
+                if (err) {
+                    rej(err);
+                } else {
+                    res(stats);
+                }
             });
         });
     }
