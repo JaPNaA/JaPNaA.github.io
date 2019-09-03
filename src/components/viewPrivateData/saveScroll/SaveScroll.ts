@@ -44,7 +44,11 @@ class SaveScroll extends ViewComponent {
 
         function reqanf(now: number) {
             let step = (now - startTime) / SaveScroll.scrollTransitionSpeed;
-            if (step > 1) {
+
+            if (step < 0) {
+                step = 0;
+                requestAnimationFrame(reqanf);
+            } else if (step > 1) {
                 step = 1;
             } else {
                 requestAnimationFrame(reqanf);

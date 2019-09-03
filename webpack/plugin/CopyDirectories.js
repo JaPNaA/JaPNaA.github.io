@@ -35,7 +35,11 @@ class CopyDirectories extends Component {
      * @param {string} toPath 
      */
     async copyDirectory(fromPath, toPath) {
-        await fsPromise.mkdir(toPath);
+        await fsPromise.mkdir(toPath).catch(err => {
+            if (err.code !== "EEXIST") {
+                console.error("Failed to copy directory " + fromPath + " -> " + toPath);
+            }
+        });
 
         await fsPromise.readdir(fromPath).then(files => {
             const proms = [];

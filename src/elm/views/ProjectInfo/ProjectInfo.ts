@@ -11,7 +11,6 @@ import V1Or2Project from "../../../components/contentMan/V1Or2Project";
 import ProjectInfoV1 from "./ProjectInfoV1";
 import isV2Project from "../../../utils/v2Project/isV2Project";
 import ProjectInfoV2 from "./ProjectInfoV2";
-import Widget from "../../../core/widget/Widget";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
 import siteResources from "../../../core/siteResources";

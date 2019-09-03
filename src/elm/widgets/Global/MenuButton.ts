@@ -26,7 +26,8 @@ class MenuButton extends Widget {
 
     public setup() {
         super.setup();
-        const img = siteResources.loadImage(siteConfig.path.img.hamburger).data;
+        const img = siteResources.loadImage(siteConfig.path.img.hamburger).copyImage();
+        img.alt = "Menu icon";
         this.elm.appendChild(img);
         this.elm.title = "Menu (Esc)";
         this.addEventHandlers();
