@@ -10,27 +10,50 @@ const scriptsConfig = require("./webpack/webpack.scripts.config");
 const mode = process.argv[2] && process.argv[2].toLowerCase();
 const watch = process.argv[3] && process.argv[3].toLowerCase()[0] === 'w';
 
-console.log("Node version: " + process.version);
+const modeFunctionMap = {
+    dev() {
+        const devConfig = require("./webpack/webpack.dev.config");
+        startWebpack(devConfig, "development");
+        startHttpServers();
+    },
 
-if (mode === "dev") {
-    const devConfig = require("./webpack/webpack.dev.config");
-    startWebpack(devConfig, "development");
-    startHttpServers();
-} else if (mode === "prod") {
-    const prodConfig = require("./webpack/webpack.config");
-    startWebpack(prodConfig, "production");
-} else if (mode === "clean") {
-    cleanProject();
-} else if (mode === "scripts") {
-    startWebpack([], "development");
-} else if (mode === "serve") {
-    startHttpServers();
-} else {
-    console.error("unknown mode '" + mode + "'");
-    console.log("Available modes: dev (w), prod (w), scripts (w), clean, serve");
-    console.log("Add 'w' as third argument for watch");
+    prod() {
+        const prodConfig = require("./webpack/webpack.config");
+        startWebpack(prodConfig, "production");
+    },
+
+    clean() {
+        cleanProject();
+    },
+
+    scripts() {
+        startWebpack([], "development");
+    },
+
+    serve() {
+        startHttpServers();
+    },
+
+    runscripts() {
+        const scripts = require("./scripts/build/bundle");
+        // @ts-ignore
+        scripts.scripts.default();
+    }
+};
+
+function main() {
+    console.log("Node version: " + process.version);
+
+    const fn = modeFunctionMap[mode];
+
+    if (fn) {
+        fn();
+    } else {
+        console.error("unknown mode '" + mode + "'");
+        console.log("Available modes: " + Object.keys(modeFunctionMap).join(", "));
+        console.log("Add 'w' as third argument for watch");
+    }
 }
-
 
 function startWebpack(config, mode) {
     setWatch(config, false); // watch: true in the config seems to mess things up
@@ -167,3 +190,5 @@ async function cleanProject() {
         }).catch(err => console.log("File " + filePath + " already doesn't exist"));
     }
 }
+
+main();
