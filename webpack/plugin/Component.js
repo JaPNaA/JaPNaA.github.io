@@ -13,6 +13,7 @@ class Component {
      * initalize component
      * @abstract
      * @param {Webpack.Compiler} compiler
+     * @returns {void | Promise<void>}
      */
     initalize(compiler) { throw new Error("Abstract method call"); }
 
@@ -20,6 +21,7 @@ class Component {
      * called when files change
      * @param {Webpack.Compiler} compiler 
      * @param {[string, string][]} filesChanged [absolute, relative]
+     * @returns {void | Promise<void>}
      */
     filesChanged(compiler, filesChanged) { throw new Error("Abstract method call"); }
 }

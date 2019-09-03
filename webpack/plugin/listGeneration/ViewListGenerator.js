@@ -31,9 +31,10 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
      * @override
      * @param {string} context
      * @param {string} directory
+     * @returns {Promise<void>}
      */
-    addItem(context, directory) {
-        const file = fs.readFileSync(this._applyPathPattern(context, directory)).toString();
+    async addItem(context, directory) {
+        const file = await fsPromise.readFile(this._applyPathPattern(context, directory)).then(buffer => buffer.toString());
         const match = file.match(/public\s+static\s.*viewMatcher = (\/.*\/);/);
 
         if (match) {
@@ -41,6 +42,8 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
         } else {
             this.views.push(directory);
         }
+
+        this.changed = true;
     }
 
     /**
@@ -48,12 +51,14 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
      * @protected
      * @param {string} context
      * @param {string} directory
+     * @returns {Promise<void>}
      */
-    updateItem(context, directory) {
+    async updateItem(context, directory) {
+        /** @type {string} */
         let file;
 
         try {
-            file = fs.readFileSync(this._applyPathPattern(context, directory)).toString();
+            file = await fsPromise.readFile(this._applyPathPattern(context, directory)).then(buffer => buffer.toString());
         } catch (err) {
             this.removeItem(directory);
             return;
@@ -67,6 +72,8 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
         } else {
             this.views[index] = directory;
         }
+
+        this.changed = true;
     }
 
     /**
@@ -77,7 +84,10 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
      */
     removeItem(name) {
         const index = this._indexOf(name);
+        if (index >= 0) {
         this.views.splice(index, 1);
+            this.changed = true;
+        }
     }
 
     /**

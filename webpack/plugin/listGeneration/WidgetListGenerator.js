@@ -34,6 +34,7 @@ class WidgetListGenerator extends WidgetOrViewListGeneratorComponent {
      */
     addItem(context, directory) {
         this.widgets.push(directory);
+        this.changed = true;
     }
 
 
@@ -48,6 +49,7 @@ class WidgetListGenerator extends WidgetOrViewListGeneratorComponent {
         const index = this.widgets.indexOf(name);
         if (index < 0) {
             this.widgets.push(name);
+            this.changed = true;
         }
     }
 
@@ -58,7 +60,11 @@ class WidgetListGenerator extends WidgetOrViewListGeneratorComponent {
      * @param {string} name
      */
     removeItem(name) {
-        this.widgets.splice(this.widgets.indexOf(name), 1);
+        const index = this.widgets.indexOf(name);
+        if (index >= 0) {
+            this.widgets.splice(index, 1);
+            this.changed = true;
+        }
     }
 }
 

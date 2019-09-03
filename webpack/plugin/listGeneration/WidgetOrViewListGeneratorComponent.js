@@ -36,18 +36,24 @@ class WidgetOrViewListGeneratorComponent extends Component {
      * initalize component
      * @param {Webpack.Compiler} compiler
      */
-    initalize(compiler) {
-        const contextPath = path.join(compiler.context, this.pathToItems);
-        const directories = fs.readdirSync(contextPath);
+    async initalize(compiler) {
+        const contextPath = path.join(compiler.context, this._pathToItems);
+        const directories = await fsPromise.readdir(contextPath);
+
+        const proms = [];
 
         for (const directory of directories) {
-            if (fs.existsSync(this._applyPathPattern(compiler.context, directory))) {
-                // this.list.push(directory);
-                this.addItem(compiler.context, directory);
+            proms.push(fsPromise.exists(this._applyPathPattern(compiler.context, directory))
+                .then(exists => {
+                    if (exists) {
+                        return this.addItem(compiler.context, directory);
             }
+                })
+            );
         }
 
-        this._updateList(compiler);
+        await Promise.all(proms);
+        await this._updateList(compiler);
     }
 
     /**
@@ -55,20 +61,42 @@ class WidgetOrViewListGeneratorComponent extends Component {
      * @param {Webpack.Compiler} compiler
      * @param {[string, string][]} filesChanged
      */
-    filesChanged(compiler, filesChanged) {
-        const contextPath = path.join(compiler.context, this.pathToItems);
+    async filesChanged(compiler, filesChanged) {
+        /** @type {Promise[]} */
+        const proms = [];
+
         for (const [path] of filesChanged) {
             const name = dirname(path);
-            if (fs.existsSync(this._applyPathPattern(contextPath, name))) {
+            if (fsPromise.exists(this._applyPathPattern(compiler.context, name))) {
+                let returnValue;
                 if (this.has(name)) {
-                    this.updateItem(contextPath, name);
+                    returnValue = this.updateItem(compiler.context, name);
                 } else {
-                    this.addItem(contextPath, name);
+                    returnValue = this.addItem(compiler.context, name);
+                }
+
+                if (returnValue instanceof Promise) {
+                    proms.push(returnValue);
                 }
             } else {
                 this.removeItem(name);
             }
         }
+
+        await Promise.all(proms);
+
+        if (this.changed) {
+            await this._updateList(compiler);
+            this.changed = false;
+        }
+    }
+
+    /**
+     * Adds an event handler to the change event
+     * @param {Function} handler
+     */
+    onChange(handler) {
+        this._changeEventHandlers.push(handler);
     }
 
     /**
@@ -85,6 +113,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
      * @protected
      * @param {string} context
      * @param {string} name
+     * @returns {void | Promise<void>}
      */
     addItem(context, name) { throw new Error("Abstract method call"); }
 
@@ -94,6 +123,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
      * @protected
      * @param {string} context
      * @param {string} name
+     * @returns {void | Promise<void>}
      */
     updateItem(context, name) { throw new Error("Abstract method call"); }
 
@@ -102,6 +132,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
      * @abstract
      * @protected
      * @param {string} name
+     * @returns {void}
      */
     removeItem(name) { throw new Error("Abstract method call"); }
 
@@ -117,25 +148,48 @@ class WidgetOrViewListGeneratorComponent extends Component {
     /**
      * updates the list
      * @param {Webpack.Compiler} compiler
+     * @returns {Promise<any> | void}
      */
     _updateList(compiler) {
         const listStr = this.generateListString();
-        if (listStr !== this.prevGenerated) {
-            fs.writeFileSync(
-                path.join(compiler.context, this.pathToItems, this.outFileName),
+        if (listStr !== this._prevGenerated) {
+            this._prevGenerated = listStr;
+
+            return Promise.all([
+                fsPromise.writeFile(
+                    path.join(compiler.context, this._pathToItems, this._outFileName),
                 listStr
-            );
-            this.prevGenerated = listStr;
+                ),
+                this._dispatchChange()
+            ]);
         }
     }
 
     /**
+     * @returns {Promise<any[]>}
+     */
+    _dispatchChange() {
+        /** @type {Promise[]} */
+        const proms = [];
+
+        for (const handle of this._changeEventHandlers) {
+            const returnValue = handle();
+            if (returnValue instanceof Promise) {
+                proms.push(returnValue);
+            }
+        }
+
+        return Promise.all(proms);
+    }
+
+    /**
      * applies that path pattern of widgets/views
+     * @protected
      * @param {string} start 
      * @param {string} directory 
      */
     _applyPathPattern(start, directory) {
-        return path.join(start, this.pathToItems, directory, directory + ".ts");
+        return path.join(start, this._pathToItems, directory, directory + ".ts");
     }
 }
 
