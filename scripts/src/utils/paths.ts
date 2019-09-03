@@ -1,4 +1,4 @@
-const contentRoot = "./docs/assets/content";
+const contentRoot = "./public/assets/content";
 
 const paths = {
     contentRoot: contentRoot,

@@ -4,7 +4,7 @@
   "description": "A site for my things",
   "main": "main.js",
   "directories": {
-    "doc": "docs"
+    "doc": "public"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

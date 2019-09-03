@@ -27,7 +27,7 @@ module.exports = [{
     name: "dist",
     entry: "./src/index.ts",
     output: {
-        path: path.resolve(__dirname, "../docs/bundles"),
+        path: path.resolve(__dirname, "../public/bundles"),
         filename: 'bundle.js',
         chunkFilename: '[name].bundle.js',
         publicPath: "/bundles/"
@@ -68,7 +68,7 @@ module.exports = [{
     name: "darkModeCSS",
     entry: "./styles/darkMode.less",
     output: {
-        path: path.resolve(__dirname, "../docs/bundles"),
+        path: path.resolve(__dirname, "../public/bundles"),
         filename: '_uselessFile.js',
         publicPath: "/bundles/"
     },
