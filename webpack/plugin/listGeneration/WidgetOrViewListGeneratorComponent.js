@@ -1,5 +1,5 @@
 const path = require("path");
-const fs = require("fs");
+const fsPromise = require("../utils/fsPromise");
 const Component = require("../Component");
 const dirname = require("../utils/dirname");
 
@@ -16,19 +16,35 @@ const dirname = require("../utils/dirname");
 class WidgetOrViewListGeneratorComponent extends Component {
     /**
      * @param {string} pathToItems
-     * @param {string} outPath
+     * @param {string} outFileName
      */
-    constructor(pathToItems, outPath) {
+    constructor(pathToItems, outFileName) {
         super();
+
+        /** @private */
+        this._pathToItems = pathToItems;
+        /** @private */
+        this._outFileName = outFileName;
+
+        /**
+         * Has the list changed?
+         * @type {boolean}
+         */
+        this.changed = false;
 
         /**
          * Previously generated string
+         * @private
          * @type {string}
          */
-        this.prevGenerated = "";
+        this._prevGenerated = "";
 
-        this.pathToItems = pathToItems;
-        this.outFileName = outPath;
+        /**
+         * Event handlers when a change occurs
+         * @private
+         * @type {Function[]}
+         */
+        this._changeEventHandlers = [];
     }
 
 
@@ -47,7 +63,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
                 .then(exists => {
                     if (exists) {
                         return this.addItem(compiler.context, directory);
-            }
+                    }
                 })
             );
         }
@@ -158,7 +174,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
             return Promise.all([
                 fsPromise.writeFile(
                     path.join(compiler.context, this._pathToItems, this._outFileName),
-                listStr
+                    listStr
                 ),
                 this._dispatchChange()
             ]);
