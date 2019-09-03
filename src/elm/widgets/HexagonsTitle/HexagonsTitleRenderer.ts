@@ -25,6 +25,11 @@ class HexagonsTitleRenderer extends HexagonsRenderer {
         this.transitionStep = 0;
         this.drawLogoOver = false;
         this.gradient = this.createGradient();
+
+        this.logo.ready()
+            .then(() => {
+                this.requestDraw();
+            });
     }
 
     public noTransitionIn(): void {

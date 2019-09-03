@@ -15,6 +15,7 @@ abstract class View {
     public showMenuButton: boolean = true;
 
     public id: number;
+    public active: boolean;
 
     protected privateData: any;
     protected app: IApp;
@@ -29,6 +30,7 @@ abstract class View {
         this.destoryHandlers = new EventHandlers();
 
         this.id = state.id || View.vidCounter++;
+        this.active = false;
         this.privateData = state.privateData || {};
         this.viewComponents = [];
     }
@@ -47,6 +49,7 @@ abstract class View {
         }
 
         this.app.focus();
+        this.active = true;
     }
 
     /**
@@ -63,6 +66,8 @@ abstract class View {
         for (const component of this.viewComponents) {
             component.destory();
         }
+
+        this.active = false;
     }
 
     /** Appends scene element to element */

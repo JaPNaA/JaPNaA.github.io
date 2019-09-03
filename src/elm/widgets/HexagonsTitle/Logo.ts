@@ -21,6 +21,18 @@ class Logo {
         this.maxHeight = maxHeight - Logo.padding * 2;
     }
 
+    public ready(): Promise<void> {
+        if (this.resource.loaded) {
+            return Promise.resolve();
+        } else {
+            return new Promise((res, rej) => {
+                this.resource
+                    .onLoad(() => res())
+                    .onError(() => rej())
+            });
+        }
+    }
+
     public draw(X: CanvasRenderingContext2D, centerX: number, centerY: number) {
         const scale = Math.min(1, this.maxWidth / this.img.width, this.maxHeight / this.img.height);
 

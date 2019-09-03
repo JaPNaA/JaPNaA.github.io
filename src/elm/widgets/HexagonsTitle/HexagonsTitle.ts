@@ -59,13 +59,6 @@ class HexagonsTitle extends Widget {
         this.settingsChangeHandler = this.settingsChangeHandler.bind(this);
         siteConfig.onSettingsChanged(this.settingsChangeHandler);
 
-        // POSSIBLE BUG: destory before nextDone
-        // siteResources.nextDone().then(() => {
-        //     // this.renderer.
-        //     this.renderer.clearTimer();
-        //     this.renderer.requestDraw();
-        // });
-
         this.registeredEventHandlers = true;
     }
 

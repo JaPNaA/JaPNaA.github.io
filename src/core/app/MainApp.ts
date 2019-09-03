@@ -60,9 +60,10 @@ abstract class MainApp extends BaseApp {
 
     private async createSplashScreen(): Promise<void> {
         if (!this.splashScreenView) { return; }
-        const splashScreen = await this.views.open(this.splashScreenView);
+        const SplashScreen = this.splashScreenView;
+        const splashScreen = await this.views.open(SplashScreen);
         siteResources.nextDone().then(() => {
-            if (splashScreen) {
+            if (splashScreen.active) {
                 this.views.close(splashScreen);
             }
         });

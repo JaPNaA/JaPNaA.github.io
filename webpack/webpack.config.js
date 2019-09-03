@@ -52,7 +52,7 @@ module.exports = [{
     plugins: [
         new GenerateViewAndWidgetList(),
         new webpack.optimize.MinChunkSizePlugin({
-            minChunkSize: 20 * 1024 // 20KiB
+            minChunkSize: 2 * 1024 // 2KiB
         }),
         new MiniCssExtractPlugin({
             // ignoreOrder: false, // Enable to remove warnings about conflicting order
