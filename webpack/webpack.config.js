@@ -5,6 +5,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const Plugin = require("./plugin/plugin");
 
+// @ts-ignore
+const scriptFn = require("../scripts/build/bundle").scripts.default;
+
 const lessLoader = {
     test: /\.less$/,
     loaders: [
@@ -58,6 +61,10 @@ module.exports = [{
             widgetList: {
                 pathToWidgets: "src/elm/widgets",
                 outFileName: "widgetList.ts"
+            },
+            runScript: {
+                fn: scriptFn,
+                once: true
             },
             copyDirectories: {
                 from: "public",

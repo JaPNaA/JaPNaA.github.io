@@ -1,9 +1,9 @@
 const path = require("path");
-const fsPromise = require("../utils/fsPromise");
+const fsPromise = require("./utils/fsPromise");
 
 /**
  * @typedef {import("webpack").Compiler} Webpack.Compiler
- * @typedef {import("../listGeneration/ViewListGenerator")} ViewListGenerator
+ * @typedef {import("./listGeneration/ViewListGenerator")} ViewListGenerator
  * 
  * @typedef { { generateViewHTML: {
  *                  outDirectory: string,

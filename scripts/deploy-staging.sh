@@ -11,8 +11,6 @@ mkdir build
 
 # build
 npm run build
-npm run parse-v2-format
-npm run update-index-json
 
 # do the git stuff (Adapted from Microsoft/monaco-editor)
 COMMITTER_USER_NAME="$(git log --format='%an' -1)"

@@ -1,6 +1,7 @@
 /**
  * @typedef {import("webpack")} Webpack
  * @typedef {import("webpack").Compiler} Webpack.Compiler
+ * @typedef {import("webpack").compilation.Compilation} Webpack.Compilation
  * @typedef {import("webpack/lib/node/NodeWatchFileSystem")} Webpack.Node.NodeWatchFileSystem
  */
 
@@ -15,7 +16,7 @@ class Component {
      * @param {Webpack.Compiler} compiler
      * @returns {void | Promise<void>}
      */
-    initalize(compiler) { throw new Error("Abstract method call"); }
+    initalize(compiler) { }
 
     /**
      * called when files change
@@ -23,7 +24,14 @@ class Component {
      * @param {[string, string][]} filesChanged [absolute, relative]
      * @returns {void | Promise<void>}
      */
-    filesChanged(compiler, filesChanged) { throw new Error("Abstract method call"); }
+    filesChanged(compiler, filesChanged) { }
+
+    /**
+     * called when emitted
+     * @param {Webpack.Compilation} compilation
+     * @returns {void | Promise<void>}
+     */
+    afterEmit(compilation) { }
 }
 
 module.exports = Component;

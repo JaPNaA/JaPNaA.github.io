@@ -1,18 +1,18 @@
-const GenerateViewHTML = require("./htmlGeneration/GenerateViewHTML");
-const WidgetListGenerator = require("./listGeneration/WidgetListGenerator");
-const ViewListGenerator = require("./listGeneration/ViewListGenerator");
-const CopyDirectories = require("./CopyDirectories");
 
-const pluginName = 'GenerateViewAndWidgetList';
 const path = require("path");
-// const fs = require("fs");
 
-// const PATH_TO_VIEWS = "src/elm/views";
-// const PATH_TO_WIDGETS = "src/elm/widgets";
+const CopyDirectories = require("./CopyDirectories");
+const GenerateViewHTML = require("./GenerateViewHTML");
+const RunScripts = require("./RunScript");
+const ViewListGenerator = require("./listGeneration/ViewListGenerator");
+const WidgetListGenerator = require("./listGeneration/WidgetListGenerator");
+
+const pluginName = 'JaPNaA_github_io_Plugin';
 
 /**
  * @typedef {import("webpack")} Webpack
  * @typedef {import("webpack").Compiler} Webpack.Compiler
+ * @typedef {import("webpack").compilation.Compilation} Webpack.Compilation
  * @typedef {import("webpack/lib/node/NodeWatchFileSystem")} Webpack.Node.NodeWatchFileSystem
  * @typedef {import("./Component")} Component
  */
@@ -22,7 +22,8 @@ class Plugin {
      * @param { WidgetListGenerator.WidgetListOptions &
      *          ViewListGenerator.ViewListOptions &
      *          CopyDirectories.CopyDirectoriesOptions &
-     *          GenerateViewHTML.GenerateViewHTMLOptions } options 
+     *          GenerateViewHTML.GenerateViewHTMLOptions &
+     *          RunScripts.RunScriptsOptions } options 
      */
     constructor(options) {
         /**
@@ -35,6 +36,7 @@ class Plugin {
         // --- Components ---
         this.widgetList = new WidgetListGenerator(options);
         this.viewList = new ViewListGenerator(options);
+        this.runScripts = new RunScripts(options);
         this.copyDirectories = new CopyDirectories(options);
 
         /**
@@ -43,6 +45,7 @@ class Plugin {
         this.components = [
             this.widgetList,
             this.viewList,
+            this.runScripts,
             this.copyDirectories
         ];
 
@@ -59,6 +62,7 @@ class Plugin {
      */
     apply(compiler) {
         compiler.hooks.run.tapPromise(pluginName, compilation => this._init(compilation));
+        compiler.hooks.afterEmit.tapPromise(pluginName, compilation => this._afterEmitHandler(compilation));
         compiler.hooks.watchRun.tapPromise(pluginName, compilation => this._watchRunHandler(compilation));
     }
 
@@ -74,6 +78,25 @@ class Plugin {
         const proms = [];
         for (const component of this.components) {
             const returnValue = component.initalize(compiler);
+            if (returnValue instanceof Promise) {
+                proms.push(returnValue);
+            }
+        }
+
+        return Promise.all(proms);
+    }
+
+    /**
+     * Called after Webpack finishes compiling
+     * @param {Webpack.Compilation} compilation
+     * @returns {Promise<void[]>}
+     */
+    _afterEmitHandler(compilation) {
+        /** @type {Promise[]} */
+        const proms = [];
+
+        for (const component of this.components) {
+            const returnValue = component.afterEmit(compilation);
             if (returnValue instanceof Promise) {
                 proms.push(returnValue);
             }
