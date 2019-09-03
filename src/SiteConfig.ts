@@ -10,12 +10,12 @@ import isIE from "./utils/isClient/isIE";
 import isIOS from "./utils/isClient/isIOS";
 import isMobile from "./utils/isClient/isMobile";
 import { resolve } from "url";
+import getBasePath from "./utils/getBasePath";
 
 class SiteConfig {
     public readonly title: string = "JaPNaA";
     public readonly viewStateSeparator = "?"; // could also be '/' or '#', if willing to sacrifice SEO
 
-    public readonly isAtRoot: boolean;
     public readonly developmentMode: boolean;
 
     public readonly path = {
@@ -88,10 +88,8 @@ class SiteConfig {
     private settingsChangeHandlers: EventHandlers;
 
     constructor() {
-        const base = location.origin + location.pathname;
+        const base = getBasePath();
         this.insertBaseUrl(base, this.path);
-
-        this.isAtRoot = location.pathname === '/';
 
         // matches localhost and IPs, for debugging
         const match = location.href.match(/^https?:\/\/(((\d+\.){3}\d+)|(localhost)):/);
@@ -100,8 +98,8 @@ class SiteConfig {
             if (!isNaN(port)) {
                 this.path.thingy = match[0] + (port + 1);
             }
-        } else if (!this.isAtRoot) {
-            // if hosted somewhere else, and isn't at root, (staging url)
+        } else if (location.hostname !== 'localhost') {
+            // if hosted somewhere else, (staging url)
             this.path.thingy = "https://japnaa.github.io/";
         }
 

@@ -21,7 +21,8 @@ class Plugin {
     /**
      * @param { WidgetListGenerator.WidgetListOptions &
      *          ViewListGenerator.ViewListOptions &
-     *          CopyDirectories.CopyDirectoriesOptions } options 
+     *          CopyDirectories.CopyDirectoriesOptions &
+     *          GenerateViewHTML.GenerateViewHTMLOptions } options 
      */
     constructor(options) {
         /**
@@ -45,7 +46,7 @@ class Plugin {
             this.copyDirectories
         ];
 
-        this.generateViewHTML = new GenerateViewHTML(this.viewList);
+        this.generateViewHTML = new GenerateViewHTML(this.viewList, options);
 
 
         this._startTime = Date.now();

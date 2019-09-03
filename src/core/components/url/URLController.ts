@@ -80,7 +80,6 @@ class URLController {
     }
 
     private setToOldURL(): void {
-        if (!siteConfig.isAtRoot) { return; }
         const urlparams = new URLSearchParams(this.initalSearch);
         const initalURL = urlparams.get("u");
         const state = urlparams.get("s");
@@ -100,19 +99,11 @@ class URLController {
     }
 
     private basedReplaceState(state: any, title: string, url: string): void {
-        if (siteConfig.isAtRoot) {
-            history.replaceState(state, title, url);
-        } else {
-            history.replaceState(state, title, siteConfig.path.base + "#" + url);
-        }
+        history.replaceState(state, title, url);
     }
 
     private basedPushState(state: any, title: string, url: string): void {
-        if (siteConfig.isAtRoot) {
-            history.pushState(state, title, url);
-        } else {
-            history.pushState(state, title, siteConfig.path.base + "#" + url);
-        }
+        history.pushState(state, title, url);
     }
 }
 

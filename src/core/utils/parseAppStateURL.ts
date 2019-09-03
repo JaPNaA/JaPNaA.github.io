@@ -4,14 +4,6 @@ import AppStateBuilder from "./AppStateBuilder";
 import siteConfig from "../../SiteConfig";
 
 export default function parseAppStateURL(href: string | url.UrlWithStringQuery): AppState | undefined {
-    if (siteConfig.isAtRoot) {
-        return parseAppStateURL_root(href);
-    } else {
-        return parseAppStateURL_hash(href);
-    }
-}
-
-function parseAppStateURL_root(href: string | url.UrlWithStringQuery): AppState | undefined {
     let cleanURL;
     const builder = new AppStateBuilder();
 
@@ -24,7 +16,7 @@ function parseAppStateURL_root(href: string | url.UrlWithStringQuery): AppState 
     builder.hash = cleanURL.hash;
 
     if (!cleanURL.path) return;
-    const cleanPath = cleanURL.path.slice(1);
+    const cleanPath = cleanURL.path.slice(cleanURL.path.lastIndexOf("/") + 1);
 
     const divisorIndex = cleanPath.indexOf(siteConfig.viewStateSeparator);
     if (divisorIndex < 0) {
@@ -39,22 +31,6 @@ function parseAppStateURL_root(href: string | url.UrlWithStringQuery): AppState 
     try {
         return builder.build();
     } catch (err) {
-        return undefined;
-    }
-}
-
-function parseAppStateURL_hash(href: string | url.UrlWithStringQuery): AppState | undefined {
-    let cleanURL;
-
-    if (typeof href === "string") {
-        cleanURL = url.parse(href);
-    } else {
-        cleanURL = href;
-    }
-
-    if (cleanURL.hash) {
-        return parseAppStateURL_root(cleanURL.hash.slice(1));
-    } else {
         return undefined;
     }
 }

@@ -62,6 +62,14 @@ module.exports = [{
             copyDirectories: {
                 from: "public",
                 to: "build"
+            },
+            generateViewHTML: {
+                outDirectory: "build",
+                templatePage: "public/_pageTemplate.html",
+                createIndexPage: true,
+                baseReplacementMap: {
+                    "description": "JaPNaA's website. (It's very nice)"
+                }
             }
         }),
         new webpack.optimize.MinChunkSizePlugin({
