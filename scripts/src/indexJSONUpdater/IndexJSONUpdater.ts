@@ -27,7 +27,8 @@ class IndexJSONUpdater {
             this.proms.push(this.readFile(file));
         }
 
-        return Promise.all(this.proms).then(this.writeIndexFile);
+        return Promise.all(this.proms)
+            .then(() => this.writeIndexFile());
     }
 
     private async readFile(path: string): Promise<void> {
@@ -81,10 +82,6 @@ class IndexJSONUpdater {
             }
         ));
     }
-}
-
-if (require.main === module) {
-    new IndexJSONUpdater().update();
 }
 
 export default IndexJSONUpdater;

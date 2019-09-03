@@ -195,8 +195,4 @@ class V2FormatParser {
     }
 }
 
-if (require.main === module) {
-    new V2FormatParser().parse();
-}
-
 export default V2FormatParser;
