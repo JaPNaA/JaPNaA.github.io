@@ -26,6 +26,9 @@ class V2Files implements IFiles {
         const outDir = path.join(ContentParser.outDirectory, V2Files.dirId);
         const proms: Promise<void>[] = [];
 
+        await fsPromise.stat(outDir)
+            .catch(err => fsPromise.mkdir(outDir));
+
         for (const project of this.projectsList) {
             proms.push(this.writeOutProjectBody(project));
         }
