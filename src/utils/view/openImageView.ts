@@ -2,12 +2,12 @@ import IApp from "../../core/types/app/IApp";
 import IImageView from "../../elm/views/ImageView/IImageView";
 import siteConfig from "../../SiteConfig";
 import openNoopener from "../../core/utils/open/openNoopener";
-import resolveUrl from "../resolveUrl";
+import urlFromViewState from "../urlFromViewState";
 
 export default async function openImageView(app: IApp, img: HTMLImageElement): Promise<void> {
     if (siteConfig.isIOS) {
         // fixes weird iOS performance bug - runs much smoother if accessed using url
-        openNoopener(resolveUrl("/imageview/" + img.src));
+        openNoopener(urlFromViewState("ImageView", img.src));
     } else if (siteConfig.isIE) {
         // IE + Canvas + Images = no
         openNoopener(img.src);
