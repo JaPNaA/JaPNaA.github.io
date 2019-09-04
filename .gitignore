@@ -3,8 +3,6 @@
 
 # these files are automatically built
 # START-REMOVABLE-FILES
-/public/assets/content/index.json
-/public/assets/content/v2/
 /src/elm/views/viewList.ts
 /src/elm/widgets/widgetList.ts
 /scripts/build
