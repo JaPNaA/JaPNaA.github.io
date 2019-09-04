@@ -1,7 +1,5 @@
-import V2FormatParser from "./v2FormatParser/V2FormatParser";
-import IndexJSONUpdater from "./indexJSONUpdater/IndexJSONUpdater";
+import ContentParser from "./ContentParser";
 
-export default async function runScripts() {
-    await new V2FormatParser().parse();
-    await new IndexJSONUpdater().update();
+export default async function main() {
+    await new ContentParser().parseAndWrite();
 }
