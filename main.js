@@ -37,7 +37,7 @@ const modeFunctionMap = {
     runscripts() {
         try {
             // @ts-ignore
-            require("./scripts/build/bundle").scripts.default;
+            require("./scripts/build/bundle").scripts.default();
         } catch (err) {
             console.error(err);
             console.log(":: Has the project been built?")
