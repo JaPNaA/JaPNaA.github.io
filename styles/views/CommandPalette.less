@@ -1,0 +1,68 @@
+@import "../variables.less";
+
+.main .CommandPalette {
+    @height: 48px;
+    @font-size: 1.1em;
+
+    background-color: transparent;
+
+    text-align: center;
+    padding: 0;
+
+    .centerContainer {
+        background-color: transparent;
+    }
+
+    .contentContainer {
+        position: relative;
+        z-index: 1;
+        height: auto;
+
+        margin-top: 15vh;
+        margin-top: calc(15vh - (@height / 2));
+        box-shadow: @box-shadow-24dp;
+
+        .input {
+            background-color: $$background-color;
+            color: $$color;
+
+            font-size: @font-size;
+            font-family: "Roboto", sans-serif;
+
+            width: 100%;
+            height: @height;
+            outline: none;
+            border: 4px solid @theme-color-blue;
+            padding: 8px 12px;
+
+            box-sizing: border-box;
+        }
+
+        .resultsContainer {
+            background-color: $$background-color;
+            max-height: 50vh;
+
+            overflow: auto;
+
+            .result {
+                padding: 12px 24px;
+
+                &.clickable {
+                    cursor: pointer;
+                }
+
+                &:hover {
+                    background-color: $$background-color-darkened;
+                }
+            }
+        }
+    }
+
+    .backgroundClickCatcher {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
