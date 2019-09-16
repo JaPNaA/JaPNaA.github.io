@@ -49,16 +49,14 @@ class CommandParser {
         const literalResult = new NavigateCommandResult(command);
         const resultsWithScores: [number, NavigateCommandResult][] = [];
 
-        if (command.length > 0) {
-            for (const view of viewList) {
-                let name = Array.isArray(view) ?
-                    view[0] : view;
+        for (const view of viewList) {
+            let name = Array.isArray(view) ?
+                view[0] : view;
 
-                const score = CommandParser.looseStartsWith(command, name);
+            const score = CommandParser.looseStartsWith(command, name);
 
-                if (score >= 0) {
-                    resultsWithScores.push([score, new NavigateCommandResult(name)]);
-                }
+            if (score >= 0) {
+                resultsWithScores.push([score, new NavigateCommandResult(name)]);
             }
         }
 

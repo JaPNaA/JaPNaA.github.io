@@ -211,6 +211,7 @@ class CommandPalette extends View {
 
         if (this.selectedResult && this.selectedResult.elm) {
             this.selectedResult.elm!.classList.add("selected");
+            this.scrollTo(this.selectedResult.elm!);
         }
     }
 
@@ -220,6 +221,19 @@ class CommandPalette extends View {
             return;
         }
         this.selectedResult.activate(this.app);
+    }
+
+    private scrollTo(elm: HTMLElement): void {
+        const bbox = elm.getBoundingClientRect();
+        const parentBBox = this.resultsContainer.getBoundingClientRect();
+        const distBottom = bbox.bottom - parentBBox.bottom;
+        const topDist = bbox.top - parentBBox.top;
+
+        if (distBottom > 0) {
+            this.resultsContainer.scrollBy(0, distBottom);
+        } else if (topDist < 0) {
+            this.resultsContainer.scrollBy(0, topDist);
+        }
     }
 }
 
