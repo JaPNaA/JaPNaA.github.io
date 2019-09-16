@@ -3,6 +3,6 @@ jeep, https://www.google.ca/search?q=jeep&tbm=isch
 github, https://github.com/japnaa
 google, http://gewgle.com/
 long, https://japnaa.github.io/a4fLs13NAnsGwDpoZ4/
-changelog, /content/changelog.txt
+changelog, /assets/content/changelog.txt
 feedback, https://github.com/JaPNaA/JaPNaA.github.io/issues/new
 contact, mailto:japnaabot@gmail.com
