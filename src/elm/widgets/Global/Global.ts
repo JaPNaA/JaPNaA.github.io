@@ -6,6 +6,7 @@ import App from "../../../App";
 import WidgetMap from "../../../core/widget/WidgetMap";
 import MenuButton from "./MenuButton";
 import TopLoadingBar from "./TopLoadingBar";
+import GlobalKeybindings from "./GlobalKeybindings";
 
 /** Initalized at start of page */
 class GlobalWidgets extends Widget {
@@ -18,9 +19,14 @@ class GlobalWidgets extends Widget {
     private menuButton: MenuButton;
     private loadingBar: TopLoadingBar;
 
+    private globalKeybindings: GlobalKeybindings;
+
     constructor(app: App) {
         super();
         this.app = app;
+
+        this.globalKeybindings = new GlobalKeybindings(app);
+
         this.menuButton = new MenuButton(app);
         this.loadingBar = new TopLoadingBar(app);
 
@@ -29,6 +35,8 @@ class GlobalWidgets extends Widget {
 
     public setup(): void {
         super.setup();
+        this.globalKeybindings.setup();
+
         this.menuButton.setup();
         this.loadingBar.setup();
         this.menuButton.appendTo(this.elm);
@@ -37,6 +45,8 @@ class GlobalWidgets extends Widget {
 
     public destory(): void {
         super.destory();
+        this.globalKeybindings.setup();
+
         this.menuButton.destory();
         this.loadingBar.destory();
     }

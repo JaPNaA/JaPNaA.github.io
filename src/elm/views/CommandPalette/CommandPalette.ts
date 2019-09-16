@@ -178,7 +178,10 @@ class CommandPalette extends View {
     }
 
     private activateSelectedResult(): void {
-        if (!this.selectedResult) { return; }
+        if (!this.selectedResult) {
+            this.app.views.close(this);
+            return;
+        }
         this.selectedResult.activate(this.app);
     }
 }
