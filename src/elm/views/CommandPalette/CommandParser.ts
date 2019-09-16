@@ -15,6 +15,12 @@ class CommandParser {
         "#": CommandParser.shortURLCommand
     };
 
+    public static helpMap: { [x: string]: string } = {
+        "?": "Shows commands with description",
+        "/": "Navigate to url",
+        "#": "Navigate with short URL"
+    };
+
     public static parse(command: string): Promise<CommandResult[]> {
         const fn = CommandParser.firstLetterFnMap[command[0]];
         if (fn) {
@@ -33,7 +39,7 @@ class CommandParser {
         const results = [];
 
         for (const key of keys) {
-            results.push(new InfoCommandResult(key));
+            results.push(new InfoCommandResult(key, CommandParser.helpMap[key]));
         }
 
         return results;
