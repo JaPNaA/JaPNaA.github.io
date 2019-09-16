@@ -26,11 +26,12 @@ class CommandPalette extends View {
     private selectedResult: CommandResult | undefined;
     private selectedResultIndex: number;
 
-    private keyFnMap: { [x: number]: () => void } = {
+    private keyFnMap: { [x: number]: (e: KeyboardEvent) => void } = {
         27: () => this.app.views.close(this),
         38: () => this.selectPreviousResult(),
         40: () => this.selectNextResult(),
-        13: () => this.activateSelectedResult()
+        13: () => this.activateSelectedResult(),
+        9: e => this.tabSelectedResult(e)
     };
 
     constructor(app: IApp, state: AppState) {
@@ -82,7 +83,7 @@ class CommandPalette extends View {
     private keydownHandler(e: KeyboardEvent): void {
         const fn = this.keyFnMap[e.keyCode];
         if (fn) {
-            fn();
+            fn(e);
         } else {
             this.input.focus();
         }
@@ -220,7 +221,20 @@ class CommandPalette extends View {
             this.app.views.close(this);
             return;
         }
+
         this.selectedResult.activate(this.app);
+    }
+
+    private tabSelectedResult(e: KeyboardEvent): void {
+        if (!this.selectedResult) { return; }
+
+        const newValue = this.selectedResult.onTab();
+        e.preventDefault();
+
+        if (newValue) {
+            this.input.value = newValue;
+            this.update();
+        }
     }
 
     private scrollTo(elm: HTMLElement): void {

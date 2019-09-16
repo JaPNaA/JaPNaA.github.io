@@ -5,9 +5,15 @@ import resolveUrl from "../../../../utils/resolveUrl";
 import siteConfig from "../../../../SiteConfig";
 
 class NavigateCommandResult extends CommandResult {
+    private resolved: string;
     private to: string;
 
-    constructor(to: string, label?: string) {
+    constructor(to_: string, label?: string) {
+        let to = to_;
+        if (to[to.length - 1] === "?") {
+            to = to.slice(0, to.length - 1);
+        }
+
         const resolved = resolveUrl(to);
 
         if (label) {
@@ -16,24 +22,29 @@ class NavigateCommandResult extends CommandResult {
             super("Navigate to " + resolved)
         }
 
-        this.to = resolved;
+        this.resolved = resolved;
+        this.to = to;
     }
 
     public activate(app: IApp) {
-        const state = parseAppStateURL(this.to);
+        const state = parseAppStateURL(this.resolved);
 
-        if (!state || !this.to.startsWith(siteConfig.path.base)) {
-            location.assign(this.to);
+        if (!state || !this.resolved.startsWith(siteConfig.path.base)) {
+            location.assign(this.resolved);
         } else {
             app.views.createAndSetupViewWithFallbacks(state.viewName, state)
                 .then(viewWithFallbackStatus => {
                     if (viewWithFallbackStatus.isFallback) {
-                        location.assign(this.to);
+                        location.assign(this.resolved);
                     } else {
                         app.views.switch(viewWithFallbackStatus.view);
                     }
                 });
         }
+    }
+
+    public onTab(): string {
+        return "/" + this.to + "?";
     }
 }
 

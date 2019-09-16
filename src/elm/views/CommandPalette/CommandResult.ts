@@ -13,6 +13,7 @@ abstract class CommandResult {
     }
 
     public abstract activate(app: IApp): void;
+    public abstract onTab(): string | void;
 }
 
 export default CommandResult;

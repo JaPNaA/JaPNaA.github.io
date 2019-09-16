@@ -7,7 +7,11 @@ class InfoCommandResult extends CommandResult {
         super(info, desciption);
     }
 
-    activate() { }
+    public activate() { }
+
+    public onTab(): string {
+        return this.label;
+    }
 }
 
 export default InfoCommandResult;

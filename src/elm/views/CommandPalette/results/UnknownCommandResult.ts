@@ -8,6 +8,7 @@ class UnknownCommandResult extends CommandResult {
     }
 
     public activate() { }
+    public onTab() { return; }
 }
 
 export default UnknownCommandResult;
