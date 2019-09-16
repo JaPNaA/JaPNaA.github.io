@@ -1,3 +1,6 @@
+Version 0.4:
+  - Changelog discontinued
+
 Version 0.3.6.2:
   - Add keybinds for search
     - ctrl+f to enter search
