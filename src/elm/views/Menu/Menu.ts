@@ -72,12 +72,13 @@ class Menu extends View {
         const children: HTMLElement[] = [
             this.createTitle(),
             this.createHeading("Navigate"),
-            this.createButtonThatOpens("Overview", "Title page"),
-            this.createButtonThatOpens("About", "About me"),
-            this.createButtonThatOpens("BrowseProjects", "Browse Projects"),
-            this.createButtonThatOpens("ProjectDirectory", "Project Directory"),
-            // this.createSeparator(),
+            this.createNavButtonTo("Overview", "Title page"),
+            this.createNavButtonTo("About", "About me"),
+            this.createNavButtonTo("BrowseProjects", "Browse Projects"),
+            this.createNavButtonTo("ProjectDirectory", "Project Directory"),
             this.createSettingsWidget(),
+            this.createHeading("Misc"),
+            this.createButtonThatReplacesMenuWith("CommandPalette", "Command Palette"),
             this.createCopyright()
         ];
 
@@ -110,7 +111,20 @@ class Menu extends View {
         return hr;
     }
 
-    private createButtonThatOpens(viewName: string, label: string): HTMLAnchorElement {
+    private createNavButtonTo(viewName: string, label: string): HTMLAnchorElement {
+        return this.createViewButton(viewName, label, e => {
+            this.app.views.switchAndInit(viewName);
+        });
+    }
+
+    private createButtonThatReplacesMenuWith(viewName: string, label: string): HTMLAnchorElement {
+        return this.createViewButton(viewName, label, e => {
+            this.app.views.close(this);
+            this.app.views.open(viewName, "/");
+        });
+    }
+
+    private createViewButton(viewName: string, label: string, clickHandler: (e: MouseEvent) => void): HTMLAnchorElement {
         const anchor = document.createElement("a");
         anchor.classList.add("viewButton");
         anchor.href = resolveUrl("/" + viewName.toLowerCase());
@@ -125,13 +139,11 @@ class Menu extends View {
         }
 
         anchor.appendChild(labelElm);
-
         anchor.addEventListener("click", e => {
             if (e.ctrlKey || e.shiftKey || e.altKey) { return; }
             e.preventDefault();
-            this.app.views.switchAndInit(viewName);
+            clickHandler(e);
         });
-
         return anchor;
     }
 
