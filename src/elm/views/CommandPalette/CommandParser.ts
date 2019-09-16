@@ -2,9 +2,11 @@ import CommandResult from "./CommandResult";
 import UnknownCommandResult from "./results/UnknownCommandResult";
 import NavigateCommandResult from "./results/NavigateCommandResult";
 import viewList from "../viewList";
+import InfoCommandResult from "./results/InfoCommandResult";
 
 class CommandParser {
     public static firstLetterFnMap: { [x: string]: (args: string) => CommandResult[] } = {
+        "?": CommandParser.helpCommand,
         "/": CommandParser.navigateCommand
     };
 
@@ -19,6 +21,17 @@ class CommandParser {
 
     private static defaultCommand(command: string): CommandResult[] {
         return [new UnknownCommandResult()];
+    }
+
+    private static helpCommand(command: string): CommandResult[] {
+        const keys = Object.keys(CommandParser.firstLetterFnMap);
+        const results = [];
+
+        for (const key of keys) {
+            results.push(new InfoCommandResult(key));
+        }
+
+        return results;
     }
 
     private static navigateCommand(command: string): CommandResult[] {
