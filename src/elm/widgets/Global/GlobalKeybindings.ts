@@ -8,8 +8,11 @@ class GlobalKeybindings {
     private app: IApp;
     private bindings: { [x: number]: () => void } = {
         191: () => this.openIfNot("CommandPalette", "/"),
-        51: () => this.openIfNot("CommandPalette", "#"),
         80: () => this.openIfNot("CommandPalette")
+    };
+
+    private shiftBindings: { [x: number]: () => void } = {
+        51: () => this.openIfNot("CommandPalette", "#")
     };
 
     constructor(app: IApp) {
@@ -26,9 +29,12 @@ class GlobalKeybindings {
     }
 
     private keydownHandler(e: KeyboardEvent): void {
-        const fn = this.bindings[e.keyCode];
-        if (fn) {
-            fn();
+        if (e.shiftKey) {
+            const fn = this.shiftBindings[e.keyCode];
+            if (fn) { fn(); }
+        } else {
+            const fn = this.bindings[e.keyCode];
+            if (fn) { fn(); }
         }
     }
 
