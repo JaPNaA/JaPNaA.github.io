@@ -1,22 +1,21 @@
 import "../../../styles/components/htmlViewDocument.less";
 
 import url from "url";
-import siteConfig from "../../SiteConfig";
-import IApp from "../../core/types/app/IApp";
-import ViewMap from "../../core/view/ViewMap";
+
 import EmbededApp from "../../core/app/EmbededApp";
-import WidgetMap from "../../core/widget/WidgetMap";
-import parseAppStateURL from "../../core/utils/parseAppStateURL";
-import openNoopener from "../../core/utils/open/openNoopener";
-import createAppState from "../../core/utils/createAppState";
-import WidgetFactory from "../../core/widget/WidgetFactory";
-import LinkHandlingOptions from "./types/linkHandlingOptions";
-import openFrameView from "../../utils/view/openFrameView";
+import IApp from "../../core/types/app/IApp";
 import IHTMLViewDocument from "./iHTMLViewDocument";
+import LinkHandlingOptions from "./types/linkHandlingOptions";
 import Widget from "../../core/widget/Widget";
-import resolveUrl from "../../utils/resolveUrl";
-import removeChildren from "../../utils/removeChildren";
+import WidgetFactory from "../../core/widget/WidgetFactory";
+import WidgetMap from "../../core/widget/WidgetMap";
 import htmlCollectionToArray from "../../utils/convertToArray";
+import openFrameView from "../../utils/view/openFrameView";
+import openNoopener from "../../core/utils/open/openNoopener";
+import parseAppStateURL from "../../core/utils/parseAppStateURL";
+import removeChildren from "../../utils/removeChildren";
+import resolveUrl from "../../utils/resolveUrl";
+import siteConfig from "../../SiteConfig";
 
 // TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 

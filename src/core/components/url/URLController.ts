@@ -1,7 +1,6 @@
 import URLRestorer from "./URLRestorer";
 import IApp from "../../types/app/IApp";
 import AppState from "../../types/AppState";
-import siteConfig from "../../../SiteConfig";
 import urlFromViewState from "../../../utils/urlFromViewState";
 
 class URLController {
