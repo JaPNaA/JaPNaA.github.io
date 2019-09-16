@@ -8,6 +8,7 @@ class GlobalKeybindings {
     private app: IApp;
     private bindings: { [x: number]: () => void } = {
         191: () => this.openIfNot("CommandPalette", "/"),
+        51: () => this.openIfNot("CommandPalette", "#"),
         80: () => this.openIfNot("CommandPalette")
     };
 

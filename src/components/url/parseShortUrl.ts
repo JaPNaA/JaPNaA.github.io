@@ -2,6 +2,7 @@ import siteConfig from "../../SiteConfig";
 import siteResources from "../../core/siteResources";
 import ContentMan from "../contentMan/contentMan";
 import isV2Project from "../../utils/v2Project/isV2Project";
+import getShortURLRedirectMap from "./getRedirectMap";
 
 export default async function parseShortUrl(short: string): Promise<string | undefined> {
     const firstChar = short[0];
@@ -48,43 +49,11 @@ function projectByYearAndName(short: string): string {
 }
 
 async function redirectByMap(short: string): Promise<string> {
-    const map = await getMap();
+    const map = await getShortURLRedirectMap();
     const url = map.get(short);
     if (!url) {
         throw new Error("Invalid shortUrl");
     } else {
         return url;
     }
-}
-
-async function getMap(): Promise<Map<string, string>> {
-    return parseMap(await loadMap());
-}
-
-async function loadMap(): Promise<string> {
-    return new Promise<string>(function (res, rej) {
-        siteResources.loadText(siteConfig.path.redirectMap)
-            .onLoad(e => {
-                if (e.data) {
-                    res(e.data);
-                } else {
-                    rej();
-                }
-            })
-            .onError(e => rej(e));
-    });
-}
-
-function parseMap(text: string): Map<string, string> {
-    const map = new Map<string, string>();
-    const lines = text.split("\n");
-
-    for (const line of lines) {
-        const commaIndex = line.indexOf(",");
-        const key = line.slice(0, commaIndex).trim();
-        const value = line.slice(commaIndex + 1).trim();
-        map.set(key, value);
-    }
-
-    return map;
 }

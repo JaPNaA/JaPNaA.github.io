@@ -45,7 +45,13 @@
             overflow: auto;
 
             .result {
-                padding: 12px 24px;
+                @height: 42px;
+                @padding-horizontal: 24px;
+                @padding-vertical: 12px;
+                position: relative;
+                padding: @padding-vertical @padding-horizontal;
+                height: @height;
+                box-sizing: border-box;
 
                 &.clickable {
                     cursor: pointer;
@@ -53,6 +59,16 @@
 
                 &.selected {
                     background-color: $$background-color-darkened;
+                }
+
+                &.hasDescription .description {
+                    position: absolute;
+                    right: @padding-horizontal;
+                    top: 0;
+
+                    opacity: 0.4;
+                    font-size: 0.8em;
+                    line-height: @height;
                 }
             }
         }

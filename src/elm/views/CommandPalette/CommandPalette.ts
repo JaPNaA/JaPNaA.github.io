@@ -88,13 +88,12 @@ class CommandPalette extends View {
         }
     }
 
-    private update(): void {
+    private async update(): Promise<void> {
         const value = this.input.value;
+        if (!value) { this.clearResults(); return; }
+
+        const results = await CommandParser.parse(value);
         this.clearResults();
-
-        if (!value) { return; }
-
-        const results = CommandParser.parse(value);
 
         for (const result of results) {
             this.addResult(result);
@@ -135,11 +134,39 @@ class CommandPalette extends View {
     }
 
     private addResult(result: CommandResult): void {
+        const elm = this.createResult(result);
+
+        this.resultsContainer.appendChild(elm);
+        this.results.push(result);
+
+        if (this.selectedResultIndex < 0) {
+            this.selectResult(0);
+        }
+    }
+
+    private createResult(result: CommandResult): HTMLDivElement {
         const elm = document.createElement("div");
         elm.classList.add("result");
-        elm.innerText = result.label;
-
         result.elm = elm;
+
+        const label = document.createElement("div");
+        label.classList.add("label");
+        label.innerText = result.label;
+
+        elm.appendChild(label);
+
+        if (result.description) {
+            const description = document.createElement("div");
+            description.classList.add("description");
+            elm.classList.add("hasDescription");
+            description.innerText = result.description;
+
+            elm.appendChild(description);
+        }
+
+        if (result.clickable) {
+            elm.classList.add("clickable");
+        }
 
         elm.addEventListener("mousemove", () => {
             this.selectResult(result);
@@ -149,16 +176,7 @@ class CommandPalette extends View {
             result.activate(this.app);
         });
 
-        if (result.clickable) {
-            elm.classList.add("clickable");
-        }
-
-        this.resultsContainer.appendChild(elm);
-        this.results.push(result);
-
-        if (this.selectedResultIndex < 0) {
-            this.selectResult(0);
-        }
+        return elm;
     }
 
     private clearResults(): void {

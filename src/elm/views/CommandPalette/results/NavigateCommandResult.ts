@@ -6,10 +6,15 @@ import resolveUrl from "../../../../utils/resolveUrl";
 class NavigateCommandResult extends CommandResult {
     private to: string;
 
-    constructor(to: string) {
+    constructor(to: string, label?: string) {
         const resolved = resolveUrl(to);
 
-        super("Navigate to " + resolved);
+        if (label) {
+            super(label, resolved);
+        } else {
+            super("Navigate to " + resolved)
+        }
+
         this.to = resolved;
     }
 

@@ -8,6 +8,7 @@ import AppState from "../../../core/types/AppState";
 import isUrlAbsolute from "../../../utils/isUrlAbsolute";
 import siteConfig from "../../../SiteConfig";
 import LazyClassMap from "../../../core/components/lazyClassMap/LazyClassMap";
+import resolveUrl from "../../../utils/resolveUrl";
 
 class ShortUrlView extends View {
     public static viewName = "ShortUrl";
@@ -60,12 +61,7 @@ class ShortUrlView extends View {
     }
 
     private resolveNewHref(): string {
-        const href = this.newHref as string;
-        if (isUrlAbsolute(href)) {
-            return href;
-        } else {
-            return siteConfig.path.thingy + href;
-        }
+        return resolveUrl(this.newHref!, siteConfig.path.thingy);
     }
 }
 
