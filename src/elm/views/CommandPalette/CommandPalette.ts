@@ -139,6 +139,12 @@ class CommandPalette extends View {
         elm.classList.add("result");
         elm.innerText = result.label;
 
+        result.elm = elm;
+
+        elm.addEventListener("mousemove", () => {
+            this.selectResult(result);
+        });
+
         elm.addEventListener("click", () => {
             result.activate(this.app);
         });
@@ -172,9 +178,22 @@ class CommandPalette extends View {
         this.selectResult(index);
     }
 
-    private selectResult(index: number): void {
-        this.selectedResult = this.results[index];
-        this.selectedResultIndex = index;
+    private selectResult(result: number | CommandResult): void {
+        if (this.selectedResult && this.selectedResult.elm) {
+            this.selectedResult.elm.classList.remove("selected");
+        }
+
+        if (typeof result === 'number') {
+            this.selectedResult = this.results[result];
+            this.selectedResultIndex = result;
+        } else {
+            this.selectedResult = result;
+            this.selectedResultIndex = this.results.indexOf(result);
+        }
+
+        if (this.selectedResult && this.selectedResult.elm) {
+            this.selectedResult.elm!.classList.add("selected");
+        }
     }
 
     private activateSelectedResult(): void {

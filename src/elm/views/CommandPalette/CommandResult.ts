@@ -4,6 +4,8 @@ abstract class CommandResult {
     public label: string;
     public clickable = true;
 
+    public elm?: HTMLElement;
+
     constructor(label: string) {
         this.label = label;
     }

@@ -78,7 +78,7 @@ class Menu extends View {
             this.createNavButtonTo("ProjectDirectory", "Project Directory"),
             this.createSettingsWidget(),
             this.createHeading("Misc"),
-            this.createButtonThatReplacesMenuWith("CommandPalette", "Command Palette"),
+            this.createButtonThatReplacesMenuWith("CommandPalette", "Command Palette (p)"),
             this.createCopyright()
         ];
 
@@ -120,7 +120,7 @@ class Menu extends View {
     private createButtonThatReplacesMenuWith(viewName: string, label: string): HTMLAnchorElement {
         return this.createViewButton(viewName, label, e => {
             this.app.views.close(this);
-            this.app.views.open(viewName, "/");
+            this.app.views.open(viewName);
         });
     }
 
