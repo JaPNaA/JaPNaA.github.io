@@ -34,7 +34,7 @@ class Logo {
     }
 
     public draw(X: CanvasRenderingContext2D, centerX: number, centerY: number) {
-        const scale = Math.min(1, this.maxWidth / this.img.width, this.maxHeight / this.img.height);
+        const scale = Math.min(this.maxWidth / this.img.width / 2.5, this.maxHeight / this.img.height / 2.5);
 
         const imgWidth = this.img.width * scale;
         const imgHeight = this.img.height * scale;
