@@ -4,6 +4,8 @@ import IApp from "../../../core/types/app/IApp";
 import Widget from "../../../core/widget/Widget";
 import IMenu from "../../views/Menu/IMenu";
 import ViewMap from "../../../core/view/ViewMap";
+import resolveUrl from "../../../utils/resolveUrl";
+import keyIsModified from "../../../utils/keyIsModified";
 
 class MenuButton extends Widget {
     public static widgetName: string = "MenuButton";
@@ -11,6 +13,8 @@ class MenuButton extends Widget {
 
     protected elm: HTMLDivElement;
     private app: IApp;
+
+    private anchor: HTMLAnchorElement;
 
     private static hiddenClass = "hidden";
     private static scrollBarExistsClass = "scrollBarExists";
@@ -21,15 +25,21 @@ class MenuButton extends Widget {
         super();
         this.app = app;
         this.elm = document.createElement("div");
+        this.anchor = document.createElement("a");
         this.isLoadingMenu = false;
     }
 
     public setup() {
         super.setup();
+
         const img = siteResources.loadImage(siteConfig.path.img.hamburger).copyImage();
         img.alt = "Menu icon";
-        this.elm.appendChild(img);
-        this.elm.title = "Menu (Esc)";
+
+        this.anchor.appendChild(img);
+        this.anchor.title = "Menu (Esc)";
+        this.anchor.href = resolveUrl("/menu");
+        this.elm.appendChild(this.anchor);
+
         this.addEventHandlers();
     }
 
@@ -48,7 +58,9 @@ class MenuButton extends Widget {
 
         siteResources.onDone(this.viewChangeHandler);
 
-        this.elm.addEventListener("click", () => {
+        this.anchor.addEventListener("click", e => {
+            if (keyIsModified(e)) { return; }
+            e.preventDefault();
             this.toggleMenu();
         });
     }
