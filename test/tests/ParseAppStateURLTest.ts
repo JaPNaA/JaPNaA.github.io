@@ -10,7 +10,8 @@ export default class ParseAppStateURLTest extends TestRunner {
         for (const host of [
             location.protocol + "//" + location.host + "/",
             "http://localhost:8080/",
-            "https://japnaa.github.io/"
+            "https://japnaa.github.io/",
+            "https://japnaa.github.io/not/at/root/"
         ]) {
             this.testUrlWithHost(host);
         }
@@ -38,7 +39,7 @@ export default class ParseAppStateURLTest extends TestRunner {
 
         this.nextAssertTests = "url with statedata" + hostMessage;
         this.assertIterableObjectEquals(
-            parseAppStateURL(host + "projectdirectory/Thingy_2019"),
+            parseAppStateURL(host + "projectdirectory?Thingy_2019"),
             {
                 viewName: "projectdirectory",
                 stateData: "Thingy_2019",
@@ -49,7 +50,7 @@ export default class ParseAppStateURLTest extends TestRunner {
 
         this.nextAssertTests = "url with statedata and hash" + hostMessage;
         this.assertIterableObjectEquals(
-            parseAppStateURL(host + "projectdirectory/Thingy_2019#jeepsacar"),
+            parseAppStateURL(host + "projectdirectory?Thingy_2019#jeepsacar"),
             {
                 viewName: "projectdirectory",
                 stateData: "Thingy_2019#jeepsacar",
@@ -60,7 +61,7 @@ export default class ParseAppStateURLTest extends TestRunner {
 
         this.nextAssertTests = "url with statedata with slashes and hashes" + hostMessage;
         this.assertIterableObjectEquals(
-            parseAppStateURL(host + "frameview/https://japnaa.github.io/overview#jeepsacar"),
+            parseAppStateURL(host + "frameview?https://japnaa.github.io/overview#jeepsacar"),
             {
                 viewName: "frameview",
                 stateData: "https://japnaa.github.io/overview#jeepsacar",

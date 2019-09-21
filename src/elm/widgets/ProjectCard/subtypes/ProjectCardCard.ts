@@ -5,6 +5,7 @@ import siteConfig from "../../../../SiteConfig";
 import siteResources from "../../../../core/siteResources";
 import IProjectInfoView from "../../../views/ProjectInfo/IProjectInfo";
 import heroViewOpenTransition from "../../../../utils/heroViewOpenTransition";
+import urlFromViewState from "../../../../utils/urlFromViewState";
 
 abstract class ProjectCardCard<T> extends BaseProjectCard {
     public width: number;
@@ -35,7 +36,7 @@ abstract class ProjectCardCard<T> extends BaseProjectCard {
 
         this.cardTitle = addZeroWidthSpacesBetweenCamelCaseWords(this.getCardTitle(card));
         this.cardDescription = this.getCardDescription(card);
-        this.href = "/projectinfo/" + this.year + "." + this.index;
+        this.href = urlFromViewState("ProjectInfo", this.year + "." + this.index);
 
         this.cardLinkClicked = false;
     }

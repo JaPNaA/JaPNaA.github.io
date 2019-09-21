@@ -15,8 +15,10 @@ export default function parseAppStateURL(href: string | url.UrlWithStringQuery):
 
     builder.hash = cleanURL.hash;
 
-    if (!cleanURL.path) return;
-    const cleanPath = cleanURL.path.slice(cleanURL.path.lastIndexOf("/") + 1);
+    if (!cleanURL.pathname) return;
+    const cleanPath =
+        cleanURL.pathname.slice(cleanURL.pathname.lastIndexOf("/") + 1) +
+        (cleanURL.search || "");
 
     const divisorIndex = cleanPath.indexOf(siteConfig.viewStateSeparator);
     if (divisorIndex < 0) {
