@@ -9,6 +9,7 @@ import AppState from "../../../core/types/AppState";
 import SiteSettingsWidget from "../../widgets/Settings/Settings";
 import Widget from "../../../core/widget/Widget";
 import resolveUrl from "../../../utils/resolveUrl";
+import keyIsModified from "../../../utils/keyIsModified";
 
 class Menu extends View {
     public static viewName: string = "Menu";
@@ -140,7 +141,7 @@ class Menu extends View {
 
         anchor.appendChild(labelElm);
         anchor.addEventListener("click", e => {
-            if (e.ctrlKey || e.shiftKey || e.altKey) { return; }
+            if (keyIsModified(e)) { return; }
             e.preventDefault();
             clickHandler(e);
         });

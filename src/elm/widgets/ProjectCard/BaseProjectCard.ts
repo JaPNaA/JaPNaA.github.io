@@ -1,4 +1,5 @@
 import IApp from "../../../core/types/app/IApp";
+import keyIsModified from "../../../utils/keyIsModified";
 
 abstract class BaseProjectCard {
     public static widgetName = "projectCard";
@@ -66,7 +67,7 @@ abstract class BaseProjectCard {
 
     protected clickHandler(e: MouseEvent): void {
         // What if the user exepects something else to happen while a modifier key is down?
-        if (e.ctrlKey || e.shiftKey || e.altKey || e.metaKey) { return; }
+        if (keyIsModified(e)) { return; }
         e.preventDefault();
         this.linkClickHandler();
     }
