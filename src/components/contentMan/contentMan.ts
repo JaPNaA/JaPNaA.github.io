@@ -66,7 +66,7 @@ class ContentMan {
 
         for (const thingy of linksIndex) {
             const [year, thingyName, thingyPath] = thingy;
-            const links = await this.getLinksForThingy(thingyPath);
+            const links = await this.getLinksForThingy(thingyPath); // todo: these 2 lines can be done at the same time
             const projectsMap = await this.createProjectsMap(year);
             const linksOrProjectGen = this.yieldLinksOrProjectsIfExistsAndDeleteFromMap(links, projectsMap, thingyPath);
 
@@ -99,6 +99,24 @@ class ContentMan {
                 yield project;
             }
         }
+    }
+
+    public static async getLinksForYear(year: number): Promise<IProjectLink[]> {
+        const index = await this.getLinksIndex();
+        const arr = [];
+
+        for (const [thingyYear, name, thingyPath] of index) {
+            if (thingyYear !== year) { continue; }
+            const links = await this.getLinksForThingy(thingyPath);
+
+            for (const link of links) {
+                arr.push(this.linkToProjectLink(thingyPath, link))
+            }
+
+            break;
+        }
+
+        return arr;
     }
 
     private static async createProjectsMap(year: number): Promise<Map<string, IWithLocation<V1Or2Card>>> {
@@ -137,10 +155,7 @@ class ContentMan {
                 projectsMap.delete(key);
                 yield project;
             } else {
-                yield {
-                    name: name,
-                    href: siteConfig.path.thingy + thingyPath + href
-                };
+                yield this.linkToProjectLink(thingyPath, link);
             }
         }
     }
@@ -234,6 +249,13 @@ class ContentMan {
 
     private static getPathForYear(index: IIndex, year: number | string): string {
         return index.meta[year][2];
+    }
+
+    private static linkToProjectLink(thingyPath: string, link: string[]): IProjectLink {
+        return {
+            name: link[0],
+            href: siteConfig.path.thingy + thingyPath + link[1]
+        };
     }
 }
 
