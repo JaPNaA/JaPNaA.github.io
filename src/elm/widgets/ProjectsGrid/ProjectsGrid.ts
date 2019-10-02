@@ -133,7 +133,7 @@ class ProjectsGrid extends Widget {
 
     private async addNextCard(): Promise<PositionableProjectCard | undefined> {
         let item: ProjectCardInitData;
-        let done = false;
+        let done: boolean | undefined = false;
 
         do {
             const state = await this.cardGenerator.next();
