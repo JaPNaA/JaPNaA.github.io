@@ -51,6 +51,10 @@ export default async function applyPolyfills() {
         applyPolyfill(promises, import("./requestAnimationFrame"));
     }
 
+    if (!Math.trunc) {
+        applyPolyfill(promises, import("./Math.trunc"));
+    }
+
     // @ts-ignore
     if (!window.Symbol) {
         await applyPolyfill(promises, import("./Symbol"));
