@@ -66,8 +66,10 @@ class ContentMan {
 
         for (const thingy of linksIndex) {
             const [year, thingyName, thingyPath] = thingy;
-            const links = await this.getLinksForThingy(thingyPath); // todo: these 2 lines can be done at the same time
-            const projectsMap = await this.createProjectsMap(year);
+            const [links, projectsMap] = await Promise.all([
+                this.getLinksForThingy(thingyPath),
+                this.createProjectsMap(year)
+            ]);
             const linksOrProjectGen = this.yieldLinksOrProjectsIfExistsAndDeleteFromMap(links, projectsMap, thingyPath);
 
             for (const linkOrProject of linksOrProjectGen) {
@@ -86,8 +88,10 @@ class ContentMan {
 
         for (let i = linksIndex.length - 1; i >= 0; i--) {
             const [year, thingyName, thingyPath] = linksIndex[i];
-            const links = await this.getLinksForThingy(thingyPath);
-            const projectsMap = await this.createProjectsMap(year);
+            const [links, projectsMap] = await Promise.all([
+                this.getLinksForThingy(thingyPath),
+                this.createProjectsMap(year)
+            ]);
             const linksOrProjectGen = this.yieldLinksOrProjectsIfExistsAndDeleteFromMap(links, projectsMap, thingyPath);
 
             for (const linkOrProject of linksOrProjectGen) {

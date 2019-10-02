@@ -79,8 +79,10 @@ class Search extends View {
             const elm = document.createElement("div");
             this.resultsElm.appendChild(elm);
 
-            const data = await ContentMan.getFileForYear(year);
-            const links = await ContentMan.getLinksForYear(year);
+            const [data, links] = await Promise.all([
+                ContentMan.getFileForYear(year),
+                ContentMan.getLinksForYear(year)
+            ]);
             const results = await this.queryDataAndLinks(query, data, links);
 
             for (const result of results) {
