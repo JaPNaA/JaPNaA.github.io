@@ -12,12 +12,7 @@ class TfIdf<T extends number | string> {
         const map: Map<string, number> = new Map();
 
         for (const [weight, tokens] of documents) {
-            let tokensArr;
-            if (Array.isArray(tokens)) {
-                tokensArr = tokens;
-            } else {
-                tokensArr = tokens.toLowerCase().split(/[^a-z]/g);
-            }
+            let tokensArr = TfIdf.stringOrArrayToTokens(tokens);
 
             const adjustedWeight = weight / tokensArr.length;
 
@@ -80,13 +75,14 @@ class TfIdf<T extends number | string> {
 
     public static stringOrArrayToTokens(stringOrArray: string | string[]): string[] {
         return Array.isArray(stringOrArray) ?
-            stringOrArray :
+            stringOrArray.map(e => e.toLowerCase()) :
             TfIdf.stringToTokens(stringOrArray)
                 .filter(e => !TfIdf.isStopWord(e));
     }
 
     public static stringToTokens(str: string): string[] {
-        return str.toLowerCase().split(/[^a-z]/);
+        const results = str.toLowerCase().split(/[^a-z]+/g);
+        return results;
     }
 
     private static isStopWord(word: string): boolean | undefined {

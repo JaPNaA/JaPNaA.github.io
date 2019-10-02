@@ -109,7 +109,7 @@ class Search extends View {
 
         const results = tfidf.query(this.query);
         for (const result of results) {
-            elm.innerText = result;
+            elm.innerText += " " + result;
         }
 
         console.log(tfidf);
