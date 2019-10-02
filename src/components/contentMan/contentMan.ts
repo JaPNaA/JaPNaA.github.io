@@ -194,7 +194,7 @@ class ContentMan {
         );
     }
 
-    private static async getProjectsIndex(): Promise<IIndex> {
+    public static async getProjectsIndex(): Promise<IIndex> {
         if (this.projectsIndex) {
             return this.projectsIndex;
         } else if (this.projectsIndexPromise) {
