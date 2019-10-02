@@ -1,4 +1,30 @@
+@import "../variables.less";
+
 .main .Search {
     // overflow: hidden;
     padding: 0;
+
+    .inputContainer {
+        position: relative;
+        height: @sticky-bar-height;
+        z-index: 1;
+
+        .input {
+            display: block;
+
+            background-color: $$background-color;
+            color: $$color;
+            font-size: 1.1em;
+
+            height: @sticky-bar-height;
+            width: 100%;
+
+            outline: none;
+            border: 0;
+            padding: 8px 12px;
+
+            box-sizing: border-box;
+            box-shadow: @box-shadow-12dp;
+        }
+    }
 }

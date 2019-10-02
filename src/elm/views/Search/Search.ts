@@ -17,6 +17,7 @@ import isProjectV1Card from "../../../utils/isProjectCard";
 import isV2ProjectListing from "../../../utils/v2Project/isV2ProjectListing";
 import removeChildren from "../../../utils/removeChildren";
 import { V2ProjectListing } from "../../../types/project/v2/V2Types";
+import siteConfig from "../../../SiteConfig";
 
 class Search extends View {
     public static viewName = "Search";
@@ -26,11 +27,13 @@ class Search extends View {
     protected elm: HTMLDivElement;
 
     private static queryDelay = 200;
+    private static inputHeight = siteConfig.cssVars.stickyBarHeight;
 
+    private inputContainer: HTMLDivElement;
     private inputElm: HTMLInputElement;
     private resultsContainer: HTMLDivElement;
 
-    private lastProjectsGrid?: ProjectsGrid;
+    private projectsGrid?: ProjectsGrid;
 
     private updateTimeoutHandle: number;
     private query: string;
@@ -41,7 +44,8 @@ class Search extends View {
         this.query = state.stateData || "";
 
         this.elm = document.createElement("div");
-        this.inputElm = document.createElement("input");
+        this.inputContainer = this.createInputContainer();
+        this.inputElm = this.createInput();
         this.resultsContainer = document.createElement("div");
 
         this.updateTimeoutHandle = -1;
@@ -50,7 +54,8 @@ class Search extends View {
     public setup() {
         super.setup();
 
-        this.elm.appendChild(this.inputElm);
+        this.inputContainer.appendChild(this.inputElm);
+        this.elm.appendChild(this.inputContainer);
         this.elm.appendChild(this.resultsContainer);
 
         this.inputElm.value = this.query;
@@ -72,6 +77,19 @@ class Search extends View {
         return true;
     }
 
+    private createInputContainer(): HTMLDivElement {
+        const inputContainer = document.createElement("div");
+        inputContainer.classList.add("inputContainer");
+        return inputContainer;
+    }
+
+    private createInput(): HTMLInputElement {
+        const input = document.createElement("input");
+        input.classList.add("input");
+        input.placeholder = "Type to search...";
+        return input;
+    }
+
     private addEventHandlers(): void {
         this.inputElm.addEventListener("input", () => {
             this.query = this.inputElm.value;
@@ -79,8 +97,8 @@ class Search extends View {
         });
 
         this.events.onResize(() => {
-            if (this.lastProjectsGrid) {
-                this.lastProjectsGrid.resize(this.app.width, this.app.height);
+            if (this.projectsGrid) {
+                this.resizeProjectsGrid(this.projectsGrid);
             }
         });
     }
@@ -93,19 +111,21 @@ class Search extends View {
     }
 
     private update(): void {
-        if (this.lastProjectsGrid) {
-            this.lastProjectsGrid.destory();
+        if (this.projectsGrid) {
+            this.projectsGrid.destory();
             removeChildren(this.resultsContainer);
         }
 
-        const projectsGrid = new ProjectsGrid(this.app, this.projectsGridCallback(this.query));
-        projectsGrid.setup();
-        projectsGrid.resize(this.app.width, this.app.height);
-        projectsGrid.appendTo(this.resultsContainer);
-
-        this.lastProjectsGrid = projectsGrid;
+        this.projectsGrid = new ProjectsGrid(this.app, this.projectsGridCallback(this.query));
+        this.projectsGrid.setup();
+        this.resizeProjectsGrid(this.projectsGrid);
+        this.projectsGrid.appendTo(this.resultsContainer);
 
         this.updateState();
+    }
+
+    private resizeProjectsGrid(grid: ProjectsGrid): void {
+        grid.resize(this.app.width, this.app.height - Search.inputHeight);
     }
 
     async *projectsGridCallback(query: string): AsyncIterableIterator<ProjectCardInitData> {
