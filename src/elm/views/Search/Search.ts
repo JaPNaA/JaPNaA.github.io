@@ -1,14 +1,22 @@
 import "../../../../styles/views/Search.less";
 
-import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
-import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
 import ContentMan from "../../../components/contentMan/contentMan";
-import removeChildren from "../../../utils/removeChildren";
+import IApp from "../../../core/types/app/IApp";
+import IV1InfoJSON from "../../../types/project/v1/IV1InfoJSON";
+import IWithLocation from "../../../components/contentMan/IWithLocation";
+import ProjectCardInitData from "../../widgets/ProjectCard/ProjectCardInitData";
+import ProjectLink from "../../widgets/ProjectCard/ProjectLink";
+import ProjectsGrid from "../../widgets/ProjectsGrid/ProjectsGrid";
 import TfIdf from "../../../components/tfidf/TfIdf";
-import isV2ProjectListing from "../../../utils/v2Project/isV2ProjectListing";
+import V1Or2Card from "../../../components/contentMan/V1Or2Card";
+import V1Or2Project from "../../../components/contentMan/V1Or2Project";
+import View from "../../../core/view/View";
+import ViewMap from "../../../core/view/ViewMap";
 import isProjectV1Card from "../../../utils/isProjectCard";
+import isV2ProjectListing from "../../../utils/v2Project/isV2ProjectListing";
+import removeChildren from "../../../utils/removeChildren";
+import { V2ProjectListing } from "../../../types/project/v2/V2Types";
 
 class Search extends View {
     public static viewName = "Search";
@@ -55,33 +63,48 @@ class Search extends View {
     private update(): void {
         this.inputElm.value = this.query;
 
-        this.updateResults();
+        const projectsGrid = new ProjectsGrid(this.app, this.projectsGridCallback(this.query));
+        projectsGrid.setup();
+        projectsGrid.resize(this.app.width, this.app.height);
+        projectsGrid.appendTo(this.elm);
     }
 
-    private async updateResults(): Promise<void> {
+    async *projectsGridCallback(query: string): AsyncIterableIterator<ProjectCardInitData> {
         const index = await ContentMan.getProjectsIndex();
         removeChildren(this.resultsElm);
+
+        if (this.query.trim().length <= 0) { return; }
 
         for (let year = index.end; year >= index.start; year--) {
             const elm = document.createElement("div");
             this.resultsElm.appendChild(elm);
 
-            this.createResultsInYear(year)
-                .then(results => elm.appendChild(results));
+            const data = await ContentMan.getFileForYear(year);
+            const links = await ContentMan.getLinksForYear(year);
+            const results = await this.queryDataAndLinks(query, data, links);
+
+            for (const result of results) {
+                if (typeof result === "number") {
+                    yield <IWithLocation<V1Or2Card>>{
+                        index: result,
+                        year: year,
+                        project: data.data[result] as V1Or2Project
+                    }
+                } else {
+                    yield result;
+                }
+            }
         }
     }
 
-    private async createResultsInYear(year: number): Promise<HTMLDivElement> {
-        const elm = document.createElement("div");
-        const data = await ContentMan.getFileForYear(year);
-
-        const tfidf = new TfIdf<string>();
+    private async queryDataAndLinks(query: string, data: IV1InfoJSON | V2ProjectListing, links: ProjectLink[]): Promise<(number | ProjectLink)[]> {
+        const tfidf = new TfIdf<number | ProjectLink>();
 
         if (isV2ProjectListing(data)) {
             for (let i = 0; i < data.data.length; i++) {
                 const project = data.data[i];
 
-                tfidf.addDocument(year + "." + i, [
+                tfidf.addDocument(i, [
                     [5, project.head.name],
                     [5, project.head.no.toString()],
                     [2, project.head.tags || []],
@@ -95,7 +118,7 @@ class Search extends View {
                 const project = data.data[i];
                 if (!isProjectV1Card(project)) { continue; }
 
-                tfidf.addDocument(year + "." + i, [
+                tfidf.addDocument(i, [
                     [5, project.name],
                     [5, project.no.toString()],
                     [2, project.tags],
@@ -106,15 +129,14 @@ class Search extends View {
             }
         }
 
-
-        const results = tfidf.query(this.query);
-        for (const result of results) {
-            elm.innerText += " " + result;
+        for (const link of links) {
+            tfidf.addDocument(link, [
+                [5, link.name],
+                [1, link.href]
+            ]);
         }
 
-        console.log(tfidf);
-
-        return elm;
+        return tfidf.query(this.query);
     }
 }
 
