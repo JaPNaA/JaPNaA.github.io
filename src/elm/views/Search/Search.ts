@@ -158,32 +158,9 @@ class Search extends View {
         const tfidf = new TfIdf<number | ProjectLink>();
 
         if (isV2ProjectListing(data)) {
-            for (let i = 0; i < data.data.length; i++) {
-                const project = data.data[i];
-
-                tfidf.addDocument(i, [
-                    [5, project.head.name],
-                    [5, project.head.no.toString()],
-                    [2, project.head.tags || []],
-                    [1, project.head.author || []],
-                    [1, project.head.link || ""],
-                    [1, project.head.shortDescription || ""],
-                ]);
-            }
+            this.addV2ListingDocuments(tfidf, data);
         } else {
-            for (let i = 0; i < data.data.length; i++) {
-                const project = data.data[i];
-                if (!isProjectV1Card(project)) { continue; }
-
-                tfidf.addDocument(i, [
-                    [5, project.name],
-                    [5, project.no.toString()],
-                    [2, project.tags],
-                    [1, project.author],
-                    [1, project.content.description],
-                    [1, project.content.link]
-                ]);
-            }
+            this.addV1ListingDocuments(tfidf, data);
         }
 
         for (const link of links) {
@@ -193,7 +170,38 @@ class Search extends View {
             ]);
         }
 
-        return tfidf.query(this.query);
+        return tfidf.query(query);
+    }
+
+    private addV2ListingDocuments(tfidf: TfIdf<number | ProjectLink>, listing: V2ProjectListing): void {
+        for (let i = 0; i < listing.data.length; i++) {
+            const project = listing.data[i];
+
+            tfidf.addDocument(i, [
+                [5, project.head.name],
+                [5, project.head.no.toString()],
+                [2, project.head.tags || []],
+                [1, project.head.author || []],
+                [1, project.head.link || ""],
+                [1, project.head.shortDescription || ""],
+            ]);
+        }
+    }
+
+    private addV1ListingDocuments(tfidf: TfIdf<number | ProjectLink>, listing: IV1InfoJSON): void {
+        for (let i = 0; i < listing.data.length; i++) {
+            const project = listing.data[i];
+            if (!isProjectV1Card(project)) { continue; }
+
+            tfidf.addDocument(i, [
+                [5, project.name],
+                [5, project.no.toString()],
+                [2, project.tags],
+                [1, project.author],
+                [1, project.content.description],
+                [1, project.content.link]
+            ]);
+        }
     }
 }
 
