@@ -25,9 +25,14 @@ class Search extends View {
 
     protected elm: HTMLDivElement;
 
-    private inputElm: HTMLInputElement;
-    private resultsElm: HTMLDivElement;
+    private static queryDelay = 200;
 
+    private inputElm: HTMLInputElement;
+    private resultsContainer: HTMLDivElement;
+
+    private lastProjectsGrid?: ProjectsGrid;
+
+    private updateTimeoutHandle: number;
     private query: string;
 
     constructor(app: IApp, state: AppState) {
@@ -37,14 +42,21 @@ class Search extends View {
 
         this.elm = document.createElement("div");
         this.inputElm = document.createElement("input");
-        this.resultsElm = document.createElement("div");
+        this.resultsContainer = document.createElement("div");
+
+        this.updateTimeoutHandle = -1;
     }
 
     public setup() {
         super.setup();
 
         this.elm.appendChild(this.inputElm);
-        this.elm.appendChild(this.resultsElm);
+        this.elm.appendChild(this.resultsContainer);
+
+        this.inputElm.value = this.query;
+
+        this.addEventHandlers();
+
         this.update();
     }
 
@@ -60,25 +72,48 @@ class Search extends View {
         return true;
     }
 
+    private addEventHandlers(): void {
+        this.inputElm.addEventListener("input", () => {
+            this.query = this.inputElm.value;
+            this.updateOnTimeout();
+        });
+
+        this.events.onResize(() => {
+            if (this.lastProjectsGrid) {
+                this.lastProjectsGrid.resize(this.app.width, this.app.height);
+            }
+        });
+    }
+
+    private updateOnTimeout(): void {
+        clearTimeout(this.updateTimeoutHandle);
+        this.updateTimeoutHandle = window.setTimeout(() => {
+            this.update();
+        }, Search.queryDelay);
+    }
+
     private update(): void {
-        this.inputElm.value = this.query;
+        if (this.lastProjectsGrid) {
+            this.lastProjectsGrid.destory();
+            removeChildren(this.resultsContainer);
+        }
 
         const projectsGrid = new ProjectsGrid(this.app, this.projectsGridCallback(this.query));
         projectsGrid.setup();
         projectsGrid.resize(this.app.width, this.app.height);
-        projectsGrid.appendTo(this.elm);
+        projectsGrid.appendTo(this.resultsContainer);
+
+        this.lastProjectsGrid = projectsGrid;
+
+        this.updateState();
     }
 
     async *projectsGridCallback(query: string): AsyncIterableIterator<ProjectCardInitData> {
-        const index = await ContentMan.getProjectsIndex();
-        removeChildren(this.resultsElm);
-
         if (this.query.trim().length <= 0) { return; }
 
-        for (let year = index.end; year >= index.start; year--) {
-            const elm = document.createElement("div");
-            this.resultsElm.appendChild(elm);
+        const index = await ContentMan.getProjectsIndex();
 
+        for (let year = index.end; year >= index.start; year--) {
             const [data, links] = await Promise.all([
                 ContentMan.getFileForYear(year),
                 ContentMan.getLinksForYear(year)
