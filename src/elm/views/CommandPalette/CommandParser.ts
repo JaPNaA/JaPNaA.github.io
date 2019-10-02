@@ -7,6 +7,7 @@ import parseShortUrl from "../../../components/url/parseShortUrl";
 import getShortURLRedirectMap from "../../../components/url/getRedirectMap";
 import resolveUrl from "../../../utils/resolveUrl";
 import siteConfig from "../../../SiteConfig";
+import looseStartsWith from "../../../utils/looseStartsWith";
 
 class CommandParser {
     public static firstLetterFnMap: { [x: string]: (args: string) => Promise<CommandResult[]> } = {
@@ -53,7 +54,7 @@ class CommandParser {
             let name = Array.isArray(view) ?
                 view[0] : view;
 
-            const score = CommandParser.looseStartsWith(command, name);
+            const score = looseStartsWith(command, name);
 
             if (score >= 0) {
                 resultsWithScores.push([score, new NavigateCommandResult(name)]);
@@ -125,7 +126,7 @@ class CommandParser {
             const search = result.description ?
                 result.label + " " + result.description :
                 result.label;
-            const score = this.looseStartsWith(startsWith, search);
+            const score = looseStartsWith(startsWith, search);
 
             if (score >= 0) {
                 withScore.push([score, result]);
@@ -141,36 +142,6 @@ class CommandParser {
         }
 
         return final;
-    }
-
-    /**
-     * Loosely checks if a string starts with another string
-     * @param start Check the string starts with
-     * @param str The string to check with
-     * @returns score - larger is worse, -1 means it doesn't match
-     */
-    private static looseStartsWith(start: string, str: string): number {
-        const strLength = str.length;
-        const startLower = start.toLowerCase();
-        const strLower = str.toLowerCase();
-        let currStrIndex = 0;
-        let skipped = 0;
-
-        outer: for (const char of startLower) {
-            for (; currStrIndex < strLength;) {
-                if (strLower[currStrIndex] === char) {
-                    currStrIndex++;
-                    continue outer;
-                } else {
-                    skipped++;
-                    currStrIndex++;
-                }
-            }
-
-            return -1;
-        }
-
-        return skipped;
     }
 }
 
