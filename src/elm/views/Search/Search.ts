@@ -59,10 +59,18 @@ class Search extends View {
         this.elm.appendChild(this.resultsContainer);
 
         this.inputElm.value = this.query;
+        this.inputElm.focus();
 
         this.addEventHandlers();
 
         this.update();
+    }
+
+    public async destory(): Promise<void> {
+        await super.destory();
+        if (this.projectsGrid) {
+            this.projectsGrid.destory();
+        }
     }
 
     public getState(): string | undefined {
@@ -99,6 +107,13 @@ class Search extends View {
         this.events.onResize(() => {
             if (this.projectsGrid) {
                 this.resizeProjectsGrid(this.projectsGrid);
+            }
+        });
+
+        this.events.onKeydown(e => {
+            if (e.key.length === 1) {
+                this.inputElm.focus();
+                e.stopPropagation();
             }
         });
     }
