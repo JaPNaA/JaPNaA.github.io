@@ -18,8 +18,8 @@ class EventHandlers<T = void> {
     }
 
     public dispatch(data: T): void {
-        for (const handler of this.handlers) {
-            handler(data);
+        for (let i = this.handlers.length - 1; i >= 0; i--) {
+            this.handlers[i](data);
         }
     }
 
