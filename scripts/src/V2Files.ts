@@ -33,6 +33,9 @@ class V2Files implements IFiles {
             proms.push(this.writeOutProjectBody(project));
         }
 
+        await Promise.all(proms);
+        proms.length = 0;
+
         for (const [year, projects] of this.yearProjectMap) {
             const data: V2ProjectListing = {
                 formatVersion: "2",
