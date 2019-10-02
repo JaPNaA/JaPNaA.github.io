@@ -77,7 +77,8 @@ class MenuButton extends Widget {
     }
 
     private keydownHandler(e: KeyboardEvent): void {
-        if (e.keyCode == 27) {
+        if (e.cancelBubble) { return; }
+        if (e.keyCode === 27) {
             this.toggleMenu();
         }
     }

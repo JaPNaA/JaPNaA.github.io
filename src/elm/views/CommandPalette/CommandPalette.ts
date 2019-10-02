@@ -84,6 +84,7 @@ class CommandPalette extends View {
         const fn = this.keyFnMap[e.keyCode];
         if (fn) {
             fn(e);
+            e.stopPropagation();
         } else {
             this.input.focus();
         }

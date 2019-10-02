@@ -29,6 +29,7 @@ class GlobalKeybindings {
     }
 
     private keydownHandler(e: KeyboardEvent): void {
+        if (e.cancelBubble) { return; }
         if (
             e.target instanceof HTMLElement &&
             e.target.tagName === "INPUT"
