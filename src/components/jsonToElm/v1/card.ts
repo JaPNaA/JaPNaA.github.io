@@ -1,18 +1,19 @@
 import "../../../../styles/components/cardV1.less";
 
-import IV1Card from "../../../types/project/v1/IV1Card";
-import siteConfig from "../../../SiteConfig";
 import DisplayV1 from "../../../types/project/v1/V1Display";
-import V1DisplayImg from "../../../types/project/v1/V1DisplayImg";
-import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
-import siteResources from "../../../core/siteResources";
 import IApp from "../../../core/types/app/IApp";
-import getFirstDisplayImgSrc from "./getFirstDisplayImg";
+import ISavableScroll from "../../viewPrivateData/saveScroll/ISaveScrollable";
+import IV1Card from "../../../types/project/v1/IV1Card";
+import V1DisplayImg from "../../../types/project/v1/V1DisplayImg";
 import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
+import getFirstDisplayImgSrc from "./getFirstDisplayImg";
 import openImageView from "../../../utils/view/openImageView";
-import ISavableScroll from "../../viewPrivateData/saveScroll/ISaveScrollable";
+import resolveUrl from "../../../utils/resolveUrl";
+import siteConfig from "../../../SiteConfig";
+import siteResources from "../../../core/siteResources";
+import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 
 class CardJSONv1Elm extends Widget implements ISavableScroll {
     public static widgetName = "cardJSONv1Elm";
@@ -204,7 +205,7 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
     private createLinkIn(block: HTMLElement): void {
         const link = document.createElement("a");
         link.classList.add("link");
-        link.href = siteConfig.path.thingy + this.card.content.link;
+        link.href = resolveUrl(this.card.content.link, siteConfig.path.thingy);
         block.appendChild(link);
         this.viewProjectButton = link;
     }
