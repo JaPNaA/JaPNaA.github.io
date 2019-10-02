@@ -29,6 +29,11 @@ class GlobalKeybindings {
     }
 
     private keydownHandler(e: KeyboardEvent): void {
+        if (
+            e.target instanceof HTMLElement &&
+            e.target.tagName === "INPUT"
+        ) { return; }
+
         if (e.shiftKey) {
             const fn = this.shiftBindings[e.keyCode];
             if (fn) { fn(); }
