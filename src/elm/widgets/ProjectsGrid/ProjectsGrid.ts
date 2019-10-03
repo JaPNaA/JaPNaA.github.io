@@ -49,7 +49,7 @@ class ProjectsGrid extends Widget {
     }
 
     public async setup() {
-        await super.setup();
+        super.setup();
 
         this.addCardsUntilScreenFull();
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));

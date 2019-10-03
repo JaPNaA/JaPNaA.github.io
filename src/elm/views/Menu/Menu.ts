@@ -76,6 +76,7 @@ class Menu extends View {
             this.createNavButtonTo("Overview", "Title page"),
             this.createNavButtonTo("About", "About me"),
             this.createNavButtonTo("BrowseProjects", "Browse Projects"),
+            this.createNavButtonTo("Search", "Search Projects"),
             this.createNavButtonTo("ProjectDirectory", "Project Directory"),
             this.createSettingsWidget(),
             this.createHeading("Misc"),

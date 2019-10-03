@@ -10,6 +10,8 @@
         z-index: 1;
 
         .input {
+            @padding-horizontal: 8px;
+            @padding-vertical: 12px;
             display: block;
 
             background-color: $$background-color;
@@ -21,10 +23,18 @@
 
             outline: none;
             border: 0;
-            padding: 8px 12px;
+            padding: @padding-horizontal 12px;
 
             box-sizing: border-box;
             box-shadow: @box-shadow-12dp;
+
+            border: 4px solid transparent;
+
+            transition: ease 0.05s border-color;
+
+            &:focus {
+                border-color: @theme-color-blue;
+            }
         }
     }
 }
