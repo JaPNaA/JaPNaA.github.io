@@ -23,6 +23,12 @@ type LinkMatch = {
     data: V1Or2Card
 };
 
+/**
+ * @viewmetadata
+ * @description A list of all my projects. (without pictures)
+ * @tags browse,directory,projects,small,list
+ */
+
 class ProjectDirectory extends View {
     public static viewName = "ProjectDirectory";
     public viewName = ProjectDirectory.viewName;

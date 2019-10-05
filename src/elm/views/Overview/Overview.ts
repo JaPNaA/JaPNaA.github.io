@@ -12,6 +12,11 @@ import AppState from "../../../core/types/AppState";
 import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
 import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
+/**
+ * @viewmetadata
+ * @description JaPNaA's website. (It's very nice)
+ */
+
 class Overview extends View implements ISavableScroll {
     public static viewName = "Overview";
     public viewName = Overview.viewName;

@@ -6,6 +6,12 @@ import IApp from "../../../core/types/app/IApp";
 import ProjectsGrid from "../../widgets/ProjectsGrid/ProjectsGrid";
 import AppState from "../../../core/types/AppState";
 
+/**
+ * @viewmetadata
+ * @description Scroll though and see all my projects, with pictures (on some of them)!
+ * @tags browse,directory,projects,pictures,large
+ */
+
 class BrowseProjects extends View {
     public static viewName = "BrowseProjects";
     public isFullPage = true;

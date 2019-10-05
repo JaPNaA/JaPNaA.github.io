@@ -9,6 +9,12 @@ import AppState from "../../../core/types/AppState";
 import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
 import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
+/**
+ * @viewmetadata
+ * @description About JaPNaA, and about other stuff too
+ * @tags about,me,self,social,contact,media
+ */
+
 class About extends View implements ISavableScroll {
     public static viewName = "About";
     public viewName = About.viewName;

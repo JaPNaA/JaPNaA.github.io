@@ -23,6 +23,12 @@ type SearchTfIdf = TfIdf<number | ProjectLink>;
 
 // todo: add ability to control how far back to search
 
+/**
+ * @viewmetadata
+ * @description Like Google except worse and can only search my projects
+ * @tags serach,find,projects
+ */
+
 class Search extends View {
     public static viewName = "Search";
     public viewName = Search.viewName;

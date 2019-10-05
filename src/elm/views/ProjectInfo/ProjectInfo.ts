@@ -15,6 +15,12 @@ import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
 import siteResources from "../../../core/siteResources";
 
+/**
+ * @viewmetadata
+ * @description Info about a project.
+ * @tags info,project,about
+ */
+
 class ProjectInfoView extends View implements IProjectInfoView {
     public static viewName = "ProjectInfo";
     public viewName = ProjectInfoView.viewName;
