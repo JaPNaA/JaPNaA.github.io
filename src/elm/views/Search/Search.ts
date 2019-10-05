@@ -16,8 +16,12 @@ import ViewMap from "../../../core/view/ViewMap";
 import isProjectV1Card from "../../../utils/isProjectCard";
 import isV2ProjectListing from "../../../utils/v2Project/isV2ProjectListing";
 import removeChildren from "../../../utils/removeChildren";
-import { V2ProjectListing } from "../../../types/project/v2/V2Types";
 import siteConfig from "../../../SiteConfig";
+import { V2ProjectListing } from "../../../types/project/v2/V2Types";
+
+type SearchTfIdf = TfIdf<number | ProjectLink>;
+
+// todo: add ability to control how far back to search
 
 class Search extends View {
     public static viewName = "Search";
@@ -34,6 +38,7 @@ class Search extends View {
     private resultsContainer: HTMLDivElement;
 
     private projectsGrid?: ProjectsGrid;
+    private tfidfCache: Map<number, SearchTfIdf>;
 
     private updateTimeoutHandle: number;
     private query: string;
@@ -49,6 +54,7 @@ class Search extends View {
         this.resultsContainer = document.createElement("div");
 
         this.updateTimeoutHandle = -1;
+        this.tfidfCache = new Map();
     }
 
     public setup() {
@@ -149,11 +155,9 @@ class Search extends View {
         const index = await ContentMan.getProjectsIndex();
 
         for (let year = index.end; year >= index.start; year--) {
-            const [data, links] = await Promise.all([
-                ContentMan.getFileForYear(year),
-                ContentMan.getLinksForYear(year)
-            ]);
-            const results = await this.queryDataAndLinks(query, data, links);
+            const tfidf = await this.getTfidf(year);
+            const data = await ContentMan.getFileForYear(year);
+            const results = tfidf.query(query);
 
             for (const result of results) {
                 if (typeof result === "number") {
@@ -169,8 +173,25 @@ class Search extends View {
         }
     }
 
-    private async queryDataAndLinks(query: string, data: IV1InfoJSON | V2ProjectListing, links: ProjectLink[]): Promise<(number | ProjectLink)[]> {
-        const tfidf = new TfIdf<number | ProjectLink>();
+    private async getTfidf(year: number): Promise<SearchTfIdf> {
+        const cached = this.tfidfCache.get(year);
+        if (cached) {
+            return cached;
+        }
+
+        const [data, links] = await Promise.all([
+            ContentMan.getFileForYear(year),
+            ContentMan.getLinksForYear(year)
+        ]);
+
+        const newTfidf: SearchTfIdf = this.createTfIdf(data, links);
+        this.tfidfCache.set(year, newTfidf);
+
+        return newTfidf;
+    }
+
+    private createTfIdf(data: IV1InfoJSON | V2ProjectListing, links: ProjectLink[]): SearchTfIdf {
+        const tfidf: SearchTfIdf = new TfIdf();
 
         if (isV2ProjectListing(data)) {
             this.addV2ListingDocuments(tfidf, data);
@@ -185,25 +206,35 @@ class Search extends View {
             ]);
         }
 
-        return tfidf.query(query);
+        return tfidf;
     }
 
-    private addV2ListingDocuments(tfidf: TfIdf<number | ProjectLink>, listing: V2ProjectListing): void {
+    private addV2ListingDocuments(tfidf: SearchTfIdf, listing: V2ProjectListing): void {
         for (let i = 0; i < listing.data.length; i++) {
             const project = listing.data[i];
-
-            tfidf.addDocument(i, [
+            const fields: [number, string | string[]][] = [
                 [5, project.head.name],
-                [5, project.head.no.toString()],
-                [2, project.head.tags || []],
-                [1, project.head.author || []],
-                [1, project.head.link || ""],
-                [1, project.head.shortDescription || ""],
-            ]);
+                [5, project.head.no.toString()]
+            ];
+
+            if (project.head.tags) {
+                fields.push([3, project.head.tags]);
+            }
+            if (project.head.author) {
+                fields.push([1, project.head.author]);
+            }
+            if (project.head.link) {
+                fields.push([1, project.head.link]);
+            }
+            if (project.head.shortDescription) {
+                fields.push([2, project.head.shortDescription]);
+            }
+
+            tfidf.addDocument(i, fields);
         }
     }
 
-    private addV1ListingDocuments(tfidf: TfIdf<number | ProjectLink>, listing: IV1InfoJSON): void {
+    private addV1ListingDocuments(tfidf: SearchTfIdf, listing: IV1InfoJSON): void {
         for (let i = 0; i < listing.data.length; i++) {
             const project = listing.data[i];
             if (!isProjectV1Card(project)) { continue; }
