@@ -98,11 +98,11 @@ class TfIdf<T> {
         return Array.isArray(stringOrArray) ?
             stringOrArray.map(e => e.toLowerCase()) :
             TfIdf.stringToTokens(stringOrArray)
-                .filter(e => !TfIdf.isStopWord(e));
+                .filter(e => e && !TfIdf.isStopWord(e));
     }
 
     public static stringToTokens(str: string): string[] {
-        const results = str.toLowerCase().split(/[^a-z]+/g);
+        const results = str.toLowerCase().split(/[^a-z0-9]+/g);
         return results;
     }
 
