@@ -27,9 +27,12 @@ class BrowseProjects extends View {
     }
 
     public async setup(): Promise<void> {
-        await super.setup();
+        super.setup();
+
+        this.updateWidgetSize();
         this.projectsGrid.setup();
         this.projectsGrid.appendTo(this.elm);
+
         this.addEventHandlers();
     }
 
