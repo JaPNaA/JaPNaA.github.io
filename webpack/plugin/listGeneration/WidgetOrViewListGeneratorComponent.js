@@ -61,7 +61,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
         const proms = [];
 
         for (const directory of directories) {
-            proms.push(fsPromise.exists(this._applyPathPattern(compiler.context, directory))
+            proms.push(fsPromise.exists(this.applyPathPattern(compiler.context, directory))
                 .then(exists => {
                     if (exists) {
                         return this.addItem(compiler.context, directory);
@@ -85,7 +85,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
 
         for (const [path] of filesChanged) {
             const name = dirname(path);
-            proms.push(fsPromise.exists(this._applyPathPattern(compiler.context, name)).then(exists => {
+            proms.push(fsPromise.exists(this.applyPathPattern(compiler.context, name)).then(exists => {
                 if (exists) {
                     if (this.has(name)) {
                         return this.updateItem(compiler.context, name);
@@ -161,6 +161,16 @@ class WidgetOrViewListGeneratorComponent extends Component {
     has(name) { throw new Error("Abstract method call"); }
 
     /**
+     * applies that path pattern of widgets/views
+     * @protected
+     * @param {string} start 
+     * @param {string} directory 
+     */
+    applyPathPattern(start, directory) {
+        return path.join(start, this._pathToItems, directory, directory + ".ts");
+    }
+
+    /**
      * updates the list
      * @param {Webpack.Compiler} compiler
      * @returns {Promise<any> | void}
@@ -196,16 +206,6 @@ class WidgetOrViewListGeneratorComponent extends Component {
         }
 
         return Promise.all(proms);
-    }
-
-    /**
-     * applies that path pattern of widgets/views
-     * @protected
-     * @param {string} start 
-     * @param {string} directory 
-     */
-    _applyPathPattern(start, directory) {
-        return path.join(start, this._pathToItems, directory, directory + ".ts");
     }
 }
 

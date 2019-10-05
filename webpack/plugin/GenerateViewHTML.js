@@ -8,12 +8,15 @@ const fsPromise = require("./utils/fsPromise");
  * @typedef { { generateViewHTML: {
  *                  outDirectory: string,
  *                  templatePage: string,
- *                  baseReplacementMap: { [x: string]: string }
+ *                  baseReplacementMap: { [x: string]: string },
+ *                  indexReplacementMap?: { [x: string]: string }
  *                  createIndexPage: boolean
  *             } } } GenerateViewHTMLOptions
  */
 
-const TEXT_REPLACEMENT_REGEX = /\${{([^]+?)}}/g;
+const TEXT_REPLACEMENT_REGEX_G = /\${{([^]+?)}}/g;
+const VIEW_METADATA_JSDOC_REGEX = /\/\*\*[^]+@viewmetadata([^]+?)\*\//;
+const JSDOC_PROPERTY_REGEX_G = /@([^\s]+)\s(.+)/g;
 
 class GenerateViewHTML {
     /**
@@ -28,6 +31,7 @@ class GenerateViewHTML {
         this.templatePage = options.generateViewHTML.templatePage;
         this.shouldCreateIndexPage = options.generateViewHTML.createIndexPage;
         this.baseReplacementMap = options.generateViewHTML.baseReplacementMap;
+        this.indexReplacementMap = options.generateViewHTML.indexReplacementMap || {};
 
         /** @type {string} */
         this.pageTemplateSource = null;
@@ -70,18 +74,40 @@ class GenerateViewHTML {
      * @returns {Promise<void>}
      */
     async createFileFor(context, view) {
-        const viewName = (Array.isArray(view) ? view[0] : view).toLowerCase();
+        const viewName = Array.isArray(view) ? view[0] : view;
 
+        const file = await fsPromise.readFile(
+            this.viewList.applyPathPattern(context, viewName)
+        );
+
+        /** @type {Object.<string, string>} */
         const replacementMap = {
             "title": "." + viewName,
-            "description": "JaPNaA's website. (It's very nice)",
-            "tags": ""
+            ...this.getViewMetadataJSDoc(file.toString())
         };
 
-        await fsPromise.writeFile(
-            path.join(context, this.outDirectory, viewName + ".html"),
-            this._generateFileString(replacementMap)
-        );
+        if (replacementMap.tags) { replacementMap.tags = "," + replacementMap.tags; }
+
+        await this._writeFileWithReplacementMap(replacementMap, context, viewName);
+    }
+
+    /**
+     * @param {string} fileStr
+     * @returns {Object.<string, string> | undefined}
+     */
+    getViewMetadataJSDoc(fileStr) {
+        const match = fileStr.match(VIEW_METADATA_JSDOC_REGEX);
+        if (!match) { return; }
+
+        const metadataStr = match[1];
+        /** @type {Object.<string, string>} */
+        const obj = {};
+
+        for (let match; match = JSDOC_PROPERTY_REGEX_G.exec(metadataStr);) {
+            obj[match[1]] = match[2];
+        }
+
+        return obj;
     }
 
     /**
@@ -90,7 +116,7 @@ class GenerateViewHTML {
     async createIndexPage(context) {
         this.createdIndexPage = true;
 
-        this._writeFileWithReplacementMap({}, context, "index")
+        this._writeFileWithReplacementMap(this.indexReplacementMap, context, "index")
     }
 
     /**
@@ -101,7 +127,7 @@ class GenerateViewHTML {
      */
     _writeFileWithReplacementMap(replacementMap, context, filename) {
         return fsPromise.writeFile(
-            path.join(context, this.outDirectory, filename + ".html"),
+            path.join(context, this.outDirectory, filename.toLowerCase() + ".html"),
             this._generateFileString({
                 ...this.baseReplacementMap,
                 ...replacementMap
@@ -120,7 +146,7 @@ class GenerateViewHTML {
         let match;
         let lastIndex = 0;
 
-        while (match = TEXT_REPLACEMENT_REGEX.exec(templatePageSource)) {
+        while (match = TEXT_REPLACEMENT_REGEX_G.exec(templatePageSource)) {
             const replacementKey = match[1].trim();
             writeStr += templatePageSource.slice(lastIndex, match.index);
             writeStr += replacementMap[replacementKey] || "";

@@ -49,7 +49,7 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
      * @returns {Promise<void>}
      */
     async addItem(context, directory) {
-        const file = await fsPromise.readFile(this._applyPathPattern(context, directory)).then(buffer => buffer.toString());
+        const file = await fsPromise.readFile(this.applyPathPattern(context, directory)).then(buffer => buffer.toString());
         const match = file.match(/public\s+static\s.*viewMatcher = (\/.*\/);/);
 
         if (match) {
@@ -73,7 +73,7 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
         let file;
 
         try {
-            file = await fsPromise.readFile(this._applyPathPattern(context, directory)).then(buffer => buffer.toString());
+            file = await fsPromise.readFile(this.applyPathPattern(context, directory)).then(buffer => buffer.toString());
         } catch (err) {
             this.removeItem(directory);
             return;
