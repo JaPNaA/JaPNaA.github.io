@@ -32,6 +32,8 @@ class CheckboxCheck extends Widget {
 
         this.elm.addEventListener("click", this.clickHandler.bind(this));
         this.input.addEventListener("change", this.inputChangeHandler.bind(this));
+        this.input.addEventListener("focus", this.focusHandler.bind(this));
+        this.input.addEventListener("blur", this.blurHandler.bind(this));
     }
 
     public isChecked(): boolean {
@@ -82,6 +84,14 @@ class CheckboxCheck extends Widget {
 
     private inputChangeHandler(): void {
         this.setChecked(this.input.checked);
+    }
+
+    private focusHandler(): void {
+        this.elm.classList.add("focused");
+    }
+
+    private blurHandler(): void {
+        this.elm.classList.remove("focused");
     }
 
     private updateState(): void {
