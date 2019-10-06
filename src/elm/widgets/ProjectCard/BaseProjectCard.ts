@@ -20,6 +20,9 @@ abstract class BaseProjectCard {
     private contentDescriptionTextElm?: HTMLDivElement;
     private touchMovedAfterDown: boolean = false;
 
+    private focused: boolean = false;
+    private mouseover: boolean = false;
+
     constructor(app: IApp) {
         this.app = app;
 
@@ -144,14 +147,34 @@ abstract class BaseProjectCard {
     }
 
     private focusHandler(): void {
-        this.mouseoverHandler();
+        this.focused = true;
+        this.updateMouseoverStyleState();
     }
 
     private blurHandler(): void {
-        this.mouseoutHandler();
+        this.focused = false;
+        this.updateMouseoverStyleState();
     }
 
     private mouseoverHandler(): void {
+        this.mouseover = true;
+        this.updateMouseoverStyleState();
+    }
+
+    private mouseoutHandler(): void {
+        this.mouseover = false;
+        this.updateMouseoverStyleState();
+    }
+
+    private updateMouseoverStyleState(): void {
+        if (this.focused || this.mouseover) {
+            this.addMouseoverStyles();
+        } else {
+            this.removeMouseoverStyles();
+        }
+    }
+
+    private addMouseoverStyles(): void {
         this.cardElm.classList.add("mouseover");
         if (this.contentDescriptionElm && this.contentDescriptionTextElm) {
             this.contentDescriptionElm.style.height =
@@ -159,7 +182,7 @@ abstract class BaseProjectCard {
         }
     }
 
-    private mouseoutHandler(): void {
+    private removeMouseoverStyles(): void {
         this.cardElm.classList.remove("mouseover");
         if (this.contentDescriptionElm) {
             this.contentDescriptionElm.style.height = "0";
