@@ -105,7 +105,7 @@ abstract class BaseProjectCard {
     }
 
     private createContentTitle(): HTMLDivElement {
-        const title = document.createElement("div");
+        const title = document.createElement("h2");
         title.classList.add("title");
         title.innerText = this.cardTitle;
         return title;
@@ -116,7 +116,7 @@ abstract class BaseProjectCard {
         description.classList.add("description");
         this.contentDescriptionElm = description;
 
-        const text = document.createElement("div");
+        const text = document.createElement("p");
         text.innerHTML = this.cardDescription;
         this.contentDescriptionTextElm = text;
 

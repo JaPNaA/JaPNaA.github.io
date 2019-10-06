@@ -35,11 +35,13 @@ function parseImage(item: V2ProjectBodyImage): HTMLDivElement {
 
     const img = document.createElement("img");
     img.src = siteConfig.path.thingy + item.src;
+    img.alt = item.caption || "Image";
     inner.appendChild(img);
 
     if (item.caption) {
         const caption = document.createElement("div");
         caption.innerHTML = item.caption;
+        caption.setAttribute("aria-hidden", "true"); // alt already contains caption
         inner.appendChild(caption);
     }
 

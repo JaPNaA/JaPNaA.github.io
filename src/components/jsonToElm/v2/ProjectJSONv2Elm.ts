@@ -161,6 +161,7 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
     private createBody(): HTMLDivElement {
         const body = document.createElement("div");
         body.classList.add("body");
+        body.setAttribute("role", "main");
         return body;
     }
 

@@ -117,6 +117,8 @@
                 font-size: 2em;
                 margin-right: 16px;
                 margin-left: 16px;
+                margin-top: 0;
+                margin-bottom: 0;
             }
 
             .description {
@@ -127,6 +129,10 @@
                 height: 0;
                 transition: height @transitionTime @easeFastOutSlowIn,
                     opacity @transitionTime @easeFastOutSlowIn;
+
+                p {
+                    margin: 0;
+                }
             }
         }
 

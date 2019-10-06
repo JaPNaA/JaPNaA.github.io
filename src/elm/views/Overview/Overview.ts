@@ -88,6 +88,9 @@ class Overview extends View implements ISavableScroll {
         titleElm.appendChild(hexagonImg);
         titleElm.appendChild(logoImg);
 
+        logoImg.alt = "JaPNaA";
+        hexagonImg.alt = "";
+
         stickyBar.setup();
         stickyBar.appendTo(this.elm);
         stickyBar.setTitle(titleElm);
