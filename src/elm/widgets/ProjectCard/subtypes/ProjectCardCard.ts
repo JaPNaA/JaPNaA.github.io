@@ -14,6 +14,7 @@ abstract class ProjectCardCard<T> extends BaseProjectCard {
     protected card: T;
     protected cardTitle: string;
     protected cardDescription: string;
+    protected isContentDescriptionImportant: boolean = true;
 
     private static size: number = 20;
 

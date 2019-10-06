@@ -35,7 +35,7 @@ function parseImage(item: V2ProjectBodyImage): HTMLDivElement {
 
     const img = document.createElement("img");
     img.src = siteConfig.path.thingy + item.src;
-    img.alt = item.caption || "Image";
+    img.alt = item.caption ? "Image: " + item.caption : "Image";
     inner.appendChild(img);
 
     if (item.caption) {

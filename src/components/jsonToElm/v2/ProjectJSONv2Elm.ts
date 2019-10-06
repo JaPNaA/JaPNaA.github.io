@@ -162,6 +162,7 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         const body = document.createElement("div");
         body.classList.add("body");
         body.setAttribute("role", "main");
+        body.setAttribute("aria-hidden", "false");
         return body;
     }
 

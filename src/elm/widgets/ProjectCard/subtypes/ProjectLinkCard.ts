@@ -9,6 +9,7 @@ class ProjectLinkCard extends BaseProjectCard {
     protected cardTitle: string;
     protected cardDescription: string;
     protected href: string;
+    protected isContentDescriptionImportant = false;
 
     constructor(app: IApp, name: string, href: string) {
         super(app);

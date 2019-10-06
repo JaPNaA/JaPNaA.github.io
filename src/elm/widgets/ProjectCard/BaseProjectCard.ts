@@ -10,6 +10,8 @@ abstract class BaseProjectCard {
 
     protected abstract cardTitle: string;
     protected abstract cardDescription: string;
+    /** Determines if screenreaders will read it */
+    protected abstract isContentDescriptionImportant: boolean;
     protected href?: string;
 
     protected app: IApp;
@@ -117,6 +119,7 @@ abstract class BaseProjectCard {
     private createContentDescription(): HTMLDivElement {
         const description = document.createElement("div");
         description.classList.add("description");
+        description.setAttribute("aria-hidden", this.isContentDescriptionImportant ? "false" : "true");
         this.contentDescriptionElm = description;
 
         const text = document.createElement("p");
