@@ -2,100 +2,68 @@ import "../../../../styles/widgets/checkbox.less";
 
 import Widget from "../../../core/widget/Widget";
 import WidgetMap from "../../../core/widget/WidgetMap";
-import EventHandlers from "../../../core/utils/events/EventHandlers";
+import CheckboxCheck from "./CheckboxCheck";
 import Handler from "../../../core/utils/events/Handler";
 
-// todo: make more accessable - add some indicator that the checkbox is in focus
-
 class Checkbox extends Widget {
-    public static widgetName = "checkbox";
-    public widgetName = "checkbox";
+    public static widgetName = "checkboxLabeled";
+    public widgetName = Checkbox.widgetName;
 
     protected elm: Element;
+    private checkbox: CheckboxCheck;
+    private labelElm?: HTMLElement;
 
-    private checkElm: HTMLDivElement;
-    private input: HTMLInputElement;
+    private label?: string;
 
-    private changedHandlers: EventHandlers<boolean>;
-
-    private checked: boolean;
-
-    constructor() {
+    constructor(label?: string) {
         super();
-
         this.elm = document.createElement("div");
-        this.checkElm = this.createCheck();
-        this.input = this.createInput();
 
-        this.changedHandlers = new EventHandlers();
-
-        this.checked = false;
+        this.label = label;
+        this.labelElm = this.createLabelElm();
+        this.checkbox = new CheckboxCheck();
     }
 
     public setup(): void {
         super.setup();
 
-        this.elm.appendChild(this.input);
-        this.elm.appendChild(this.checkElm);
+        this.checkbox.setup();
+        this.checkbox.appendTo(this.elm);
 
-        this.elm.addEventListener("click", this.clickHandler.bind(this));
-        this.input.addEventListener("change", this.inputChangeHandler.bind(this));
+        if (this.label) {
+            this.checkbox.setLabel(this.label);
+            this.elm.appendChild(this.labelElm!);
+        }
     }
 
-    public isChecked(): boolean {
-        return this.checked;
-    }
-
-    public setChecked(val: boolean): void {
-        if (this.checked === val) { return; }
-        this.checked = val;
-        this.updateState();
-        this.changedHandlers.dispatch(val);
+    public setChecked(checked: boolean): void {
+        this.checkbox.setChecked(checked);
     }
 
     public toggleChecked(): void {
-        this.checked = !this.checked;
-        this.updateState();
-        this.changedHandlers.dispatch(this.checked);
+        this.checkbox.toggleChecked();
     }
 
-    public onChange(handler: Handler<boolean>) {
-        this.changedHandlers.add(handler);
+    public onChange(handler: Handler<boolean>): void {
+        this.checkbox.onChange(handler);
     }
 
-    public offChange(handler: Handler<boolean>) {
-        this.changedHandlers.remove(handler);
+    public offChange(handler: Handler<boolean>): void {
+        this.checkbox.offChange(handler);
     }
 
-    private createInput(): HTMLInputElement {
-        const input = document.createElement("input");
-        input.type = "checkbox";
-        input.classList.add("hiddenCheckbox");
-        return input;
+    public isChecked(): boolean {
+        return this.checkbox.isChecked();
     }
 
-    private createCheck(): HTMLDivElement {
-        const check = document.createElement("div");
-        check.classList.add("check");
-        return check;
-    }
+    private createLabelElm(): HTMLDivElement | undefined {
+        if (!this.label) { return; }
 
-    private clickHandler(): void {
-        this.toggleChecked();
-    }
-
-    private inputChangeHandler(): void {
-        this.setChecked(this.input.checked);
-    }
-
-    private updateState(): void {
-        if (this.checked) {
-            this.elm.classList.add("checked");
-        } else {
-            this.elm.classList.remove("checked");
-        }
-
-        this.input.checked = this.checked;
+        const label = document.createElement("div");
+        label.classList.add("label");
+        label.innerText = this.label;
+        label.setAttribute("aria-hidden", "true"); // title on checkbox should be read
+        return label;
     }
 }
 

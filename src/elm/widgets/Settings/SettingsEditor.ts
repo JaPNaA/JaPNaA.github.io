@@ -1,5 +1,4 @@
 import IInput from "./IInput";
-import siteConfig from "../../../SiteConfig";
 import Checkbox from "../Checkbox/Checkbox";
 import EventHandlers from "../../../core/utils/events/EventHandlers";
 import Handler from "../../../core/utils/events/Handler";
@@ -129,25 +128,18 @@ class SettingsEditor<T> {
 
     private createBooleanInput(config: any, key: string, value: boolean): IInput {
         const elm = document.createElement("div");
-        const label = document.createElement("label");
-        const input = new Checkbox();
+        const input = new Checkbox(this.formatCamelCase(key));
         elm.classList.add("configItem");
         elm.classList.add("checkbox");
         input.setup();
         input.setChecked(value);
-        label.innerText = this.formatCamelCase(key);
         input.appendTo(elm);
-        elm.appendChild(label);
 
         const changeHandler = (checked: boolean) => {
             this.changed = true;
             config[key] = checked;
             this.changeHandlers.dispatch();
         };
-
-        label.addEventListener("click", () => {
-            input.toggleChecked();
-        });
 
         input.onChange(changeHandler);
 
