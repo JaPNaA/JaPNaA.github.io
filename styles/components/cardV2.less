@@ -1,14 +1,15 @@
 @import "../variables.less";
 
 .widget.projectJSONv2Elm {
-    @body-padding: 16px;
+    @body-padding: 24px;
 
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 
     .background {
         position: absolute;
@@ -17,14 +18,12 @@
         min-height: 100%;
         top: 0;
         left: 0;
-
         background-color: $$background-color-darkened;
 
         .backgroundImageContainer {
             position: absolute;
             width: 100%;
             height: 100%;
-            overflow: hidden;
 
             .backgroundImage {
                 position: absolute;
@@ -49,55 +48,83 @@
         text-align: center;
         image-rendering: auto;
 
-        .mainContent {
-            @title-height: 64px;
+        padding-bottom: 33vh;
 
+        .mainContent {
             display: inline-block;
             text-align: left;
-            
+
             max-width: @long-text-container-max-width;
             width: 100%;
-            
-            padding-bottom: 33vh;
-            padding-top: 66vh;
-            transform: translateY(-@title-height / 2);
 
             box-shadow: none;
+        }
 
-            .title {
-                display: inline-block;
-                color: $$color-white-bright;
-                background-color: $$background-black;
-                line-height: @title-height;
-                padding: 0px 8px;
-                margin: 0;
+        .headContainer {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+
+            .head {
+                text-align: center;
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                height: auto;
+                transform: translateY(-50%);
             }
 
-            .body {
-                @easing: cubic-bezier(0.65, 0.05, 0.36, 1);
-                @transitionSpeed: 0.4s;
+            .title {
+                display: block;
+                color: $$color-white-bright;
+                text-shadow: 0 0 32px rgba(0, 0, 0, 0.7);
+            }
 
-                background: $$background-color;
+            .bigViewProjectButton {
                 display: inline-block;
+                background-color: $$theme-color;
+                background-image: @header-gradient;
+                color: $$color-black-dark;
 
-                padding-top: @body-padding;
-                padding-bottom: @body-padding;
-                width: 100%;
+                width: 33%;
+                min-width: 180px;
+
+                height: auto;
+                padding: 16px 32px;
 
                 box-sizing: border-box;
+                box-shadow: @box-shadow-12dp;
 
-                transition: @transitionSpeed @easing transform,
-                    @transitionSpeed @easing opacity;
+                margin-top: 12px;
+                font-weight: 500;
+            }
+        }
 
-                &.hidden {
-                    opacity: 0;
-                    transform: translateY(16px);
-                }
+        .body {
+            @easing: cubic-bezier(0.65, 0.05, 0.36, 1);
+            @transitionSpeed: 0.4s;
 
-                & > div {
-                    padding-left: @body-padding;
-                    padding-right: @body-padding;
-                }
+            position: relative;
+            background: $$background-color;
+            display: inline-block;
+
+            padding-top: @body-padding;
+            padding-bottom: @body-padding;
+            width: 100%;
+
+            box-sizing: border-box;
+
+            transition: @transitionSpeed @easing transform,
+                @transitionSpeed @easing opacity;
+
+            &.hidden {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            & > div {
+                padding-left: @body-padding;
+                padding-right: @body-padding;
             }
         }
     }

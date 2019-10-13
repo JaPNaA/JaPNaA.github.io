@@ -18,6 +18,7 @@ import openImageView from "../../../utils/view/openImageView";
 import Hexagon from "../../hexagons/Hexagon";
 import siteConfig from "../../../SiteConfig";
 import ISavableScroll from "../../viewPrivateData/saveScroll/ISaveScrollable";
+import resolveUrl from "../../../utils/resolveUrl";
 
 class ProjectJSONv2Elm extends Widget implements ISavableScroll {
     public static widgetName = "projectJSONv2Elm";
@@ -35,10 +36,15 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
     private backgroundImageContainer: HTMLDivElement;
     private backgroundImage: HTMLDivElement;
 
+    private headContainer: HTMLDivElement;
+    private head: HTMLDivElement;
+    private title: HTMLHeadingElement;
+    private bigViewProjectButton: HTMLAnchorElement;
+
     private contentContainer: HTMLDivElement;
     private mainContent: HTMLDivElement;
-    private title: HTMLHeadingElement;
     private body: HTMLDivElement;
+
 
     private hue: number;
 
@@ -52,10 +58,16 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         this.hexagonsContainer = this.createHexagonsContainer();
         this.backgroundImage = this.createBackgroundImage();
         this.backgroundImageContainer = this.createBackgroundImageContainer();
+
+        this.headContainer = this.createHeadContainer();
+        this.head = this.createHead();
+        this.title = this.createTitle(project.head.name);
+        this.bigViewProjectButton = this.createBigViewProjectButton();
+
         this.contentContainer = this.createContentContainer();
         this.mainContent = this.createMainContent();
-        this.title = this.createTitle(project.head.name);
         this.body = this.createBody();
+
         this.hue = Hexagon.baseHue;
 
         this.applyStyles();
@@ -83,10 +95,14 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         this.background.appendChild(this.hexagonsContainer);
         this.hexagons.appendTo(this.hexagonsContainer);
 
-        this.background.appendChild(this.contentContainer);
-        this.contentContainer.appendChild(this.mainContent);
-        this.mainContent.appendChild(this.title);
+        this.head.appendChild(this.title);
+        this.head.appendChild(this.bigViewProjectButton);
+        this.headContainer.appendChild(this.head);
+        this.mainContent.appendChild(this.headContainer);
         this.mainContent.appendChild(this.body);
+
+        this.contentContainer.appendChild(this.mainContent);
+        this.background.appendChild(this.contentContainer);
 
         this.hexagons.setup();
 
@@ -103,16 +119,10 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
         this.elm.addEventListener("click", this.clickHandler.bind(this));
 
-        this.setupScrollHandler();
-
         this.resizeHandler = this.resizeHandler.bind(this);
         this.app.events.onResize(this.resizeHandler);
 
         this.resizeHandler();
-    }
-
-    private setupScrollHandler() {
-        this.body.classList.add("hidden");
     }
 
     private createBackground(): HTMLDivElement {
@@ -139,6 +149,39 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         return backgroundImageContainer;
     }
 
+    private createHeadContainer(): HTMLDivElement {
+        const headContainer = document.createElement("div");
+        headContainer.classList.add("headContainer");
+        return headContainer;
+    }
+
+    private createHead(): HTMLDivElement {
+        const head = document.createElement("div");
+        head.classList.add("head");
+        return head;
+    }
+
+    private createTitle(text: string): HTMLHeadingElement {
+        const title = document.createElement("h1");
+        title.classList.add("title");
+        title.innerText = text;
+        return title;
+    }
+
+    private createBigViewProjectButton(): HTMLAnchorElement {
+        const button = document.createElement("a");
+        button.innerText = "Open Project";
+        button.classList.add("bigViewProjectButton");
+
+        if (this.project.head.link) {
+            button.href = resolveUrl(this.project.head.link, siteConfig.path.thingy);
+        } else {
+            button.classList.add("hidden");
+        }
+
+        return button;
+    }
+
     private createContentContainer(): HTMLDivElement {
         const container = document.createElement("div");
         container.classList.add("contentContainer");
@@ -149,13 +192,6 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         const main = document.createElement("div");
         main.classList.add("mainContent");
         return main;
-    }
-
-    private createTitle(text: string): HTMLHeadingElement {
-        const title = document.createElement("h1");
-        title.classList.add("title");
-        title.innerText = text;
-        return title;
     }
 
     private createBody(): HTMLDivElement {
@@ -206,8 +242,6 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
     }
 
     private scrollHandler(): void {
-        this.updateBodyHiddenClass();
-
         if (!siteConfig.isMobile) {
             this.backgroundImage.style.transform = "translateY(" + (this.elm.scrollTop / 2) + "px)";
         }
@@ -215,15 +249,6 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
 
     private resizeHandler(): void {
         this.backgroundImageContainer.style.height = this.app.height + "px";
-        this.updateBodyHiddenClass();
-    }
-
-    private updateBodyHiddenClass() {
-        if (this.app.width <= siteConfig.cssVars.longTextContainerMaxWidth || this.elm.scrollTop > 0) {
-            this.body.classList.remove("hidden");
-        } else {
-            this.body.classList.add("hidden");
-        }
     }
 
     private async clickHandler(e: MouseEvent): Promise<void> {
