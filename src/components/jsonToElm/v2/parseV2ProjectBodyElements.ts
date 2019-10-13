@@ -1,5 +1,6 @@
 import { V2ProjectBodyElement, V2ProjectBodyImage, V2ProjectBodyMarkdown, V2ProjectBodyViewProject } from "../../../types/project/v2/V2Types";
 import siteConfig from "../../../SiteConfig";
+import resolveUrl from "../../../utils/resolveUrl";
 
 type ParserFunction = (item: any) => HTMLDivElement;
 
@@ -63,7 +64,7 @@ function parseMarkdown(item: V2ProjectBodyMarkdown): HTMLDivElement {
 function parseViewProject(item: V2ProjectBodyViewProject): HTMLDivElement {
     const a = document.createElement("a");
     a.innerText = "View Project";
-    a.href = siteConfig.path.thingy + item.href;
+    a.href = resolveUrl(item.href, siteConfig.path.thingy);
 
     const elm = document.createElement("div");
     elm.classList.add("view-project");
