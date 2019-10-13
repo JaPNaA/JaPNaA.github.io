@@ -41,6 +41,8 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
     private title: HTMLHeadingElement;
     private bigViewProjectButton: HTMLAnchorElement;
 
+    private scrollIndicator: HTMLDivElement;
+
     private contentContainer: HTMLDivElement;
     private mainContent: HTMLDivElement;
     private body: HTMLDivElement;
@@ -63,6 +65,7 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         this.head = this.createHead();
         this.title = this.createTitle(project.head.name);
         this.bigViewProjectButton = this.createBigViewProjectButton();
+        this.scrollIndicator = this.createScrollIndicator();
 
         this.contentContainer = this.createContentContainer();
         this.mainContent = this.createMainContent();
@@ -98,6 +101,7 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         this.head.appendChild(this.title);
         this.head.appendChild(this.bigViewProjectButton);
         this.headContainer.appendChild(this.head);
+        this.headContainer.appendChild(this.scrollIndicator);
         this.mainContent.appendChild(this.headContainer);
         this.mainContent.appendChild(this.body);
 
@@ -180,6 +184,19 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         }
 
         return button;
+    }
+
+    private createScrollIndicator(): HTMLDivElement {
+        const scrollIndiciator = document.createElement("img");
+        scrollIndiciator.classList.add("scrollIndicator");
+        scrollIndiciator.src = siteConfig.path.img.upArrow;
+
+
+        const scrollIndicatorContainer = document.createElement("div");
+        scrollIndicatorContainer.appendChild(scrollIndiciator);
+        scrollIndicatorContainer.classList.add("scrollIndicatorContainer");
+
+        return scrollIndicatorContainer;
     }
 
     private createContentContainer(): HTMLDivElement {

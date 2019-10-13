@@ -98,6 +98,30 @@
                 margin-top: 12px;
                 font-weight: 500;
             }
+
+            .scrollIndicatorContainer {
+                position: absolute;
+                display: block;
+
+                text-align: center;
+
+                width: 100%;
+                height: 50%;
+                height: calc(50% - 64px);
+                max-height: 128px;
+
+                bottom: 0px;
+
+                .scrollIndicator {
+                    position: absolute;
+                    display: inline-block;
+                    width: auto;
+                    height: auto;
+                    top: 50%;
+                    transform: translate(-50%);
+                    text-shadow: 2px 2px 2px #000000;
+                }
+            }
         }
 
         .body {
