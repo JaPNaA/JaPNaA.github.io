@@ -47,6 +47,13 @@ class WidgetOrViewListGeneratorComponent extends Component {
          * @type {EventHandler[]}
          */
         this._changeEventHandlers = [];
+
+        /**
+         * Event handlers the initalization finishes
+         * @private
+         * @type {EventHandler[]}
+         */
+        this._initDoneEventHandlers = [];
     }
 
 
@@ -72,6 +79,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
 
         await Promise.all(proms);
         await this._updateList(compiler);
+        await this._dispatchInitDone(compiler);
     }
 
     /**
@@ -112,6 +120,14 @@ class WidgetOrViewListGeneratorComponent extends Component {
      */
     onChange(handler) {
         this._changeEventHandlers.push(handler);
+    }
+
+    /**
+     * Adds and even handle to the init done event
+     * @param {EventHandler} handler
+     */
+    onInitDone(handler) {
+        this._initDoneEventHandlers.push(handler);
     }
 
     /**
@@ -199,6 +215,24 @@ class WidgetOrViewListGeneratorComponent extends Component {
         const proms = [];
 
         for (const handle of this._changeEventHandlers) {
+            const returnValue = handle(compiler);
+            if (returnValue instanceof Promise) {
+                proms.push(returnValue);
+            }
+        }
+
+        return Promise.all(proms);
+    }
+
+    /**
+     * @param {Webpack.Compiler} compiler
+     * @returns {Promise<any[]>}
+     */
+    _dispatchInitDone(compiler) {
+        /** @type {Promise[]} */
+        const proms = [];
+
+        for (const handle of this._initDoneEventHandlers) {
             const returnValue = handle(compiler);
             if (returnValue instanceof Promise) {
                 proms.push(returnValue);
