@@ -6,6 +6,7 @@ const GenerateViewHTML = require("./GenerateViewHTML");
 const RunScripts = require("./RunScript");
 const ViewListGenerator = require("./listGeneration/ViewListGenerator");
 const WidgetListGenerator = require("./listGeneration/WidgetListGenerator");
+const SitemapGenerator = require("./sitemapGeneration/SitemapGenerator");
 
 const pluginName = 'JaPNaA_github_io_Plugin';
 
@@ -23,7 +24,8 @@ class Plugin {
      *          ViewListGenerator.ViewListOptions &
      *          CopyDirectories.CopyDirectoriesOptions &
      *          GenerateViewHTML.GenerateViewHTMLOptions &
-     *          RunScripts.RunScriptsOptions } options 
+     *          RunScripts.RunScriptsOptions &
+     *          SitemapGenerator.SitemapGeneratorOptions } options 
      */
     constructor(options) {
         /**
@@ -39,6 +41,8 @@ class Plugin {
         this.runScripts = new RunScripts(options);
         this.copyDirectories = new CopyDirectories(options);
 
+        this.generateSitemap = new SitemapGenerator(this.viewList, options);
+
         /**
          * @type {Component[]}
          */
@@ -46,7 +50,8 @@ class Plugin {
             this.widgetList,
             this.viewList,
             this.runScripts,
-            this.copyDirectories
+            this.copyDirectories,
+            this.generateSitemap
         ];
 
         this.generateViewHTML = new GenerateViewHTML(this.viewList, options);

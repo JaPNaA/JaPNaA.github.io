@@ -80,6 +80,11 @@ module.exports = [{
                 indexReplacementMap: {
                     "description": "JaPNaA's website. (It's very nice)"
                 }
+            },
+            generateSitemap: {
+                outPath: "build/sitemap.xml",
+                thingyPath: "../../../Thingy",
+                siteUrl: "https://japnaa.github.io/"
             }
         }),
         new webpack.optimize.MinChunkSizePlugin({
