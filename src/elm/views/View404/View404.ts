@@ -68,8 +68,8 @@ class View404 extends View {
     }
 
     private mouseMoveHandler(e: MouseEvent): void {
-        this.mouseX = e.layerX;
-        this.mouseY = e.layerY;
+        this.mouseX = e.offsetX;
+        this.mouseY = e.offsetY;
         this.draw();
     }
 

@@ -5,7 +5,6 @@ import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
 import parseShortUrl from "../../../components/url/parseShortUrl";
 import AppState from "../../../core/types/AppState";
-import isUrlAbsolute from "../../../utils/isUrlAbsolute";
 import siteConfig from "../../../SiteConfig";
 import LazyClassMap from "../../../core/components/lazyClassMap/LazyClassMap";
 import resolveUrl from "../../../utils/resolveUrl";
