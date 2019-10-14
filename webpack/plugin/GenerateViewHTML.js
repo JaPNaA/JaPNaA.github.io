@@ -60,7 +60,7 @@ class GenerateViewHTML {
 
         for (const view of this.viewList.views) {
             if (!this.createdSet.has(view)) {
-                proms.push(this.createFileFor(compiler.context, view));
+                proms.push(this.createFileFor(compiler.context, view.name));
                 this.createdSet.add(view);
             }
         }
@@ -70,12 +70,10 @@ class GenerateViewHTML {
 
     /**
      * @param {string} context
-     * @param {string | [string, string]} view 
+     * @param {string} viewName 
      * @returns {Promise<void>}
      */
-    async createFileFor(context, view) {
-        const viewName = Array.isArray(view) ? view[0] : view;
-
+    async createFileFor(context, viewName) {
         const file = await fsPromise.readFile(
             this.viewList.applyPathPattern(context, viewName)
         );

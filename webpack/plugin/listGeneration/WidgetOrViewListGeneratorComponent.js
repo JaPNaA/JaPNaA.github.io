@@ -8,7 +8,7 @@ const dirname = require("../utils/dirname");
  * @typedef {import("webpack").Compiler} Webpack.Compiler
  * @typedef {import("webpack/lib/node/NodeWatchFileSystem")} Webpack.Node.NodeWatchFileSystem
  * 
- * @typedef {(compiler: Webpack.Compiler) => void | Promise<void>} ChangeHandler
+ * @typedef {(compiler: Webpack.Compiler) => void | Promise<void>} EventHandler
  */
 
 /**
@@ -44,7 +44,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
         /**
          * Event handlers when a change occurs
          * @private
-         * @type {ChangeHandler[]}
+         * @type {EventHandler[]}
          */
         this._changeEventHandlers = [];
     }
@@ -108,7 +108,7 @@ class WidgetOrViewListGeneratorComponent extends Component {
 
     /**
      * Adds an event handler to the change event
-     * @param {ChangeHandler} handler
+     * @param {EventHandler} handler
      */
     onChange(handler) {
         this._changeEventHandlers.push(handler);

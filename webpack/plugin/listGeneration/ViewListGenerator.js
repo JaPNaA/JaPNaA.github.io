@@ -5,6 +5,32 @@ const WidgetOrViewListGeneratorComponent = require("./WidgetOrViewListGeneratorC
  * @typedef { { viewList: { pathToViews: string, outFileName: string } } } ViewListOptions
  */
 
+class View {
+    /**
+     * 
+     * @param {string} name 
+     * @param {boolean} isFullPage 
+     * @param {string} [matcher]
+     */
+    constructor(name, isFullPage, matcher) {
+        this.name = name;
+        this.isFullPage = isFullPage;
+        this.matcher = matcher;
+    }
+
+    /**
+     * Returns the entry version used in viewList
+     * @returns {string | [string, string]}
+     */
+    toListEntry() {
+        if (this.matcher) {
+            return [this.name, this.matcher];
+        } else {
+            return this.name;
+        }
+    }
+}
+
 class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
     /**
      * @param {ViewListOptions} options 
@@ -14,7 +40,7 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
 
         /**
          * A list of names of views
-         * @type {(string | [string, string])[]}
+         * @type {View[]}
          */
         this.views = [];
     }
@@ -49,15 +75,8 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
      * @returns {Promise<void>}
      */
     async addItem(context, directory) {
-        const file = await fsPromise.readFile(this.applyPathPattern(context, directory)).then(buffer => buffer.toString());
-        const match = file.match(/public\s+static\s.*viewMatcher = (\/.*\/);/);
-
-        if (match) {
-            this.views.push([directory, match[1]]);
-        } else {
-            this.views.push(directory);
-        }
-
+        const view = await this._createViewObj(context, directory);
+        this.views.push(view);
         this.changed = true;
     }
 
@@ -69,24 +88,20 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
      * @returns {Promise<void>}
      */
     async updateItem(context, directory) {
-        /** @type {string} */
-        let file;
+        /** @type {View} */
+        let view;
 
         try {
-            file = await fsPromise.readFile(this.applyPathPattern(context, directory)).then(buffer => buffer.toString());
+            view = await this._createViewObj(context, directory);
         } catch (err) {
             this.removeItem(directory);
+            console.warn("(Most likey deleted,) Removing view due to failed creation");
             return;
         }
 
-        const match = file.match(/public\s+static\s.*viewMatcher = (\/.*\/);/);
         const index = this._indexOf(directory);
-
-        if (match) {
-            this.views[index] = [directory, match[1]];
-        } else {
-            this.views[index] = directory;
-        }
+        if (index < 0) { throw new Error("Failed to find view to update"); }
+        this.views[index] = view;
 
         this.changed = true;
     }
@@ -113,13 +128,39 @@ class ViewListGenerator extends WidgetOrViewListGeneratorComponent {
     _stringifyViews() {
         let str = [];
         for (const view of this.views) {
-            if (Array.isArray(view)) {
-                str.push('["' + view[0] + '",' + view[1] + ']');
+            const viewListEntry = view.toListEntry();
+
+            if (Array.isArray(viewListEntry)) {
+                str.push('["' + viewListEntry[0] + '",' + viewListEntry[1] + ']');
             } else {
-                str.push('\"' + view + '\"');
+                str.push('\"' + viewListEntry + '\"');
             }
         }
         return "[" + str.join(",") + "]";
+    }
+
+    /**
+     * @private
+     * @param {string} context 
+     * @param {string} directory 
+     * @returns {Promise<View>}
+     */
+    async _createViewObj(context, directory) {
+        const file = await fsPromise.readFile(this.applyPathPattern(context, directory)).then(buffer => buffer.toString());
+        const viewMatcherMatch = file.match(/static\s.*viewMatcher(:.*)?\s*=\s*(\/.*\/)\s*;/);
+        const isFullPageMatch = file.match(/isFullPage(:.*)?\s*=\s*(true|false)\s*;/);
+
+        let viewMatcher = null;
+        if (viewMatcherMatch) {
+            viewMatcher = viewMatcherMatch[2];
+        }
+
+        let isFullPage = false;
+        if (isFullPageMatch) {
+            isFullPage = isFullPageMatch[2] === "true";
+        }
+
+        return new View(directory, isFullPage, viewMatcher);
     }
 
     /**
