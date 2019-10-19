@@ -82,7 +82,7 @@ module.exports = [{
                 }
             },
             generateSitemap: {
-                outPath: "build/sitemap.xml",
+                outPath: "build/mainSitemap.xml",
                 thingyPath: "../../../Thingy",
                 siteUrl: "https://japnaa.github.io/"
             }
