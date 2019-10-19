@@ -91,6 +91,10 @@ class Search extends View {
         }
     }
 
+    public getTitle(): string | undefined {
+        return this.query || undefined;
+    }
+
     public setState(state: string | undefined): boolean {
         this.query = state || "";
         this.update();
