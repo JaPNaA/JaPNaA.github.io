@@ -5,6 +5,7 @@ import IFiles from "./types/IFiles";
 import IndexJSON from "./IndexJSON";
 import parseV2String from "./utils/parseV2String";
 import { V2Project, V2ProjectListing } from "../../src/types/project/v2/V2Types";
+import SitemapJSON from "./SitemapJSON";
 
 class V2Files implements IFiles {
     private static readonly dirId = "v2";
@@ -12,13 +13,15 @@ class V2Files implements IFiles {
     private yearProjectMap: Map<number, V2Project[]> = new Map();
 
     constructor(
-        private index: IndexJSON
+        private index: IndexJSON,
+        private sitemap: SitemapJSON
     ) { }
 
     public async parse(): Promise<void> {
         await this.readDirectory(path.join(ContentParser.inDirectory, V2Files.dirId));
         this.sortProjectsIntoYearProjectMap();
         this.sortProjects();
+        this.addProjectsToSitemap();
         this.addYearEntriesIntoIndex();
     }
 
@@ -110,6 +113,18 @@ class V2Files implements IFiles {
     private sortProjects(): void {
         for (const [year, projects] of this.yearProjectMap) {
             projects.sort((a, b) => a.head.timestamp - b.head.timestamp);
+        }
+    }
+
+    private addProjectsToSitemap(): void {
+        for (const [year, projects] of this.yearProjectMap) {
+            for (let i = 0, length = projects.length; i < length; i++) {
+                this.sitemap.addProject({
+                    year: year,
+                    index: i,
+                    date: new Date(projects[i].head.timestamp)
+                });
+            }
         }
     }
 

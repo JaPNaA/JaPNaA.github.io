@@ -7,6 +7,7 @@ import IV1InfoJSON from "../../src/types/project/v1/IV1InfoJSON";
 import IndexJSON from "./IndexJSON";
 import filenameToYear from "./utils/filenameToYear";
 import isProjectV1Card from "../../src/utils/isProjectCard";
+import SitemapJSON from "./SitemapJSON";
 
 class V1Files implements IFiles {
     private static readonly dirId = "v1";
@@ -16,7 +17,8 @@ class V1Files implements IFiles {
     private files: string[] = [];
 
     constructor(
-        private index: IndexJSON
+        private index: IndexJSON,
+        private sitemap: SitemapJSON
     ) { }
 
     public async parse() {
@@ -72,6 +74,20 @@ class V1Files implements IFiles {
         if (max === null || min === null) {
             console.error("No items in year file " + filename);
             return;
+        }
+
+        for (let i = 0, length = obj.data.length; i < length; i++) {
+            const item = obj.data[i];
+
+            if (isProjectV1Card(item)) {
+                let date = item.timestamp ? new Date(item.timestamp) : undefined;
+
+                this.sitemap.addProject({
+                    year: year,
+                    index: i,
+                    date: date
+                });
+            }
         }
 
         this.files.push(filename);
