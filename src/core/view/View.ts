@@ -90,6 +90,9 @@ abstract class View {
         return this.elm.scrollHeight > this.elm.clientHeight;
     }
 
+    /** Gets the view's title */
+    public getTitle(): string | undefined { return; }
+
     /** Gets the view state for the URL */
     public getState(): string | undefined { return; }
 
