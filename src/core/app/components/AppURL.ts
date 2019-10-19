@@ -47,7 +47,7 @@ class AppURL implements IAppURL {
         }
 
         this.history.push(state);
-        this.pushState(view.viewName, state);
+        this.pushState(state);
 
         this.currView = view;
     }
@@ -68,7 +68,7 @@ class AppURL implements IAppURL {
         const state = this.createAppState(view);
 
         if (!historyEntry) { throw new Error("Cannot update state with unregistered view"); }
-        this.setURLState(view.viewName, state);
+        this.setURLState(state);
         historyEntry.stateData = state.stateData;
         historyEntry.privateData = state.privateData;
     }
@@ -103,14 +103,14 @@ class AppURL implements IAppURL {
         this.frozen = false;
     }
 
-    private setURLState(viewName: string, state: AppState) {
+    private setURLState(state: AppState) {
         if (this.frozen) { return; }
-        this.controller.setState(viewName, state);
+        this.controller.setState(state);
     }
 
-    private pushState(viewName: string, state: AppState) {
+    private pushState(state: AppState) {
         if (this.frozen) { return; }
-        this.controller.pushState(viewName, state);
+        this.controller.pushState(state);
     }
 
     private createAppState(view: View): AppState {

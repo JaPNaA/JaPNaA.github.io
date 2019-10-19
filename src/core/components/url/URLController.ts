@@ -45,8 +45,8 @@ class URLController {
         this.siteTitle = title;
     }
 
-    public setState(viewName: string, state: AppState): void {
-        const { title, url } = this.getTitleAndURLFromViewState(viewName, state.stateData);
+    public setState(state: AppState): void {
+        const { title, url } = this.getTitleAndURLFromState(state);
 
         this.basedReplaceState(JSON.stringify(state), title, url);
         this.currentURL = url;
@@ -54,12 +54,12 @@ class URLController {
         this.stateEmpty = false;
     }
 
-    public pushState(viewName: string, state: AppState): void {
+    public pushState(state: AppState): void {
         if (this.stateEmpty) {
-            return this.setState(viewName, state);
+            return this.setState(state);
         }
 
-        const { title, url } = this.getTitleAndURLFromViewState(viewName, state.stateData);
+        const { title, url } = this.getTitleAndURLFromState(state);
 
         this.basedPushState(JSON.stringify(state), title, url);
         this.currentURL = url;
@@ -73,9 +73,8 @@ class URLController {
         this.currentURL = "/";
     }
 
-    private getTitleAndURLFromViewState(viewName: string, viewStateData?: string): { url: string, title: string } {
-        const title = this.siteTitle + "." + viewName;
-        return { title, url: urlFromViewState(viewName, viewStateData) };
+    private getTitleAndURLFromState(state: AppState): { url: string, title: string } {
+        return { title, url: urlFromViewState(state.viewName, state.stateData) };
     }
 
     private setToOldURL(): void {
