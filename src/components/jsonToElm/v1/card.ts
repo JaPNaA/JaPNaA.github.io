@@ -52,6 +52,10 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
         this.app.events.offResize(this.resizeHandler);
     }
 
+    public getTitle(): string {
+        return this.card.name;
+    }
+
     public animateTransitionIn(): void {
         triggerTransitionIn(this.elm, CardJSONv1Elm.transitionInTimeout);
     }

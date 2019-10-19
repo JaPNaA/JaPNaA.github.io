@@ -61,6 +61,12 @@ class ProjectInfoView extends View implements IProjectInfoView {
         }
     }
 
+    public getTitle(): string | undefined {
+        if (this.widget) {
+            return this.widget.getTitle();
+        }
+    }
+
     public canScroll(): boolean {
         if (this.widget) {
             return this.widget.canScroll();

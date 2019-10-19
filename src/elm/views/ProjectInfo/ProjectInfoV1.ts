@@ -40,6 +40,10 @@ class ProjectInfoV1 extends Widget implements ISavableScroll {
         this.cardElm.destory();
     }
 
+    public getTitle(): string {
+        return this.cardElm.getTitle();
+    }
+
     public canScroll(): boolean {
         return this.cardElm.canScroll();
     }

@@ -25,6 +25,10 @@ class ProjectInfoV2 extends Widget implements ISavableScroll {
         return this.projectElm.canScroll();
     }
 
+    public getTitle(): string {
+        return this.projectElm.getTitle();
+    }
+
     public setup(): void {
         super.setup();
 

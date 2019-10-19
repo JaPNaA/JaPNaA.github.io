@@ -88,6 +88,10 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         return this.background.clientHeight > this.elm.clientHeight;
     }
 
+    public getTitle(): string {
+        return this.project.head.name;
+    }
+
     public setup(): void {
         super.setup();
         this.loadBody();
