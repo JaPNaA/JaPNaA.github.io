@@ -9,6 +9,7 @@ import IWithLocation from "./IWithLocation";
 import isV2ProjectListing from "../../utils/v2Project/isV2ProjectListing";
 import V1Or2Card from "./V1Or2Card";
 import V1Or2Project from "./V1Or2Project";
+import resolveUrl from "../../utils/resolveUrl";
 
 type LinksIndexJSON = [number, string, string][];
 
@@ -154,7 +155,7 @@ class ContentMan {
         for (const link of links) {
             const [name, href] = link;
             const key = thingyPath + href;
-            const project = projectsMap.get(thingyPath + href);
+            const project = projectsMap.get(resolveUrl(href, thingyPath));
             if (project) {
                 projectsMap.delete(key);
                 yield project;
@@ -235,7 +236,7 @@ class ContentMan {
             return this.linksIndexPromise;
         } else {
             const prom = new Promise<LinksIndexJSON>(res =>
-                siteResources.loadJSON(siteConfig.path.thingy + siteConfig.path.repo.thingy + siteConfig.path.repo.linksIndex)
+                siteResources.loadJSON(resolveUrl(siteConfig.path.repo.thingy + siteConfig.path.repo.linksIndex, siteConfig.path.thingy))
                     .onLoad(e => res(e.data as LinksIndexJSON))
             );
             this.linksIndexPromise = prom;
@@ -245,7 +246,7 @@ class ContentMan {
 
     private static async getLinksForThingy(thingyPath: string): Promise<string[][]> {
         return new Promise<string[][]>((res, rej) =>
-            siteResources.loadJSON(siteConfig.path.thingy + thingyPath + siteConfig.path.repo.linksIndex)
+            siteResources.loadJSON(resolveUrl(thingyPath + siteConfig.path.repo.linksIndex, siteConfig.path.thingy))
                 .onLoad(e => res(e.data as string[][]))
                 .onError(() => rej(new Error("Failed to load links in " + thingyPath)))
         );
@@ -258,7 +259,7 @@ class ContentMan {
     private static linkToProjectLink(thingyPath: string, link: string[]): IProjectLink {
         return {
             name: link[0],
-            href: siteConfig.path.thingy + thingyPath + link[1]
+            href: resolveUrl(thingyPath + link[1], siteConfig.path.thingy)
         };
     }
 }

@@ -4,7 +4,8 @@ import ProjectCardCard from "./ProjectCardCard";
 import isCSSPropertyImage from "../../../../utils/css/isCSSPropertyImage";
 import getImageSrcFromCSSProperty from "../../../../utils/css/getImageSrcFromCSSProperty";
 import siteConfig from "../../../../SiteConfig";
-import prependCSSUrl from "../../../../utils/css/prependCSSUrl";
+import resolveCSSUrl from "../../../../utils/css/prependCSSUrl";
+import resolveUrl from "../../../../utils/resolveUrl";
 
 class ProjectV2ProjectCard extends ProjectCardCard<V2Project> {
     constructor(app: IApp, card: V2Project, year: number, index: number) {
@@ -34,12 +35,12 @@ class ProjectV2ProjectCard extends ProjectCardCard<V2Project> {
     protected getBackgroundImageSrcFromBackgroundImage(bgImage: string): string | undefined {
         const src = getImageSrcFromCSSProperty(bgImage);
         if (src) {
-            return siteConfig.path.thingy + src;
+            return resolveUrl(src, siteConfig.path.thingy);
         }
     }
 
     protected setBackgroundImage(elm: HTMLElement, bgImage: string) {
-        elm.style.backgroundImage = prependCSSUrl(siteConfig.path.thingy, bgImage);
+        elm.style.backgroundImage = resolveCSSUrl(siteConfig.path.thingy, bgImage);
     }
 }
 

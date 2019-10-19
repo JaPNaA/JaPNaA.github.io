@@ -1,7 +1,7 @@
 import { V2Project } from "../../types/project/v2/V2Types";
 import isCSSPropertyImage from "../css/isCSSPropertyImage";
 import siteConfig from "../../SiteConfig";
-import getImageSrcFromCSSProperty from "../css/getImageSrcFromCSSProperty";
+import resolveCSSUrl from "../css/prependCSSUrl";
 
 /**
  * Applys a project's specified background to an element
@@ -17,14 +17,7 @@ export default function applyV2ProjectBackground(project: V2Project, elm: HTMLEl
     for (let i = project.head.background.length - 1; i >= 0; i--) {
         const background = project.head.background[i];
         if (isCSSPropertyImage(background)) {
-            const urlValue = getImageSrcFromCSSProperty(background);
-            if (urlValue) {
-                const src = siteConfig.path.thingy + urlValue;
-                elm.style.backgroundImage = "url(" + src + ")";
-                bgSrc = src;
-            } else {
-                elm.style.backgroundImage = background;
-            }
+            elm.style.backgroundImage = resolveCSSUrl(siteConfig.path.thingy, background);
         } else {
             elm.style.backgroundColor = background;
         }
