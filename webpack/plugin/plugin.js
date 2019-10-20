@@ -36,25 +36,25 @@ class Plugin {
 
 
         // --- Components ---
-        this.widgetList = new WidgetListGenerator(options);
-        this.viewList = new ViewListGenerator(options);
+        // this.widgetList = new WidgetListGenerator(options);
+        // this.viewList = new ViewListGenerator(options);
         this.runScripts = new RunScripts(options);
         this.copyDirectories = new CopyDirectories(options);
 
-        this.generateSitemap = new SitemapGenerator(this.viewList, options);
+        // this.generateSitemap = new SitemapGenerator(this.viewList, options);
 
         /**
          * @type {Component[]}
          */
         this.components = [
-            this.widgetList,
-            this.viewList,
+            // this.widgetList,
+            // this.viewList,
             this.runScripts,
             this.copyDirectories,
-            this.generateSitemap
+            // this.generateSitemap
         ];
 
-        this.generateViewHTML = new GenerateViewHTML(this.viewList, options);
+        // this.generateViewHTML = new GenerateViewHTML(this.viewList, options);
 
 
         this._startTime = Date.now();
