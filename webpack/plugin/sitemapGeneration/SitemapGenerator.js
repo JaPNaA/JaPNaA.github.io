@@ -137,11 +137,7 @@ class SitemapGenerator extends Component {
             body += "<loc>" + this._escapeForXML(entry.url) + "</loc>";
 
             if (entry.lastModified !== undefined) {
-                body += "<lastmod>" +
-                    entry.lastModified.getUTCFullYear() + "-" +
-                    (entry.lastModified.getUTCMonth() + 1) + "-" +
-                    entry.lastModified.getUTCDate() +
-                    "</lastmod>";
+                body += "<lastmod>" + this._formatDate(entry.lastModified) + "</lastmod>";
             }
 
             if (entry.changeFreq) {
@@ -165,6 +161,16 @@ class SitemapGenerator extends Component {
      */
     _bufferToJSON(buffer) {
         return JSON.parse(buffer.toString());
+    }
+
+    /**
+     * @param {Date} date 
+     * @returns {string}
+     */
+    _formatDate(date) {
+        return date.getUTCFullYear() + "-" +
+            (date.getUTCMonth() + 1).toString().padStart(2, '0') + "-" +
+            date.getUTCDate().toString().padStart(2, '0');
     }
 
     /**
