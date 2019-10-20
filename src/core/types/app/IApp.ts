@@ -12,7 +12,7 @@ export default interface IApp {
     url: IAppURL;
     events: IAppEvents;
     views: IAppViews;
-    indexRouter: Router;
+    routes: Router;
 
     view404?: ViewDescriptor;
     viewError?: ViewDescriptor;

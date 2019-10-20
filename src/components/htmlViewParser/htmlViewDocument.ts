@@ -7,8 +7,6 @@ import IApp from "../../core/types/app/IApp";
 import IHTMLViewDocument from "./iHTMLViewDocument";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import Widget from "../../core/widget/Widget";
-import WidgetFactory from "../../core/widget/WidgetFactory";
-import WidgetMap from "../../core/widget/WidgetMap";
 import htmlCollectionToArray from "../../utils/convertToArray";
 import openFrameView from "../../utils/view/openFrameView";
 import openNoopener from "../../core/utils/open/openNoopener";
@@ -231,9 +229,10 @@ class HTMLViewDocument implements IHTMLViewDocument {
     private async replaceWidgetElement(elm: Element, widgetName: string): Promise<void> {
         elm.classList.add("embededWidget");
 
-        const widgetClass = await WidgetMap.get(widgetName);
-        const widget = await WidgetFactory.create(widgetClass, this.getWidgetArguments(elm));
+        const widgetClass = await this.app.routes.getWidget(widgetName);
+        const widget = new widgetClass(...this.getWidgetArguments(elm));
         widget.appendTo(elm);
+        widget.setup();
         this.widgets.push(widget);
         elm.classList.add("loaded");
     }

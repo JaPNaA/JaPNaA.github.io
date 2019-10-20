@@ -1,12 +1,9 @@
 import "../../../../styles/views/WidgetView.less";
 
 import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import WidgetClass from "../../../core/types/widget/WidgetClass";
-import WidgetFactory from "../../../core/widget/WidgetFactory";
 import Widget from "../../../core/widget/Widget";
 
 /**
@@ -49,7 +46,7 @@ class WidgetView extends View {
 
     public async setup(): Promise<void> {
         await super.setup();
-        WidgetMap.get(this.widgetName)
+        this.app.routes.getWidget(this.widgetName)
             .then(widgetClass => this.setupWidget(widgetClass))
             .catch(err => this.writeError(err));
     }
@@ -70,8 +67,9 @@ class WidgetView extends View {
                 args.push(argString);
             }
         }
-        this.widget = await WidgetFactory.create(widgetClass, args);
+        this.widget = new widgetClass(...args);
         this.widget.appendTo(this.elm);
+        this.widget.setup();
 
         if (this.evalString) {
             const fn = new Function("widget", this.evalString);
@@ -89,7 +87,5 @@ class WidgetView extends View {
         return str.slice(str.indexOf(":") + 1);
     }
 }
-
-ViewMap.add(WidgetView);
 
 export default WidgetView;

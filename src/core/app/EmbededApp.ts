@@ -10,7 +10,7 @@ class EmbededApp extends BaseApp {
     public title: string = "embededApp";
 
     public parentApp: IApp;
-    public indexRouter: Router;
+    public routes: Router;
 
     protected parentElm: Element;
 
@@ -19,7 +19,7 @@ class EmbededApp extends BaseApp {
 
         this.parentApp = parentApp;
         this.parentElm = parentElm;
-        this.indexRouter = parentApp.indexRouter;
+        this.routes = parentApp.routes;
         this.mainElm.classList.add("embededApp");
         this.url = new FakeAppURL();
     }

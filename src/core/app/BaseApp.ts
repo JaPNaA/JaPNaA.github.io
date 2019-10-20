@@ -17,7 +17,7 @@ abstract class BaseApp implements IApp {
     protected mainElm: HTMLDivElement;
 
     public abstract url: IAppURL;
-    public abstract indexRouter: Router;
+    public abstract routes: Router;
     public events: AppEvents;
     public views: AppViews;
     public parentApp?: IApp;

@@ -170,7 +170,7 @@ class AppViews implements IAppViews {
     ): Promise<View> {
         let viewClass;
         if (typeof descriptor === 'string') {
-            viewClass = await this.app.indexRouter.get(descriptor);
+            viewClass = await this.app.routes.getView(descriptor);
         } else {
             viewClass = descriptor;
         }

@@ -1,8 +1,5 @@
 import "../styles/index.less";
 
-import "./elm/views/_setViewImporter";
-import "./elm/widgets/_setWidgetImporter";
-
 import SplashScreen from "./elm/views/SplashScreen/SplashScreen";
 import GlobalWidgets from "./elm/widgets/Global/Global";
 import ContentMan from "./components/contentMan/contentMan";
@@ -19,8 +16,8 @@ class App extends MainApp {
 
     public autoRestoreState = true;
     public title = siteConfig.title;
-    public indexRouter = indexRoutes;
-    
+    public routes = indexRoutes;
+
     private globalWidget: GlobalWidgets;
     private siteThemes: SiteThemes;
 

@@ -1,7 +1,6 @@
 import "../../../../styles/widgets/HTMLView.less";
 
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";
 import IApp from "../../../core/types/app/IApp";
 import IHTMLViewDocument from "../../../components/htmlViewParser/iHTMLViewDocument";
@@ -58,7 +57,5 @@ class HTMLView extends Widget {
         this.elm.appendChild(document.createTextNode("Failed to load. Reason: " + err.message));
     }
 }
-
-WidgetMap.add(HTMLView);
 
 export default HTMLView;

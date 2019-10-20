@@ -1,8 +1,13 @@
 import ViewClass from "../../types/view/ViewClass";
+import WidgetClass from "../../types/widget/WidgetClass";
 
-type ViewClassImporter = () => Promise<{ default: ViewClass }>;
+type ClassImporter<T> = () => Promise<{ default: T }>;
+type ViewClassImporter = ClassImporter<ViewClass>;
+type WidgetClassImporter = ClassImporter<WidgetClass>;
 
-type Routes = { [x: string]: ViewClassImporter | Router };
+type Routes = {
+    [x: string]: WidgetClassImporter | ViewClassImporter | Router
+};
 
 class Router {
     private routes: Routes;
@@ -13,7 +18,11 @@ class Router {
         this.self = self;
     }
 
-    public async get(name: string): Promise<ViewClass> {
+    public async getView(path: string): Promise<ViewClass> {
+        throw new Error("not implemented");
+    }
+
+    public async getWidget(path: string): Promise<WidgetClass> {
         throw new Error("not implemented");
     }
 }
