@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/HTMLView.less";
+import "./HTMLView.less";
 
 import Widget from "../../../core/widget/Widget";
 import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";

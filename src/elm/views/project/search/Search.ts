@@ -1,4 +1,4 @@
-import "../../../../styles/views/Search.less";
+import "./Search.less";
 
 import AppState from "../../../../core/types/AppState";
 import ContentMan from "../../../../components/contentMan/contentMan";

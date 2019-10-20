@@ -1,4 +1,4 @@
-import "../../../../styles/components/cardV1.less";
+import "./cardV1.less";
 
 import DisplayV1 from "../../../types/project/v1/V1Display";
 import IApp from "../../../core/types/app/IApp";

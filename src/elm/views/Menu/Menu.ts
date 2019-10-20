@@ -1,4 +1,4 @@
-import "../../../../styles/views/Menu.less";
+import "./Menu.less";
 
 import View from "../../../core/view/View";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";

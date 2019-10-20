@@ -1,4 +1,4 @@
-import "../../../styles/components/htmlViewDocument.less";
+import "./htmlViewDocument.less";
 
 import url from "url";
 

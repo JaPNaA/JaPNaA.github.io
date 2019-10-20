@@ -1,4 +1,4 @@
-import "../../../../styles/views/ProjectDirectory.less";
+import "./ProjectDirectory.less";
 
 import AppState from "../../../../core/types/AppState";
 import ContentMan from "../../../../components/contentMan/contentMan";

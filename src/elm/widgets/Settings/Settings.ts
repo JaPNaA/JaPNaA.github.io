@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/settings.less";
+import "./settings.less";
 
 import Widget from "../../../core/widget/Widget";
 import SettingsEditor from "./SettingsEditor";

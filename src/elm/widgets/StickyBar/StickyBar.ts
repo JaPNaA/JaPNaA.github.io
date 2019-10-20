@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/stickyBar.less";
+import "./stickyBar.less";
 
 import removeChildren from "../../../utils/removeChildren";
 import Widget from "../../../core/widget/Widget";

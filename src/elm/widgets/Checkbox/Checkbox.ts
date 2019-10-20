@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/checkbox.less";
+import "./checkbox.less";
 
 import Widget from "../../../core/widget/Widget";
 import CheckboxCheck from "./CheckboxCheck";

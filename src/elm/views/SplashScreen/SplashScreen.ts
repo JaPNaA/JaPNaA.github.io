@@ -1,4 +1,4 @@
-import "../../../../styles/views/SplashScreen.less";
+import "./SplashScreen.less";
 
 import View from "../../../core/view/View";
 import wait from "../../../utils/wait";

@@ -1,4 +1,4 @@
-import "../../../../styles/views/ErrorView.less";
+import "./ErrorView.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";

@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/iframe.less";
+import "./iframe.less";
 
 import Widget from "../../../core/widget/Widget";
 import EventHandlers from "../../../core/utils/events/EventHandlers";

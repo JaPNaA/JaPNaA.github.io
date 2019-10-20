@@ -1,4 +1,4 @@
-import "../../../../../styles/widgets/hexagonsCorner.less";
+import "./hexagonsCorner.less";
 
 import HexagonsCornerRenderer from "./HexagonsCornerRenderer";
 import IApp from "../../../../core/types/app/IApp";

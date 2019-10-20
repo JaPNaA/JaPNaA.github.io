@@ -1,4 +1,4 @@
-import "../../../../styles/views/ImageView.less";
+import "./ImageView.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";

@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/hexagonsTitle.less";
+import "./hexagonsTitle.less";
 
 import siteConfig from "../../../SiteConfig";
 import Widget from "../../../core/widget/Widget";

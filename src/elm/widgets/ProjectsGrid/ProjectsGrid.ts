@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/projectsGrid.less";
+import "./projectsGrid.less";
 
 import IApp from "../../../core/types/app/IApp";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";

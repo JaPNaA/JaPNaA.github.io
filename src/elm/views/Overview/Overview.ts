@@ -1,4 +1,4 @@
-import "../../../../styles/views/Overview.less";
+import "./Overview.less";
 
 import View from "../../../core/view/View";
 import HexagonsTitle from "../../widgets/HexagonsTitle/HexagonsTitle";

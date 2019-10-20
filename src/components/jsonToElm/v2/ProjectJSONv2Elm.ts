@@ -1,4 +1,4 @@
-import "../../../../styles/components/cardV2.less";
+import "./cardV2.less";
 
 import { V2Project } from "../../../types/project/v2/V2Types";
 import applyV2ProjectBackground from "../../../utils/v2Project/applyV2ProjectBackground";

@@ -1,5 +1,5 @@
 
-import "../../../../styles/widgets/global/global.less"
+import "./global.less"
 
 import Widget from "../../../core/widget/Widget";
 import App from "../../../App";
