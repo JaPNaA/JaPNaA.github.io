@@ -1,16 +1,15 @@
 import AppEvents from "./AppEvents";
 import BaseApp from "../BaseApp";
-import ClassNotFoundError from "../../components/lazyClassMap/ClassNotFoundError";
 import IAppViews from "../../types/app/IAppViews";
 import StateData from "../../types/StateData";
 import View from "../../view/View";
 import ViewDescriptor from "../../types/view/ViewDescriptor";
-import ViewMap from "../../view/ViewMap";
 import ViewMetadata from "../../types/view/ViewMetadata";
 import createAppState from "../../utils/createAppState";
 import errorToDetailedString from "../../utils/errorToDetailedString";
 import ViewWithFallbackStatus from "../../types/view/ViewWithFallbackStatus";
 import BeforeSetupCallback from "../../types/BeforeSetupCallback";
+import NoRouteError from "../../components/router/NoRouteError";
 
 // handles views
 
@@ -155,7 +154,7 @@ class AppViews implements IAppViews {
         } catch (err) {
             console.warn(err);
             isFallback = true;
-            if (err instanceof ClassNotFoundError && this.app.view404) {
+            if (err instanceof NoRouteError && this.app.view404) {
                 view = await this.createView(this.app.view404);
             } else {
                 view = await this.createViewCreationErrorView(err, viewDescriptor, stateData);
@@ -171,7 +170,7 @@ class AppViews implements IAppViews {
     ): Promise<View> {
         let viewClass;
         if (typeof descriptor === 'string') {
-            viewClass = await ViewMap.get(descriptor);
+            viewClass = await this.app.indexRouter.get(descriptor);
         } else {
             viewClass = descriptor;
         }
@@ -202,10 +201,10 @@ class AppViews implements IAppViews {
         } else {
             view = viewDescriptor.viewName;
         }
-        
+
         return errorToDetailedString(err) +
-        "\nview: " + view +
-        "\nstate: " + JSON.stringify(state)
+            "\nview: " + view +
+            "\nstate: " + JSON.stringify(state)
     }
 
     private triggerClose(view: View) {

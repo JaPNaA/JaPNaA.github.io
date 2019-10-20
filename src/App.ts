@@ -9,6 +9,7 @@ import ContentMan from "./components/contentMan/contentMan";
 import MainApp from "./core/app/MainApp";
 import siteConfig from "./SiteConfig";
 import SiteThemes from "./components/siteThemes/SiteThemes";
+import indexRoutes from "./elm/views/routes";
 
 class App extends MainApp {
     public view404 = "view404";
@@ -18,7 +19,8 @@ class App extends MainApp {
 
     public autoRestoreState = true;
     public title = siteConfig.title;
-
+    public indexRouter = indexRoutes;
+    
     private globalWidget: GlobalWidgets;
     private siteThemes: SiteThemes;
 

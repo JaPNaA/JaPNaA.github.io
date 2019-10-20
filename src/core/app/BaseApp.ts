@@ -4,6 +4,7 @@ import ViewDescriptor from "../types/view/ViewDescriptor";
 import AppEvents from "./components/AppEvents";
 import AppViews from "./components/AppViews";
 import getFirstScrollableParent from "../utils/getFirstScrollableParent";
+import Router from "../components/router/Router";
 
 abstract class BaseApp implements IApp {
     public abstract title: string;
@@ -16,6 +17,7 @@ abstract class BaseApp implements IApp {
     protected mainElm: HTMLDivElement;
 
     public abstract url: IAppURL;
+    public abstract indexRouter: Router;
     public events: AppEvents;
     public views: AppViews;
     public parentApp?: IApp;

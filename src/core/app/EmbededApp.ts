@@ -3,12 +3,14 @@ import "../../../styles/embededApp.less";
 import IApp from "../types/app/IApp";
 import FakeAppURL from "./components/FakeURL";
 import BaseApp from "./BaseApp";
+import Router from "../components/router/Router";
 
 class EmbededApp extends BaseApp {
     public url: FakeAppURL;
     public title: string = "embededApp";
 
     public parentApp: IApp;
+    public indexRouter: Router;
 
     protected parentElm: Element;
 
@@ -17,6 +19,7 @@ class EmbededApp extends BaseApp {
 
         this.parentApp = parentApp;
         this.parentElm = parentElm;
+        this.indexRouter = parentApp.indexRouter;
         this.mainElm.classList.add("embededApp");
         this.url = new FakeAppURL();
     }
