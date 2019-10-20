@@ -1,7 +1,6 @@
 import "../../../../styles/widgets/randomQuotes.less";
 
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import IApp from "../../../core/types/app/IApp";
 import siteConfig from "../../../SiteConfig";
 import openImageView from "../../../utils/view/openImageView";
@@ -126,7 +125,5 @@ class RandomQuotes extends Widget {
         openImageView(this.app, this.imageElm!);
     }
 }
-
-WidgetMap.add(RandomQuotes);
 
 export default RandomQuotes;

@@ -1,7 +1,6 @@
 import "../../../../styles/widgets/iframe.less";
 
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import EventHandlers from "../../../core/utils/events/EventHandlers";
 import Handler from "../../../core/utils/events/Handler";
 import IIFrame from "./IIFrame";
@@ -69,7 +68,5 @@ class IFrame extends Widget implements IIFrame {
         });
     }
 }
-
-WidgetMap.add(IFrame);
 
 export default IFrame;

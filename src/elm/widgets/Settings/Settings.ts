@@ -1,7 +1,6 @@
 import "../../../../styles/widgets/settings.less";
 
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import SettingsEditor from "./SettingsEditor";
 import SiteSettings from "../../../SiteSettings";
 import siteConfig from "../../../SiteConfig";
@@ -30,7 +29,5 @@ class SiteSettingsWidget extends Widget {
         siteConfig._dispatchSettingsChanged();
     }
 }
-
-WidgetMap.add(SiteSettingsWidget);
 
 export default SiteSettingsWidget;

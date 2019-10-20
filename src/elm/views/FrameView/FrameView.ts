@@ -3,7 +3,6 @@ import "../../../../styles/views/FrameView.less";
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
 import IFrame from "../../widgets/IFrame/IFrame";
-import ViewMap from "../../../core/view/ViewMap";
 import siteResources from "../../../core/siteResources";
 import siteConfig from "../../../SiteConfig";
 import wait from "../../../utils/wait";
@@ -137,7 +136,5 @@ class FrameView extends View {
         close();
     }
 }
-
-ViewMap.add(FrameView);
 
 export default FrameView;

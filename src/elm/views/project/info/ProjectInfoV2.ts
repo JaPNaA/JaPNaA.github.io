@@ -1,8 +1,8 @@
-import Widget from "../../../core/widget/Widget";
-import IApp from "../../../core/types/app/IApp";
-import { V2Project } from "../../../types/project/v2/V2Types";
-import ProjectJSONv2Elm from "../../../components/jsonToElm/v2/ProjectJSONv2Elm";
-import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
+import Widget from "../../../../core/widget/Widget";
+import IApp from "../../../../core/types/app/IApp";
+import { V2Project } from "../../../../types/project/v2/V2Types";
+import ProjectJSONv2Elm from "../../../../components/jsonToElm/v2/ProjectJSONv2Elm";
+import ISavableScroll from "../../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
 class ProjectInfoV2 extends Widget implements ISavableScroll {
     public static widgetName = "projectInfoV2";

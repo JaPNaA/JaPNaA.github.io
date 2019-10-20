@@ -1,11 +1,11 @@
 import "../../../../styles/views/ProjectInfo.less";
 
-import IV1Card from "../../../types/project/v1/IV1Card";
-import CardJSONv1Elm from "../../../components/jsonToElm/v1/card";
-import IApp from "../../../core/types/app/IApp";
-import openFrameView from "../../../utils/view/openFrameView";
-import Widget from "../../../core/widget/Widget";
-import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
+import IV1Card from "../../../../types/project/v1/IV1Card";
+import CardJSONv1Elm from "../../../../components/jsonToElm/v1/card";
+import IApp from "../../../../core/types/app/IApp";
+import openFrameView from "../../../../utils/view/openFrameView";
+import Widget from "../../../../core/widget/Widget";
+import ISavableScroll from "../../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
 class ProjectInfoV1 extends Widget implements ISavableScroll {
     public static widgetName = "projectInfoV1";

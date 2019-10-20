@@ -1,7 +1,6 @@
 import "../../../../styles/widgets/projectCard.less";
 
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import isWithLocation from "../../../utils/isProjectCardWithLocation";
 import BaseProjectCard from "./BaseProjectCard";
 import ProjectCardFactory from "./ProjectCardFactory";
@@ -39,7 +38,5 @@ class ProjectCard extends Widget {
         this.projectCard.appendTo(this.elm);
     }
 }
-
-WidgetMap.add(ProjectCard);
 
 export default ProjectCard;

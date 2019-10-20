@@ -2,7 +2,6 @@ import "../../../../styles/views/View404.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
-import ViewMap from "../../../core/view/ViewMap";
 import AppState from "../../../core/types/AppState";
 
 class View404 extends View {
@@ -99,7 +98,5 @@ class View404 extends View {
         this.X.fillText("404", this.width / 2, this.height / 2);
     }
 }
-
-ViewMap.add(View404);
 
 export default View404;

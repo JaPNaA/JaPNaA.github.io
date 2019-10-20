@@ -6,7 +6,6 @@ import IProjectLink from "../../../components/contentMan/IProjectLink";
 import isProjectLink from "../../../utils/isProjectLink";
 import isWithLocation from "../../../utils/isProjectCardWithLocation";
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import ContentMan from "../../../components/contentMan/contentMan";
 import { Rect, newRect } from "../../../types/math/Rect";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
@@ -163,7 +162,5 @@ class ProjectsGrid extends Widget {
         return positionableProjectCard;
     }
 }
-
-WidgetMap.add(ProjectsGrid);
 
 export default ProjectsGrid;

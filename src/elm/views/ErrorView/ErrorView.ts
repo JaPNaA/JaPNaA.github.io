@@ -3,7 +3,6 @@ import "../../../../styles/views/ErrorView.less";
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
-import ViewMap from "../../../core/view/ViewMap";
 
 class ErrorView extends View {
     public static viewName = "ErrorView";
@@ -47,7 +46,5 @@ class ErrorView extends View {
         return text;
     }
 }
-
-ViewMap.add(ErrorView);
 
 export default ErrorView;

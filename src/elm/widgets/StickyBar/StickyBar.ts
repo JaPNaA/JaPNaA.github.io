@@ -2,7 +2,6 @@ import "../../../../styles/widgets/stickyBar.less";
 
 import removeChildren from "../../../utils/removeChildren";
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 
 class StickyBar extends Widget {
     public static widgetName = "stickyBar";
@@ -89,7 +88,5 @@ class StickyBar extends Widget {
         }
     }
 }
-
-WidgetMap.add(StickyBar);
 
 export default StickyBar;

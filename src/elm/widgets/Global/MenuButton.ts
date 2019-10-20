@@ -3,7 +3,6 @@ import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
 import Widget from "../../../core/widget/Widget";
 import IMenu from "../../views/Menu/IMenu";
-import ViewMap from "../../../core/view/ViewMap";
 import resolveUrl from "../../../utils/resolveUrl";
 import keyIsModified from "../../../utils/keyIsModified";
 
@@ -118,7 +117,5 @@ class MenuButton extends Widget {
         }
     }
 }
-
-ViewMap.prefetch("Menu");
 
 export default MenuButton;

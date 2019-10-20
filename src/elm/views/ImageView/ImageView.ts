@@ -2,7 +2,6 @@ import "../../../../styles/views/ImageView.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
-import ViewMap from "../../../core/view/ViewMap";
 import siteResources from "../../../core/siteResources";
 import SimpleEasePhysics from "../../../components/canvas/canvasElements/physics/simpleEase";
 import ImageViewCloseButton from "./ImageViewCloseButton";
@@ -13,8 +12,8 @@ import { Vec2 } from "../../../types/math/Vec2";
 import TouchControls from "../../../components/touch/touchControls";
 import AppState from "../../../core/types/AppState";
 import ImageViewRenderer from "./ImageViewRenderer";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import IIFrame from "../../widgets/IFrame/IIFrame";
+import IFrame from "../../widgets/IFrame/IFrame";
 
 class ImageView extends View {
     public static viewName: string = "ImageView";
@@ -176,7 +175,7 @@ class ImageView extends View {
 
     private wheelHandler(e: WheelEvent): void {
         e.preventDefault();
-        this.image.zoom(e.deltaY, e.layerX, e.layerY);
+        this.image.zoom(e.deltaY, e.offsetX, e.offsetY);
         this.renderer.drawIfShould();
     }
 
@@ -188,7 +187,7 @@ class ImageView extends View {
 
     private doubleClickHandler(e: MouseEvent): void {
         e.preventDefault();
-        this.image.alternateFitToReal(e.layerX, e.layerY);
+        this.image.alternateFitToReal(e.offsetX, e.offsetY);
         this.renderer.drawIfShould();
     }
 
@@ -209,7 +208,7 @@ class ImageView extends View {
 
     private clickHandler(e: MouseEvent): void {
         e.preventDefault();
-        this.closeButton.checkClick(e.layerX, e.layerY);
+        this.closeButton.checkClick(e.offsetX, e.offsetY);
         this.renderer.drawIfShould();
     }
 
@@ -258,14 +257,12 @@ class ImageView extends View {
     }
 
     private async skyrimHandler(): Promise<void> {
-        const iframe = new (await WidgetMap.get("IFrame"))(
+        const iframe = new IFrame(
             "https://www.youtube-nocookie.com/embed/RrjJtYpOawU?start=61&autoplay=1&mute=1&controls=0&disablekb=1"
-        ) as IIFrame;
+        );
         iframe.setup();
         iframe.appendTo(this.elm);
     }
 }
-
-ViewMap.add(ImageView);
 
 export default ImageView;

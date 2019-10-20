@@ -1,7 +1,6 @@
 import "../../../../styles/views/About.less";
 
 import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
 import HTMLView from "../../widgets/HTMLView/HTMLView";
 import siteConfig from "../../../SiteConfig";
@@ -19,7 +18,7 @@ class About extends View implements ISavableScroll {
     public static viewName = "About";
     public viewName = About.viewName;
     public isFullPage = true;
-    
+
     public scrollingElm: HTMLElement;
 
     protected elm: HTMLElement;
@@ -52,7 +51,5 @@ class About extends View implements ISavableScroll {
         return contentContainer;
     }
 }
-
-ViewMap.add(About);
 
 export default About;

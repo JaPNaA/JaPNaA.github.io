@@ -1,7 +1,6 @@
 import "../../../../styles/widgets/checkbox.less";
 
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import CheckboxCheck from "./CheckboxCheck";
 import Handler from "../../../core/utils/events/Handler";
 
@@ -66,7 +65,5 @@ class Checkbox extends Widget {
         return label;
     }
 }
-
-WidgetMap.add(Checkbox);
 
 export default Checkbox;

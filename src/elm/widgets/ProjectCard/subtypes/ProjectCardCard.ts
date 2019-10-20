@@ -3,7 +3,7 @@ import IApp from "../../../../core/types/app/IApp";
 import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
 import siteConfig from "../../../../SiteConfig";
 import siteResources from "../../../../core/siteResources";
-import IProjectInfoView from "../../../views/ProjectInfo/IProjectInfo";
+import IProjectInfoView from "../../../views/project/info/IProjectInfo";
 import heroViewOpenTransition from "../../../../utils/heroViewOpenTransition";
 import urlFromViewState from "../../../../utils/urlFromViewState";
 

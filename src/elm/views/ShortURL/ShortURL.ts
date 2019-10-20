@@ -1,12 +1,10 @@
 import "../../../../styles/views/ShortUrl.less";
 
 import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
 import parseShortUrl from "../../../components/url/parseShortUrl";
 import AppState from "../../../core/types/AppState";
 import siteConfig from "../../../SiteConfig";
-import LazyClassMap from "../../../core/components/lazyClassMap/LazyClassMap";
 import resolveUrl from "../../../utils/resolveUrl";
 
 class ShortUrlView extends View {
@@ -31,8 +29,6 @@ class ShortUrlView extends View {
     public setup(): void {
         super.setup();
 
-        LazyClassMap.stopPrefetches();
-
         let redirectingWith = "Redirecting with hash <code>" + this.hash + "</code>";
         this.elm.innerHTML = redirectingWith + "...";
 
@@ -51,7 +47,6 @@ class ShortUrlView extends View {
 
     public async destory(): Promise<void> {
         await super.destory();
-        siteConfig.resetPrefetchStatus();
     }
 
     private async redirect(): Promise<void> {
@@ -63,7 +58,5 @@ class ShortUrlView extends View {
         return resolveUrl(this.newHref!, siteConfig.path.thingy);
     }
 }
-
-ViewMap.add(ShortUrlView);
 
 export default ShortUrlView;

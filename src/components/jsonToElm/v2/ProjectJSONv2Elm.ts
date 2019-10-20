@@ -11,9 +11,7 @@ import IApp from "../../../core/types/app/IApp";
 import isRGBColorDark from "../../../utils/color/isRGBColorDark";
 import parseV2ProjectBodyElements from "./parseV2ProjectBodyElements";
 import rgbToString from "../../../utils/color/toRGBString";
-import ViewMap from "../../../core/view/ViewMap";
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import openImageView from "../../../utils/view/openImageView";
 import Hexagon from "../../hexagons/Hexagon";
 import siteConfig from "../../../SiteConfig";
@@ -278,8 +276,5 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
         }
     }
 }
-
-ViewMap.prefetch("ImageView");
-WidgetMap.add(ProjectJSONv2Elm);
 
 export default ProjectJSONv2Elm;

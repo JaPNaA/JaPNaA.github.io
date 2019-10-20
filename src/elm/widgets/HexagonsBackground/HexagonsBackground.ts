@@ -1,5 +1,4 @@
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import IApp from "../../../core/types/app/IApp";
 import Hexagon from "./Hexagon";
 import HexagonSystems from "./systems/HexagonSystems";
@@ -72,7 +71,5 @@ class HexagonsBackground extends Widget {
         }
     }
 }
-
-WidgetMap.add(HexagonsBackground);
 
 export default HexagonsBackground;

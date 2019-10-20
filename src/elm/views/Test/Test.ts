@@ -2,7 +2,6 @@ import "../../../../styles/views/Test.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
-import ViewMap from "../../../core/view/ViewMap";
 import siteResources from "../../../core/siteResources";
 import AppState from "../../../core/types/AppState";
 
@@ -24,7 +23,5 @@ class TestView extends View {
             .onError(() => this.elm.innerText = "test-bundle.js doesn't exist, cannot run tests.");
     }
 }
-
-ViewMap.add(TestView);
 
 export default TestView;

@@ -1,10 +1,9 @@
 import "../../../../styles/views/BrowseProjects.less";
 
-import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
-import IApp from "../../../core/types/app/IApp";
-import ProjectsGrid from "../../widgets/ProjectsGrid/ProjectsGrid";
-import AppState from "../../../core/types/AppState";
+import View from "../../../../core/view/View";
+import IApp from "../../../../core/types/app/IApp";
+import ProjectsGrid from "../../../widgets/ProjectsGrid/ProjectsGrid";
+import AppState from "../../../../core/types/AppState";
 
 /**
  * @viewmetadata
@@ -54,7 +53,5 @@ class BrowseProjects extends View {
         this.projectsGrid.resize(this.app.width, this.app.height);
     }
 }
-
-ViewMap.add(BrowseProjects);
 
 export default BrowseProjects;

@@ -2,7 +2,6 @@ import "../../../../styles/widgets/hexagonsTitle.less";
 
 import siteConfig from "../../../SiteConfig";
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import HexagonsTitleRenderer from "./HexagonsTitleRenderer";
 import IApp from "../../../core/types/app/IApp";
 
@@ -107,7 +106,5 @@ class HexagonsTitle extends Widget {
         this.renderer.scrolled(this.parent.scrollTop);
     }
 }
-
-WidgetMap.add(HexagonsTitle);
 
 export default HexagonsTitle;

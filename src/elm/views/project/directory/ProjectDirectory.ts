@@ -1,21 +1,20 @@
 import "../../../../styles/views/ProjectDirectory.less";
 
-import AppState from "../../../core/types/AppState";
-import ContentMan from "../../../components/contentMan/contentMan";
-import getLink from "../../../utils/getLink";
-import IApp from "../../../core/types/app/IApp";
-import IProjectInfoView from "../ProjectInfo/IProjectInfo";
-import isProjectV1Card from "../../../utils/isProjectCard";
-import isV2Project from "../../../utils/v2Project/isV2Project";
-import openFrameView from "../../../utils/view/openFrameView";
-import openPopup from "../../../core/utils/open/openPopup";
-import removeChildren from "../../../utils/removeChildren";
-import siteConfig from "../../../SiteConfig";
-import siteResources from "../../../core/siteResources";
+import AppState from "../../../../core/types/AppState";
+import ContentMan from "../../../../components/contentMan/contentMan";
+import getLink from "../../../../utils/getLink";
+import IApp from "../../../../core/types/app/IApp";
+import IProjectInfoView from "../info/IProjectInfo";
+import isProjectV1Card from "../../../../utils/isProjectCard";
+import isV2Project from "../../../../utils/v2Project/isV2Project";
+import openFrameView from "../../../../utils/view/openFrameView";
+import openPopup from "../../../../core/utils/open/openPopup";
+import removeChildren from "../../../../utils/removeChildren";
+import siteConfig from "../../../../SiteConfig";
+import siteResources from "../../../../core/siteResources";
 import url from "url";
-import V1Or2Card from "../../../components/contentMan/V1Or2Card";
-import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
+import V1Or2Card from "../../../../components/contentMan/V1Or2Card";
+import View from "../../../../core/view/View";
 
 type LinkMatch = {
     year: number,
@@ -295,7 +294,5 @@ class ProjectDirectory extends View {
         }
     }
 }
-
-ViewMap.add(ProjectDirectory);
 
 export default ProjectDirectory;

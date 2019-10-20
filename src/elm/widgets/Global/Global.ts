@@ -3,7 +3,6 @@ import "../../../../styles/widgets/global/global.less"
 
 import Widget from "../../../core/widget/Widget";
 import App from "../../../App";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import MenuButton from "./MenuButton";
 import TopLoadingBar from "./TopLoadingBar";
 import GlobalKeybindings from "./GlobalKeybindings";
@@ -51,7 +50,5 @@ class GlobalWidgets extends Widget {
         this.loadingBar.destory();
     }
 }
-
-WidgetMap.add(GlobalWidgets);
 
 export default GlobalWidgets;

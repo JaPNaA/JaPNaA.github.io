@@ -1,7 +1,6 @@
 import "../../../../styles/views/CommandPalette.less";
 
 import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
 import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
 import removeChildren from "../../../utils/removeChildren";
@@ -251,7 +250,5 @@ class CommandPalette extends View {
         }
     }
 }
-
-ViewMap.add(CommandPalette);
 
 export default CommandPalette;

@@ -1,7 +1,6 @@
 import "../../../../styles/views/Overview.less";
 
 import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
 import HexagonsTitle from "../../widgets/HexagonsTitle/HexagonsTitle";
 import StickyBar from "../../widgets/StickyBar/StickyBar";
 import siteConfig from "../../../SiteConfig";
@@ -127,7 +126,5 @@ class Overview extends View implements ISavableScroll {
         );
     }
 }
-
-ViewMap.add(Overview);
 
 export default Overview;

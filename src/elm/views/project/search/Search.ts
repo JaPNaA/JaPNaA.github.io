@@ -1,23 +1,22 @@
 import "../../../../styles/views/Search.less";
 
-import AppState from "../../../core/types/AppState";
-import ContentMan from "../../../components/contentMan/contentMan";
-import IApp from "../../../core/types/app/IApp";
-import IV1InfoJSON from "../../../types/project/v1/IV1InfoJSON";
-import IWithLocation from "../../../components/contentMan/IWithLocation";
-import ProjectCardInitData from "../../widgets/ProjectCard/ProjectCardInitData";
-import ProjectLink from "../../widgets/ProjectCard/ProjectLink";
-import ProjectsGrid from "../../widgets/ProjectsGrid/ProjectsGrid";
-import TfIdf from "../../../components/tfidf/TfIdf";
-import V1Or2Card from "../../../components/contentMan/V1Or2Card";
-import V1Or2Project from "../../../components/contentMan/V1Or2Project";
-import View from "../../../core/view/View";
-import ViewMap from "../../../core/view/ViewMap";
-import isProjectV1Card from "../../../utils/isProjectCard";
-import isV2ProjectListing from "../../../utils/v2Project/isV2ProjectListing";
-import removeChildren from "../../../utils/removeChildren";
-import siteConfig from "../../../SiteConfig";
-import { V2ProjectListing } from "../../../types/project/v2/V2Types";
+import AppState from "../../../../core/types/AppState";
+import ContentMan from "../../../../components/contentMan/contentMan";
+import IApp from "../../../../core/types/app/IApp";
+import IV1InfoJSON from "../../../../types/project/v1/IV1InfoJSON";
+import IWithLocation from "../../../../components/contentMan/IWithLocation";
+import ProjectCardInitData from "../../../widgets/ProjectCard/ProjectCardInitData";
+import ProjectLink from "../../../widgets/ProjectCard/ProjectLink";
+import ProjectsGrid from "../../../widgets/ProjectsGrid/ProjectsGrid";
+import TfIdf from "../../../../components/tfidf/TfIdf";
+import V1Or2Card from "../../../../components/contentMan/V1Or2Card";
+import V1Or2Project from "../../../../components/contentMan/V1Or2Project";
+import View from "../../../../core/view/View";
+import isProjectV1Card from "../../../../utils/isProjectCard";
+import isV2ProjectListing from "../../../../utils/v2Project/isV2ProjectListing";
+import removeChildren from "../../../../utils/removeChildren";
+import siteConfig from "../../../../SiteConfig";
+import { V2ProjectListing } from "../../../../types/project/v2/V2Types";
 
 type SearchTfIdf = TfIdf<number | ProjectLink>;
 
@@ -260,7 +259,5 @@ class Search extends View {
         }
     }
 }
-
-ViewMap.add(Search);
 
 export default Search;

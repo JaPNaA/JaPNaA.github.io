@@ -8,7 +8,6 @@ import IWithLocation from "../../../components/contentMan/IWithLocation";
 import LatestProjectCard from "./LatestProjectCard";
 import V1Or2Project from "../../../components/contentMan/V1Or2Project";
 import Widget from "../../../core/widget/Widget";
-import WidgetMap from "../../../core/widget/WidgetMap";
 import resolveUrl from "../../../utils/resolveUrl";
 
 class LatestProjects extends Widget {
@@ -70,7 +69,7 @@ class LatestProjects extends Widget {
         a.innerText = "View More Projects";
         a.addEventListener("click", this.onViewMoreClick.bind(this));
         div.appendChild(a);
-        
+
         return div;
     }
 
@@ -105,7 +104,5 @@ class LatestProjects extends Widget {
         this.app.views.switchAndInit("BrowseProjects");
     }
 }
-
-WidgetMap.add(LatestProjects);
 
 export default LatestProjects;

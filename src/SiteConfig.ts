@@ -1,6 +1,5 @@
 import EventHandlers from "./core/utils/events/EventHandlers";
 import Handler from "./core/utils/events/Handler";
-import LazyClassMap from "./core/components/lazyClassMap/LazyClassMap";
 import SiteSettings from "./SiteSettings";
 import connectionIsMetered from "./utils/isClient/connectionIsMetered";
 import getServerTime from "./utils/getServerTime";
@@ -120,7 +119,6 @@ class SiteConfig {
 
         this.settingsChangeHandlers = new EventHandlers();
 
-        this.resetPrefetchStatus();
         this.restoreSettingsFromLocalStorage();
     }
 
@@ -129,14 +127,6 @@ class SiteConfig {
             return Promise.resolve(this.serverTime);
         } else {
             return this.serverTimePromise;
-        }
-    }
-
-    public resetPrefetchStatus(): void {
-        if (this.connectionIsMetered) {
-            LazyClassMap.stopPrefetches();
-        } else {
-            LazyClassMap.continuePrefetches();
         }
     }
 
