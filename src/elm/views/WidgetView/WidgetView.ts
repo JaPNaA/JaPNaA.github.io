@@ -41,7 +41,7 @@ class WidgetView extends View {
             this.argsString = [];
         }
 
-        this.widgetName = this.getWidgetName(state.viewName);
+        this.widgetName = this.getWidgetName(state.viewPath);
     }
 
     public async setup(): Promise<void> {

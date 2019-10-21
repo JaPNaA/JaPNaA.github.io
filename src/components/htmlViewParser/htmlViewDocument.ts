@@ -170,7 +170,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
                 const opensWithLinks = this.linkHandlingOptions.openViewsWithLinks;
 
                 if (opensWithLinks) {
-                    this.app.views.switchAndInit(appState.viewName, appState);
+                    this.app.views.switchAndInit(appState.viewPath, appState);
                 } else {
                     this.openLink(href);
                 }

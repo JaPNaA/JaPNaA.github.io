@@ -1,6 +1,6 @@
 interface AppState {
-    /** Name of the view */
-    viewName: string;
+    /** The path to get to the view */
+    viewPath: string;
     /** Title of view */
     viewTitle?: string;
     /** Id of the view */

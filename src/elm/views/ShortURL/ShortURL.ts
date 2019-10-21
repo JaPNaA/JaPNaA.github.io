@@ -23,7 +23,7 @@ class ShortUrlView extends View {
         if (state.directURL === undefined) { throw new Error("No hash provided"); }
 
         this.elm = document.createElement("div");
-        this.hash = state.viewName;
+        this.hash = state.viewPath;
     }
 
     public setup(): void {

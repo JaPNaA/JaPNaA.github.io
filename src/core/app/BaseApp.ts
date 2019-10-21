@@ -1,6 +1,5 @@
 import IApp from "../types/app/IApp";
 import IAppURL from "../types/app/IAppURL";
-import ViewDescriptor from "../types/view/ViewDescriptor";
 import AppEvents from "./components/AppEvents";
 import AppViews from "./components/AppViews";
 import getFirstScrollableParent from "../utils/getFirstScrollableParent";
@@ -8,8 +7,8 @@ import Router from "../components/router/Router";
 
 abstract class BaseApp implements IApp {
     public abstract title: string;
-    public view404?: ViewDescriptor;
-    public viewError?: ViewDescriptor;
+    public view404?: string;
+    public viewError?: string;
 
     public width: number;
     public height: number;

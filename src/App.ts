@@ -1,6 +1,5 @@
 import "../styles/index.less";
 
-import SplashScreen from "./elm/views/SplashScreen/SplashScreen";
 import GlobalWidgets from "./elm/widgets/Global/Global";
 import ContentMan from "./components/contentMan/contentMan";
 import MainApp from "./core/app/MainApp";
@@ -10,7 +9,7 @@ import indexRoutes from "./elm/views/routes";
 
 class App extends MainApp {
     public view404 = "view404";
-    public splashScreenView = SplashScreen;
+    public splashScreenView = "SplashScreen";
     public indexView = "Overview";
     public viewError = "ErrorView";
 

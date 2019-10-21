@@ -1,7 +1,7 @@
 import URLRestorer from "./URLRestorer";
 import IApp from "../../types/app/IApp";
 import AppState from "../../types/AppState";
-import urlFromViewState from "../../../utils/urlFromViewState";
+import urlFromState from "../../../utils/urlFromViewState";
 
 class URLController {
     public currentURL: string;
@@ -75,8 +75,8 @@ class URLController {
 
     private getTitleAndURLFromState(state: AppState): { url: string, title: string } {
         const pretitle = state.viewTitle ? state.viewTitle + " in " : "";
-        const title = pretitle + this.siteTitle + "." + state.viewName;
-        return { title, url: urlFromViewState(state.viewName, state.stateData) };
+        const title = pretitle + this.siteTitle + "." + state.viewPath;
+        return { title, url: urlFromState(state) };
     }
 
     private setToOldURL(): void {

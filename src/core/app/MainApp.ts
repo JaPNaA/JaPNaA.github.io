@@ -7,8 +7,8 @@ import { Vec2 } from "../../types/math/Vec2";
 
 abstract class MainApp extends BaseApp {
     public url: AppURL;
-    public indexView?: ViewDescriptor;
-    public splashScreenView?: ViewDescriptor;
+    public indexView?: string;
+    public splashScreenView?: string;
     public autoRestoreState: boolean = true;
     public resizeWatcher: ResizeWatcher;
 

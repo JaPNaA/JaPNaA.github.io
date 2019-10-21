@@ -115,7 +115,7 @@ class AppURL implements IAppURL {
 
     private createAppState(view: View): AppState {
         return {
-            viewName: view.viewName,
+            viewPath: view.viewPath,
             stateData: view.getState(),
             viewTitle: view.getTitle(),
             directURL: this.controller.currentURL,

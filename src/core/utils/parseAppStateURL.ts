@@ -23,11 +23,11 @@ export default function parseAppStateURL(href: string | url.UrlWithStringQuery):
     //! siteConfig.viewStateSeparator is not part of core, and should be removed
     const divisorIndex = cleanPath.indexOf(siteConfig.viewStateSeparator);
     if (divisorIndex < 0) {
-        builder.viewName = cleanPath;
+        builder.viewPath = cleanPath;
     } else {
         const viewName = cleanPath.slice(0, divisorIndex);
         const stateData = decodeURIComponent(cleanPath.slice(divisorIndex + 1));
-        builder.viewName = viewName;
+        builder.viewPath = viewName;
         builder.stateData = stateData;
     }
 

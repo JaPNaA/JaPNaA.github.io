@@ -30,7 +30,7 @@ export default class ParseAppStateURLTest extends TestRunner {
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "test"),
             {
-                viewName: "test",
+                viewPath: "test",
                 stateData: undefined,
                 directURL: undefined,
                 id: undefined
@@ -41,7 +41,7 @@ export default class ParseAppStateURLTest extends TestRunner {
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "projectdirectory?Thingy_2019"),
             {
-                viewName: "projectdirectory",
+                viewPath: "projectdirectory",
                 stateData: "Thingy_2019",
                 directURL: undefined,
                 id: undefined
@@ -52,7 +52,7 @@ export default class ParseAppStateURLTest extends TestRunner {
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "projectdirectory?Thingy_2019#jeepsacar"),
             {
-                viewName: "projectdirectory",
+                viewPath: "projectdirectory",
                 stateData: "Thingy_2019#jeepsacar",
                 directURL: undefined,
                 id: undefined
@@ -63,7 +63,7 @@ export default class ParseAppStateURLTest extends TestRunner {
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "frameview?https://japnaa.github.io/overview#jeepsacar"),
             {
-                viewName: "frameview",
+                viewPath: "frameview",
                 stateData: "https://japnaa.github.io/overview#jeepsacar",
                 directURL: undefined,
                 id: undefined
@@ -74,7 +74,7 @@ export default class ParseAppStateURLTest extends TestRunner {
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "#jeepsacar"),
             {
-                viewName: "#jeepsacar",
+                viewPath: "#jeepsacar",
                 stateData: undefined,
                 directURL: undefined,
                 id: undefined
@@ -85,7 +85,7 @@ export default class ParseAppStateURLTest extends TestRunner {
         this.assertIterableObjectEquals(
             parseAppStateURL(host + "overview#jeepsacar"),
             {
-                viewName: "overview",
+                viewPath: "overview",
                 stateData: "#jeepsacar",
                 directURL: undefined,
                 id: undefined

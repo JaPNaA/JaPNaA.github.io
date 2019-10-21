@@ -1,5 +1,4 @@
 import View from "../../view/View";
-import ViewMetadata from "../view/ViewMetadata";
 import AppState from "../AppState";
 import ViewDescriptor from "../view/ViewDescriptor";
 import ViewWithFallbackStatus from "../view/ViewWithFallbackStatus";
@@ -8,7 +7,7 @@ import BeforeSetupCallback from "../BeforeSetupCallback";
 export default interface IAppViews {
     top(): View | undefined;
     topFull(): View | undefined;
-    getA(view: ViewMetadata | string): View | undefined;
+    getA(view: string): View | undefined;
     getById(id: number): View | undefined;
 
     switchAndInit<T extends View>(viewClass: ViewDescriptor, stateData?: string | AppState, beforeSetupCallback?: BeforeSetupCallback<T>): Promise<View>;

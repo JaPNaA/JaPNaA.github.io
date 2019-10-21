@@ -1,9 +1,8 @@
 import AppState from "../types/AppState";
-import ViewMetadata from "../types/view/ViewMetadata";
 
-export default function createAppState(viewClass: ViewMetadata, stateData?: string, directURL?: string): AppState {
+export default function createAppState(path: string, stateData?: string, directURL?: string): AppState {
     return {
-        viewName: viewClass.viewName,
+        viewPath: path,
         stateData: stateData,
         directURL: directURL
     };

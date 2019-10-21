@@ -44,9 +44,9 @@ class GlobalKeybindings {
         }
     }
 
-    private openIfNot(viewClass: ViewDescriptor, stateData?: string | AppState, beforeSetupCallback?: BeforeSetupCallback<View>): void {
-        if (this.app.views.getA(viewClass)) { return; }
-        this.app.views.open(viewClass, stateData, beforeSetupCallback);
+    private openIfNot(viewPath: string, stateData?: string | AppState, beforeSetupCallback?: BeforeSetupCallback<View>): void {
+        if (this.app.views.getA(viewPath)) { return; }
+        this.app.views.open(viewPath, stateData, beforeSetupCallback);
     }
 }
 

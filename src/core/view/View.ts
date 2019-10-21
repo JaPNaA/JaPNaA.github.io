@@ -11,7 +11,8 @@ abstract class View {
     protected abstract elm: HTMLElement;
 
     public isFullPage: boolean = false;
-    public viewName: string = null as any as string;
+    public viewName!: string;
+    public viewPath!: string;
     public showMenuButton: boolean = true;
 
     public id: number;
@@ -29,6 +30,8 @@ abstract class View {
         this.events = new EventManager(app.events);
         this.destoryHandlers = new EventHandlers();
 
+        this.viewPath = state.viewPath;
+
         this.id = state.id || View.vidCounter++;
         this.active = false;
         this.privateData = state.privateData || {};
@@ -36,7 +39,7 @@ abstract class View {
     }
 
     public setup(): void {
-        this.viewName = this.viewName || this.constructor.name;
+        this.viewPath = this.viewPath || this.constructor.name;
         this.elm.classList.add("view");
         this.elm.classList.add(this.viewName);
 

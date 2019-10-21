@@ -34,6 +34,10 @@ class Router {
         return Object.keys(this.routes);
     }
 
+    public fixViewPath(path: string): string {
+        return path.toLowerCase();
+    }
+
     public async getView(path: string): Promise<ViewClass> {
         const resolved = this.resolveRoute(path);
 

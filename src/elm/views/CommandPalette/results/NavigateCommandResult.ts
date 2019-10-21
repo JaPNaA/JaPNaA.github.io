@@ -32,7 +32,7 @@ class NavigateCommandResult extends CommandResult {
         if (!state || !this.resolved.startsWith(siteConfig.path.base)) {
             location.assign(this.resolved);
         } else {
-            app.views.createAndSetupViewWithFallbacks(state.viewName, state)
+            app.views.createAndSetupViewWithFallbacks(state.viewPath, state)
                 .then(viewWithFallbackStatus => {
                     if (viewWithFallbackStatus.isFallback) {
                         location.assign(this.resolved);

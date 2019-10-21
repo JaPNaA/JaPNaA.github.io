@@ -1,19 +1,19 @@
 import AppState from "../types/AppState";
 
 class AppStateBuilder implements AppState {
-    public viewName!: string;
+    public viewPath!: string;
     public id?: number;
     public stateData?: string;
     public hash?: string;
     public directURL?: string;
 
     public build(): AppState {
-        if (!this.viewName && !this.hash) { throw new Error("Missing viewName"); }
+        if (!this.viewPath && !this.hash) { throw new Error("Missing viewName"); }
 
-        let viewName = this.viewName;
+        let viewName = this.viewPath;
         let stateData = this.stateData;
 
-        if (!this.viewName && this.hash) {
+        if (!this.viewPath && this.hash) {
             viewName = this.hash;
         } else if (this.hash) {
             if (!stateData) {
@@ -24,7 +24,7 @@ class AppStateBuilder implements AppState {
         }
 
         return {
-            viewName: viewName,
+            viewPath: viewName,
             stateData: stateData,
             directURL: this.directURL,
             id: this.id,

@@ -40,7 +40,7 @@ class AppStateHistory {
         for (let i = this.history.length - 1; i >= 0; i--) {
             if (
                 this.history[i].id === appState.id &&
-                this.history[i].viewName.toLowerCase() === appState.viewName.toLowerCase() &&
+                this.history[i].viewPath.toLowerCase() === appState.viewPath.toLowerCase() &&
                 this.history[i].stateData === appState.stateData
             ) {
                 return this.history[i];
@@ -51,7 +51,7 @@ class AppStateHistory {
     private findWithoutID(appState: AppState): AppState | undefined {
         for (let i = this.history.length - 1; i >= 0; i--) {
             if (
-                this.history[i].viewName.toLowerCase() === appState.viewName.toLowerCase() &&
+                this.history[i].viewPath.toLowerCase() === appState.viewPath.toLowerCase() &&
                 this.history[i].stateData === appState.stateData
             ) {
                 return this.history[i];
