@@ -16,7 +16,10 @@ const lessLoader = {
         }, {
             loader: 'css-loader',
             options: {
-                modules: true,
+                modules: {
+                    mode: 'local',
+                    localIdentName: '[local]__[hash:base64:5][name]'
+                },
                 sourceMap: true
             }
         },
