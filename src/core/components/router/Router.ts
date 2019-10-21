@@ -30,11 +30,12 @@ class Router {
         this.self = self;
     }
 
-    public list(): string[] {
-        return Object.keys(this.routes);
+    public list(): IterableIterator<string> {
+        return this.routes.keys();
     }
 
     public fixViewPath(path: string): string {
+        // todo: actually fix it (this is currently an approximation)
         return path.toLowerCase();
     }
 

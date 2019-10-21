@@ -30,7 +30,7 @@ abstract class View {
         this.events = new EventManager(app.events);
         this.destoryHandlers = new EventHandlers();
 
-        this.viewPath = state.viewPath;
+        this.viewPath = this.app.routes.fixViewPath(state.viewPath);
 
         this.id = state.id || View.vidCounter++;
         this.active = false;
