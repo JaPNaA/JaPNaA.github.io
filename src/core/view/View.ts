@@ -65,7 +65,6 @@ abstract class View {
     public async destory(): Promise<void> {
         this.destoryHandlers.dispatch();
         this.events.destory();
-        this.elm.classList.add(css.destory);
 
         for (const component of this.viewComponents) {
             component.destory();
