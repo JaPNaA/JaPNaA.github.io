@@ -93,7 +93,7 @@ class CommandPalette extends View {
         const value = this.input.value;
         if (!value) { this.clearResults(); return; }
 
-        const results = await CommandParser.parse(value);
+        const results = await CommandParser.parse(this.app, value);
         this.clearResults();
 
         for (const result of results) {

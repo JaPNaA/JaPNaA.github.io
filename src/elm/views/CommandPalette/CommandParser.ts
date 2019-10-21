@@ -1,16 +1,16 @@
 import CommandResult from "./CommandResult";
 import UnknownCommandResult from "./results/UnknownCommandResult";
 import NavigateCommandResult from "./results/NavigateCommandResult";
-import viewList from "../viewList";
 import InfoCommandResult from "./results/InfoCommandResult";
 import parseShortUrl from "../../../components/url/parseShortUrl";
 import getShortURLRedirectMap from "../../../components/url/getRedirectMap";
 import resolveUrl from "../../../utils/resolveUrl";
 import siteConfig from "../../../SiteConfig";
 import looseStartsWith from "../../../utils/looseStartsWith";
+import IApp from "../../../core/types/app/IApp";
 
 class CommandParser {
-    public static firstLetterFnMap: { [x: string]: (args: string) => Promise<CommandResult[]> } = {
+    public static firstLetterFnMap: { [x: string]: (app: IApp, args: string) => Promise<CommandResult[]> } = {
         "?": CommandParser.helpCommand,
         "/": CommandParser.navigateCommand,
         "#": CommandParser.shortURLCommand
@@ -22,20 +22,20 @@ class CommandParser {
         "#": "Navigate with short URL"
     };
 
-    public static parse(command: string): Promise<CommandResult[]> {
+    public static parse(app: IApp, command: string): Promise<CommandResult[]> {
         const fn = CommandParser.firstLetterFnMap[command[0]];
         if (fn) {
-            return fn(command.slice(1));
+            return fn(app, command.slice(1));
         } else {
-            return CommandParser.defaultCommand(command);
+            return CommandParser.defaultCommand(app, command);
         }
     }
 
-    private static async defaultCommand(command: string): Promise<CommandResult[]> {
+    private static async defaultCommand(app: IApp, command: string): Promise<CommandResult[]> {
         return [new UnknownCommandResult()];
     }
 
-    private static async helpCommand(command: string): Promise<CommandResult[]> {
+    private static async helpCommand(app: IApp, command: string): Promise<CommandResult[]> {
         const keys = Object.keys(CommandParser.firstLetterFnMap);
         const results = [];
 
@@ -46,11 +46,13 @@ class CommandParser {
         return results;
     }
 
-    private static async navigateCommand(command: string): Promise<CommandResult[]> {
+    private static async navigateCommand(app: IApp, command: string): Promise<CommandResult[]> {
         const literalResult = new NavigateCommandResult(command);
         const resultsWithScores: [number, NavigateCommandResult][] = [];
 
-        for (const view of viewList) {
+        const viewOrWidgetList = app.routes.list();
+
+        for (const view of viewOrWidgetList) {
             let name = Array.isArray(view) ?
                 view[0] : view;
 
@@ -73,7 +75,7 @@ class CommandParser {
         return results;
     }
 
-    private static async shortURLCommand(args: string): Promise<CommandResult[]> {
+    private static async shortURLCommand(app: IApp, args: string): Promise<CommandResult[]> {
         if (args[0] === '#') {
             return CommandParser.shortURLCommand_prefixed(args, "Enter project number");
         } else if (args[0] === "_") {
