@@ -1,4 +1,4 @@
-import './testReport.less';
+import css from './testReport.less';
 
 import { TestResult, Passable, Assertion } from "./testFramework";
 
@@ -10,7 +10,7 @@ class TestReport {
         this.elm = document.createElement("div");
         this.result = result;
 
-        this.elm.classList.add("TestReport");
+        this.elm.classList.add(css.TestReport);
 
         this.setup();
     }
@@ -29,7 +29,7 @@ class TestReport {
         const message = this.createResultMessageElm(result.message);
         const children = this.createResultChildrenElm();
 
-        elm.classList.add("testResult");
+        elm.classList.add(css.testResult);
 
         for (const assertion of result.assertions) {
             children.appendChild(this.createElmForPassable(assertion));
@@ -55,7 +55,7 @@ class TestReport {
         const elm = this.createElmWithPassClass(assertion.passed);
         const message = this.createResultMessageElm(assertion.message);
         elm.appendChild(message);
-        elm.classList.add("assertion");
+        elm.classList.add(css.assertion);
         return elm;
     }
 
@@ -63,7 +63,7 @@ class TestReport {
         const elm = this.createElmWithPassClass(passable.passed);
         const message = this.createResultMessageElm(passable.message);
         elm.appendChild(message);
-        elm.classList.add("passable");
+        elm.classList.add(css.passable);
         return elm;
     }
 
@@ -71,33 +71,33 @@ class TestReport {
     private createResultNameElm(name: string): HTMLDivElement {
         const elm = document.createElement("div");
         elm.innerText = name;
-        elm.classList.add("name");
+        elm.classList.add(css.name);
         return elm;
     }
 
     private createResultMessageElm(message?: string): HTMLDivElement {
         const elm = document.createElement("div");
-        elm.classList.add("message");
+        elm.classList.add(css.message);
         if (message) {
             elm.innerText = message;
         } else {
-            elm.classList.add("empty");
+            elm.classList.add(css.empty);
         }
         return elm;
     }
 
     private createResultChildrenElm(): HTMLDivElement {
         const elm = document.createElement("div");
-        elm.classList.add("children");
+        elm.classList.add(css.children);
         return elm;
     }
 
     private createElmWithPassClass(passed: boolean): HTMLDivElement {
         const elm = document.createElement("div");
         if (passed) {
-            elm.classList.add("passed");
+            elm.classList.add(css.passed);
         } else {
-            elm.classList.add("failed");
+            elm.classList.add(css.failed);
         }
         return elm;
     }

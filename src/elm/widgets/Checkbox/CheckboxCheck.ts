@@ -1,3 +1,5 @@
+import css from "./checkbox.less";
+
 import EventHandlers from "../../../core/utils/events/EventHandlers";
 import Handler from "../../../core/utils/events/Handler";
 import Widget from "../../../core/widget/Widget";
@@ -68,13 +70,13 @@ class CheckboxCheck extends Widget {
     private createInput(): HTMLInputElement {
         const input = document.createElement("input");
         input.type = "checkbox";
-        input.classList.add("hiddenCheckbox");
+        input.classList.add(css.hiddenCheckbox);
         return input;
     }
 
     private createCheck(): HTMLDivElement {
         const check = document.createElement("div");
-        check.classList.add("check");
+        check.classList.add(css.check);
         return check;
     }
 
@@ -87,18 +89,18 @@ class CheckboxCheck extends Widget {
     }
 
     private focusHandler(): void {
-        this.elm.classList.add("focused");
+        this.elm.classList.add(css.focused);
     }
 
     private blurHandler(): void {
-        this.elm.classList.remove("focused");
+        this.elm.classList.remove(css.focused);
     }
 
     private updateState(): void {
         if (this.checked) {
-            this.elm.classList.add("checked");
+            this.elm.classList.add(css.checked);
         } else {
-            this.elm.classList.remove("checked");
+            this.elm.classList.remove(css.checked);
         }
 
         this.input.checked = this.checked;

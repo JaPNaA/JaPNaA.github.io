@@ -73,7 +73,7 @@ class ProjectInfoView extends View implements IProjectInfoView {
     }
 
     public transitionFadeIn(): Promise<void> {
-        return triggerTransitionIn(this.elm, ProjectInfoView.transitionInTime);
+        return triggerTransitionIn(css, this.elm, ProjectInfoView.transitionInTime);
     }
 
     public async setup(): Promise<void> {

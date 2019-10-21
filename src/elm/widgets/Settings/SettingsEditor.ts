@@ -1,3 +1,5 @@
+import css from "./settings.less";
+
 import IInput from "./IInput";
 import Checkbox from "../Checkbox/Checkbox";
 import EventHandlers from "../../../core/utils/events/EventHandlers";
@@ -39,7 +41,7 @@ class SettingsEditor<T> {
     constructor(name: string, config: T) {
         this.changed = false;
         this.elm = document.createElement("div");
-        this.elm.classList.add("settingsEditor");
+        this.elm.classList.add(css.settingsEditor);
         this.settings = config;
         this.inputValids = [];
 
@@ -78,7 +80,7 @@ class SettingsEditor<T> {
 
     private createConfigTree(name: string, config: any, inputTree: InputTree, depth: number = 1): HTMLDivElement {
         const section = document.createElement("div");
-        section.classList.add("section");
+        section.classList.add(css.section);
 
         const heading = this.createHeading(name, depth);
         section.appendChild(heading);
@@ -108,7 +110,7 @@ class SettingsEditor<T> {
 
     private createHeading(name: string, depth: number): HTMLHeadingElement {
         const heading = document.createElement("h2");
-        heading.classList.add("heading");
+        heading.classList.add(css.heading);
         heading.setAttribute("depth", depth.toString());
         heading.innerHTML = name;
         return heading;
@@ -129,8 +131,8 @@ class SettingsEditor<T> {
     private createBooleanInput(config: any, key: string, value: boolean): IInput {
         const elm = document.createElement("div");
         const input = new Checkbox(this.formatCamelCase(key));
-        elm.classList.add("configItem");
-        elm.classList.add("checkbox");
+        elm.classList.add(css.configItem);
+        elm.classList.add(css.checkbox);
         input.setup();
         input.setChecked(value);
         input.appendTo(elm);
@@ -151,7 +153,7 @@ class SettingsEditor<T> {
         const label = document.createElement("label");
         const input = document.createElement("input");
         const validIndex = this.inputValids.push(true);
-        elm.classList.add("configItem");
+        elm.classList.add(css.configItem);
         elm.classList.add(type);
         input.type = type;
         input.value = value;
@@ -160,13 +162,13 @@ class SettingsEditor<T> {
         elm.appendChild(input);
 
         input.addEventListener("change", () => {
-            elm.classList.remove("invalid");
+            elm.classList.remove(css.invalid);
             this.inputValids[validIndex] = true;
             this.changed = true;
             const parsed = parse(input.value);
 
             if (parsed === undefined) {
-                elm.classList.add("invalid");
+                elm.classList.add(css.invalid);
                 this.inputValids[validIndex] = false;
             } else {
                 config[key] = parsed;

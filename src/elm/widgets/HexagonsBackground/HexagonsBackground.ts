@@ -1,11 +1,12 @@
+import css from "./HexagonsBackground.less";
+
 import Widget from "../../../core/widget/Widget";
 import IApp from "../../../core/types/app/IApp";
 import Hexagon from "./Hexagon";
 import HexagonSystems from "./systems/HexagonSystems";
 
 class HexagonsBackground extends Widget {
-    public static cssName = "hexagonsBackground";
-    public cssName = HexagonsBackground.cssName;
+    public cssName = css.hexagonsBackground;
 
     protected elm: HTMLCanvasElement;
 

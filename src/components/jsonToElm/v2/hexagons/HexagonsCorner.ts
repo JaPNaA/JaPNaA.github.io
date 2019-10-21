@@ -1,4 +1,4 @@
-import "./hexagonsCorner.less";
+import css from "./hexagonsCorner.less";
 
 import HexagonsCornerRenderer from "./HexagonsCornerRenderer";
 import IApp from "../../../../core/types/app/IApp";
@@ -7,8 +7,7 @@ import HexagonCornerHexagon from "./HexagonCornerHexagon";
 import siteConfig from "../../../../SiteConfig";
 
 class HexagonsCorner extends Widget {
-    public static cssName: string = "hexagonsCorner";
-    public cssName = HexagonsCorner.cssName;
+    public cssName = css.hexagonsCorner;
 
     protected elm: HTMLElement;
 

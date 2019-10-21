@@ -1,3 +1,5 @@
+import css from "./ProjectInfo.less";
+
 import IV1Card from "../../../../types/project/v1/IV1Card";
 import CardJSONv1Elm from "../../../../components/jsonToElm/v1/card";
 import IApp from "../../../../core/types/app/IApp";
@@ -6,8 +8,7 @@ import Widget from "../../../../core/widget/Widget";
 import ISavableScroll from "../../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
 class ProjectInfoV1 extends Widget implements ISavableScroll {
-    public static cssName = "projectInfoV1";
-    public cssName = ProjectInfoV1.cssName;
+    public cssName = css.projectInfoV1;
 
     public scrollingElm: HTMLElement;
 

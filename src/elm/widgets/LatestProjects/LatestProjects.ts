@@ -1,4 +1,4 @@
-import "./latestProjects.less";
+import css from "./latestProjects.less";
 
 import { V2Project } from "../../../types/project/v2/V2Types";
 import ContentMan from "../../../components/contentMan/contentMan";
@@ -11,8 +11,7 @@ import Widget from "../../../core/widget/Widget";
 import resolveUrl from "../../../utils/resolveUrl";
 
 class LatestProjects extends Widget {
-    public static cssName = "latestProjects";
-    public cssName = LatestProjects.cssName;
+    public cssName = css.latestProjects;
 
     protected elm: HTMLDivElement;
 
@@ -48,23 +47,23 @@ class LatestProjects extends Widget {
 
     private createLatestProjectsListElm(): HTMLDivElement {
         const elm = document.createElement("div");
-        elm.classList.add("list");
+        elm.classList.add(css.list);
         return elm;
     }
 
     private createHeading(): HTMLHeadingElement {
         const heading = document.createElement("h1");
-        heading.classList.add("heading");
+        heading.classList.add(css.heading);
         heading.innerText = "My Latest Projects";
         return heading;
     }
 
     private createViewMoreElm(): HTMLDivElement {
         const div = document.createElement("div");
-        div.classList.add("viewMore");
+        div.classList.add(css.viewMore);
 
         const a = document.createElement("a");
-        a.classList.add("flatButton");
+        a.classList.add(css.flatButton);
         a.href = resolveUrl("/browseprojects");
         a.innerText = "View More Projects";
         a.addEventListener("click", this.onViewMoreClick.bind(this));
@@ -93,7 +92,7 @@ class LatestProjects extends Widget {
             }
         } else {
             const elm = document.createElement("div");
-            elm.classList.add("error");
+            elm.classList.add(css.error);
             elm.innerText = "Unsupported project type. See this error? Please file a bug report!";
             this.latestProjectsList.appendChild(elm);
         }

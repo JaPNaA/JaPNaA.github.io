@@ -1,4 +1,4 @@
-import "./hexagonsTitle.less";
+import css from "./hexagonsTitle.less";
 
 import siteConfig from "../../../SiteConfig";
 import Widget from "../../../core/widget/Widget";
@@ -6,8 +6,7 @@ import HexagonsTitleRenderer from "./HexagonsTitleRenderer";
 import IApp from "../../../core/types/app/IApp";
 
 class HexagonsTitle extends Widget {
-    public static cssName = "hexagonsTitle";
-    public cssName = HexagonsTitle.cssName;
+    public cssName = css.hexagonsTitle;
 
     public width: number;
     public height: number;

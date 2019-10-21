@@ -1,3 +1,5 @@
+import css from "./projectsGrid.less";
+
 import IPositionable from "../../../components/dynamicGrid/types/IPositionable";
 import IApp from "../../../core/types/app/IApp";
 import ProjectCardInitData from "../ProjectCard/ProjectCardInitData";
@@ -17,7 +19,7 @@ class PositionableProjectCard implements IPositionable {
         this.app = app;
         
         this.elm = document.createElement("div");
-        this.elm.classList.add("positionableProjectCard");
+        this.elm.classList.add(css.positionableProjectCard);
 
         this.projectCardWidget = new ProjectCard(app, init);
         this.projectCard = this.projectCardWidget.projectCard;

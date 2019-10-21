@@ -1,3 +1,5 @@
+import css from "../projectCard.less";
+
 import IV1Card from "../../../../types/project/v1/IV1Card";
 import IApp from "../../../../core/types/app/IApp";
 import ProjectCardCard from "./ProjectCardCard";
@@ -24,13 +26,13 @@ class ProjectV1CardCard extends ProjectCardCard<IV1Card> {
     }
 
     private useStyles() {
-        this.cardElm.classList.add("v1");
+        this.cardElm.classList.add(css.v1);
 
         if (this.card.style) {
             this.cardElm.style.cssText = this.card.style;
 
             if (this.cardElm.style.backgroundColor && !this.cardElm.style.color) {
-                this.cardElm.classList.add("textMustBeBlack");
+                this.cardElm.classList.add(css.textMustBeBlack);
             }
         }
     }

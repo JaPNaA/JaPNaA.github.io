@@ -17,7 +17,7 @@ import siteConfig from "../SiteConfig";
  */
 export default function heroViewOpenTransition<T extends View>(
     app: IApp,
-    css: any,
+    css: { [x: string]: string },
     zoomTargetElm: HTMLElement,
     viewDescriptor: ViewDescriptor,
     newViewState: string | AppState,

@@ -1,4 +1,4 @@
-import "./htmlViewDocument.less";
+import css from "./htmlViewDocument.less";
 
 import url from "url";
 
@@ -37,7 +37,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
         this.styleElms = [];
 
         this.elm = this.parseHTML(text);
-        this.elm.classList.add("html-parsed");
+        this.elm.classList.add(css.htmlParsed);
     }
 
     public appendTo(parent: Element): void {
@@ -153,7 +153,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
     private createScriptErrorWarning(): void {
         const div = document.createElement("div");
-        div.classList.add("scriptErrorWarning");
+        div.classList.add(css.scriptErrorWarning);
         div.innerText = "Some scripts failed to run. Expect limited functionality.";
         this.elm.insertBefore(div, this.elm.firstChild);
     }
@@ -216,25 +216,25 @@ class HTMLViewDocument implements IHTMLViewDocument {
     }
 
     private async replaceViewElement(elm: Element, viewName: string): Promise<void> {
-        elm.classList.add("embededView");
+        elm.classList.add(css.embededView);
 
         const embededApp = new EmbededApp(this.app, elm);
         const stateData = elm.getAttribute("statedata");
         embededApp.setup();
         embededApp.views.open(viewName, stateData || undefined);
-        elm.classList.add("loaded");
+        elm.classList.add(css.loaded);
         this.embededApps.push(embededApp);
     }
 
     private async replaceWidgetElement(elm: Element, widgetName: string): Promise<void> {
-        elm.classList.add("embededWidget");
+        elm.classList.add(css.embededWidget);
 
         const widgetClass = await this.app.routes.getWidget(widgetName);
         const widget = new widgetClass(...this.getWidgetArguments(elm));
         widget.appendTo(elm);
         widget.setup();
         this.widgets.push(widget);
-        elm.classList.add("loaded");
+        elm.classList.add(css.loaded);
     }
 
     private getWidgetArguments(elm: Element): any[] {

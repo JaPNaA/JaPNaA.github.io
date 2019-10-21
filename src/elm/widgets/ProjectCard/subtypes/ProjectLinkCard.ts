@@ -1,3 +1,5 @@
+import css from "../projectCard.less";
+
 import BaseProjectCard from "../BaseProjectCard";
 import IApp from "../../../../core/types/app/IApp";
 import openFrameView from "../../../../utils/view/openFrameView";
@@ -14,7 +16,7 @@ class ProjectLinkCard extends BaseProjectCard {
     constructor(app: IApp, name: string, href: string) {
         super(app);
         const size = Math.ceil(Math.sqrt(name.length) * 0.5);
-        this.elm.classList.add("link");
+        this.elm.classList.add(css.link);
         this.width = size;
         this.height = size;
         this.cardTitle = addZeroWidthSpacesBetweenCamelCaseWords(name);

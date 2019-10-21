@@ -1,12 +1,11 @@
-import "./View404.less";
+import css from "./View404.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
 
 class View404 extends View {
-    public static cssName = "View404";
-    public cssName = View404.cssName;
+    public cssName = css.View404;
     public isFullPage = false;
 
     protected elm: HTMLDivElement;

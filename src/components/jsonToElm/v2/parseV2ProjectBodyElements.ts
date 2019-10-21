@@ -1,3 +1,5 @@
+import css from "./cardV2.less";
+
 import { V2ProjectBodyElement, V2ProjectBodyImage, V2ProjectBodyMarkdown, V2ProjectBodyViewProject } from "../../../types/project/v2/V2Types";
 import siteConfig from "../../../SiteConfig";
 import resolveUrl from "../../../utils/resolveUrl";
@@ -28,10 +30,10 @@ function parseV2ProjectBodyElements(elements: V2ProjectBodyElement[]): DocumentF
 
 function parseImage(item: V2ProjectBodyImage): HTMLDivElement {
     const elm = document.createElement("div");
-    elm.classList.add("image");
+    elm.classList.add(css.image);
 
     const inner = document.createElement("div");
-    inner.classList.add("image-inner");
+    inner.classList.add(css.imageInner);
     elm.appendChild(inner);
 
     const img = document.createElement("img");
@@ -56,7 +58,7 @@ function parseImage(item: V2ProjectBodyImage): HTMLDivElement {
 
 function parseMarkdown(item: V2ProjectBodyMarkdown): HTMLDivElement {
     const elm = document.createElement("div");
-    elm.classList.add("markdown");
+    elm.classList.add(css.markdown);
     elm.innerHTML = item.text;
     return elm;
 }
@@ -67,7 +69,7 @@ function parseViewProject(item: V2ProjectBodyViewProject): HTMLDivElement {
     a.href = resolveUrl(item.href, siteConfig.path.thingy);
 
     const elm = document.createElement("div");
-    elm.classList.add("view-project");
+    elm.classList.add(css.viewProject);
     elm.appendChild(a);
     return elm;
 }
@@ -79,7 +81,7 @@ function parseViewSource(item: V2ProjectBodyViewProject): HTMLDivElement {
     a.href = item.href;
 
     const elm = document.createElement("div");
-    elm.classList.add("view-source");
+    elm.classList.add(css.viewSource);
     elm.appendChild(a);
     return elm;
 }

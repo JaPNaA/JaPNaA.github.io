@@ -1,4 +1,4 @@
-import "./Menu.less";
+import css from "./Menu.less";
 
 import View from "../../../core/view/View";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
@@ -52,12 +52,12 @@ class Menu extends View {
     }
 
     public animateTransitionIn(): void {
-        triggerTransitionIn(this.elm, Menu.transitionInTimeout)
+        triggerTransitionIn(css, this.elm, Menu.transitionInTimeout)
     }
 
     private createBackground(): HTMLDivElement {
         const background = document.createElement("div");
-        background.classList.add("background");
+        background.classList.add(css.background);
 
         this.elm.appendChild(background);
         return background;
@@ -65,10 +65,10 @@ class Menu extends View {
 
     private createContents(): HTMLDivElement {
         const contents = document.createElement("div");
-        contents.classList.add("contents");
+        contents.classList.add(css.contents);
 
         const scrollContainer = document.createElement("div");
-        scrollContainer.classList.add("scrollContainer");
+        scrollContainer.classList.add(css.scrollContainer);
 
         const children: HTMLElement[] = [
             this.createTitle(),
@@ -95,21 +95,21 @@ class Menu extends View {
 
     private createTitle(): HTMLHeadingElement {
         const title = document.createElement("h1");
-        title.classList.add("title");
+        title.classList.add(css.title);
         title.innerText = "Menu";
         return title;
     }
 
     private createHeading(label: string): HTMLHeadElement {
         const heading = document.createElement("h2");
-        heading.classList.add("heading");
+        heading.classList.add(css.heading);
         heading.innerText = label;
         return heading;
     }
 
     private createSeparator(): HTMLHRElement {
         const hr = document.createElement("hr");
-        hr.classList.add("separator");
+        hr.classList.add(css.separator);
         return hr;
     }
 
@@ -128,15 +128,15 @@ class Menu extends View {
 
     private createViewButton(viewName: string, label: string, clickHandler: (e: MouseEvent) => void): HTMLAnchorElement {
         const anchor = document.createElement("a");
-        anchor.classList.add("viewButton");
+        anchor.classList.add(css.viewButton);
         anchor.href = resolveUrl("/" + viewName.toLowerCase());
 
         const labelElm = document.createElement("div");
-        labelElm.classList.add("label");
+        labelElm.classList.add(css.label);
         labelElm.innerText = label;
 
         if (this.isTopViewA(viewName)) {
-            anchor.classList.add("active");
+            anchor.classList.add(css.active);
             anchor.appendChild(this.createActiveCircle());
         }
 
@@ -152,7 +152,7 @@ class Menu extends View {
     private createSettingsWidget(): HTMLDivElement {
         const elm = document.createElement("div");
         const settings = new SiteSettingsWidget();
-        elm.classList.add("settingsContainer");
+        elm.classList.add(css.settingsContainer);
         settings.setup();
         settings.appendTo(elm);
         this.widgets.push(settings);
@@ -161,13 +161,13 @@ class Menu extends View {
 
     private createActiveCircle(): HTMLDivElement {
         const circle = document.createElement("div");
-        circle.classList.add("circle");
+        circle.classList.add(css.circle);
         return circle;
     }
 
     private createCopyright(): HTMLDivElement {
         const copyright = document.createElement("div");
-        copyright.classList.add("copy");
+        copyright.classList.add(css.copy);
         siteConfig.getServerTime()
             .then(e => copyright.innerHTML = `Copyright &copy; ${e.getUTCFullYear()} JaPNaA`);
         return copyright;

@@ -1,4 +1,4 @@
-import "./settings.less";
+import css from "./settings.less";
 
 import Widget from "../../../core/widget/Widget";
 import SettingsEditor from "./SettingsEditor";
@@ -6,8 +6,7 @@ import SiteSettings from "../../../SiteSettings";
 import siteConfig from "../../../SiteConfig";
 
 class SiteSettingsWidget extends Widget {
-    public static cssName = "settings";
-    public cssName = SiteSettingsWidget.cssName;
+    public cssName = css.settings;
 
     protected elm: Element;
 

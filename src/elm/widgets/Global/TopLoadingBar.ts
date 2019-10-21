@@ -1,3 +1,5 @@
+import css from "./loadingBar.less";
+
 import Widget from "../../../core/widget/Widget";
 import IApp from "../../../core/types/app/IApp";
 import siteResources from "../../../core/siteResources";
@@ -89,8 +91,8 @@ class TopLoadingBar extends Widget {
     }
 
     private markLoading(): void {
-        this.elm.classList.remove("done");
-        this.elm.classList.add("loading");
+        this.elm.classList.remove(css.done);
+        this.elm.classList.add(css.loading);
     }
 
     private markDone(): void {
@@ -98,10 +100,10 @@ class TopLoadingBar extends Widget {
         this.lastProgress = 0;
 
         requestAnimationFrame(() => requestAnimationFrame(() => {
-            this.elm.classList.add("done");
+            this.elm.classList.add(css.done);
 
             window.setTimeout(() => {
-                this.elm.classList.remove("loading");
+                this.elm.classList.remove(css.loading);
                 this.elm.style.width = "0";
                 this.lastDoneLoaded = siteResources.getProgress().loaded;
             }, TopLoadingBar.transitionSpeed);

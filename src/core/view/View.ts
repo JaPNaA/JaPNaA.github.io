@@ -1,3 +1,5 @@
+import css from "../../../styles/index.less";
+
 import IApp from "../types/app/IApp";
 import EventManager from "./components/EventManager";
 import EventHandlers from "../utils/events/EventHandlers";
@@ -39,7 +41,7 @@ abstract class View {
     }
 
     public setup(): void {
-        this.elm.classList.add("view");
+        this.elm.classList.add(css.view);
         this.elm.classList.add(this.cssName);
 
         if (this.isFullPage) {
@@ -63,7 +65,7 @@ abstract class View {
     public async destory(): Promise<void> {
         this.destoryHandlers.dispatch();
         this.events.destory();
-        this.elm.classList.add("destory");
+        this.elm.classList.add(css.destory);
 
         for (const component of this.viewComponents) {
             component.destory();

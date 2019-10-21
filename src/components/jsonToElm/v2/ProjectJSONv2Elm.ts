@@ -1,4 +1,4 @@
-import "./cardV2.less";
+import css from "./cardV2.less";
 
 import { V2Project } from "../../../types/project/v2/V2Types";
 import applyV2ProjectBackground from "../../../utils/v2Project/applyV2ProjectBackground";
@@ -19,8 +19,7 @@ import ISavableScroll from "../../viewPrivateData/saveScroll/ISaveScrollable";
 import resolveUrl from "../../../utils/resolveUrl";
 
 class ProjectJSONv2Elm extends Widget implements ISavableScroll {
-    public static cssName = "projectJSONv2Elm";
-    public cssName = ProjectJSONv2Elm.cssName;
+    public cssName = css.projectJSONv2Elm;
 
     public scrollingElm: HTMLElement;
     protected elm: HTMLDivElement;
@@ -133,43 +132,43 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
 
     private createBackground(): HTMLDivElement {
         const background = document.createElement("div");
-        background.classList.add("background");
+        background.classList.add(css.background);
         return background;
     }
 
     private createHexagonsContainer(): HTMLDivElement {
         const hexagonsContainer = document.createElement("div");
-        hexagonsContainer.classList.add("hexagonsContainer");
+        hexagonsContainer.classList.add(css.hexagonsContainer);
         return hexagonsContainer;
     }
 
     private createBackgroundImage(): HTMLDivElement {
         const backgroundImage = document.createElement("div");
-        backgroundImage.classList.add("backgroundImage");
+        backgroundImage.classList.add(css.backgroundImage);
         return backgroundImage;
     }
 
     private createBackgroundImageContainer(): HTMLDivElement {
         const backgroundImageContainer = document.createElement("div");
-        backgroundImageContainer.classList.add("backgroundImageContainer");
+        backgroundImageContainer.classList.add(css.backgroundImageContainer);
         return backgroundImageContainer;
     }
 
     private createHeadContainer(): HTMLDivElement {
         const headContainer = document.createElement("div");
-        headContainer.classList.add("headContainer");
+        headContainer.classList.add(css.headContainer);
         return headContainer;
     }
 
     private createHead(): HTMLDivElement {
         const head = document.createElement("div");
-        head.classList.add("head");
+        head.classList.add(css.head);
         return head;
     }
 
     private createTitle(text: string): HTMLHeadingElement {
         const title = document.createElement("h1");
-        title.classList.add("title");
+        title.classList.add(css.title);
         title.innerText = text;
         return title;
     }
@@ -177,12 +176,12 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
     private createBigViewProjectButton(): HTMLAnchorElement {
         const button = document.createElement("a");
         button.innerText = "Open Project";
-        button.classList.add("bigViewProjectButton");
+        button.classList.add(css.bigViewProjectButton);
 
         if (this.project.head.link) {
             button.href = resolveUrl(this.project.head.link, siteConfig.path.thingy);
         } else {
-            button.classList.add("hidden");
+            button.classList.add(css.hidden);
         }
 
         return button;
@@ -190,32 +189,32 @@ class ProjectJSONv2Elm extends Widget implements ISavableScroll {
 
     private createScrollIndicator(): HTMLDivElement {
         const scrollIndiciator = document.createElement("img");
-        scrollIndiciator.classList.add("scrollIndicator");
+        scrollIndiciator.classList.add(css.scrollIndicator);
         scrollIndiciator.src = siteConfig.path.img.upArrow;
 
 
         const scrollIndicatorContainer = document.createElement("div");
         scrollIndicatorContainer.appendChild(scrollIndiciator);
-        scrollIndicatorContainer.classList.add("scrollIndicatorContainer");
+        scrollIndicatorContainer.classList.add(css.scrollIndicatorContainer);
 
         return scrollIndicatorContainer;
     }
 
     private createContentContainer(): HTMLDivElement {
         const container = document.createElement("div");
-        container.classList.add("contentContainer");
+        container.classList.add(css.contentContainer);
         return container;
     }
 
     private createMainContent(): HTMLDivElement {
         const main = document.createElement("div");
-        main.classList.add("mainContent");
+        main.classList.add(css.mainContent);
         return main;
     }
 
     private createBody(): HTMLDivElement {
         const body = document.createElement("div");
-        body.classList.add("body");
+        body.classList.add(css.body);
         body.setAttribute("role", "main");
         body.setAttribute("aria-hidden", "false");
         return body;

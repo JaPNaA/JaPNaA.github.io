@@ -1,3 +1,5 @@
+import css from "../../../styles/index.less";
+
 import IApp from "../types/app/IApp";
 import IAppURL from "../types/app/IAppURL";
 import AppEvents from "./components/AppEvents";
@@ -27,7 +29,7 @@ abstract class BaseApp implements IApp {
         this.parentApp = parentApp;
 
         this.mainElm = document.createElement("div");
-        this.mainElm.classList.add("main");
+        this.mainElm.classList.add(css.main);
         this.mainElm.tabIndex = -1; // this makes the app element focusable
 
         this.events = new AppEvents(this);

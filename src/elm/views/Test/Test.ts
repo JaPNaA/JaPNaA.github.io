@@ -1,4 +1,4 @@
-import "./Test.less";
+import css from "./Test.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
@@ -6,8 +6,7 @@ import siteResources from "../../../core/siteResources";
 import AppState from "../../../core/types/AppState";
 
 class TestView extends View {
-    public static cssName: string = "Test";
-    public cssName = TestView.cssName;
+    public cssName = css.Test;
     public showMenuButton = false;
     public isFullPage = true;
 

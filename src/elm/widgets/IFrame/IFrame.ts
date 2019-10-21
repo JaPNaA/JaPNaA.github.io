@@ -1,4 +1,4 @@
-import "./iframe.less";
+import css from "./iframe.less";
 
 import Widget from "../../../core/widget/Widget";
 import EventHandlers from "../../../core/utils/events/EventHandlers";
@@ -6,8 +6,7 @@ import Handler from "../../../core/utils/events/Handler";
 import IIFrame from "./IIFrame";
 
 class IFrame extends Widget implements IIFrame {
-    public static cssName = "iframe";
-    public cssName = IFrame.cssName;
+    public cssName = css.iframe;
     protected elm: HTMLIFrameElement;
 
     private eventHandlers: EventHandlers;

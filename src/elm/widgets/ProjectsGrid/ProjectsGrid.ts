@@ -1,4 +1,4 @@
-import "./projectsGrid.less";
+import css from "./projectsGrid.less";
 
 import IApp from "../../../core/types/app/IApp";
 import DynamicGridDisplay from "../../../components/dynamicGrid/DynamicGridDisplay";
@@ -17,8 +17,7 @@ import ProjectCardInitData from "../ProjectCard/ProjectCardInitData";
 
 class ProjectsGrid extends Widget {
     protected elm: HTMLDivElement;
-    public static cssName: string = "projectsGrid";
-    public cssName = ProjectsGrid.cssName;
+    public cssName = css.projectsGrid;
     private app: IApp;
 
     private static readonly minColWidth = 128;

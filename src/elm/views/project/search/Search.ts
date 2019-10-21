@@ -1,4 +1,4 @@
-import "./Search.less";
+import css from "./Search.less";
 
 import AppState from "../../../../core/types/AppState";
 import ContentMan from "../../../../components/contentMan/contentMan";
@@ -29,8 +29,7 @@ type SearchTfIdf = TfIdf<number | ProjectLink>;
  */
 
 class Search extends View {
-    public static cssName = "Search";
-    public cssName = Search.cssName;
+    public cssName = css.Search;
     public isFullPage = true;
 
     protected elm: HTMLDivElement;
@@ -102,13 +101,13 @@ class Search extends View {
 
     private createInputContainer(): HTMLDivElement {
         const inputContainer = document.createElement("div");
-        inputContainer.classList.add("inputContainer");
+        inputContainer.classList.add(css.inputContainer);
         return inputContainer;
     }
 
     private createInput(): HTMLInputElement {
         const input = document.createElement("input");
-        input.classList.add("input");
+        input.classList.add(css.input);
         input.placeholder = "Type to search...";
         return input;
     }

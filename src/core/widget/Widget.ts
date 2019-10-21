@@ -1,3 +1,5 @@
+import css from "../../../styles/index.less";
+
 abstract class Widget {
     protected abstract elm: Element;
     protected parent?: Element;
@@ -8,7 +10,7 @@ abstract class Widget {
     public setup(): void {
         const widgetName = this.cssName || this.constructor.name;
 
-        this.elm.classList.add("widget");
+        this.elm.classList.add(css.widget);
         this.elm.classList.add(widgetName);
 
         this.cssName = widgetName;

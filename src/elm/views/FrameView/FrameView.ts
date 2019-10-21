@@ -1,4 +1,4 @@
-import "./FrameView.less";
+import css from "./FrameView.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
@@ -15,8 +15,7 @@ import AppState from "../../../core/types/AppState";
 class FrameView extends View {
     public static destoryTime = 400;
     public static transitionInTime = 400;
-    public static cssName = "FrameView";
-    public cssName = FrameView.cssName;
+    public cssName = css.FrameView;
     public showMenuButton = false;
     public isFullPage = true;
 
@@ -54,7 +53,7 @@ class FrameView extends View {
     }
 
     public animateTransitionIn(): void {
-        triggerTransitionIn(this.elm, FrameView.transitionInTime);
+        triggerTransitionIn(css, this.elm, FrameView.transitionInTime);
     }
 
     public async setup(): Promise<void> {
@@ -71,7 +70,7 @@ class FrameView extends View {
 
         this.iframe = new IFrame(this.path);
 
-        this.header.classList.add("header");
+        this.header.classList.add(css.header);
         this.urlElm.innerText = this.path;
         this.elm.appendChild(this.header);
 
@@ -99,13 +98,13 @@ class FrameView extends View {
 
     private createHeader(): HTMLDivElement {
         const header = document.createElement("div");
-        header.classList.add("header");
+        header.classList.add(css.header);
         return header;
     }
 
     private createCloseButton(): HTMLDivElement {
         const closeButton = document.createElement("div");
-        closeButton.classList.add("close");
+        closeButton.classList.add(css.close);
 
         const img = siteResources.loadImage(siteConfig.path.img.close).data;
         closeButton.appendChild(img);
@@ -116,14 +115,14 @@ class FrameView extends View {
 
     private createUrlElm(): HTMLDivElement {
         const url = document.createElement("div");
-        url.classList.add("url");
+        url.classList.add(css.url);
         this.header.appendChild(url);
         return url;
     }
 
     private createPadRight(): HTMLDivElement {
         const padRight = document.createElement("div");
-        padRight.classList.add("padRight");
+        padRight.classList.add(css.padRight);
         this.header.appendChild(padRight);
         return padRight;
     }

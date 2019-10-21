@@ -1,3 +1,5 @@
+import css from "./latestProjects.less";
+
 import IApp from "../../../core/types/app/IApp";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
 import { V2Project } from "../../../types/project/v2/V2Types";
@@ -27,7 +29,7 @@ class LatestProjectCard {
     }
 
     public setAsLatest(): void {
-        this.elm.classList.add("latest");
+        this.elm.classList.add(css.latest);
     }
 
     public appendTo(parent: HTMLElement) {
@@ -36,7 +38,7 @@ class LatestProjectCard {
 
     private createElm(): HTMLDivElement {
         const elm = document.createElement("div");
-        elm.classList.add("latestProjectCard");
+        elm.classList.add(css.latestProjectCard);
         return elm;
     }
 }

@@ -1,4 +1,4 @@
-import "./randomQuotes.less";
+import css from "./randomQuotes.less";
 
 import Widget from "../../../core/widget/Widget";
 import IApp from "../../../core/types/app/IApp";
@@ -6,8 +6,7 @@ import siteConfig from "../../../SiteConfig";
 import openImageView from "../../../utils/view/openImageView";
 
 class RandomQuotes extends Widget {
-    public static cssName = "randomQuotes";
-    public cssName = RandomQuotes.cssName;
+    public cssName = css.randomQuotes;
 
     private app: IApp;
     private childrenArg: Element[];
@@ -37,7 +36,7 @@ class RandomQuotes extends Widget {
         super.setup();
 
         if (this.imageElm) {
-            this.elm.classList.add("hasImage");
+            this.elm.classList.add(css.hasImage);
             this.imageContainer.appendChild(this.imageElm);
             this.elm.appendChild(this.imageContainer);
         }
@@ -96,28 +95,28 @@ class RandomQuotes extends Widget {
 
     private createImageContainer(): HTMLDivElement {
         const container = document.createElement("div");
-        container.classList.add("imageContainer");
+        container.classList.add(css.imageContainer);
         return container;
     }
 
     private createQuoteContainer(): HTMLDivElement {
         const container = document.createElement("div");
-        container.classList.add("quoteContainer");
+        container.classList.add(css.quoteContainer);
         return container;
     }
 
     private createQuoteElm(): HTMLDivElement {
         const quotes = document.createElement("div");
-        quotes.classList.add("quote");
+        quotes.classList.add(css.quote);
         quotes.innerHTML = this.quotes[Math.floor(Math.random() * this.quotes.length)];
         return quotes;
     }
 
     private resizeHandler(): void {
         if (this.app.width > siteConfig.cssVars.longTextContainerMaxWidth) {
-            this.quoteElm.classList.add("fixFontSize");
+            this.quoteElm.classList.add(css.fixFontSize);
         } else {
-            this.quoteElm.classList.remove("fixFontSize");
+            this.quoteElm.classList.remove(css.fixFontSize);
         }
     }
 

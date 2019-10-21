@@ -1,4 +1,4 @@
-import "./Overview.less";
+import css from "./Overview.less";
 
 import View from "../../../core/view/View";
 import HexagonsTitle from "../../widgets/HexagonsTitle/HexagonsTitle";
@@ -17,8 +17,7 @@ import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISave
  */
 
 class Overview extends View implements ISavableScroll {
-    public static cssName = "Overview";
-    public cssName = Overview.cssName;
+    public cssName = css.Overview;
     public isFullPage = true;
 
     public scrollingElm: HTMLElement;
@@ -82,7 +81,7 @@ class Overview extends View implements ISavableScroll {
         const hexagonImg: HTMLImageElement = siteResources.loadImage(siteConfig.path.img.hexagon).copyImage();
         const titleElm: HTMLDivElement = document.createElement("div");
 
-        hexagonImg.classList.add("hexagon");
+        hexagonImg.classList.add(css.hexagon);
 
         titleElm.appendChild(hexagonImg);
         titleElm.appendChild(logoImg);
@@ -97,14 +96,14 @@ class Overview extends View implements ISavableScroll {
 
     private createContent(): HTMLDivElement {
         const content = document.createElement("div");
-        content.classList.add("content");
-        content.classList.add("longTextContainer");
+        content.classList.add(css.content);
+        content.classList.add(css.longTextContainer);
         return content;
     }
 
     private loadAndWriteContent() {
         const container = document.createElement("div");
-        container.classList.add("contentContainer");
+        container.classList.add(css.contentContainer);
 
         this.loadHTMLView(siteConfig.path.view.overview);
         container.appendChild(this.content);

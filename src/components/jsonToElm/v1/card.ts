@@ -1,4 +1,4 @@
-import "./cardV1.less";
+import css from "./cardV1.less";
 
 import DisplayV1 from "../../../types/project/v1/V1Display";
 import IApp from "../../../core/types/app/IApp";
@@ -14,8 +14,7 @@ import siteResources from "../../../core/siteResources";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 
 class CardJSONv1Elm extends Widget implements ISavableScroll {
-    public static cssName = "cardJSONv1Elm";
-    public cssName = CardJSONv1Elm.cssName;
+    public cssName = css.cardJSONv1Elm;
 
     public scrollingElm: HTMLElement;
 
@@ -55,13 +54,14 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
     }
 
     public animateTransitionIn(): void {
-        triggerTransitionIn(this.elm, CardJSONv1Elm.transitionInTimeout);
+        triggerTransitionIn(css, this.elm, CardJSONv1Elm.transitionInTimeout);
     }
 
     public addEventListeners(): void { }
 
     private parse(): void {
-        this.elm.classList.add("card", "v1");
+        this.elm.classList.add(css.card);
+        this.elm.classList.add(css.v1);
 
         this.container = this.createBackgroundContainer();
         this.createInformationBlock();
@@ -77,7 +77,7 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
 
     private createBackgroundImage(): HTMLDivElement {
         const background = document.createElement("div");
-        background.classList.add("background");
+        background.classList.add(css.background);
 
         if (this.card.style) {
             background.style.cssText = this.card.style;
@@ -87,7 +87,7 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
 
         if (src) {
             background.style.backgroundImage = `url(${siteConfig.path.thingy}${src})`;
-            this.elm.classList.add("backgroundImageExists");
+            this.elm.classList.add(css.backgroundImageExists);
             this.backgroundImageExists = true;
         }
 
@@ -96,14 +96,14 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
 
     private createBackgroundGradient(): HTMLDivElement {
         const gradient = document.createElement("div");
-        gradient.classList.add("backgroundGradient");
+        gradient.classList.add(css.backgroundGradient);
         return gradient;
     }
 
     private createInformationBlock(): void {
         // TODO: jsformat
         const block = document.createElement("div");
-        block.classList.add("infoBlock");
+        block.classList.add(css.infoBlock);
 
         if (!this.backgroundImageExists && this.card.style) {
             block.style.cssText = this.card.style;
@@ -123,7 +123,7 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
 
     private createNameIn(block: HTMLElement): void {
         const name = document.createElement("h1");
-        name.classList.add("name");
+        name.classList.add(css.name);
         name.innerText = this.card.name;
         block.appendChild(name);
     }
@@ -131,13 +131,13 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
     private createNoIn(block: HTMLElement): void {
         const no = document.createElement("span");
         no.innerText = this.card.no.toString();
-        no.classList.add("no");
+        no.classList.add(css.no);
         block.appendChild(no);
     }
 
     private createTagsIn(block: HTMLElement): void {
         const tagsElm = document.createElement("ul");
-        tagsElm.classList.add("tags");
+        tagsElm.classList.add(css.tags);
 
         for (const tag of this.card.tags) {
             const tagElm = document.createElement("li");
@@ -150,14 +150,14 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
 
     private createAuthorIn(block: HTMLElement): void {
         const author = document.createElement("div");
-        author.classList.add("author");
+        author.classList.add(css.author);
         author.innerText = this.card.author.join(", ");
         block.appendChild(author);
     }
 
     private createDescriptionIn(block: HTMLElement): void {
         const description = document.createElement("div");
-        description.classList.add("description");
+        description.classList.add(css.description);
         description.innerHTML = this.card.content.description;
         block.appendChild(description);
     }
@@ -171,7 +171,7 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
 
     private createDisplayIn(display: DisplayV1, block: HTMLElement): void {
         const displayElm = document.createElement("div");
-        displayElm.classList.add("display");
+        displayElm.classList.add(css.display);
 
         this.createDisplayTypeIn(displayElm, display);
 
@@ -191,7 +191,7 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
             // POSSIBLE BUG: For all SiteConfig.thingyLink + ..., link could be absolute
             const src = siteConfig.path.thingy + display.src;
             const img = siteResources.loadImage(src).copyImage();
-            img.classList.add("img");
+            img.classList.add(css.img);
             this.addImageClickHandler(img);
             parent.appendChild(img);
         }
@@ -199,14 +199,14 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
         if (display.caption) {
             const caption = document.createElement("small");
             caption.innerText = display.caption;
-            caption.classList.add("caption");
+            caption.classList.add(css.caption);
             parent.appendChild(caption);
         }
     }
 
     private createLinkIn(block: HTMLElement): void {
         const link = document.createElement("a");
-        link.classList.add("link");
+        link.classList.add(css.link);
         link.href = resolveUrl(this.card.content.link, siteConfig.path.thingy);
         block.appendChild(link);
         this.viewProjectButton = link;
@@ -216,7 +216,7 @@ class CardJSONv1Elm extends Widget implements ISavableScroll {
         if (!this.card.timestamp) { return; }
 
         const time = document.createElement("div");
-        time.classList.add("timestamp");
+        time.classList.add(css.timestamp);
         time.innerText = new Date(this.card.timestamp).toLocaleDateString();
         block.appendChild(time);
     }

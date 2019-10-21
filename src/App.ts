@@ -1,4 +1,4 @@
-import "../styles/index.less";
+import css from "../styles/index.less";
 
 import GlobalWidgets from "./elm/widgets/Global/Global";
 import ContentMan from "./components/contentMan/contentMan";
@@ -26,9 +26,9 @@ class App extends MainApp {
         this.siteThemes = new SiteThemes();
 
         if (siteConfig.isMobile) {
-            this.mainElm.classList.add("mobile");
+            this.mainElm.classList.add(css.mobile);
         } else {
-            this.mainElm.classList.add("notMobile");
+            this.mainElm.classList.add(css.notMobile);
         }
 
         if (!siteConfig.developmentMode || siteConfig.isMobile) {

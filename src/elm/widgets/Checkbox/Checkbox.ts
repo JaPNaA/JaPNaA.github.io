@@ -1,12 +1,11 @@
-import "./checkbox.less";
+import css from "./checkbox.less";
 
 import Widget from "../../../core/widget/Widget";
 import CheckboxCheck from "./CheckboxCheck";
 import Handler from "../../../core/utils/events/Handler";
 
 class Checkbox extends Widget {
-    public static cssName = "checkboxLabeled";
-    public cssName = Checkbox.cssName;
+    public cssName = css.checkboxLabeled;
 
     protected elm: Element;
     private checkbox: CheckboxCheck;
@@ -59,7 +58,7 @@ class Checkbox extends Widget {
         if (!this.label) { return; }
 
         const label = document.createElement("div");
-        label.classList.add("label");
+        label.classList.add(css.label);
         label.innerText = this.label;
         label.setAttribute("aria-hidden", "true"); // title on checkbox should be read
         return label;

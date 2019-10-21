@@ -1,4 +1,4 @@
-import "./About.less";
+import css from "./About.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
@@ -15,8 +15,7 @@ import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISave
  */
 
 class About extends View implements ISavableScroll {
-    public static cssName = "About";
-    public cssName = About.cssName;
+    public cssName = css.About;
     public isFullPage = true;
 
     public scrollingElm: HTMLElement;
@@ -46,8 +45,8 @@ class About extends View implements ISavableScroll {
 
     private createContentContainer() {
         const contentContainer = document.createElement("div");
-        contentContainer.classList.add("contentContainer");
-        contentContainer.classList.add("longTextContainer");
+        contentContainer.classList.add(css.contentContainer);
+        contentContainer.classList.add(css.longTextContainer);
         return contentContainer;
     }
 }

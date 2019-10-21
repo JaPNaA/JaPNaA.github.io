@@ -1,4 +1,4 @@
-import "./HTMLView.less";
+import css from "./HTMLView.less";
 
 import Widget from "../../../core/widget/Widget";
 import HTMLViewParser from "../../../components/htmlViewParser/htmlViewParser";
@@ -10,8 +10,7 @@ import defaultHtmlViewParserOptions from "./defaultHtmlViewParserOptions";
 
 class HTMLView extends Widget {
     protected elm: Element;
-    public static cssName: string = "HTMLView";
-    public cssName = HTMLView.cssName;
+    public cssName = css.HTMLView;
 
     private doc?: IHTMLViewDocument;
     private parser: HTMLViewParser;
@@ -53,7 +52,7 @@ class HTMLView extends Widget {
 
     private writeError(err: Error) {
         console.error(err);
-        this.elm.classList.add("loadError");
+        this.elm.classList.add(css.loadError);
         this.elm.appendChild(document.createTextNode("Failed to load. Reason: " + err.message));
     }
 }

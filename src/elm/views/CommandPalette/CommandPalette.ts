@@ -1,4 +1,4 @@
-import "./CommandPalette.less";
+import css from "./CommandPalette.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
@@ -8,8 +8,7 @@ import CommandParser from "./CommandParser";
 import CommandResult from "./CommandResult";
 
 class CommandPalette extends View {
-    public static cssName = "CommandPalette";
-    public cssName = CommandPalette.cssName;
+    public cssName = css.CommandPalette;
 
     protected elm: HTMLDivElement;
 
@@ -103,7 +102,7 @@ class CommandPalette extends View {
 
     private createInput(value?: string): HTMLInputElement {
         const input = document.createElement("input");
-        input.classList.add("input");
+        input.classList.add(css.input);
         input.placeholder = "Enter ? for help";
         if (value) { input.value = value; }
         return input;
@@ -111,26 +110,26 @@ class CommandPalette extends View {
 
     private createCenterContainer(): HTMLDivElement {
         const centerContainer = document.createElement("div");
-        centerContainer.classList.add("centerContainer");
-        centerContainer.classList.add("longTextContainer");
+        centerContainer.classList.add(css.centerContainer);
+        centerContainer.classList.add(css.longTextContainer);
         return centerContainer;
     }
 
     private createContentContainer(): HTMLDivElement {
         const contentContainer = document.createElement("div");
-        contentContainer.classList.add("contentContainer");
+        contentContainer.classList.add(css.contentContainer);
         return contentContainer;
     }
 
     private createResultsContainer(): HTMLDivElement {
         const resultsContainer = document.createElement("div");
-        resultsContainer.classList.add("resultsContainer");
+        resultsContainer.classList.add(css.resultsContainer);
         return resultsContainer;
     }
 
     private createBackgroundClickCatcher(): HTMLDivElement {
         const elm = document.createElement("div");
-        elm.classList.add("backgroundClickCatcher");
+        elm.classList.add(css.backgroundClickCatcher);
         return elm;
     }
 
@@ -147,26 +146,26 @@ class CommandPalette extends View {
 
     private createResult(result: CommandResult): HTMLDivElement {
         const elm = document.createElement("div");
-        elm.classList.add("result");
+        elm.classList.add(css.result);
         result.elm = elm;
 
         const label = document.createElement("div");
-        label.classList.add("label");
+        label.classList.add(css.label);
         label.innerText = result.label;
 
         elm.appendChild(label);
 
         if (result.description) {
             const description = document.createElement("div");
-            description.classList.add("description");
-            elm.classList.add("hasDescription");
+            description.classList.add(css.description);
+            elm.classList.add(css.hasDescription);
             description.innerText = result.description;
 
             elm.appendChild(description);
         }
 
         if (result.clickable) {
-            elm.classList.add("clickable");
+            elm.classList.add(css.clickable);
         }
 
         elm.addEventListener("mousemove", () => {
@@ -199,7 +198,7 @@ class CommandPalette extends View {
 
     private selectResult(result: number | CommandResult): void {
         if (this.selectedResult && this.selectedResult.elm) {
-            this.selectedResult.elm.classList.remove("selected");
+            this.selectedResult.elm.classList.remove(css.selected);
         }
 
         if (typeof result === 'number') {
@@ -211,7 +210,7 @@ class CommandPalette extends View {
         }
 
         if (this.selectedResult && this.selectedResult.elm) {
-            this.selectedResult.elm!.classList.add("selected");
+            this.selectedResult.elm!.classList.add(css.selected);
             this.scrollTo(this.selectedResult.elm!);
         }
     }

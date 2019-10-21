@@ -1,3 +1,5 @@
+import css from "../projectCard.less";
+
 import BaseProjectCard from "../BaseProjectCard";
 import IApp from "../../../../core/types/app/IApp";
 import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
@@ -83,10 +85,11 @@ abstract class ProjectCardCard<T> extends BaseProjectCard {
 
         heroViewOpenTransition<IProjectInfoView>(
             this.app,
+            css,
             this.cardElm,
             "project.info",
             this.year + "." + this.index,
-            view => view.transitionFadeIn()
+            view => view.transitionFadeIn(),
         );
     }
 }

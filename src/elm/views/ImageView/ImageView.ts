@@ -1,4 +1,4 @@
-import "./ImageView.less";
+import css from "./ImageView.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
@@ -16,8 +16,7 @@ import IIFrame from "../../widgets/IFrame/IIFrame";
 import IFrame from "../../widgets/IFrame/IFrame";
 
 class ImageView extends View {
-    public static cssName: string = "ImageView";
-    public cssName = ImageView.cssName;
+    public cssName = css.ImageView;
     public isFullPage: boolean = false;
 
     private static destorySpeed: number = 500;
@@ -86,7 +85,7 @@ class ImageView extends View {
     }
 
     public transitionIn(): void {
-        triggerTransitionIn(this.elm, ImageView.transitionInSpeed);
+        triggerTransitionIn(css, this.elm, ImageView.transitionInSpeed);
     }
 
     private setImage(image: HTMLImageElement): void {

@@ -1,11 +1,10 @@
-import "./stickyBar.less";
+import css from "./stickyBar.less";
 
 import removeChildren from "../../../utils/removeChildren";
 import Widget from "../../../core/widget/Widget";
 
 class StickyBar extends Widget {
-    public static cssName = "stickyBar";
-    public cssName = StickyBar.cssName;
+    public cssName = css.stickyBar;
     protected elm: HTMLDivElement;
     private bar: HTMLDivElement;
     private text: HTMLDivElement;
@@ -26,13 +25,13 @@ class StickyBar extends Widget {
 
     public setup() {
         super.setup();
-        this.text.classList.add("text");
-        this.bar.classList.add("bar");
+        this.text.classList.add(css.text);
+        this.bar.classList.add(css.bar);
         this.bar.appendChild(this.text);
         this.elm.appendChild(this.bar);
 
         if (!StickyBar.supportsStyleSticky) {
-            this.elm.classList.add("poly");
+            this.elm.classList.add(css.poly);
             this.useStickyPolyfill();
         }
     }
@@ -80,10 +79,10 @@ class StickyBar extends Widget {
         }
 
         if (this.polyOffset < this.parent.scrollTop) {
-            this.elm.classList.add("polyFixed");
+            this.elm.classList.add(css.polyFixed);
             this.polyFixed = true;
         } else {
-            this.elm.classList.remove("polyFixed");
+            this.elm.classList.remove(css.polyFixed);
             this.polyFixed = false;
         }
     }

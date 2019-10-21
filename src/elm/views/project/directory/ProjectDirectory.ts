@@ -1,4 +1,4 @@
-import "./ProjectDirectory.less";
+import css from "./ProjectDirectory.less";
 
 import AppState from "../../../../core/types/AppState";
 import ContentMan from "../../../../components/contentMan/contentMan";
@@ -29,8 +29,7 @@ type LinkMatch = {
  */
 
 class ProjectDirectory extends View {
-    public static cssName = "ProjectDirectory";
-    public cssName = ProjectDirectory.cssName;
+    public cssName = css.ProjectDirectory;
     public isFullPage = true;
 
     protected elm: HTMLDivElement;
@@ -82,13 +81,13 @@ class ProjectDirectory extends View {
 
     private createContainer(): HTMLDivElement {
         const container = document.createElement("div");
-        container.classList.add("longTextContainer");
+        container.classList.add(css.longTextContainer);
         return container;
     }
 
     private createTitle(): HTMLHeadingElement {
         const title = document.createElement("h1");
-        title.classList.add("title");
+        title.classList.add(css.title);
         title.innerText = ProjectDirectory.defaultTitle;
         this.container.appendChild(title);
         return title;
@@ -96,7 +95,7 @@ class ProjectDirectory extends View {
 
     private createPageContent(): HTMLDivElement {
         const pageContent = document.createElement("div");
-        pageContent.classList.add("pageContent");
+        pageContent.classList.add(css.pageContent);
         this.container.appendChild(pageContent);
         return pageContent;
     }
@@ -140,7 +139,7 @@ class ProjectDirectory extends View {
     }
 
     private markAsLoading(elm: HTMLElement) {
-        elm.classList.add("loading");
+        elm.classList.add(css.loading);
     }
 
     private navigate(link: string): boolean {
@@ -225,7 +224,7 @@ class ProjectDirectory extends View {
                 const href = url.resolve(this.contentHref, hrefAttrib);
                 anchor.href = href;
                 this.mapLinkToProject(href)
-                    .then(e => { if (e) { anchor.classList.add("hasProjectInfo"); } });
+                    .then(e => { if (e) { anchor.classList.add(css.hasProjectInfo); } });
             }
         }
     }

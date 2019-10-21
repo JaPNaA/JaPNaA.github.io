@@ -1,3 +1,5 @@
+import css from "./projectCard.less";
+
 import IApp from "../../../core/types/app/IApp";
 import keyIsModified from "../../../utils/keyIsModified";
 
@@ -29,10 +31,10 @@ abstract class BaseProjectCard {
         this.app = app;
 
         this.elm = document.createElement("div");
-        this.elm.classList.add("projectCard");
+        this.elm.classList.add(css.projectCard);
 
         this.cardElm = document.createElement("a");
-        this.cardElm.classList.add("card");
+        this.cardElm.classList.add(css.card);
         this.elm.appendChild(this.cardElm);
     }
 
@@ -79,7 +81,7 @@ abstract class BaseProjectCard {
 
     protected createBackground(): HTMLDivElement {
         const background = document.createElement("div");
-        background.classList.add("background");
+        background.classList.add(css.background);
         background.style.backgroundColor = "transparent";
         return background;
     }
@@ -93,7 +95,7 @@ abstract class BaseProjectCard {
 
     private createContentBackgroundOverlay(): HTMLDivElement {
         const background = document.createElement("div");
-        background.classList.add("backgroundOverlay");
+        background.classList.add(css.backgroundOverlay);
         // same background color as cardElm
         if (this.cardElm.style.backgroundColor) {
             background.style.backgroundColor = this.cardElm.style.backgroundColor;
@@ -103,7 +105,7 @@ abstract class BaseProjectCard {
 
     private createTextContainer(): HTMLDivElement {
         const container = document.createElement("div");
-        container.classList.add("textContainer");
+        container.classList.add(css.textContainer);
         container.appendChild(this.createContentTitle());
         container.appendChild(this.createContentDescription());
         return container;
@@ -111,14 +113,14 @@ abstract class BaseProjectCard {
 
     private createContentTitle(): HTMLDivElement {
         const title = document.createElement("h2");
-        title.classList.add("title");
+        title.classList.add(css.title);
         title.innerText = this.cardTitle;
         return title;
     }
 
     private createContentDescription(): HTMLDivElement {
         const description = document.createElement("div");
-        description.classList.add("description");
+        description.classList.add(css.description);
         description.setAttribute("aria-hidden", this.isContentDescriptionImportant ? "false" : "true");
         this.contentDescriptionElm = description;
 
@@ -178,7 +180,7 @@ abstract class BaseProjectCard {
     }
 
     private addMouseoverStyles(): void {
-        this.cardElm.classList.add("mouseover");
+        this.cardElm.classList.add(css.mouseover);
         if (this.contentDescriptionElm && this.contentDescriptionTextElm) {
             this.contentDescriptionElm.style.height =
                 this.contentDescriptionTextElm.getBoundingClientRect().height + "px";
@@ -186,7 +188,7 @@ abstract class BaseProjectCard {
     }
 
     private removeMouseoverStyles(): void {
-        this.cardElm.classList.remove("mouseover");
+        this.cardElm.classList.remove(css.mouseover);
         if (this.contentDescriptionElm) {
             this.contentDescriptionElm.style.height = "0";
         }

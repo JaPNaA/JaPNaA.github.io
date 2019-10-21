@@ -1,4 +1,4 @@
-import "../../../styles/embededApp.less";
+import css from "../../../styles/embededApp.less";
 
 import IApp from "../types/app/IApp";
 import FakeAppURL from "./components/FakeURL";
@@ -20,7 +20,7 @@ class EmbededApp extends BaseApp {
         this.parentApp = parentApp;
         this.parentElm = parentElm;
         this.routes = parentApp.routes;
-        this.mainElm.classList.add("embededApp");
+        this.mainElm.classList.add(css.embededApp);
         this.url = new FakeAppURL();
     }
 
