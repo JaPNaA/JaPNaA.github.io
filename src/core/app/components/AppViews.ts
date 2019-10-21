@@ -110,8 +110,9 @@ class AppViews implements IAppViews {
         this.triggerClose(view);
     }
 
-    public getA(viewClass: string): View | undefined {
-        return this.activeViews.find(e => viewClass === e.viewPath);
+    public getA(viewPath: string): View | undefined {
+        const lowerViewPath = viewPath.toLowerCase();
+        return this.activeViews.find(e => lowerViewPath === e.viewPath);
     }
 
     public getById(id: number): View | undefined {
