@@ -10,7 +10,7 @@ import indexRoutes from "./elm/views/routes";
 class App extends MainApp {
     public view404 = "view404";
     public splashScreenView = "SplashScreen";
-    public indexView = "Overview";
+    // public indexView = "Overview";
     public viewError = "ErrorView";
 
     public autoRestoreState = true;

@@ -73,8 +73,12 @@ abstract class MainApp extends BaseApp {
         if (!this.autoRestoreState) { return; }
         await this.url.restoreIfShould();
 
-        if (!this.url.restored && this.indexView) {
-            this.views.open(this.indexView);
+        if (!this.url.restored) {
+            if (this.indexView) {
+                this.views.open(this.indexView);
+            } else {
+                this.views.open("");
+            }
         }
     }
 }

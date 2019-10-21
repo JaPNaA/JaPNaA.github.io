@@ -12,7 +12,7 @@ abstract class View {
 
     public isFullPage: boolean = false;
     public viewName!: string;
-    public viewPath!: string;
+    public viewPath: string;
     public showMenuButton: boolean = true;
 
     public id: number;
@@ -39,7 +39,6 @@ abstract class View {
     }
 
     public setup(): void {
-        this.viewPath = this.viewPath || this.constructor.name;
         this.elm.classList.add("view");
         this.elm.classList.add(this.viewName);
 

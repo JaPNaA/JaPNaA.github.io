@@ -8,12 +8,12 @@ class AppStateBuilder implements AppState {
     public directURL?: string;
 
     public build(): AppState {
-        if (!this.viewPath && !this.hash) { throw new Error("Missing viewName"); }
+        if (this.viewPath === undefined && this.hash === undefined) { throw new Error("Missing viewName"); }
 
         let viewName = this.viewPath;
         let stateData = this.stateData;
 
-        if (!this.viewPath && this.hash) {
+        if (this.viewPath === undefined && this.hash) {
             viewName = this.hash;
         } else if (this.hash) {
             if (!stateData) {
