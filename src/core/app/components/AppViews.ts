@@ -9,7 +9,7 @@ import createAppState from "../../utils/createAppState";
 import errorToDetailedString from "../../utils/errorToDetailedString";
 import ViewWithFallbackStatus from "../../types/view/ViewWithFallbackStatus";
 import BeforeSetupCallback from "../../types/BeforeSetupCallback";
-import NoRouteError from "../../components/router/NoRouteError";
+import NoRouteError from "../../components/router/errors/NoRouteError";
 
 // handles views
 
