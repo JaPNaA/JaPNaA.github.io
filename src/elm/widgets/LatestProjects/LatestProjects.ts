@@ -101,7 +101,7 @@ class LatestProjects extends Widget {
 
     private onViewMoreClick(e: MouseEvent): void {
         e.preventDefault();
-        this.app.views.switchAndInit("BrowseProjects");
+        this.app.views.switchAndInit("project.browse");
     }
 }
 
