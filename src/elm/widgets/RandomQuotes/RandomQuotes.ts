@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/randomQuotes.less";
+import "./randomQuotes.less";
 
 import Widget from "../../../core/widget/Widget";
 import IApp from "../../../core/types/app/IApp";

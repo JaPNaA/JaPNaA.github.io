@@ -1,7 +1,13 @@
 class CaseInsensitiveMap<T> implements Map<string, T> {
     private map: Map<string, T>;
 
-    constructor(arr?: [string, T][]) { this.map = new Map(arr); }
+    constructor(arr?: [string, T][]) {
+        this.map = new Map(
+            arr && arr.map(
+                e => [e[0].toLowerCase(), e[1]]
+            )
+        );
+    }
 
     public get(key: string): T | undefined {
         return this.map.get(key.toLowerCase());

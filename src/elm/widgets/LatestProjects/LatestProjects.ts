@@ -1,4 +1,4 @@
-import "../../../../styles/widgets/latestProjects.less";
+import "./latestProjects.less";
 
 import { V2Project } from "../../../types/project/v2/V2Types";
 import ContentMan from "../../../components/contentMan/contentMan";

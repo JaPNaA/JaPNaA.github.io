@@ -39,7 +39,6 @@ class Router {
 
         if (typeof resolved === 'function') {
             const viewOrWidget = await resolved();
-            console.log(viewOrWidget.default);
             if (viewOrWidget.default.prototype instanceof View) {
                 return viewOrWidget.default as ViewClass;
             } else {
