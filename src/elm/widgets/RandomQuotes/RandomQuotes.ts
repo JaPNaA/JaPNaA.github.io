@@ -6,8 +6,8 @@ import siteConfig from "../../../SiteConfig";
 import openImageView from "../../../utils/view/openImageView";
 
 class RandomQuotes extends Widget {
-    public static widgetName = "randomQuotes";
-    public widgetName = RandomQuotes.widgetName;
+    public static cssName = "randomQuotes";
+    public cssName = RandomQuotes.cssName;
 
     private app: IApp;
     private childrenArg: Element[];

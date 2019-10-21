@@ -4,8 +4,8 @@ import removeChildren from "../../../utils/removeChildren";
 import Widget from "../../../core/widget/Widget";
 
 class StickyBar extends Widget {
-    public static widgetName = "stickyBar";
-    public widgetName = StickyBar.widgetName;
+    public static cssName = "stickyBar";
+    public cssName = StickyBar.cssName;
     protected elm: HTMLDivElement;
     private bar: HTMLDivElement;
     private text: HTMLDivElement;

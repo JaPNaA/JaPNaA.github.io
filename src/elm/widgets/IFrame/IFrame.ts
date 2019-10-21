@@ -6,8 +6,8 @@ import Handler from "../../../core/utils/events/Handler";
 import IIFrame from "./IIFrame";
 
 class IFrame extends Widget implements IIFrame {
-    public static widgetName = "iframe";
-    public widgetName = IFrame.widgetName;
+    public static cssName = "iframe";
+    public cssName = IFrame.cssName;
     protected elm: HTMLIFrameElement;
 
     private eventHandlers: EventHandlers;

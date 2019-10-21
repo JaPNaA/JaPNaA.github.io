@@ -5,8 +5,8 @@ import CheckboxCheck from "./CheckboxCheck";
 import Handler from "../../../core/utils/events/Handler";
 
 class Checkbox extends Widget {
-    public static widgetName = "checkboxLabeled";
-    public widgetName = Checkbox.widgetName;
+    public static cssName = "checkboxLabeled";
+    public cssName = Checkbox.cssName;
 
     protected elm: Element;
     private checkbox: CheckboxCheck;

@@ -14,8 +14,8 @@ import siteResources from "../../../core/siteResources";
 import triggerTransitionIn from "../../../core/utils/triggerTransitionIn";
 
 class CardJSONv1Elm extends Widget implements ISavableScroll {
-    public static widgetName = "cardJSONv1Elm";
-    public widgetName = CardJSONv1Elm.widgetName;
+    public static cssName = "cardJSONv1Elm";
+    public cssName = CardJSONv1Elm.cssName;
 
     public scrollingElm: HTMLElement;
 

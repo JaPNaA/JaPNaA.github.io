@@ -17,6 +17,7 @@ import siteConfig from "../SiteConfig";
  */
 export default function heroViewOpenTransition<T extends View>(
     app: IApp,
+    css: any,
     zoomTargetElm: HTMLElement,
     viewDescriptor: ViewDescriptor,
     newViewState: string | AppState,
@@ -28,7 +29,7 @@ export default function heroViewOpenTransition<T extends View>(
         const cssTransitionEnd = wait(siteConfig.cssVars.heroTransitionInTime);
 
         resetElementPosition(zoomTargetElm);
-        zoomTargetElm.classList.add("heroTransitionIn");
+        zoomTargetElm.classList.add(css.heroTransitionIn);
 
         const viewWithFallbackStatus = await app.views.createAndSetupViewWithFallbacks(viewDescriptor, newViewState);
 

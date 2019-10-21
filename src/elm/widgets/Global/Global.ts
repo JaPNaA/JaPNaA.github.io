@@ -9,8 +9,8 @@ import GlobalKeybindings from "./GlobalKeybindings";
 
 /** Initalized at start of page */
 class GlobalWidgets extends Widget {
-    public static widgetName: string = "GlobalWidgets";
-    public widgetName: string = GlobalWidgets.widgetName;
+    public static cssName: string = "GlobalWidgets";
+    public cssName: string = GlobalWidgets.cssName;
 
     protected elm: HTMLDivElement;
     private app: App;

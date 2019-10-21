@@ -1,4 +1,4 @@
-import "./projectCard.less";
+import css from "./projectCard.less";
 
 import Widget from "../../../core/widget/Widget";
 import isWithLocation from "../../../utils/isProjectCardWithLocation";
@@ -11,8 +11,7 @@ import ProjectCardInitData from "./ProjectCardInitData";
  * ProjectCardFactory, but as a Widget
  */
 class ProjectCard extends Widget {
-    public static widgetName = "projectCardContainer";
-    public widgetName = ProjectCard.widgetName;
+    public cssName = css.projectCardContainer;
     public projectCard: BaseProjectCard;
 
     protected elm: HTMLDivElement;

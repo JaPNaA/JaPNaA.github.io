@@ -19,8 +19,8 @@ import ISavableScroll from "../../viewPrivateData/saveScroll/ISaveScrollable";
 import resolveUrl from "../../../utils/resolveUrl";
 
 class ProjectJSONv2Elm extends Widget implements ISavableScroll {
-    public static widgetName = "projectJSONv2Elm";
-    public widgetName = ProjectJSONv2Elm.widgetName;
+    public static cssName = "projectJSONv2Elm";
+    public cssName = ProjectJSONv2Elm.cssName;
 
     public scrollingElm: HTMLElement;
     protected elm: HTMLDivElement;

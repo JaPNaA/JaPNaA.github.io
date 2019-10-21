@@ -4,8 +4,8 @@ import Hexagon from "./Hexagon";
 import HexagonSystems from "./systems/HexagonSystems";
 
 class HexagonsBackground extends Widget {
-    public static widgetName = "hexagonsBackground";
-    public widgetName = HexagonsBackground.widgetName;
+    public static cssName = "hexagonsBackground";
+    public cssName = HexagonsBackground.cssName;
 
     protected elm: HTMLCanvasElement;
 

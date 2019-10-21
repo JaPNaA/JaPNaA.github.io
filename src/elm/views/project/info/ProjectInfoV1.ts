@@ -6,8 +6,8 @@ import Widget from "../../../../core/widget/Widget";
 import ISavableScroll from "../../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
 class ProjectInfoV1 extends Widget implements ISavableScroll {
-    public static widgetName = "projectInfoV1";
-    public widgetName = ProjectInfoV1.widgetName;
+    public static cssName = "projectInfoV1";
+    public cssName = ProjectInfoV1.cssName;
 
     public scrollingElm: HTMLElement;
 

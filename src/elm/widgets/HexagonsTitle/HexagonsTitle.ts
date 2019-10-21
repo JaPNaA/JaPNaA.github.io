@@ -6,8 +6,8 @@ import HexagonsTitleRenderer from "./HexagonsTitleRenderer";
 import IApp from "../../../core/types/app/IApp";
 
 class HexagonsTitle extends Widget {
-    public static widgetName = "hexagonsTitle";
-    public widgetName = HexagonsTitle.widgetName;
+    public static cssName = "hexagonsTitle";
+    public cssName = HexagonsTitle.cssName;
 
     public width: number;
     public height: number;

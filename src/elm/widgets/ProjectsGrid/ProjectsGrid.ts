@@ -17,8 +17,8 @@ import ProjectCardInitData from "../ProjectCard/ProjectCardInitData";
 
 class ProjectsGrid extends Widget {
     protected elm: HTMLDivElement;
-    public static widgetName: string = "projectsGrid";
-    public widgetName = ProjectsGrid.widgetName;
+    public static cssName: string = "projectsGrid";
+    public cssName = ProjectsGrid.cssName;
     private app: IApp;
 
     private static readonly minColWidth = 128;

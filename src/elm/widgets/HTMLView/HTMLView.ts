@@ -10,8 +10,8 @@ import defaultHtmlViewParserOptions from "./defaultHtmlViewParserOptions";
 
 class HTMLView extends Widget {
     protected elm: Element;
-    public static widgetName: string = "HTMLView";
-    public widgetName = HTMLView.widgetName;
+    public static cssName: string = "HTMLView";
+    public cssName = HTMLView.cssName;
 
     private doc?: IHTMLViewDocument;
     private parser: HTMLViewParser;

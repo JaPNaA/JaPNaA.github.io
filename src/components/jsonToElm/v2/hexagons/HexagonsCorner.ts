@@ -7,8 +7,8 @@ import HexagonCornerHexagon from "./HexagonCornerHexagon";
 import siteConfig from "../../../../SiteConfig";
 
 class HexagonsCorner extends Widget {
-    public static widgetName: string = "hexagonsCorner";
-    public widgetName = HexagonsCorner.widgetName;
+    public static cssName: string = "hexagonsCorner";
+    public cssName = HexagonsCorner.cssName;
 
     protected elm: HTMLElement;
 

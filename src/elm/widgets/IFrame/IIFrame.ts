@@ -2,7 +2,7 @@ import Handler from "../../../core/utils/events/Handler";
 import Widget from "../../../core/widget/Widget";
 
 export default interface IIFrame extends Widget {
-    widgetName: string;
+    cssName: string;
     setSrc(src: string): void;
     focus(): void;
     close(): void;

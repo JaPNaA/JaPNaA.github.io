@@ -11,8 +11,8 @@ import Widget from "../../../core/widget/Widget";
 import resolveUrl from "../../../utils/resolveUrl";
 
 class LatestProjects extends Widget {
-    public static widgetName = "latestProjects";
-    public widgetName = LatestProjects.widgetName;
+    public static cssName = "latestProjects";
+    public cssName = LatestProjects.cssName;
 
     protected elm: HTMLDivElement;
 

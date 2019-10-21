@@ -6,8 +6,8 @@ import SiteSettings from "../../../SiteSettings";
 import siteConfig from "../../../SiteConfig";
 
 class SiteSettingsWidget extends Widget {
-    public static widgetName = "settings";
-    public widgetName = SiteSettingsWidget.widgetName;
+    public static cssName = "settings";
+    public cssName = SiteSettingsWidget.cssName;
 
     protected elm: Element;
 

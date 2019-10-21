@@ -5,8 +5,8 @@ import ProjectJSONv2Elm from "../../../../components/jsonToElm/v2/ProjectJSONv2E
 import ISavableScroll from "../../../../components/viewPrivateData/saveScroll/ISaveScrollable";
 
 class ProjectInfoV2 extends Widget implements ISavableScroll {
-    public static widgetName = "projectInfoV2";
-    public widgetName = ProjectInfoV2.widgetName;
+    public static cssName = "projectInfoV2";
+    public cssName = ProjectInfoV2.cssName;
 
     public scrollingElm: HTMLElement;
 

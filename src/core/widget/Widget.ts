@@ -1,17 +1,17 @@
 abstract class Widget {
     protected abstract elm: Element;
     protected parent?: Element;
-    public widgetName?: string;
+    public cssName?: string;
 
     constructor() { }
 
     public setup(): void {
-        const widgetName = this.widgetName || this.constructor.name;
+        const widgetName = this.cssName || this.constructor.name;
 
         this.elm.classList.add("widget");
         this.elm.classList.add(widgetName);
 
-        this.widgetName = widgetName;
+        this.cssName = widgetName;
     }
 
     public destory(): void { }

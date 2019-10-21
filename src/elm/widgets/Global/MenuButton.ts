@@ -7,8 +7,8 @@ import resolveUrl from "../../../utils/resolveUrl";
 import keyIsModified from "../../../utils/keyIsModified";
 
 class MenuButton extends Widget {
-    public static widgetName: string = "MenuButton";
-    public widgetName: string = MenuButton.widgetName;
+    public static cssName: string = "MenuButton";
+    public cssName: string = MenuButton.cssName;
 
     protected elm: HTMLDivElement;
     private app: IApp;
