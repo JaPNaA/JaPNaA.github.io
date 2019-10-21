@@ -1,7 +1,6 @@
 import Widget from "../../widget/Widget";
-import WidgetMetadata from "./WidgetMetadata";
 
-interface WidgetClass extends WidgetMetadata {
+interface WidgetClass {
     new(...args: any): Widget;
 }
 
