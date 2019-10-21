@@ -1,121 +1,12 @@
 @import "../../../../styles/variables.less";
 
-.main .Menu {
-    @background-opacity: 0.3;
+@background-opacity: 0.3;
+
+.Menu {
     position: absolute;
     // TODO: Change state of GlobalWidget to close button instead of covering it
     z-index: 4; // above global widget
     background-color: transparent;
-
-    .background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.3);
-    }
-
-    .contents {
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        height: 100%;
-        max-width: 494px;
-        min-width: 256px;
-        width: 33vw;
-        box-sizing: border-box;
-
-        background-color: $$background-black;
-        color: $$color-white;
-        overflow-y: auto;
-    }
-
-    .scrollContainer {
-        position: relative;
-        padding-left: 0;
-        padding-right: 0;
-        padding-top: 16px;
-        padding-bottom: 64px;
-
-        min-height: 100%;
-        height: auto;
-
-        box-sizing: border-box;
-    }
-
-    // --- Items in menu
-
-    .title,
-    .heading {
-        margin-top: 8px;
-        margin-left: 16px;
-        margin-right: 16px;
-    }
-
-    .title {
-        font-size: 2em;
-        color: $$color-white-bright;
-        margin-bottom: 16px;
-    }
-
-    .heading {
-        color: $$color-white-bright;
-        margin-bottom: 8px;
-    }
-
-    .copy {
-        position: absolute;
-        bottom: 16px;
-        left: 16px;
-        // margin: 16px;
-        color: #5c5c5c;
-    }
-
-    .viewButton {
-        display: block;
-        align-items: center;
-
-        width: 100%;
-        background-color: rgba(255, 255, 255, 0);
-        color: $$color-white;
-        border: none;
-        padding: 8px 16px;
-
-        text-align: left;
-        cursor: pointer;
-        box-sizing: border-box;
-        transition: 0.5s;
-
-        box-shadow: none;
-
-        &:hover {
-            transition: none;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        &.active {
-            display: flex;
-        }
-
-        .label {
-            display: inline-block;
-        }
-
-        .circle {
-            margin-right: 6px;
-
-            border-radius: 50%;
-            width: 8px;
-            height: 8px;
-            background-color: white;
-        }
-    }
-
-    .settingsContainer {
-        padding: 16px;
-    }
 
     // --- Transitions
 
@@ -161,4 +52,114 @@
             will-change: transform;
         }
     }
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.contents {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    height: 100%;
+    max-width: 494px;
+    min-width: 256px;
+    width: 33vw;
+    box-sizing: border-box;
+
+    background-color: $$background-black;
+    color: $$color-white;
+    overflow-y: auto;
+}
+
+.scrollContainer {
+    position: relative;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 16px;
+    padding-bottom: 64px;
+
+    min-height: 100%;
+    height: auto;
+
+    box-sizing: border-box;
+}
+
+// --- Items in menu
+
+.title,
+.heading {
+    margin-top: 8px;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.title {
+    font-size: 2em;
+    color: $$color-white-bright;
+    margin-bottom: 16px;
+}
+
+.heading {
+    color: $$color-white-bright;
+    margin-bottom: 8px;
+}
+
+.copy {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    // margin: 16px;
+    color: #5c5c5c;
+}
+
+.viewButton {
+    display: block;
+    align-items: center;
+
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    color: $$color-white;
+    border: none;
+    padding: 8px 16px;
+
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: 0.5s;
+
+    box-shadow: none;
+
+    &:hover {
+        transition: none;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &.active {
+        display: flex;
+    }
+
+    .label {
+        display: inline-block;
+    }
+
+    .circle {
+        margin-right: 6px;
+
+        border-radius: 50%;
+        width: 8px;
+        height: 8px;
+        background-color: white;
+    }
+}
+
+.settingsContainer {
+    padding: 16px;
 }

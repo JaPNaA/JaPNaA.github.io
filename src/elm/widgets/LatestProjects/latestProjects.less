@@ -1,22 +1,24 @@
 @import "../../../../styles/variables.less";
 
-.widget.latestProjects {
-    .latestProjectCard {
-        display: inline-block;
+.latestProjects {
+    display: block;
+}
 
-        @media only screen and (max-width: @long-text-container-max-width) {
-            height: 50vw;
-        }
+.latestProjectCard {
+    display: inline-block;
 
-        height: @long-text-container-max-width / 2;
-        width: 50%;
-
-        &.latest {
-            width: 100%;
-        }
+    @media only screen and (max-width: @long-text-container-max-width) {
+        height: 50vw;
     }
 
-    .viewMore {
-        text-align: right;
+    height: @long-text-container-max-width / 2;
+    width: 50%;
+
+    &.latest {
+        width: 100%;
     }
+}
+
+.viewMore {
+    text-align: right;
 }

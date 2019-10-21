@@ -1,6 +1,6 @@
 @import "../../../../styles/variables.less";
 
-.widget.stickyBar {
+.stickyBar {
     position: -webkit-sticky;
     position: sticky;
     top: 0px;
@@ -9,13 +9,6 @@
     height: @sticky-bar-height;
     z-index: 1;
 
-    .bar:extend(.widget.stickyBar) {
-        background-color: @theme-color;
-        background-image: @header-gradient;
-        z-index: 1;
-        box-shadow: @box-shadow-12dp;
-    }
-
     &.poly .bar {
         position: relative;
     }
@@ -23,21 +16,28 @@
     &.poly.polyFixed .bar {
         position: fixed;
     }
+}
 
-    .text {
-        @text-height: @sticky-bar-height - @sticky-bar-padding * 2;
+.bar:extend(.widget.stickyBar) {
+    background-color: @theme-color;
+    background-image: @header-gradient;
+    z-index: 1;
+    box-shadow: @box-shadow-12dp;
+}
 
-        color: $$color-white-bright;
-        line-height: @text-height;
-        padding: @sticky-bar-padding;
-        margin-left: 8px;
+.text {
+    @text-height: @sticky-bar-height - @sticky-bar-padding * 2;
 
-        font-size: 36px;
-        font-family: "Share Tech Mono", Consolas, monospace;
+    color: $$color-white-bright;
+    line-height: @text-height;
+    padding: @sticky-bar-padding;
+    margin-left: 8px;
 
-        img {
-            height: @text-height;
-            width: auto;
-        }
+    font-size: 36px;
+    font-family: "Share Tech Mono", Consolas, monospace;
+
+    img {
+        height: @text-height;
+        width: auto;
     }
 }

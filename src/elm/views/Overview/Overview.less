@@ -1,36 +1,34 @@
-.main .Overview {
+.Overview {
     padding: 0;
     overflow-x: hidden;
+}
 
-    .contentContainer {
-        margin-top: 0;
-        text-align: center;
+.contentContainer {
+    margin-top: 0;
+    text-align: center;
 
-        .longTextContainer {
-            margin-top: 4px;
-        }
+    .longTextContainer {
+        margin-top: 4px;
+    }
+}
+
+.stickyBar {
+    img.hexagon {
+        will-change: transform;
+        transform: scale(1.6);
+        margin-right: 18px;
+        animation: rotateAnimation 12s ease 0s infinite normal forwards;
     }
 
-    .widget.stickyBar {
-        .text {
-            img.hexagon {
-                will-change: transform;
-                transform: scale(1.6);
-                margin-right: 18px;
-                animation: rotateAnimation 12s ease 0s infinite normal forwards;
-            }
-
-            @keyframes rotateAnimation {
-                0% {
-                    transform: scale(1.6) rotate(0deg);
-                }
-                50% {
-                    transform: scale(1.6) rotate(20deg);
-                }
-                100% {
-                    transform: scale(1.6) rotate(0deg);
-                }
-            }
+    @keyframes rotateAnimation {
+        0% {
+            transform: scale(1.6) rotate(0deg);
+        }
+        50% {
+            transform: scale(1.6) rotate(20deg);
+        }
+        100% {
+            transform: scale(1.6) rotate(0deg);
         }
     }
 }

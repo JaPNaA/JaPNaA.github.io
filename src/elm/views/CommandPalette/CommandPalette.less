@@ -1,84 +1,84 @@
 @import "../../../../styles/variables.less";
 
-.main .CommandPalette {
-    @height: 48px;
-    @font-size: 1.1em;
+@height: 48px;
+@font-size: 1.1em;
 
+.CommandPalette {
     background-color: transparent;
 
     text-align: center;
     padding: 0;
+}
 
-    .centerContainer {
-        background-color: transparent;
+.centerContainer {
+    background-color: transparent;
+}
+
+.contentContainer {
+    position: relative;
+    z-index: 1;
+    height: auto;
+
+    margin-top: 15vh;
+    margin-top: calc(15vh - (@height / 2));
+    box-shadow: @box-shadow-24dp;
+}
+
+.input {
+    background-color: $$background-color;
+    color: $$color;
+
+    font-size: @font-size;
+    font-family: "Roboto", sans-serif;
+
+    width: 100%;
+    height: @height;
+    outline: none;
+    border: 4px solid @theme-color-blue;
+    padding: 8px 12px;
+
+    box-sizing: border-box;
+}
+
+.resultsContainer {
+    background-color: $$background-color;
+    max-height: 50vh;
+
+    overflow: auto;
+}
+
+.result {
+    @height: 42px;
+    @padding-horizontal: 24px;
+    @padding-vertical: 12px;
+    position: relative;
+    padding: @padding-vertical @padding-horizontal;
+    height: @height;
+    box-sizing: border-box;
+
+    &.clickable {
+        cursor: pointer;
     }
 
-    .contentContainer {
-        position: relative;
-        z-index: 1;
-        height: auto;
-
-        margin-top: 15vh;
-        margin-top: calc(15vh - (@height / 2));
-        box-shadow: @box-shadow-24dp;
-
-        .input {
-            background-color: $$background-color;
-            color: $$color;
-
-            font-size: @font-size;
-            font-family: "Roboto", sans-serif;
-
-            width: 100%;
-            height: @height;
-            outline: none;
-            border: 4px solid @theme-color-blue;
-            padding: 8px 12px;
-
-            box-sizing: border-box;
-        }
-
-        .resultsContainer {
-            background-color: $$background-color;
-            max-height: 50vh;
-
-            overflow: auto;
-
-            .result {
-                @height: 42px;
-                @padding-horizontal: 24px;
-                @padding-vertical: 12px;
-                position: relative;
-                padding: @padding-vertical @padding-horizontal;
-                height: @height;
-                box-sizing: border-box;
-
-                &.clickable {
-                    cursor: pointer;
-                }
-
-                &.selected {
-                    background-color: $$background-color-darkened;
-                }
-
-                &.hasDescription .description {
-                    position: absolute;
-                    right: @padding-horizontal;
-                    top: 0;
-
-                    opacity: 0.4;
-                    font-size: 0.8em;
-                    line-height: @height;
-                }
-            }
-        }
+    &.selected {
+        background-color: $$background-color-darkened;
     }
 
-    .backgroundClickCatcher {
+    &.hasDescription .description {
         position: absolute;
+        right: @padding-horizontal;
         top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+
+        opacity: 0.4;
+        font-size: 0.8em;
+        line-height: @height;
     }
+}
+
+.backgroundClickCatcher {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

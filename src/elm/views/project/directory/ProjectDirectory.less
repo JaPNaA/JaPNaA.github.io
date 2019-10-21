@@ -1,8 +1,9 @@
 @import "../../../../../styles/variables.less";
 
-.view.ProjectDirectory {
-    @link-color: @theme-color-blue;
-    @link-white: #abbce0;
+@link-color: @theme-color-blue;
+@link-white: #abbce0;
+
+.ProjectDirectory {
     overflow-y: scroll;
     padding: 0;
     text-align: center;
@@ -17,39 +18,39 @@
             display: block;
             width: 0;
         }
-    }
 
-    .loading {
-        background-color: @link-color;
-        background-image: linear-gradient(
-            90deg,
-            @link-color,
-            @link-white,
-            @link-color
-        );
-        background-size: 200%;
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        -webkit-text-fill-color: transparent;
-        animation: loading 1s linear 0s infinite normal;
-    }
-
-    @keyframes loading {
-        0% {
-            background-position-x: -50%;
-        }
-        100% {
-            background-position-x: 150%;
+        &.hasProjectInfo {
+            transition: color 0.15s ease-in-out;
+            color: @accent-color-red;
         }
     }
+}
 
-    h1.title {
-        margin-top: 8px;
+.title {
+    margin-top: 8px;
+}
+
+.loading {
+    background-color: @link-color;
+    background-image: linear-gradient(
+        90deg,
+        @link-color,
+        @link-white,
+        @link-color
+    );
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: loading 1s linear 0s infinite normal;
+}
+
+@keyframes loading {
+    0% {
+        background-position-x: -50%;
     }
-
-    .hasProjectInfo {
-        transition: color 0.15s ease-in-out;
-        color: @accent-color-red;
+    100% {
+        background-position-x: 150%;
     }
 }

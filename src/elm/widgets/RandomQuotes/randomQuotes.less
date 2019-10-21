@@ -1,76 +1,76 @@
 @import "../../../../styles/variables.less";
 
-.widget.randomQuotes {
+.randomQuotes {
     display: flex;
+}
 
-    &.hasImage .imageContainer {
-        display: flex;
-        align-items: center;
+.hasImage .imageContainer {
+    display: flex;
+    align-items: center;
 
-        min-width: 96px;
-        min-height: 96px;
-        width: 27.5%;
-        margin-right: 24px;
+    min-width: 96px;
+    min-height: 96px;
+    width: 27.5%;
+    margin-right: 24px;
 
-        img {
-            display: block;
-            width: 100%;
-            height: auto;
-            cursor: pointer;
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+}
+
+.quoteContainer {
+    display: flex;
+    align-items: center;
+
+    position: relative;
+    flex: 1 1;
+
+    padding-left: 16px;
+    height: auto;
+
+    overflow: hidden;
+}
+
+.quote {
+    @margin-factor: 0.33;
+    @quote-font-size: 33vw;
+
+    display: block;
+    width: 100%;
+    margin-left: @quote-font-size * @margin-factor;
+    margin-right: @quote-font-size * @margin-factor;
+
+    &.fixFontSize {
+        @fixed-size: 0.33 * @long-text-container-max-width;
+
+        &::before,
+        &::after {
+            font-size: @fixed-size;
         }
+
+        margin-left: @fixed-size * @margin-factor;
+        margin-right: @fixed-size * @margin-factor;
     }
 
-    .quoteContainer {
-        display: flex;
-        align-items: center;
+    &::before,
+    &::after {
+        position: absolute;
+        opacity: 0.1;
+        font-size: @quote-font-size;
+    }
 
-        position: relative;
-        flex: 1 1;
+    &::before {
+        content: "\201c";
+        top: -0.1em;
+        left: 0;
+    }
 
-        padding-left: 16px;
-        height: auto;
-
-        overflow: hidden;
-
-        .quote {
-            @margin-factor: 0.33;
-            @quote-font-size: 33vw;
-
-            display: block;
-            width: 100%;
-            margin-left: @quote-font-size * @margin-factor;
-            margin-right: @quote-font-size * @margin-factor;
-
-            &.fixFontSize {
-                @fixed-size: 0.33 * @long-text-container-max-width;
-
-                &::before,
-                &::after {
-                    font-size: @fixed-size;
-                }
-
-                margin-left: @fixed-size * @margin-factor;
-                margin-right: @fixed-size * @margin-factor;
-            }
-
-            &::before,
-            &::after {
-                position: absolute;
-                opacity: 0.1;
-                font-size: @quote-font-size;
-            }
-
-            &::before {
-                content: "\201c";
-                top: -0.1em;
-                left: 0;
-            }
-
-            &::after {
-                content: "\201d";
-                bottom: -0.7em;
-                right: 0;
-            }
-        }
+    &::after {
+        content: "\201d";
+        bottom: -0.7em;
+        right: 0;
     }
 }

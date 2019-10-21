@@ -1,6 +1,6 @@
 @import "../../../../styles/variables.less";
 
-.main .SplashScreen {
+.SplashScreen {
     color: $$color;
     background-color: rgb(92, 92, 92);
 
@@ -10,13 +10,13 @@
     text-align: center;
     z-index: 7; // below globalWidgets
 
-    .child {
-        display: inline-block;
-    }
-
     &.destory {
         transition: 0.25s;
         transform: scaleY(0);
         opacity: 0;
     }
+}
+
+.child {
+    display: inline-block;
 }
