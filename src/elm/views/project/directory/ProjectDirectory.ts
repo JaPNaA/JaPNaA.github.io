@@ -29,8 +29,8 @@ type LinkMatch = {
  */
 
 class ProjectDirectory extends View {
-    public static viewName = "ProjectDirectory";
-    public viewName = ProjectDirectory.viewName;
+    public static cssName = "ProjectDirectory";
+    public cssName = ProjectDirectory.cssName;
     public isFullPage = true;
 
     protected elm: HTMLDivElement;

@@ -17,8 +17,8 @@ import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISave
  */
 
 class Overview extends View implements ISavableScroll {
-    public static viewName = "Overview";
-    public viewName = Overview.viewName;
+    public static cssName = "Overview";
+    public cssName = Overview.cssName;
     public isFullPage = true;
 
     public scrollingElm: HTMLElement;

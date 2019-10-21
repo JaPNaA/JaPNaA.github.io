@@ -12,8 +12,8 @@ import resolveUrl from "../../../utils/resolveUrl";
 import keyIsModified from "../../../utils/keyIsModified";
 
 class Menu extends View {
-    public static viewName: string = "Menu";
-    public viewName: string = Menu.viewName;
+    public static cssName: string = "Menu";
+    public cssName: string = Menu.cssName;
     public isFullPage: boolean = false;
 
     protected elm: HTMLDivElement;
@@ -185,7 +185,7 @@ class Menu extends View {
     private isTopViewA(viewName: string): boolean {
         const top = this.app.views.topFull();
         if (!top) { return false; }
-        return top.viewName === viewName;
+        return top.cssName === viewName;
     }
 }
 

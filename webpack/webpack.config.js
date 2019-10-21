@@ -13,8 +13,13 @@ const lessLoader = {
             options: {
                 hmr: process.env.NODE_ENV === 'development',
             },
+        }, {
+            loader: 'css-loader',
+            options: {
+                modules: true,
+                sourceMap: true
+            }
         },
-        'css-loader',
         'less-loader',
         path.resolve(__dirname, "./loaders/stylesheetVarMacro"),
         path.resolve(__dirname, "./loaders/stylesheetDoubleDefineMacro")

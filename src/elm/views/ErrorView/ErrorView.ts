@@ -5,8 +5,8 @@ import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
 
 class ErrorView extends View {
-    public static viewName = "ErrorView";
-    public viewName = ErrorView.viewName;
+    public static cssName = "ErrorView";
+    public cssName = ErrorView.cssName;
 
     protected elm: HTMLDivElement;
 

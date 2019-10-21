@@ -12,9 +12,9 @@ import AppState from "../../../../core/types/AppState";
  */
 
 class BrowseProjects extends View {
-    public static viewName = "BrowseProjects";
+    public static cssName = "BrowseProjects";
     public isFullPage = true;
-    public viewName = BrowseProjects.viewName;
+    public cssName = BrowseProjects.cssName;
 
     protected elm: HTMLDivElement;
     private projectsGrid: ProjectsGrid;

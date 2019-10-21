@@ -15,8 +15,8 @@ import AppState from "../../../core/types/AppState";
 class FrameView extends View {
     public static destoryTime = 400;
     public static transitionInTime = 400;
-    public static viewName = "FrameView";
-    public viewName = FrameView.viewName;
+    public static cssName = "FrameView";
+    public cssName = FrameView.cssName;
     public showMenuButton = false;
     public isFullPage = true;
 

@@ -29,8 +29,8 @@ type SearchTfIdf = TfIdf<number | ProjectLink>;
  */
 
 class Search extends View {
-    public static viewName = "Search";
-    public viewName = Search.viewName;
+    public static cssName = "Search";
+    public cssName = Search.cssName;
     public isFullPage = true;
 
     protected elm: HTMLDivElement;

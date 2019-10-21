@@ -11,7 +11,7 @@ abstract class View {
     protected abstract elm: HTMLElement;
 
     public isFullPage: boolean = false;
-    public viewName!: string;
+    public cssName!: string;
     public viewPath: string;
     public showMenuButton: boolean = true;
 
@@ -40,7 +40,7 @@ abstract class View {
 
     public setup(): void {
         this.elm.classList.add("view");
-        this.elm.classList.add(this.viewName);
+        this.elm.classList.add(this.cssName);
 
         if (this.isFullPage) {
             this.app.url.pushHistory(this);

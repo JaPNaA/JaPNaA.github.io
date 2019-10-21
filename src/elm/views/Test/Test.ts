@@ -6,8 +6,8 @@ import siteResources from "../../../core/siteResources";
 import AppState from "../../../core/types/AppState";
 
 class TestView extends View {
-    public static viewName: string = "Test";
-    public viewName = TestView.viewName;
+    public static cssName: string = "Test";
+    public cssName = TestView.cssName;
     public showMenuButton = false;
     public isFullPage = true;
 

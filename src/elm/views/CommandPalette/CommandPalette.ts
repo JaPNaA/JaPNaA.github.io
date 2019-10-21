@@ -8,8 +8,8 @@ import CommandParser from "./CommandParser";
 import CommandResult from "./CommandResult";
 
 class CommandPalette extends View {
-    public static viewName = "CommandPalette";
-    public viewName = CommandPalette.viewName;
+    public static cssName = "CommandPalette";
+    public cssName = CommandPalette.cssName;
 
     protected elm: HTMLDivElement;
 

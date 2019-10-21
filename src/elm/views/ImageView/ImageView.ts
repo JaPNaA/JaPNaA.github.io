@@ -16,8 +16,8 @@ import IIFrame from "../../widgets/IFrame/IIFrame";
 import IFrame from "../../widgets/IFrame/IFrame";
 
 class ImageView extends View {
-    public static viewName: string = "ImageView";
-    public viewName = ImageView.viewName;
+    public static cssName: string = "ImageView";
+    public cssName = ImageView.cssName;
     public isFullPage: boolean = false;
 
     private static destorySpeed: number = 500;

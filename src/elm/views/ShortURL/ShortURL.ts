@@ -8,9 +8,9 @@ import siteConfig from "../../../SiteConfig";
 import resolveUrl from "../../../utils/resolveUrl";
 
 class ShortUrlView extends View {
-    public static viewName = "ShortUrl";
+    public static cssName = "ShortUrl";
     public static viewMatcher = /^#/;
-    public viewName = ShortUrlView.viewName;
+    public cssName = ShortUrlView.cssName;
 
     protected elm: HTMLDivElement;
 

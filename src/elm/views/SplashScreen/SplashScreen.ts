@@ -6,8 +6,8 @@ import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
 
 class SplashScreen extends View {
-    public static viewName = "SplashScreen";
-    public viewName = SplashScreen.viewName;
+    public static cssName = "SplashScreen";
+    public cssName = SplashScreen.cssName;
     protected elm: HTMLDivElement;
 
     public showMenuButton: boolean = false;

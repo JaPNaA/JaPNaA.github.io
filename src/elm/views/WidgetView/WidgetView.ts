@@ -17,9 +17,9 @@ import Widget from "../../../core/widget/Widget";
  * The Widget.setup() function is called automatically
  */
 class WidgetView extends View {
-    public static viewName = "WidgetView";
+    public static cssName = "WidgetView";
     public static viewMatcher = /^widget:.+/;
-    public viewName = WidgetView.viewName;
+    public cssName = WidgetView.cssName;
     public showMenuButton = false;
 
     protected elm: HTMLElement;

@@ -1,4 +1,4 @@
-import "./ProjectInfo.less";
+import css from "./ProjectInfo.less";
 
 import View from "../../../../core/view/View";
 import IApp from "../../../../core/types/app/IApp";
@@ -21,8 +21,7 @@ import siteResources from "../../../../core/siteResources";
  */
 
 class ProjectInfoView extends View implements IProjectInfoView {
-    public static viewName = "ProjectInfo";
-    public viewName = ProjectInfoView.viewName;
+    public cssName = css.ProjectInfo;
     public isFullPage: boolean = true;
 
     protected elm: HTMLDivElement;

@@ -5,8 +5,8 @@ import IApp from "../../../core/types/app/IApp";
 import AppState from "../../../core/types/AppState";
 
 class View404 extends View {
-    public static viewName = "View404";
-    public viewName = View404.viewName;
+    public static cssName = "View404";
+    public cssName = View404.cssName;
     public isFullPage = false;
 
     protected elm: HTMLDivElement;
