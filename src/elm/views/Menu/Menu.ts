@@ -74,7 +74,7 @@ class Menu extends View {
         const children: HTMLElement[] = [
             this.createTitle(),
             this.createHeading("Navigate"),
-            this.createNavButtonTo("Overview", "Title page"),
+            this.createNavButtonTo("", "Home"),
             this.createNavButtonTo("About", "About me"),
             this.createNavButtonTo("project.browse", "Browse Projects"),
             this.createNavButtonTo("project.search", "Search Projects"),
