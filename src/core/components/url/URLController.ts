@@ -75,7 +75,7 @@ class URLController {
 
     private getTitleAndURLFromState(state: AppState): { url: string, title: string } {
         const pretitle = state.viewTitle ? state.viewTitle + " in " : "";
-        const title = pretitle + this.siteTitle + "." + state.viewPath;
+        const title = pretitle + this.siteTitle + (state.viewPath ? "." + state.viewPath : "");
         return { title, url: urlFromState(state) };
     }
 
