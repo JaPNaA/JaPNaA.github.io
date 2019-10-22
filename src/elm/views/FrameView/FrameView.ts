@@ -84,6 +84,7 @@ class FrameView extends View {
 
     public async destory(): Promise<void> {
         await super.destory();
+        this.elm.classList.add(css.destory);
         await wait(FrameView.destoryTime);
     }
 

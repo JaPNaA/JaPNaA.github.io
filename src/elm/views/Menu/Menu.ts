@@ -12,8 +12,7 @@ import resolveUrl from "../../../utils/resolveUrl";
 import keyIsModified from "../../../utils/keyIsModified";
 
 class Menu extends View {
-    public static cssName: string = "Menu";
-    public cssName: string = Menu.cssName;
+    public cssName: string = css.Menu;
     public isFullPage: boolean = false;
 
     protected elm: HTMLDivElement;
@@ -46,6 +45,8 @@ class Menu extends View {
         for (const widget of this.widgets) {
             widget.destory();
         }
+
+        this.elm.classList.add(css.destory);
 
         this.background.removeEventListener("click", this.backgroundClickHandler);
         await wait(Menu.transitionOutTimeout);
@@ -185,7 +186,7 @@ class Menu extends View {
     private isTopViewA(viewName: string): boolean {
         const top = this.app.views.topFull();
         if (!top) { return false; }
-        return top.cssName === viewName;
+        return top.viewPath === viewName.toLowerCase();
     }
 }
 

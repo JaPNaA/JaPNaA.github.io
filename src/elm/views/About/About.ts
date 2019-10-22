@@ -1,4 +1,5 @@
 import css from "./About.less";
+import commonCSS from "../../../../styles/common.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
@@ -46,7 +47,7 @@ class About extends View implements ISavableScroll {
     private createContentContainer() {
         const contentContainer = document.createElement("div");
         contentContainer.classList.add(css.contentContainer);
-        contentContainer.classList.add(css.longTextContainer);
+        contentContainer.classList.add(commonCSS.longTextContainer);
         return contentContainer;
     }
 }

@@ -12,7 +12,6 @@ import { Vec2 } from "../../../types/math/Vec2";
 import TouchControls from "../../../components/touch/touchControls";
 import AppState from "../../../core/types/AppState";
 import ImageViewRenderer from "./ImageViewRenderer";
-import IIFrame from "../../widgets/IFrame/IIFrame";
 import IFrame from "../../widgets/IFrame/IFrame";
 
 class ImageView extends View {
@@ -71,6 +70,7 @@ class ImageView extends View {
         super.destory();
         this.touchControls.destory();
         this.renderer.destory();
+        this.elm.classList.add(css.destory);
         await wait(ImageView.destorySpeed);
     }
 

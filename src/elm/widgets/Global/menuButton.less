@@ -1,3 +1,5 @@
+@import "../../../../styles/variables.less";
+
 .MenuButton {
     @margin-vertical: @sticky-bar-padding;
     @margin-horizontal: @sticky-bar-padding;
@@ -41,9 +43,13 @@
     }
 
     a {
-        box-shadow: none;
         display: block;
         width: 100%;
         height: 100%;
+        box-shadow: none;
+
+        &:hover {
+            box-shadow: none;
+        }
     }
 }

@@ -1,4 +1,5 @@
 import css from "./ProjectDirectory.less";
+import commonCSS from "../../../../../styles/common.less";
 
 import AppState from "../../../../core/types/AppState";
 import ContentMan from "../../../../components/contentMan/contentMan";
@@ -81,7 +82,7 @@ class ProjectDirectory extends View {
 
     private createContainer(): HTMLDivElement {
         const container = document.createElement("div");
-        container.classList.add(css.longTextContainer);
+        container.classList.add(commonCSS.longTextContainer);
         return container;
     }
 

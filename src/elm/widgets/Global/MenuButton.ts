@@ -1,3 +1,5 @@
+import css from "./menuButton.less";
+
 import siteResources from "../../../core/siteResources";
 import siteConfig from "../../../SiteConfig";
 import IApp from "../../../core/types/app/IApp";
@@ -7,16 +9,15 @@ import resolveUrl from "../../../utils/resolveUrl";
 import keyIsModified from "../../../utils/keyIsModified";
 
 class MenuButton extends Widget {
-    public static cssName: string = "MenuButton";
-    public cssName: string = MenuButton.cssName;
+    public cssName: string = css.MenuButton;
 
     protected elm: HTMLDivElement;
     private app: IApp;
 
     private anchor: HTMLAnchorElement;
 
-    private static hiddenClass = "hidden";
-    private static scrollBarExistsClass = "scrollBarExists";
+    private static hiddenClass = css.hidden;
+    private static scrollBarExistsClass = css.scrollBarExists;
 
     private isLoadingMenu: boolean;
 

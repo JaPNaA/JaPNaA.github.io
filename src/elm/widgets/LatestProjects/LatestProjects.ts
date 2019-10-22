@@ -1,4 +1,5 @@
 import css from "./latestProjects.less";
+import commonCSS from "../../../../styles/common.less";
 
 import { V2Project } from "../../../types/project/v2/V2Types";
 import ContentMan from "../../../components/contentMan/contentMan";
@@ -63,7 +64,7 @@ class LatestProjects extends Widget {
         div.classList.add(css.viewMore);
 
         const a = document.createElement("a");
-        a.classList.add(css.flatButton);
+        a.classList.add(commonCSS.flatButton);
         a.href = resolveUrl("/browseprojects");
         a.innerText = "View More Projects";
         a.addEventListener("click", this.onViewMoreClick.bind(this));

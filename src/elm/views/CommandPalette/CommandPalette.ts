@@ -1,4 +1,5 @@
 import css from "./CommandPalette.less";
+import commonCSS from "../../../../styles/common.less";
 
 import View from "../../../core/view/View";
 import IApp from "../../../core/types/app/IApp";
@@ -111,7 +112,7 @@ class CommandPalette extends View {
     private createCenterContainer(): HTMLDivElement {
         const centerContainer = document.createElement("div");
         centerContainer.classList.add(css.centerContainer);
-        centerContainer.classList.add(css.longTextContainer);
+        centerContainer.classList.add(commonCSS.longTextContainer);
         return centerContainer;
     }
 

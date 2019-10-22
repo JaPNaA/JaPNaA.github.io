@@ -1,4 +1,4 @@
-import "./BrowseProjects.less";
+import css from "./BrowseProjects.less";
 
 import View from "../../../../core/view/View";
 import IApp from "../../../../core/types/app/IApp";
@@ -12,7 +12,7 @@ import AppState from "../../../../core/types/AppState";
  */
 
 class BrowseProjects extends View {
-    public static cssName = "BrowseProjects";
+    public static cssName = css.BrowseProjects;
     public isFullPage = true;
     public cssName = BrowseProjects.cssName;
 

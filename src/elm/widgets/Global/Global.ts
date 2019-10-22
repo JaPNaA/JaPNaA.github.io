@@ -1,5 +1,5 @@
 
-import "./global.less"
+import css from "./global.less"
 
 import Widget from "../../../core/widget/Widget";
 import App from "../../../App";
@@ -9,8 +9,7 @@ import GlobalKeybindings from "./GlobalKeybindings";
 
 /** Initalized at start of page */
 class GlobalWidgets extends Widget {
-    public static cssName: string = "GlobalWidgets";
-    public cssName: string = GlobalWidgets.cssName;
+    public cssName: string = css.GlobalWidgets;
 
     protected elm: HTMLDivElement;
     private app: App;

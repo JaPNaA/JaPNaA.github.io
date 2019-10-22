@@ -6,8 +6,7 @@ import siteResources from "../../../core/siteResources";
 import ResourceLoaderProgress from "../../../core/types/ResourceLoaderProgress";
 
 class TopLoadingBar extends Widget {
-    public static cssName: string = "TopLoadingBar";
-    public cssName: string = TopLoadingBar.cssName;
+    public cssName: string = css.TopLoadingBar;
 
     private static transitionSpeed: number = 500;
     private static timeToIdle: number = 100;

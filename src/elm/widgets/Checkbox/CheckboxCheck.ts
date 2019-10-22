@@ -5,7 +5,7 @@ import Handler from "../../../core/utils/events/Handler";
 import Widget from "../../../core/widget/Widget";
 
 class CheckboxCheck extends Widget {
-    public cssName = "checkbox";
+    public cssName = css.checkbox;
     protected elm: Element;
 
     private checkElm: HTMLDivElement;

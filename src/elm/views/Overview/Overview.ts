@@ -1,4 +1,5 @@
 import css from "./Overview.less";
+import commonCSS from "../../../../styles/common.less";
 
 import View from "../../../core/view/View";
 import HexagonsTitle from "../../widgets/HexagonsTitle/HexagonsTitle";
@@ -97,7 +98,7 @@ class Overview extends View implements ISavableScroll {
     private createContent(): HTMLDivElement {
         const content = document.createElement("div");
         content.classList.add(css.content);
-        content.classList.add(css.longTextContainer);
+        content.classList.add(commonCSS.longTextContainer);
         return content;
     }
 

@@ -6,20 +6,13 @@
     height: 100%;
     width: 100%;
 
-    img {
-        width: 66%;
-        display: block;
-        box-shadow: @box-shadow-2dp;
-        cursor: pointer;
-    }
-
     h1 {
         margin: 16px 0px 0px 0px;
         display: inline-block;
     }
 
     &.backgroundImageExists {
-        img {
+        .img {
             width: 100%;
         }
 
@@ -68,6 +61,13 @@
             opacity: 1;
         }
     }
+}
+
+.img {
+    width: 66%;
+    display: block;
+    box-shadow: @box-shadow-2dp;
+    cursor: pointer;
 }
 
 .background {
@@ -163,4 +163,25 @@
 
 .display {
     margin: 32px 0px;
+}
+
+.card {
+    display: red;
+}
+
+.v1 {
+    display: red;
+}
+
+.caption {
+    opacity: 0.8;
+    font-size: 0.8em;
+}
+
+.timestamp {
+    font-size: 0.8em;
+
+    &::before {
+        content: "Created ";
+    }
 }
