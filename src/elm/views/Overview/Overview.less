@@ -16,23 +16,21 @@
     display: block;
 }
 
-.stickyBar {
-    img.hexagon {
-        will-change: transform;
-        transform: scale(1.6);
-        margin-right: 18px;
-        animation: rotateAnimation 12s ease 0s infinite normal forwards;
-    }
+img.hexagon {
+    will-change: transform;
+    transform: scale(1.6);
+    margin-right: 18px;
+    animation: rotateAnimation 12s ease 0s infinite normal forwards;
+}
 
-    @keyframes rotateAnimation {
-        0% {
-            transform: scale(1.6) rotate(0deg);
-        }
-        50% {
-            transform: scale(1.6) rotate(20deg);
-        }
-        100% {
-            transform: scale(1.6) rotate(0deg);
-        }
+@keyframes rotateAnimation {
+    0% {
+        transform: scale(1.6) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.6) rotate(20deg);
+    }
+    100% {
+        transform: scale(1.6) rotate(0deg);
     }
 }

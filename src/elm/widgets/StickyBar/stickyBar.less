@@ -3,11 +3,15 @@
 .stickyBar {
     position: -webkit-sticky;
     position: sticky;
+
     top: 0px;
     left: 0px;
+    z-index: 1;
+
     width: 100%;
     height: @sticky-bar-height;
-    z-index: 1;
+
+    box-sizing: border-box;
 
     &.poly .bar {
         position: relative;
@@ -18,7 +22,7 @@
     }
 }
 
-.bar:extend(.widget.stickyBar) {
+.bar:extend(.stickyBar) {
     background-color: @theme-color;
     background-image: @header-gradient;
     z-index: 1;
