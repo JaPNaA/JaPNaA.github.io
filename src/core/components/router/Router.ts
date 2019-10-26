@@ -17,15 +17,11 @@ class Router {
     private self?: ViewClassImporter;
 
     /**
-     * @param routes A map from string to Route. Uses CaseInsensitiveMap by default, override by creating your own Map
+     * @param routes A map from string to Route. Uses to construct CaseInsensitiveMap
      * @param self the default path, if the user doesn't provide further paths
      */
-    constructor(routes: Routes | [string, Route][], self?: ViewClassImporter) {
-        if (routes instanceof Map) {
-            this.routes = routes;
-        } else {
-            this.routes = new CaseInsensitiveMap(routes);
-        }
+    constructor(routes: [string, Route][], self?: ViewClassImporter) {
+        this.routes = new CaseInsensitiveMap(routes);
 
         this.self = self;
     }
