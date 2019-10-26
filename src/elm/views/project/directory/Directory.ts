@@ -1,4 +1,4 @@
-import css from "./ProjectDirectory.less";
+import css from "./Directory.less";
 import commonCSS from "../../../../../styles/common.less";
 
 import AppState from "../../../../core/types/AppState";

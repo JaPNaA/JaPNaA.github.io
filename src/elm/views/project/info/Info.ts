@@ -1,4 +1,4 @@
-import css from "./ProjectInfo.less";
+import css from "./Info.less";
 
 import View from "../../../../core/view/View";
 import IApp from "../../../../core/types/app/IApp";
@@ -7,9 +7,9 @@ import ContentMan from "../../../../components/contentMan/contentMan";
 import IProjectInfoView from "./IProjectInfo";
 import isProjectV1Card from "../../../../utils/isProjectCard";
 import V1Or2Project from "../../../../components/contentMan/V1Or2Project";
-import ProjectInfoV1 from "./ProjectInfoV1";
+import ProjectInfoV1 from "./InfoV1";
 import isV2Project from "../../../../utils/v2Project/isV2Project";
-import ProjectInfoV2 from "./ProjectInfoV2";
+import ProjectInfoV2 from "./InfoV2";
 import triggerTransitionIn from "../../../../core/utils/triggerTransitionIn";
 import SaveScroll from "../../../../components/viewPrivateData/saveScroll/SaveScroll";
 import siteResources from "../../../../core/siteResources";

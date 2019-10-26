@@ -46,6 +46,7 @@ module.exports = [{
                 test: /\.tsx?$/,
                 loaders: [
                     "ts-loader",
+                    path.resolve(__dirname, "./loaders/routeMacro"),
                     path.resolve(__dirname, "./loaders/stripConsoleLogs")
                 ],
                 exclude: /node_modules/
@@ -59,14 +60,6 @@ module.exports = [{
     target: "web",
     plugins: [
         new Plugin({
-            viewList: {
-                pathToViews: "src/elm/views",
-                outFileName: "viewList.ts"
-            },
-            widgetList: {
-                pathToWidgets: "src/elm/widgets",
-                outFileName: "widgetList.ts"
-            },
             runScript: {
                 fn: function () {
                     // @ts-ignore

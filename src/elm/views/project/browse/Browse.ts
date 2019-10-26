@@ -1,4 +1,4 @@
-import css from "./BrowseProjects.less";
+import css from "./Browse.less";
 
 import View from "../../../../core/view/View";
 import IApp from "../../../../core/types/app/IApp";
