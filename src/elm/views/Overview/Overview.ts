@@ -97,7 +97,7 @@ class Overview extends View implements ISavableScroll {
 
     private createContent(): HTMLDivElement {
         const content = document.createElement("div");
-        content.classList.add(css.content);
+        // content.classList.add(css.content);
         content.classList.add(commonCSS.longTextContainer);
         return content;
     }

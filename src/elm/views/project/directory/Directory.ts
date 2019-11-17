@@ -96,7 +96,7 @@ class ProjectDirectory extends View {
 
     private createPageContent(): HTMLDivElement {
         const pageContent = document.createElement("div");
-        pageContent.classList.add(css.pageContent);
+        // pageContent.classList.add(css.pageContent);
         this.container.appendChild(pageContent);
         return pageContent;
     }

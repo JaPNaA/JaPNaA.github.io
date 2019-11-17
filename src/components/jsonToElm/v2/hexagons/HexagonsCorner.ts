@@ -20,7 +20,7 @@ class HexagonsCorner extends Widget {
         this.app = app;
         this.scrollableParent = scrollableParent;
 
-        this.elm = this.createElm();
+        this.elm = document.createElement("div");
         this.renderer = new HexagonsCornerRenderer(app, HexagonCornerHexagon, hue);
     }
 
@@ -59,12 +59,6 @@ class HexagonsCorner extends Widget {
 
     private scrollHandler(): void {
         this.renderer.scrolled(this.scrollableParent.scrollTop);
-    }
-
-    private createElm(): HTMLDivElement {
-        const elm = document.createElement("div");
-        elm.classList.add("HexagonsCorner")
-        return elm;
     }
 }
 

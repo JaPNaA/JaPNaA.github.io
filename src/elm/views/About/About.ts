@@ -46,7 +46,7 @@ class About extends View implements ISavableScroll {
 
     private createContentContainer() {
         const contentContainer = document.createElement("div");
-        contentContainer.classList.add(css.contentContainer);
+        // contentContainer.classList.add(css.contentContainer);
         contentContainer.classList.add(commonCSS.longTextContainer);
         return contentContainer;
     }
