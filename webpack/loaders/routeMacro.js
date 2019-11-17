@@ -4,7 +4,7 @@
  * @typedef {import("webpack").loader.LoaderContext} LoaderContext
  */
 
-const routeMacroMatcher = /\$\$route\(("(.*?)"|'(.*?)')\)/g;
+const routeMacroMatcher = require("../regex/routeMacro").regexGlobal;
 
 /**
  * @param {string} source
