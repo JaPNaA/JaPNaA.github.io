@@ -1,13 +1,13 @@
 import css from "./About.less";
 import commonCSS from "../../../../styles/common.less";
 
-import View from "../../../core/view/View";
-import IApp from "../../../core/types/app/IApp";
-import HTMLView from "../../widgets/HTMLView/HTMLView";
-import siteConfig from "../../../SiteConfig";
 import AppState from "../../../core/types/AppState";
-import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
+import HTMLView from "../../widgets/HTMLView/HTMLView";
+import IApp from "../../../core/types/app/IApp";
 import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
+import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
+import View from "../../../core/view/View";
+import ViewMaybeInlinedContent from "../../../core/view/components/ViewMaybeInlinedContent";
 
 /**
  * @viewmetadata
@@ -22,6 +22,8 @@ class About extends View implements ISavableScroll {
     public scrollingElm: HTMLElement;
 
     protected elm: HTMLElement;
+    protected maybeInlinedContent: ViewMaybeInlinedContent =
+        new ViewMaybeInlinedContent("/assets/views/about.html");
 
     private contentContainer: HTMLDivElement;
     private saveScroll: SaveScroll;
@@ -39,9 +41,11 @@ class About extends View implements ISavableScroll {
 
     public setup() {
         super.setup();
-        const view = new HTMLView(this.app, siteConfig.path.view.about);
+        const view = new HTMLView(this.app);
+        view.setSource(this.maybeInlinedContent.data!);
         view.setup().then(() => this.saveScroll.apply());
         view.appendTo(this.contentContainer);
+        // this.contentContainer.innerText = this.maybeInlinedContent.data || "not loaded in preload";
     }
 
     private createContentContainer() {
