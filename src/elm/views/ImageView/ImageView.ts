@@ -256,11 +256,16 @@ class ImageView extends View {
     }
 
     private async skyrimHandler(): Promise<void> {
+        const iframeContainer = document.createElement("div");
+        iframeContainer.classList.add(css.iframeContainer);
+
         const iframe = new IFrame(
             "https://www.youtube-nocookie.com/embed/RrjJtYpOawU?start=61&autoplay=1&mute=1&controls=0&disablekb=1"
         );
         iframe.setup();
-        iframe.appendTo(this.elm);
+        iframe.appendTo(iframeContainer);
+
+        this.elm.appendChild(iframeContainer);
     }
 }
 

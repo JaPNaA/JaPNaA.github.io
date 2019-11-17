@@ -1,65 +1,66 @@
+// #[prefix] .cardJSONv1Elm
 @import "../../../../styles/variables.less";
 
-.cardJSONv1Elm {
+& {
     overflow-x: hidden;
     position: absolute;
     height: 100%;
     width: 100%;
+}
 
-    h1 {
-        margin: 16px 0px 0px 0px;
-        display: inline-block;
+h1 {
+    margin: 16px 0px 0px 0px;
+    display: inline-block;
+}
+
+&.backgroundImageExists {
+    .img {
+        width: 100%;
     }
 
-    &.backgroundImageExists {
-        .img {
-            width: 100%;
-        }
+    .backgroundGradient {
+        @scale: 0.66;
 
-        .backgroundGradient {
-            @scale: 0.66;
-
-            // scrim-gradient
-            background-image: linear-gradient(
-                90deg,
-                rgba(255, 255, 255, 1) 0% * @scale,
-                rgba(255, 255, 255, 0.738) 19% * @scale,
-                rgba(255, 255, 255, 0.541) 34% * @scale,
-                rgba(255, 255, 255, 0.382) 47% * @scale,
-                rgba(255, 255, 255, 0.278) 56.5% * @scale,
-                rgba(255, 255, 255, 0.194) 65% * @scale,
-                rgba(255, 255, 255, 0.126) 73% * @scale,
-                rgba(255, 255, 255, 0.075) 80.2% * @scale,
-                rgba(255, 255, 255, 0.042) 86.1% * @scale,
-                rgba(255, 255, 255, 0.021) 91% * @scale,
-                rgba(255, 255, 255, 0.008) 95.2% * @scale,
-                rgba(255, 255, 255, 0.002) 98.2% * @scale,
-                rgba(255, 255, 255, 0) 100% * @scale
-            );
-        }
-
-        .infoBlock {
-            width: 100%;
-            max-width: 686px;
-        }
+        // scrim-gradient
+        background-image: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 1) 0% * @scale,
+            rgba(255, 255, 255, 0.738) 19% * @scale,
+            rgba(255, 255, 255, 0.541) 34% * @scale,
+            rgba(255, 255, 255, 0.382) 47% * @scale,
+            rgba(255, 255, 255, 0.278) 56.5% * @scale,
+            rgba(255, 255, 255, 0.194) 65% * @scale,
+            rgba(255, 255, 255, 0.126) 73% * @scale,
+            rgba(255, 255, 255, 0.075) 80.2% * @scale,
+            rgba(255, 255, 255, 0.042) 86.1% * @scale,
+            rgba(255, 255, 255, 0.021) 91% * @scale,
+            rgba(255, 255, 255, 0.008) 95.2% * @scale,
+            rgba(255, 255, 255, 0.002) 98.2% * @scale,
+            rgba(255, 255, 255, 0) 100% * @scale
+        );
     }
 
-    &.beforeTransitionIn {
-        opacity: 0;
-
-        .background {
-            opacity: 0.5;
-        }
+    .infoBlock {
+        width: 100%;
+        max-width: 686px;
     }
+}
 
-    &.afterTransitionIn {
-        transition: 2s opacity;
-        will-change: opacity;
+&.beforeTransitionIn {
+    opacity: 0;
+
+    .background {
+        opacity: 0.5;
+    }
+}
+
+&.afterTransitionIn {
+    transition: 2s opacity;
+    will-change: opacity;
+    opacity: 1;
+
+    .background {
         opacity: 1;
-
-        .background {
-            opacity: 1;
-        }
     }
 }
 
@@ -108,7 +109,7 @@
     color: $$color-black-dark;
 }
 
-.link {
+a.link {
     &::before {
         content: "View Project";
     }

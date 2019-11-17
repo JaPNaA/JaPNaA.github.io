@@ -1,56 +1,58 @@
+// #[prefix] .Menu
+
 @import "../../../../styles/variables.less";
 
 @background-opacity: 0.3;
 
-.Menu {
+& {
     position: absolute;
     // TODO: Change state of GlobalWidget to close button instead of covering it
     z-index: 4; // above global widget
     background-color: transparent;
+}
 
-    // --- Transitions
+// --- Transitions
 
-    &.beforeTransitionIn {
-        overflow: hidden;
+&.beforeTransitionIn {
+    overflow: hidden;
 
-        .background {
-            opacity: 0;
-            will-change: opacity;
-        }
-
-        .contents {
-            transform: translateX(100%);
-            will-change: transform;
-        }
+    .background {
+        opacity: 0;
+        will-change: opacity;
     }
 
-    &.afterTransitionIn {
-        .background {
-            transition: 0.4s ease opacity;
-            opacity: 1;
-        }
+    .contents {
+        transform: translateX(100%);
+        will-change: transform;
+    }
+}
 
-        .contents {
-            transition: 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) transform;
-            transform: translateX(0);
-        }
+&.afterTransitionIn {
+    .background {
+        transition: 0.4s ease opacity;
+        opacity: 1;
     }
 
-    &.destory {
-        overflow: hidden;
-        pointer-events: none;
+    .contents {
+        transition: 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) transform;
+        transform: translateX(0);
+    }
+}
 
-        .background {
-            transition: 0.15s ease opacity;
-            opacity: 0;
-            will-change: opacity;
-        }
+&.destory {
+    overflow: hidden;
+    pointer-events: none;
 
-        .contents {
-            transition: 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) transform;
-            transform: translateX(100%);
-            will-change: transform;
-        }
+    .background {
+        transition: 0.15s ease opacity;
+        opacity: 0;
+        will-change: opacity;
+    }
+
+    .contents {
+        transition: 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) transform;
+        transform: translateX(100%);
+        will-change: transform;
     }
 }
 
@@ -120,7 +122,7 @@
     color: #5c5c5c;
 }
 
-.Menu .viewButton {
+.viewButton {
     display: block;
     align-items: center;
 

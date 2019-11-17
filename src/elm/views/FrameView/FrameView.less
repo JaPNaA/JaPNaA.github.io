@@ -1,32 +1,33 @@
+// #[prefix] .FrameView
 @import "../../../../styles/variables.less";
 
 @header-height: 32px;
 
-.FrameView {
+& {
     background: #ffffff; // don't alter this to theme
     padding: 0;
 
     display: flex;
     flex-direction: column;
+}
 
-    &.destory {
-        will-change: transform;
-        transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) transform,
-            0.15s ease background-color;
-        transform: translateY(100%);
-        overflow: hidden;
-        background-color: transparent;
-    }
+&.destory {
+    will-change: transform;
+    transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) transform,
+        0.15s ease background-color;
+    transform: translateY(100%);
+    overflow: hidden;
+    background-color: transparent;
+}
 
-    &.beforeTransitionIn {
-        transform: translateY(100%);
-    }
+&.beforeTransitionIn {
+    transform: translateY(100%);
+}
 
-    &.afterTransitionIn {
-        will-change: transform;
-        transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) transform;
-        transform: translateY(0);
-    }
+&.afterTransitionIn {
+    will-change: transform;
+    transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) transform;
+    transform: translateY(0);
 }
 
 .header {
