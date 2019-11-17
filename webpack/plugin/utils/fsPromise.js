@@ -52,16 +52,24 @@ module.exports = {
 
     /**
      * @param {string} path 
+     * @param {fs.MakeDirectoryOptions} [options]
      */
-    mkdir(path) {
+    mkdir(path, options) {
         return new Promise(function (res, rej) {
-            fs.mkdir(path, function (err) {
+            /** @param {NodeJS.ErrnoException} err */
+            function callback(err) {
                 if (err) {
                     rej(err);
                 } else {
                     res();
                 }
-            });
+            }
+
+            if (options) {
+                fs.mkdir(path, options, callback);
+            } else {
+                fs.mkdir(path, callback);
+            }
         });
     },
 

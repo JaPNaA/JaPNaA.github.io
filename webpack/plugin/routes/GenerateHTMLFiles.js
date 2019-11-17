@@ -1,17 +1,18 @@
 const path = require("path");
-const fsPromise = require("./utils/fsPromise");
+const fsPromise = require("../utils/fsPromise");
 
 /**
+ * @typedef {import("./RoutesList")} RoutesList
+ * @typedef {import("./RoutesList").Route} Route
  * @typedef {import("webpack").Compiler} Webpack.Compiler
- * @typedef {import("./listGeneration/ViewListGenerator")} ViewListGenerator
  * 
- * @typedef { { generateViewHTML: {
+ * @typedef { { generateHTMLFiles: {
  *                  outDirectory: string,
  *                  templatePage: string,
  *                  baseReplacementMap: { [x: string]: string },
  *                  indexReplacementMap?: { [x: string]: string }
  *                  createIndexPage: boolean
- *             } } } GenerateViewHTMLOptions
+ *             } } } GenerateHTMLFilesOptions
  */
 
 const TEXT_REPLACEMENT_REGEX_G = /\${{([^]+?)}}/g;
@@ -20,18 +21,18 @@ const JSDOC_PROPERTY_REGEX_G = /@([^\s]+)\s(.+)/g;
 
 class GenerateViewHTML {
     /**
-     * @param {ViewListGenerator} viewList
-     * @param {GenerateViewHTMLOptions} options
+     * @param {RoutesList} routesList
+     * @param {GenerateHTMLFilesOptions} options
      */
-    constructor(viewList, options) {
-        /** @type {ViewListGenerator} */
-        this.viewList = viewList;
+    constructor(routesList, options) {
+        /** @type {RoutesList} */
+        this.routesList = routesList;
 
-        this.outDirectory = options.generateViewHTML.outDirectory;
-        this.templatePage = options.generateViewHTML.templatePage;
-        this.shouldCreateIndexPage = options.generateViewHTML.createIndexPage;
-        this.baseReplacementMap = options.generateViewHTML.baseReplacementMap;
-        this.indexReplacementMap = options.generateViewHTML.indexReplacementMap || {};
+        this.outDirectory = options.generateHTMLFiles.outDirectory;
+        this.templatePage = options.generateHTMLFiles.templatePage;
+        this.shouldCreateIndexPage = options.generateHTMLFiles.createIndexPage;
+        this.baseReplacementMap = options.generateHTMLFiles.baseReplacementMap;
+        this.indexReplacementMap = options.generateHTMLFiles.indexReplacementMap || {};
 
         /** @type {string} */
         this.pageTemplateSource = null;
@@ -39,13 +40,13 @@ class GenerateViewHTML {
         this.createdSet = new Set();
         this.createdIndexPage = false;
 
-        viewList.onChange(this.viewChangeHandler.bind(this));
+        routesList.onChange(this.routesChangeHandler.bind(this));
     }
 
     /**
      * @param {Webpack.Compiler} compiler
      */
-    async viewChangeHandler(compiler) {
+    async routesChangeHandler(compiler) {
         /** @type {Promise<void>[]} */
         const proms = [];
 
@@ -58,10 +59,10 @@ class GenerateViewHTML {
             proms.push(this.createIndexPage(compiler.context));
         }
 
-        for (const view of this.viewList.views) {
-            if (!this.createdSet.has(view)) {
-                proms.push(this.createFileFor(compiler.context, view.name));
-                this.createdSet.add(view);
+        for (const route of this.routesList.routes) {
+            if (!this.createdSet.has(route)) {
+                proms.push(this.createFileFor(compiler.context, route));
+                this.createdSet.add(route);
             }
         }
 
@@ -70,23 +71,21 @@ class GenerateViewHTML {
 
     /**
      * @param {string} context
-     * @param {string} viewName 
+     * @param {Route} route 
      * @returns {Promise<void>}
      */
-    async createFileFor(context, viewName) {
-        const file = await fsPromise.readFile(
-            this.viewList.applyPathPattern(context, viewName)
-        );
+    async createFileFor(context, route) {
+        const file = await fsPromise.readFile(route.fileLocation);
 
         /** @type {Object.<string, string>} */
         const replacementMap = {
-            "title": "." + viewName,
+            "title": "." + route.name.replace(/\/|\\/g, '.'),
             ...this.getViewMetadataJSDoc(file.toString())
         };
 
         if (replacementMap.tags) { replacementMap.tags = "," + replacementMap.tags; }
 
-        await this._writeFileWithReplacementMap(replacementMap, context, viewName);
+        await this._writeFileWithReplacementMap(replacementMap, context, route.name);
     }
 
     /**
@@ -114,7 +113,7 @@ class GenerateViewHTML {
     async createIndexPage(context) {
         this.createdIndexPage = true;
 
-        this._writeFileWithReplacementMap(this.indexReplacementMap, context, "index")
+        await this._writeFileWithReplacementMap(this.indexReplacementMap, context, "index")
     }
 
     /**
@@ -123,8 +122,15 @@ class GenerateViewHTML {
      * @param {string} filename 
      * @returns {Promise<void>}
      */
-    _writeFileWithReplacementMap(replacementMap, context, filename) {
-        return fsPromise.writeFile(
+    async _writeFileWithReplacementMap(replacementMap, context, filename) {
+        const outFilename = path.join(context, this.outDirectory, filename.toLowerCase() + ".html");
+        const outDirname = path.dirname(outFilename);
+
+        if (!await fsPromise.exists(outDirname)) {
+            await fsPromise.mkdir(outDirname, { recursive: true });
+        }
+
+        await fsPromise.writeFile(
             path.join(context, this.outDirectory, filename.toLowerCase() + ".html"),
             this._generateFileString({
                 ...this.baseReplacementMap,

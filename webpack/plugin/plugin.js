@@ -1,7 +1,7 @@
 const path = require("path");
 
 const CopyDirectories = require("./CopyDirectories");
-const GenerateViewHTML = require("./GenerateViewHTML");
+const GenerateHTMLFiles = require("./routes/GenerateHTMLFiles");
 const RunScripts = require("./RunScript");
 const SitemapGenerator = require("./sitemapGeneration/SitemapGenerator");
 const RoutesList = require("./routes/RoutesList");
@@ -20,7 +20,7 @@ class Plugin {
     /**
      * @param { RoutesList.RoutesListOptions &
      *          CopyDirectories.CopyDirectoriesOptions &
-     *          GenerateViewHTML.GenerateViewHTMLOptions &
+     *          GenerateHTMLFiles.GenerateHTMLFilesOptions &
      *          RunScripts.RunScriptsOptions &
      *          SitemapGenerator.SitemapGeneratorOptions } options 
      */
@@ -47,6 +47,7 @@ class Plugin {
             this.copyDirectories
         ];
 
+        this.generateHTMLFiles = new GenerateHTMLFiles(this.routesList, options);
 
         this._startTime = Date.now();
         this._prevTimestamps = {};

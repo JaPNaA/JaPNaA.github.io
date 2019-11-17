@@ -74,7 +74,7 @@ module.exports = [{
                 from: "public",
                 to: "build"
             },
-            generateViewHTML: {
+            generateHTMLFiles: {
                 outDirectory: "build",
                 templatePage: "public/_pageTemplate.html",
                 createIndexPage: true,
