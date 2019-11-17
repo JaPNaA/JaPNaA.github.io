@@ -12,13 +12,14 @@ class HTMLView extends Widget {
     protected elm: Element;
     public cssName = css.HTMLView;
 
+    private url?: string;
+    private source?: string;
+
     private doc?: IHTMLViewDocument;
     private parser: HTMLViewParser;
-    private url: string;
 
-    constructor(app: IApp, url: string, options?: HTMLViewParserOptions) {
+    constructor(app: IApp, options?: HTMLViewParserOptions) {
         super();
-        this.url = url;
         if (options) {
             this.parser = new HTMLViewParser(app, options);
         } else {
@@ -27,10 +28,27 @@ class HTMLView extends Widget {
         this.elm = document.createElement("div");
     }
 
+    public setUrl(url: string): void {
+        this.url = url;
+    }
+
+    public setSource(source: string): void {
+        this.source = source;
+    }
+
     public async setup(): Promise<void> {
         super.setup();
 
-        const prom = this.loadAndWrite();
+        let prom;
+
+        if (this.source) {
+            prom = this.write(this.source);
+        } else if (this.url) {
+            prom = this.loadAndWriteWithURL(this.url);
+        } else {
+            throw new Error("A url or source was not given");
+        }
+
         prom.catch(err => this.writeError(err));
 
         await prom;
@@ -43,9 +61,13 @@ class HTMLView extends Widget {
         }
     }
 
-    private async loadAndWrite(): Promise<void> {
-        const html = await siteResources.loadTextPromise(this.url);
-        this.doc = this.parser.parse(html);
+    private async loadAndWriteWithURL(url: string): Promise<void> {
+        const html = await siteResources.loadTextPromise(url);
+        await this.write(html);
+    }
+
+    private async write(source: string): Promise<void> {
+        this.doc = this.parser.parse(source);
         this.doc.appendTo(this.elm);
         await this.doc.ready();
     }

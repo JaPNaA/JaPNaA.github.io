@@ -112,7 +112,8 @@ class Overview extends View implements ISavableScroll {
     }
 
     private async loadHTMLView(url: string): Promise<void> {
-        this.htmlView = new HTMLView(this.app, url);
+        this.htmlView = new HTMLView(this.app);
+        this.htmlView.setUrl(url);
         await this.htmlView.setup();
         this.htmlView.appendTo(this.content);
 
