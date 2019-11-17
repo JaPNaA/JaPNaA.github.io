@@ -22,11 +22,11 @@ class About extends View implements ISavableScroll {
     public scrollingElm: HTMLElement;
 
     protected elm: HTMLElement;
-    protected maybeInlinedContent: ViewMaybeInlinedContent =
-        new ViewMaybeInlinedContent("/assets/views/about.html");
 
     private contentContainer: HTMLDivElement;
     private saveScroll: SaveScroll;
+    private maybeInlinedContent: ViewMaybeInlinedContent =
+        new ViewMaybeInlinedContent("/assets/views/about.html");
 
     constructor(app: IApp, state: AppState) {
         super(app, state);

@@ -6,7 +6,6 @@ import EventManager from "./components/EventManager";
 import Handler from "../utils/events/Handler";
 import IApp from "../types/app/IApp";
 import ViewComponent from "./ViewComponent";
-import ViewMaybeInlinedContent from "./components/ViewMaybeInlinedContent";
 
 abstract class View {
     private static vidCounter = 0;
@@ -25,7 +24,6 @@ abstract class View {
     protected app: IApp;
     protected events: EventManager;
     protected viewComponents: ViewComponent[];
-    protected maybeInlinedContent?: ViewMaybeInlinedContent;
 
     private destoryHandlers: EventHandlers;
 
