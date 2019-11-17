@@ -42,10 +42,12 @@ class About extends View implements ISavableScroll {
     public setup() {
         super.setup();
         const view = new HTMLView(this.app);
-        view.setSource(this.maybeInlinedContent.data!);
-        view.setup().then(() => this.saveScroll.apply());
-        view.appendTo(this.contentContainer);
-        // this.contentContainer.innerText = this.maybeInlinedContent.data || "not loaded in preload";
+
+        this.maybeInlinedContent.onLoad(data => {
+            view.setSource(data);
+            view.setup().then(() => this.saveScroll.apply());
+            view.appendTo(this.contentContainer);
+        });
     }
 
     private createContentContainer() {

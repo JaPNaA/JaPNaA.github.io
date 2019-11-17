@@ -11,6 +11,7 @@ import HTMLView from "../../widgets/HTMLView/HTMLView";
 import AppState from "../../../core/types/AppState";
 import SaveScroll from "../../../components/viewPrivateData/saveScroll/SaveScroll";
 import ISavableScroll from "../../../components/viewPrivateData/saveScroll/ISaveScrollable";
+import ViewMaybeInlinedContent from "../../../core/view/components/ViewMaybeInlinedContent";
 
 /**
  * @viewmetadata
@@ -30,6 +31,8 @@ class Overview extends View implements ISavableScroll {
     private hexagonsTitle: HexagonsTitle;
 
     private saveScroll: SaveScroll;
+    private maybeInlinedContent: ViewMaybeInlinedContent =
+        new ViewMaybeInlinedContent("/assets/views/overview.html");
 
     constructor(app: IApp, state: AppState) {
         super(app, state);
@@ -113,7 +116,9 @@ class Overview extends View implements ISavableScroll {
 
     private async loadHTMLView(url: string): Promise<void> {
         this.htmlView = new HTMLView(this.app);
-        this.htmlView.setUrl(url);
+
+        const data = await this.maybeInlinedContent.onLoadPromise();
+        this.htmlView.setSource(data);
         await this.htmlView.setup();
         this.htmlView.appendTo(this.content);
 

@@ -1,4 +1,6 @@
 import siteResources from "../../siteResources";
+import EventHandlers from "../../utils/events/EventHandlers";
+import Handler from "../../utils/events/Handler";
 
 class ViewMaybeInlinedContent {
     public data?: string;
@@ -6,11 +8,29 @@ class ViewMaybeInlinedContent {
 
     private absolutePath: string;
 
+    private loadHandlers: EventHandlers<string>;
+
     constructor(path: string) {
         this.absolutePath = path;
         this.loaded = false;
 
+        this.loadHandlers = new EventHandlers();
+
         this.setup();
+    }
+
+    public onLoadPromise(): Promise<string> {
+        if (this.loaded) { return Promise.resolve(this.data!); }
+        return new Promise(res => this.loadHandlers.add(data => res(data)));
+    }
+
+    public onLoad(handler: Handler<string>): void {
+        if (this.loaded) { handler(this.data!); }
+        this.loadHandlers.add(handler);
+    }
+
+    public offLoad(handler: Handler<string>): void {
+        this.loadHandlers.remove(handler);
     }
 
     private setup() {
@@ -26,23 +46,20 @@ class ViewMaybeInlinedContent {
 
         if (!preloadElm) { return; }
 
-        this.data = this.unescapeForXML(preloadElm.innerHTML);
-        this.loaded = true;
-        this.removeElement(preloadElm);
+        this.dispatchLoaded(this.unescapeForXML(preloadElm.innerHTML));
     }
 
     private loadFromNetwork(): void {
         siteResources.loadText(this.absolutePath)
             .onLoad(resource => {
-                this.data = resource.data;
-                this.loaded = true;
+                this.dispatchLoaded(resource.data);
             });
     }
 
-    private removeElement(elm: HTMLElement): void {
-        if (elm.parentElement) {
-            elm.parentElement.removeChild(elm);
-        }
+    private dispatchLoaded(data: string): void {
+        this.data = data;
+        this.loaded = true;
+        this.loadHandlers.dispatch(data);
     }
 
     private unescapeForXML(str: string): string {
