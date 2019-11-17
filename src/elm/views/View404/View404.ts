@@ -21,6 +21,7 @@ class View404 extends View {
         super(app, state);
 
         this.elm = document.createElement("div");
+        this.elm.setAttribute("aria-label", "404");
 
         this.canvas = this.createCanvas();
         this.X = this.canvas.getContext("2d") as CanvasRenderingContext2D;

@@ -79,7 +79,7 @@ class GenerateViewHTML {
 
         /** @type {Object.<string, string>} */
         const replacementMap = {
-            "title": "." + route.name.replace(/\/|\\/g, '.'),
+            "title": "." + route.name.toLowerCase().replace(/\/|\\/g, '.'),
             ...this.getViewMetadataJSDoc(file.toString())
         };
 

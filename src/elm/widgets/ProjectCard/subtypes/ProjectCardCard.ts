@@ -40,7 +40,7 @@ abstract class ProjectCardCard<T> extends BaseProjectCard {
 
         this.cardTitle = addZeroWidthSpacesBetweenCamelCaseWords(this.getCardTitle(card));
         this.cardDescription = this.getCardDescription(card);
-        this.href = urlFromViewState(createAppState("project.info", this.year + "." + this.index));
+        this.href = urlFromViewState(createAppState("project/info", this.year + "." + this.index));
 
         this.cardLinkClicked = false;
     }
@@ -87,7 +87,7 @@ abstract class ProjectCardCard<T> extends BaseProjectCard {
             this.app,
             css,
             this.cardElm,
-            "project.info",
+            "project/info",
             this.year + "." + this.index,
             view => view.transitionFadeIn(),
         );

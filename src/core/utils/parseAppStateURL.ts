@@ -17,7 +17,7 @@ export default function parseAppStateURL(href: string | url.UrlWithStringQuery):
 
     if (!cleanURL.pathname) return;
     const cleanPath =
-        cleanURL.pathname.slice(cleanURL.pathname.lastIndexOf("/") + 1) +
+        cleanURL.pathname.slice(1) +
         (cleanURL.search || "");
 
     //! siteConfig.viewStateSeparator is not part of core, and should be removed

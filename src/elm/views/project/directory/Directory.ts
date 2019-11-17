@@ -196,7 +196,7 @@ class ProjectDirectory extends View {
 
     private async openProjectView(match: LinkMatch): Promise<void> {
         await this.app.views.switchAndInit<IProjectInfoView>(
-            "project.info", undefined,
+            "project/info", undefined,
             view => view.setProject(match.data, match.year, match.index)
         );
     }

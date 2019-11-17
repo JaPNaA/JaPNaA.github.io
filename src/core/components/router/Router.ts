@@ -12,7 +12,7 @@ import CaseInsensitiveMap from "../../utils/CaseInsensitiveMap";
 
 
 class Router {
-    private static readonly pathSplitter = ".";
+    private static readonly pathSplitter = "/";
     private routes: Routes;
     private self?: ViewClassImporter;
 
