@@ -44,9 +44,13 @@ class RoutesList extends Component {
 
         /** @type {Route[]} */
         this.routes = [];
-
+        /** @type {Set<string>} */
+        this.routeFiles = new Set();
         /** @type {ChangeHandler[]} */
         this.changeHandlers = [];
+
+        /** @type {boolean} */
+        this.hasChanged = false;
     }
 
     /**
@@ -55,6 +59,22 @@ class RoutesList extends Component {
     async initalize(compiler) {
         await this._readRoutes(path.join(compiler.context, this.indexRoutesPath));
         await this._dispatchChange(compiler);
+    }
+
+    /**
+     * @param {Webpack.Compiler} compiler 
+     * @param {[string, string][]} filesChanged 
+     */
+    async filesChanged(compiler, filesChanged) {
+        for (const [absolutePath, relativePath] of filesChanged) {
+            if (this.routeFiles.has(absolutePath)) {
+                this._readRoutes(absolutePath);
+            }
+        }
+
+        if (this.hasChanged) {
+            this._dispatchChange(compiler);
+        }
     }
 
     /**
@@ -86,6 +106,8 @@ class RoutesList extends Component {
             if (route === ",") { continue; }
             proms.push(this._parseRoute(route, currentName, dirName, imports));
         }
+
+        this._addRouteFile(filePath);
 
         await Promise.all(proms);
     }
@@ -170,10 +192,32 @@ class RoutesList extends Component {
      * @param {string} currentPath 
      */
     _addRoute(routeName, currentName, routePath, currentPath) {
-        this.routes.push({
-            fileLocation: resolveTSExtension(path.join(currentPath, routePath)),
+        const resolvedRoutePath = resolveTSExtension(path.join(currentPath, routePath));
+        const existingIndex = this.routes.findIndex(route => route.fileLocation === resolvedRoutePath);
+
+        const route = {
+            fileLocation: resolvedRoutePath,
             name: currentName.concat([routeName]).join("/")
-        });
+        };
+
+        if (existingIndex < 0) {
+            this.routes.push(route);
+            console.log(route.name);
+            this.hasChanged = true;
+        } else {
+            if (this.routes[existingIndex].name !== route.name) {
+                this.hasChanged = true;
+            }
+
+            this.routes[existingIndex] = route;
+        }
+    }
+
+    /**
+     * @param {string} path 
+     */
+    _addRouteFile(path) {
+        this.routeFiles.add(path);
     }
 
     /**
@@ -188,6 +232,8 @@ class RoutesList extends Component {
                 proms.push(prom);
             }
         }
+
+        this.hasChanged = false;
 
         return Promise.all(proms);
     }
