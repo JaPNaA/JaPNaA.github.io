@@ -60,6 +60,9 @@ module.exports = [{
     target: "web",
     plugins: [
         new Plugin({
+            routesList: {
+                indexRoutesPath: "src/elm/views/routes.ts"
+            },
             runScript: {
                 fn: function () {
                     // @ts-ignore

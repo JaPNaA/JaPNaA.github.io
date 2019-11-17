@@ -1,10 +1,10 @@
-
 const path = require("path");
 
 const CopyDirectories = require("./CopyDirectories");
 const GenerateViewHTML = require("./GenerateViewHTML");
 const RunScripts = require("./RunScript");
 const SitemapGenerator = require("./sitemapGeneration/SitemapGenerator");
+const RoutesList = require("./routes/RoutesList");
 
 const pluginName = 'JaPNaA_github_io_Plugin';
 
@@ -33,25 +33,19 @@ class Plugin {
 
 
         // --- Components ---
-        // this.widgetList = new WidgetListGenerator(options);
-        // this.viewList = new ViewListGenerator(options);
+        // todo: WidgetListGenerator, ViewListGenerator, SitemapGenerator, GenerateViewHTML
+        this.routesList = new RoutesList(options);
         this.runScripts = new RunScripts(options);
         this.copyDirectories = new CopyDirectories(options);
-
-        // this.generateSitemap = new SitemapGenerator(this.viewList, options);
 
         /**
          * @type {Component[]}
          */
         this.components = [
-            // this.widgetList,
-            // this.viewList,
+            this.routesList,
             this.runScripts,
-            this.copyDirectories,
-            // this.generateSitemap
+            this.copyDirectories
         ];
-
-        // this.generateViewHTML = new GenerateViewHTML(this.viewList, options);
 
 
         this._startTime = Date.now();
