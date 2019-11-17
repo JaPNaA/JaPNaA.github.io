@@ -202,7 +202,6 @@ class RoutesList extends Component {
 
         if (existingIndex < 0) {
             this.routes.push(route);
-            console.log(route.name);
             this.hasChanged = true;
         } else {
             if (this.routes[existingIndex].name !== route.name) {

@@ -25,7 +25,8 @@ const lessLoader = {
         },
         'less-loader',
         path.resolve(__dirname, "./loaders/stylesheetVarMacro"),
-        path.resolve(__dirname, "./loaders/stylesheetDoubleDefineMacro")
+        path.resolve(__dirname, "./loaders/stylesheetDoubleDefineMacro"),
+        path.resolve(__dirname, "./loaders/stylesheetPrefixMacro")
     ]
 };
 
