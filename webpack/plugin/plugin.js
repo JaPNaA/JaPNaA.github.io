@@ -4,8 +4,6 @@ const path = require("path");
 const CopyDirectories = require("./CopyDirectories");
 const GenerateViewHTML = require("./GenerateViewHTML");
 const RunScripts = require("./RunScript");
-const ViewListGenerator = require("./listGeneration/ViewListGenerator");
-const WidgetListGenerator = require("./listGeneration/WidgetListGenerator");
 const SitemapGenerator = require("./sitemapGeneration/SitemapGenerator");
 
 const pluginName = 'JaPNaA_github_io_Plugin';
@@ -20,8 +18,7 @@ const pluginName = 'JaPNaA_github_io_Plugin';
 
 class Plugin {
     /**
-     * @param { WidgetListGenerator.WidgetListOptions &
-     *          ViewListGenerator.ViewListOptions &
+     * @param { RoutesList.RoutesListOptions &
      *          CopyDirectories.CopyDirectoriesOptions &
      *          GenerateViewHTML.GenerateViewHTMLOptions &
      *          RunScripts.RunScriptsOptions &
