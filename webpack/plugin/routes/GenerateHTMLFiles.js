@@ -18,6 +18,7 @@ const fsPromise = require("../utils/fsPromise");
 const TEXT_REPLACEMENT_REGEX_G = /\${{([^]+?)}}/g;
 const VIEW_METADATA_JSDOC_REGEX = /\/\*\*[^]+@viewmetadata([^]+?)\*\//;
 const JSDOC_PROPERTY_REGEX_G = /@([^\s]+)\s(.+)/g;
+const VIEW_MAYBE_INLINED_CONTENT_REGEX_G = /new\s+ViewMaybeInlinedContent\((\s*"(.+?)"|'(.+?')\s*)/g;
 
 class GenerateViewHTML {
     /**
@@ -76,11 +77,13 @@ class GenerateViewHTML {
      */
     async createFileFor(context, route) {
         const file = await fsPromise.readFile(route.fileLocation);
+        const fileStr = file.toString();
 
         /** @type {Object.<string, string>} */
         const replacementMap = {
             "title": "." + route.name.toLowerCase().replace(/\/|\\/g, '.'),
-            ...this.getViewMetadataJSDoc(file.toString())
+            "maybeInlinedContent": await this.getInlinedContent(context, route.fileLocation, fileStr),
+            ...this.getViewMetadataJSDoc(fileStr)
         };
 
         if (replacementMap.tags) { replacementMap.tags = "," + replacementMap.tags; }
@@ -105,6 +108,46 @@ class GenerateViewHTML {
         }
 
         return obj;
+    }
+
+    /**
+     * @param {string} fileStr
+     * @param {string} sourceFilePath
+     * @param {string} context
+     * @returns {Promise<string>}
+     */
+    async getInlinedContent(context, sourceFilePath, fileStr) {
+        /** @type {Promise[]} */
+        const proms = [];
+        const inlines = [];
+
+        for (let match; match = VIEW_MAYBE_INLINED_CONTENT_REGEX_G.exec(fileStr);) {
+            const inlineContentPath = match[2] || match[3];
+            if (!inlineContentPath) { throw new Error("No inline content path"); }
+
+            let inlineContentFilePath = inlineContentPath;
+
+            if (inlineContentPath[0] === '/') {
+                inlineContentFilePath = path.join("public", inlineContentFilePath);
+            } else {
+                inlineContentFilePath = path.resolve(sourceFilePath, inlineContentFilePath);
+            }
+
+            proms.push(fsPromise.readFile(path.join(context, inlineContentFilePath))
+                .then(buf => {
+                    const str = buf.toString();
+                    inlines.push(
+                        "<pre id=\"viewMaybeInlinedContent:" +
+                        Buffer.from(inlineContentPath).toString("base64") +
+                        "\">" + this._escapeForXML(str) + "</pre>"
+                    );
+                })
+            );
+        }
+
+        await Promise.all(proms);
+
+        return inlines.join("");
     }
 
     /**
@@ -160,6 +203,18 @@ class GenerateViewHTML {
         writeStr += templatePageSource.slice(lastIndex);
 
         return writeStr;
+    }
+
+    /**
+     * @param {string} str
+     */
+    _escapeForXML(str) {
+        return (str.replace(/&/g, "&amp;")
+            .replace(/'/g, "&apos;")
+            .replace(/"/g, "&quot;")
+            .replace(/>/g, "&gt;")
+            .replace(/</g, "&lt;")
+        );
     }
 }
 

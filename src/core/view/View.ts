@@ -24,6 +24,7 @@ abstract class View {
     protected app: IApp;
     protected events: EventManager;
     protected viewComponents: ViewComponent[];
+    protected maybeInlinedContent?: ViewMaybeInlinedContent;
 
     private destoryHandlers: EventHandlers;
 

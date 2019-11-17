@@ -80,7 +80,8 @@ module.exports = [{
                 templatePage: "public/_pageTemplate.html",
                 createIndexPage: true,
                 baseReplacementMap: {
-                    "description": "No description provided"
+                    "description": "No description provided",
+                    "maybeInlinedContent": ""
                 },
                 indexReplacementMap: {
                     "description": "JaPNaA's website. (It's very nice)"
