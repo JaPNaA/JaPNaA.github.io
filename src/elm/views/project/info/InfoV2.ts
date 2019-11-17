@@ -1,4 +1,4 @@
-import css from "./ProjectInfo.less";
+import css from "./Info.less";
 
 import Widget from "../../../../core/widget/Widget";
 import IApp from "../../../../core/types/app/IApp";

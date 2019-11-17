@@ -1,4 +1,4 @@
-import css from "./ProjectInfo.less";
+import css from "./Info.less";
 
 import IV1Card from "../../../../types/project/v1/IV1Card";
 import CardJSONv1Elm from "../../../../components/jsonToElm/v1/card";
