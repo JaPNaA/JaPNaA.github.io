@@ -77,7 +77,7 @@ class URLController {
         const pretitle = state.viewTitle ? state.viewTitle + " in " : "";
         const title = pretitle + this.siteTitle + (
             state.viewPath ?
-                "." + state.viewPath.replace('/', '.') :
+                "." + state.viewPath.replace(/\//g, '.') :
                 ""
         );
         return { title, url: urlFromState(state) };

@@ -1,11 +1,12 @@
 import css from "../../../styles/index.less";
 
-import IApp from "../types/app/IApp";
-import EventManager from "./components/EventManager";
-import EventHandlers from "../utils/events/EventHandlers";
-import Handler from "../utils/events/Handler";
 import AppState from "../types/AppState";
+import EventHandlers from "../utils/events/EventHandlers";
+import EventManager from "./components/EventManager";
+import Handler from "../utils/events/Handler";
+import IApp from "../types/app/IApp";
 import ViewComponent from "./ViewComponent";
+import ViewMaybeInlinedContent from "./components/ViewMaybeInlinedContent";
 
 abstract class View {
     private static vidCounter = 0;
