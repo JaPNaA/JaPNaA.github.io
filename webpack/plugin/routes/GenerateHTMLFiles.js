@@ -137,7 +137,7 @@ class GenerateViewHTML {
                 .then(buf => {
                     const str = buf.toString();
                     inlines.push(
-                        "<pre id=\"viewMaybeInlinedContent:" +
+                        "<pre class=\"hiddenInlinedContent\" id=\"viewMaybeInlinedContent:" +
                         Buffer.from(inlineContentPath).toString("base64") +
                         "\">" + this._escapeForXML(str) + "</pre>"
                     );
