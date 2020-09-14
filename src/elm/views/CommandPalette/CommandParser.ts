@@ -47,19 +47,24 @@ class CommandParser {
     }
 
     private static async navigateCommand(app: IApp, command: string): Promise<CommandResult[]> {
-        const literalResult = new NavigateCommandResult(command);
+        const goToExactCommandAddressResult = new NavigateCommandResult(command);
         const resultsWithScores: [number, NavigateCommandResult][] = [];
 
-        const viewOrWidgetList = app.routes.list();
+        const path = command.split("/");
+        const pathFinalName = path.pop()!;
+
+        const viewOrWidgetList = app.routes.getRouter(path).list();
 
         for (const view of viewOrWidgetList) {
             let name = Array.isArray(view) ?
                 view[0] : view;
 
-            const score = looseStartsWith(command, name);
+            const score = looseStartsWith(pathFinalName, name);
 
             if (score >= 0) {
-                resultsWithScores.push([score, new NavigateCommandResult(name)]);
+                resultsWithScores.push([score,
+                    new NavigateCommandResult(path.concat([name]).join("/"))
+                ]);
             }
         }
 
@@ -70,7 +75,7 @@ class CommandParser {
             results.push(resultWithScore[1]);
         }
 
-        results.splice(1, 0, literalResult);
+        results.splice(1, 0, goToExactCommandAddressResult);
 
         return results;
     }

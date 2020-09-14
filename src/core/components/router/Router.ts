@@ -36,7 +36,7 @@ class Router {
     }
 
     public async getView(path: string): Promise<ViewClass> {
-        const resolved = this.resolveRoute(path);
+        const resolved = this.resolveViewOrWidget(path);
 
         if (typeof resolved === 'function') {
             const viewOrWidget = await resolved();
@@ -51,7 +51,7 @@ class Router {
     }
 
     public async getWidget(path: string): Promise<WidgetClass> {
-        const resolved = this.resolveRoute(path);
+        const resolved = this.resolveViewOrWidget(path);
 
         if (typeof resolved === 'function') {
             const viewOrWidget = await resolved();
@@ -65,13 +65,26 @@ class Router {
         }
     }
 
-    private resolveRoute(path: string): Route | undefined {
+    public getRouter(path: string[]): Router {
+        return this.resolveRouter(path);
+    }
+
+    private resolveViewOrWidget(path: string): Route | undefined {
         const directories = this.splitPath(path);
         const name = directories.pop()!;
+        const router = this.resolveRouter(directories);
 
+        if (name.length === 0) {
+            return router.self;
+        } else {
+            return router.routes.get(name);
+        }
+    }
+
+    private resolveRouter(path: string[]): Router {
         let currRouter: Router = this;
 
-        for (const directory of directories) {
+        for (const directory of path) {
             const router = currRouter.routes.get(directory);
             if (router instanceof Router) {
                 currRouter = router;
@@ -80,11 +93,7 @@ class Router {
             }
         }
 
-        if (name.length === 0) {
-            return currRouter.self;
-        } else {
-            return currRouter.routes.get(name);
-        }
+        return currRouter;
     }
 
     private splitPath(path: string): string[] {
