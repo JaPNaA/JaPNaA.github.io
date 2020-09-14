@@ -1,0 +1,133 @@
+Version 0.4:
+  - Changelog discontinued
+
+Version 0.3.6.2:
+  - Add keybinds for search
+    - ctrl+f to enter search
+    - esc to exit search
+  - Swap out close buttons
+  - Hitbox of button does not change, allowing faster closing
+
+[TODO]
+  - Optimizing for mobile
+  - Clicked while animating do something
+  - Redirect unsupported browsers to heavily simplified site.
+  - Optimize site by using display: none on hidden overlays
+
+Version 0.3.6:
+  - Split content into different files by year
+  - Added see changes when update occurs
+
+Version 0.3.5:
+  - Almost full support for browsers back to IE 10 (2012)
+  - More of a chance to run the website normally if a component fails to load
+  - New splashScreen, with a loading bar
+
+Version 0.3.4:
+  - Added CLI, which can be (secretly) activated by searching for "$cli"
+
+Version 0.3.3:
+  - Optimizations and fixes and stuff
+  - Added back scrollbar
+
+Version 0.3.2:
+  - Site will now update (properly)
+  - Added dynamic text (that means some content can update without contacting the server)
+  - Fixing typos. It's a fun pastime.
+
+Version 0.3.1:
+  - Several bug fixes
+  - About page now exists, but lacks animations or interesting information
+  - New: version.txt this is the version number of the site, and will be updated whenever the site is.
+  - Service workers
+	- Updates caches in the background when version.txt changes
+
+Version 0.3.0:
+  - Release
+  - Entire revamp of the site
+    - Different styles
+    - Added menu
+    - Made search better
+    - Optimizations
+    - Added splash screen
+    - Changes will no longer be in your face
+  - Removed special treatment for WebCrawlers
+  - There is no longer a fallback, the site will instead send you to the raw file. This will be fixed in future updates.
+  - Added a license (finally)
+
+Version 0.2.9:
+  - Hide tags if width of device is too small
+  - Add not mobile compatible indicator
+  - Add updated date
+
+Version 0.2.8.1:
+  - Get rid of 'do you kno de wey' before it's dead
+
+Version 0.2.8:
+  - shortUrl.js, so I can give shorter URLs to people
+  - About page gets SEO improvements :D
+  - Added custom 404 page (when 'do you kno de wey' was relevant, January 22 2018)
+
+Version 0.2.7:
+  - SEO improvements
+  - Prevent WebCrawlers from getting "JaPNaA - Fallback" title
+
+Version 0.2.6:
+  - Proper search functionality
+  - Added search button (mobile compatibility)
+
+Version 0.2.5:
+  - Fixed scrolling things
+  - You can shake your device or put cursor at the bottom of the window to view footer
+  - Added terrible -- but working (WILL FIX) search functionality. Start typing to search through my projects.
+
+Version 0.2.4:
+  - Switched to using link elements instead of relying on onclick
+
+Version 0.2.3:
+  - Added about page
+  - Text elements now have timestamp
+
+Version 0.2.2:
+  - Changed some CSS looks
+  - Added iframe as a possibility for visuals
+
+Version 0.2.1:
+  - Changed some styles
+  - Added things to make the site a better experience
+  - Added a malformed card system, in case I fail to make proper cards
+
+Version 0.2.0:
+  - Beta!
+  - Not sure if your in Fallback mode? Check the title.
+  - MOAR SUPPORT
+
+Version 0.1.9:
+  - Added fallback.js, for older browsers
+  - Compatibility changes
+
+Version 0.1.8:
+  - Added more mobile support
+  - Responsive Design! (kinda)
+  - Finished outline of cards
+  - Added more styling properties
+
+Version 0.1.7:
+  - Content can now be added
+  - Material design! (kinda)
+  - Small UI improvements
+
+Version 0.1.6:
+  - Just a little style change
+
+Version 0.1.5:
+  - You can now drag dialog boxes... like this one!
+
+Version 0.1.4:
+  - Added prompta()
+  - Added autoreload
+  - Added first time display
+
+Version 0.1.3:
+  - Added Changelog
+  - Added Version Number
