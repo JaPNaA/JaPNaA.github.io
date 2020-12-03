@@ -6,3 +6,4 @@ long, https://japnaa.github.io/a4fLs13NAnsGwDpoZ4/
 changelog, /assets/content/changelog.txt
 feedback, https://github.com/JaPNaA/JaPNaA.github.io/issues/new
 contact, mailto:japnaabot@gmail.com
+jisho, https://japnaa.github.io/Thingy_2020/jishoWithHistory/web/
