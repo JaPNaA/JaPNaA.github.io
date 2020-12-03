@@ -28,7 +28,9 @@ const indexRoutes: Router = new Router([
     $$route("../widgets/ProjectsGrid/ProjectsGrid"),
     $$route("../widgets/RandomQuotes/RandomQuotes"),
     $$route("../widgets/Settings/Settings"),
-    $$route("../widgets/StickyBar/StickyBar")
+    $$route("../widgets/StickyBar/StickyBar"),
+
+    [/^#/, () => import("./ShortURL/ShortURL")]
 ], () => import("./Overview/Overview"));
 
 export default indexRoutes;

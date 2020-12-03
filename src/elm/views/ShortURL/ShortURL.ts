@@ -9,7 +9,6 @@ import resolveUrl from "../../../utils/resolveUrl";
 
 class ShortUrlView extends View {
     public static cssName = "ShortUrl";
-    public static viewMatcher = /^#/;
     public cssName = ShortUrlView.cssName;
 
     protected elm: HTMLDivElement;

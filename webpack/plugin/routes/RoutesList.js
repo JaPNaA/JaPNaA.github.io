@@ -9,9 +9,9 @@ const fsPromise = require("../utils/fsPromise");
 const routerMatcher = /new Router\(\[([^]+)\](, .+)?\)/;
 
 const routeMacroMatcher = require("../../regex/routeMacro").regexOnly;
-const defaultRouteMatcher = /^\[("(.+?)"|'(.+?)'),\s*(.+)\]$/;
-const importerMatcher = /^\(\)\s*=>\s*import\((("(.+?)")|('(.+?)'))\)$/;
-const commaNotInSquareBracket = /((?<!\[),(?![\w\s]*\]))/g;
+const defaultRouteMatcher = /^\[(("(.+?)")|('(.+?)')|(\/(.+?)\/)),\s*(.+)\]$/;
+const importerMatcher = /^\(\)\s*=>\s*import\((("(.+?)")|('(.+?)')|(\/(.+?)\/))\)$/;
+const commaAfterSquareBracketCloseIfExists = /,(?!.*])/g;
 
 /**
  * @typedef {import("webpack").Compiler} Webpack.Compiler
@@ -96,7 +96,7 @@ class RoutesList extends Component {
 
         if (!routerMatch) { throw new Error("Expected Router in file"); }
 
-        const routes = routerMatch[1].split(commaNotInSquareBracket);
+        const routes = routerMatch[1].split(commaAfterSquareBracketCloseIfExists);
         const imports = getImports(srcString);
 
         /** @type {Promise[]} */
@@ -133,8 +133,8 @@ class RoutesList extends Component {
         const defaultMatch = trimmed.match(defaultRouteMatcher);
         if (defaultMatch) {
             return this._parseRouteDefault(
-                defaultMatch[2] || defaultMatch[3],
-                defaultMatch[4],
+                defaultMatch[3] || defaultMatch[5] || defaultMatch[7],
+                defaultMatch[8],
                 currentName,
                 currentPath,
                 imports
@@ -173,8 +173,8 @@ class RoutesList extends Component {
         if (importerMatch) {
             this._addRoute(
                 name, currentName,
-                "TODO: " + importerMatch[0], currentPath
-            )
+                importerMatch[3] || importerMatch[5] || importerMatch[7], currentPath
+            );
         } else {
             const importPath = path.join(currentPath, importNamePaths.get(route));
             if (importPath) {

@@ -8,7 +8,7 @@ import NoWidgetError from "./errors/NoWidgetError";
 import Routes from "./Routes";
 import ViewClassImporter from "./importers/ViewClassImporter";
 import Route from "./Route";
-import CaseInsensitiveMap from "../../utils/CaseInsensitiveMap";
+import StringRegexMatchMap from "../../utils/CaseInsensitiveMap";
 
 
 class Router {
@@ -20,13 +20,13 @@ class Router {
      * @param routes A map from string to Route. Uses to construct CaseInsensitiveMap
      * @param self the default path, if the user doesn't provide further paths
      */
-    constructor(routes: [string, Route][], self?: ViewClassImporter) {
-        this.routes = new CaseInsensitiveMap(routes);
+    constructor(routes: [string | RegExp, Route][], self?: ViewClassImporter) {
+        this.routes = new StringRegexMatchMap(routes);
 
         this.self = self;
     }
 
-    public list(): IterableIterator<string> {
+    public list(): IterableIterator<string | RegExp> {
         return this.routes.keys();
     }
 
