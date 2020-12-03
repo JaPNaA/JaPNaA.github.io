@@ -16,9 +16,9 @@ export default function parseAppStateURL(href: string | url.UrlWithStringQuery):
     builder.hash = cleanURL.hash;
 
     if (!cleanURL.pathname) return;
-    const cleanPath =
-        cleanURL.pathname.slice(1) +
-        (cleanURL.search || "");
+    let cleanPath = (cleanURL.pathname.slice(1) +
+        (cleanURL.search || "")
+    ) || cleanURL.hash || "";
 
     //! siteConfig.viewStateSeparator is not part of core, and should be removed
     const divisorIndex = cleanPath.indexOf(siteConfig.viewStateSeparator);
