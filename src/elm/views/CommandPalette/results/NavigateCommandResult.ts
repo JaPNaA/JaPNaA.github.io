@@ -7,8 +7,9 @@ import siteConfig from "../../../../SiteConfig";
 class NavigateCommandResult extends CommandResult {
     private resolved: string;
     private to: string;
+    private isDirectory: boolean;
 
-    constructor(to_: string, label?: string) {
+    constructor(to_: string, label?: string, isDirectory?: boolean) {
         let to = to_;
         if (to[to.length - 1] === "?") {
             to = to.slice(0, to.length - 1);
@@ -24,6 +25,7 @@ class NavigateCommandResult extends CommandResult {
 
         this.resolved = resolved;
         this.to = to;
+        this.isDirectory = isDirectory || false;
     }
 
     public activate(app: IApp) {
@@ -44,7 +46,11 @@ class NavigateCommandResult extends CommandResult {
     }
 
     public onTab(): string {
-        return "/" + this.to + "?";
+        if (this.isDirectory) {
+            return "/" + this.to + "/";
+        } else {
+            return "/" + this.to + "?";
+        }
     }
 }
 

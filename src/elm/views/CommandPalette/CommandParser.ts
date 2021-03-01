@@ -8,6 +8,7 @@ import resolveUrl from "../../../utils/resolveUrl";
 import siteConfig from "../../../SiteConfig";
 import looseStartsWith from "../../../utils/looseStartsWith";
 import IApp from "../../../core/types/app/IApp";
+import NoRouteError from "../../../core/components/router/errors/NoRouteError";
 
 class CommandParser {
     public static firstLetterFnMap: { [x: string]: (app: IApp, args: string) => Promise<CommandResult[]> } = {
@@ -64,8 +65,10 @@ class CommandParser {
             const score = looseStartsWith(pathFinalName, name);
 
             if (score >= 0) {
+                const newPath = path.concat([name]);
+                const isDirectory = CommandParser.checkIsDirectory(app, newPath);
                 resultsWithScores.push([score,
-                    new NavigateCommandResult(path.concat([name]).join("/"))
+                    new NavigateCommandResult(newPath.join("/"), undefined, isDirectory)
                 ]);
             }
         }
@@ -80,6 +83,19 @@ class CommandParser {
         results.splice(1, 0, goToExactCommandAddressResult);
 
         return results;
+    }
+
+    private static checkIsDirectory(app: IApp, path: string[]): boolean {
+        try {
+            app.routes.getRouter(path);
+            return true;
+        } catch (err) {
+            if (err instanceof NoRouteError) {
+                return false;
+            } else {
+                throw err;
+            }
+        }
     }
 
     private static async shortURLCommand(app: IApp, args: string): Promise<CommandResult[]> {
