@@ -56,6 +56,8 @@ class CommandParser {
         const viewOrWidgetList = app.routes.getRouter(path).list();
 
         for (const view of viewOrWidgetList) {
+            if (typeof view !== "string") { continue; }
+
             let name = Array.isArray(view) ?
                 view[0] : view;
 
