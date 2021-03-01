@@ -144,7 +144,7 @@ function startHttpServers() {
         root: path.resolve(__dirname, "./build")
     });
     const server2 = hs.createServer({
-        root: path.resolve(__dirname, "../../../Thingy"),
+        root: path.resolve(__dirname, "../../Thingy"),
         // @ts-ignore
         cors: "*"
     });
