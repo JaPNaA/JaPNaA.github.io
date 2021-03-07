@@ -51,6 +51,11 @@ class ProjectsGrid extends Widget {
 
         this.addCardsUntilScreenFull();
         this.elm.addEventListener("scroll", this.scrollHandler.bind(this));
+        this.elm.tabIndex = -1;
+    }
+
+    public focus() {
+        this.elm.focus();
     }
 
     public resize(width: number, height: number): void {

@@ -40,6 +40,10 @@ class BrowseProjects extends View {
         this.projectsGrid.destory();
     }
 
+    public focus(): void {
+        this.projectsGrid.focus();
+    }
+
     public canScroll(): boolean {
         return this.projectsGrid.isOverflowing();
     }
