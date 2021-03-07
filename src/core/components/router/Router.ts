@@ -35,6 +35,16 @@ class Router {
         return path.toLowerCase();
     }
 
+    public exists(path: string): boolean {
+        try {
+            const route = this.resolveViewOrWidget(path);
+            return route !== undefined;
+        } catch (err) {
+            if (err instanceof NoRouteError) { return false; }
+            throw err;
+        }
+    }
+
     public async getView(path: string): Promise<ViewClass> {
         const resolved = this.resolveViewOrWidget(path);
 
