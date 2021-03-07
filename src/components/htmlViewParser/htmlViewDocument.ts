@@ -14,6 +14,7 @@ import parseAppStateURL from "../../core/utils/parseAppStateURL";
 import removeChildren from "../../utils/removeChildren";
 import resolveUrl from "../../utils/resolveUrl";
 import siteConfig from "../../SiteConfig";
+import keyIsModified from "../../utils/keyIsModified";
 
 // TODO: Refactor, parseHTMLDocument and HTMLViewDocument do not do distinct enough things.
 
@@ -160,6 +161,9 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
     private anchorClickHandler(anchor: HTMLAnchorElement, e: MouseEvent) {
         if (!e.cancelable || !this.linkHandlingOptions) { return; }
+        if (keyIsModified(e)) { return; }
+        if (anchor.target === "_blank") { return; }
+
         e.preventDefault();
         const href = anchor.href;
         const parsed = url.parse(href);
@@ -169,7 +173,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
             if (appState) {
                 const opensWithLinks = this.linkHandlingOptions.openViewsWithLinks;
 
-                if (opensWithLinks) {
+                if (opensWithLinks && this.app.routes.exists(appState.viewPath)) {
                     this.app.views.switchAndInit(appState.viewPath, appState);
                 } else {
                     this.openLink(href);
