@@ -37,8 +37,10 @@ abstract class MainApp extends BaseApp {
     private addEventHandlers(): void {
         this.resizeHandler = this.resizeHandler.bind(this);
         this.keydownHandler = this.keydownHandler.bind(this);
+        this.viewChangeHandler = this.viewChangeHandler.bind(this);
         this.beforeunloadHandler = this.beforeunloadHandler.bind(this);
         this.resizeWatcher.onResize(this.resizeHandler);
+        this.events.onViewChange(this.viewChangeHandler);
         addEventListener("keydown", this.keydownHandler);
         addEventListener("beforeunload", this.beforeunloadHandler);
     }
@@ -51,6 +53,10 @@ abstract class MainApp extends BaseApp {
 
     private keydownHandler(event: KeyboardEvent): void {
         this.events.dispatchKeydown(event);
+    }
+
+    private viewChangeHandler(): void {
+        this.views.top()?.focus();
     }
 
     private beforeunloadHandler(): void {

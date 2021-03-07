@@ -43,6 +43,7 @@ abstract class View {
     public setup(): void {
         this.elm.classList.add(css.view);
         this.elm.classList.add(this.cssName);
+        this.elm.tabIndex = -1; // makes view focusable
 
         if (this.isFullPage) {
             this.app.url.pushHistory(this);
@@ -71,6 +72,10 @@ abstract class View {
         }
 
         this.active = false;
+    }
+
+    public focus(): void {
+        this.elm.focus();
     }
 
     /** Appends scene element to element */
