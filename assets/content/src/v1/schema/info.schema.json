@@ -1,0 +1,120 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "$id": "http://example.com/product.schema.json",
+    "title": "JaPNaA.github.io site data",
+    "description": "JSON data format for JaPNaA.gituhb.io",
+    "type": "object",
+    "properties": {
+        "data": {
+            "type": "array",
+            "description": "where all the main data is stored",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "description": "type of item, card or text",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "TEXT: title of text",
+                        "type": "string"
+                    },
+                    "content": {
+                        "description": "TEXT: body of text, in HTML; CARD: content of card, as an object",
+                        "type": ["string", "object"],
+                        "properties": {
+                            "link": {
+                                "description": "link to item showcased",
+                                "type": "string"
+                            },
+                            "description": {
+                                "description": "description of card, goes under the name",
+                                "type": "string"
+                            },
+                            "display": {
+                                "description": "images and stuff",
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "description": "type of item, img",
+                                            "type": "string"
+                                        },
+                                        "caption": {
+                                            "description": "title of image, shown on hover, and when image doesn't load",
+                                            "type": "string"
+                                        },
+                                        "src": {
+                                            "description": "link to image",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "requried": ["type"]
+                                }
+                            }
+                        },
+                        "required": ["link", "description", "display"]
+                    },
+                    "timestamp": {
+                        "description": "when item was created",
+                        "type": "number"
+                    },
+                    "tags": {
+                        "description": "CARD: tags of project, can be searched for",
+                        "type": "array",
+                        "items": {
+                            "description": "tag",
+                            "type": "string"
+                        }
+                    },
+                    "name": {
+                        "description": "CARD: name",
+                        "type": "string"
+                    },
+                    "author": {
+                        "description": "CARD: list of authors",
+                        "type": "array",
+                        "items": {
+                            "description": "Author name",
+                            "type": "string"
+                        }
+                    },
+                    "no": {
+                        "description": "CARD: Project number, can be used as shortlink",
+                        "type": "number"
+                    },
+                    "style": {
+                        "description": "inline css",
+                        "type": "string"
+                    },
+                    "jsformat": {
+                        "description": "replace ${{js}} with evaluated result",
+                        "type": "boolean"
+                    }
+                },
+                "required": ["type"]
+            }
+        },
+        "meta": {
+            "type": "object",
+            "properties": {
+                "previous": {
+                    "description": "link to previous data"
+                },
+                "after": {
+                    "description": "link to next data"
+                },
+                "index": {
+                    "description": "index of current file"
+                },
+                "range": {
+                    "type": "number",
+                    "description": "year of listed projects"
+                }
+            },
+            "required": ["previous", "after", "index", "range"]
+        }
+    },
+    "required": ["data", "meta"]
+}
