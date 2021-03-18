@@ -16,6 +16,7 @@ import siteResources from "../../../../core/siteResources";
 import url from "url";
 import V1Or2Card from "../../../../components/contentMan/V1Or2Card";
 import View from "../../../../core/view/View";
+import resolveUrl from "../../../../utils/resolveUrl";
 
 type LinkMatch = {
     year: number,
@@ -124,7 +125,7 @@ class ProjectDirectory extends View {
     }
 
     private getHrefFromState(stateData: string): string {
-        return siteConfig.path.thingy + "/" + stateData + "/";
+        return resolveUrl(stateData + "/", siteConfig.path.thingy);
     }
 
     private linkClickHandler(event: MouseEvent) {
