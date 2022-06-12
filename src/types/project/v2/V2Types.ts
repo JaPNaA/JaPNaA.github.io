@@ -46,6 +46,7 @@ export interface V2Project {
 }
 
 export interface InputV2Header {
+    link?: string;
     tags?: string[];
     author?: string[];
     shortDescription?: string;

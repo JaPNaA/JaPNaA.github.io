@@ -1,12 +1,15 @@
 # Jisho With History
-/Thingy_2020/jishoWithHistory/
+
 ---
-[jisho, dictionary, Japanese, tool, Third party]
-[by JaPNaA]
-> 歴史付きの辞書
-@1600049888049
-background url(/Thingy_2020/0p/jishoWithHistory.png)
-accent #ffffff
+
+link: /Thingy_2020/jishoWithHistory/
+tags: jisho, dictionary, Japanese, tool, Third party
+author: by JaPNaA
+shortDesc: 歴史付きの辞書
+timestamp: 1600049888049
+backgroundCSS: url(/Thingy_2020/0p/jishoWithHistory.png)
+accent: #ffffff
+
 ---
 
 Been on a slight coding hiatus as I put my focus in studying Japanese, although that doesn't mean that I'm not developing at all.

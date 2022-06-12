@@ -11,13 +11,15 @@ const headerEndRegex = /---+/;
 const nameRegex = /^#(.+)\n/;
 const linkRegex = /(^|\n)#.+\n(.*)\n/;
 
-const headerLineMap: Map<string, (line: string, matchStr: string, header: InputV2Header) => void> = new Map([
-    ["[", applyHeaderLineTags],
-    [">", applyHeaderLineShortDescription],
-    ["@", applyHeaderLineTimestamp],
-    ["background ", applyHeaderLineBackground],
-    ["color ", applyHeaderLineColor],
-    ["accent ", applyHeaderLineAccent]
+const headerLineMap: Map<string, (value: string, header: InputV2Header) => void> = new Map([
+    ["tags", applyHeaderLineTags],
+    ["author", applyHeaderAuthor],
+    ["shortDesc", applyHeaderLineShortDescription],
+    ["timestamp", applyHeaderLineTimestamp],
+    ["backgroundCSS", applyHeaderLineBackground],
+    ["color", applyHeaderLineColor],
+    ["accent", applyHeaderLineAccent],
+    ["link", applyHeaderLinkLine]
 ]);
 const headerTagsRegex = /\[.+?\]/g;
 const headerByTagRegex = /^by\s+/;
@@ -47,14 +49,13 @@ export default function parseV2String(v2Str: string): V2Project[] {
 
 function parseProjectStr(projectStr: string): V2Project {
     const name = parseNameStr(projectStr);
-    const link = parseLinkStr(projectStr);
     const { head, headEndIndex } = parseHeadStr(projectStr);
-    const body = parseBodyStr(projectStr, headEndIndex, link);
+    const body = parseBodyStr(projectStr, headEndIndex, head.link);
 
     return {
         head: {
             name: name,
-            link: link,
+            link: head.link,
             no: -1, // the actual number to be assigned later
             author: head.author,
             background: head.background,
@@ -99,18 +100,20 @@ function parseHeadStr(fullStr: string): { head: InputV2Header, headEndIndex: num
 }
 
 function parseHeaderLine(line: string, header: InputV2Header): void {
-    for (const [startStr, applier] of headerLineMap) {
-        if (line.startsWith(startStr)) {
-            applier(line, startStr, header);
-            return;
-        }
-    }
+    const colonIndex = line.indexOf(":");
+    const key = line.slice(0, colonIndex);
+    const value = line.slice(colonIndex + 1);
 
-    warn("No matching header applier for:\n" + line + '\n');
+    const applier = headerLineMap.get(key);
+    if (applier) {
+        applier(value.trim(), header);
+    } else {
+        warn("No matching header applier for:\n" + line + '\n');
+    }
 }
 
-function applyHeaderLineBackground(line: string, matchStr: string, header: InputV2Header): void {
-    const background = line.slice(matchStr.length).trim().split(commaSplitUnlessInBracketsRegex);
+function applyHeaderLineBackground(value: string, header: InputV2Header): void {
+    const background = value.split(commaSplitUnlessInBracketsRegex);
     if (header.background) {
         header.background = header.background.concat(background);
     } else {
@@ -118,51 +121,43 @@ function applyHeaderLineBackground(line: string, matchStr: string, header: Input
     }
 }
 
-function applyHeaderLineColor(line: string, matchStr: string, header: InputV2Header): void {
-    header.textColor = line.slice(matchStr.length).trim();
+function applyHeaderLineColor(value: string, header: InputV2Header): void {
+    header.textColor = value;
 }
 
-function applyHeaderLineAccent(line: string, matchStr: string, header: InputV2Header): void {
-    header.accentColor = line.slice(matchStr.length).trim();
+function applyHeaderLineAccent(value: string, header: InputV2Header): void {
+    header.accentColor = value;
 }
 
-function applyHeaderLineShortDescription(line: string, matchStr: string, header: InputV2Header): void {
-    header.shortDescription = line.slice(matchStr.length).trim();
+function applyHeaderLinkLine(value: string, header: InputV2Header): void {
+    header.link = value;
 }
 
-function applyHeaderLineTags(line: string, matchStr: string, header: InputV2Header): void {
-    const brackets = line.match(headerTagsRegex);
-    if (!brackets) {
-        throw new Error("Syntax Error: No closing ]");
-    }
-    for (let i = 0; i < brackets.length; i++) {
-        const tagsStr = brackets[i];
-        const withoutBrackets = tagsStr.slice(1, tagsStr.length - 1).trim();
-        if (headerByTagRegex.test(withoutBrackets)) {
-            const author = withoutBrackets.slice(withoutBrackets.indexOf(' ')).trim().split(commaSplitRegex);
-            if (header.author) {
-                header.author = header.author.concat(author);
-            } else {
-                header.author = author;
-            }
-        } else {
-            const tags = withoutBrackets.split(commaSplitRegex);
-            if (header.tags) {
-                header.tags = header.tags.concat(tags);
-            } else {
-                header.tags = tags;
-            }
-        }
-    }
+function applyHeaderLineShortDescription(value: string, header: InputV2Header): void {
+    header.shortDescription = value;
 }
 
-function applyHeaderLineTimestamp(line: string, matchStr: string, header: InputV2Header): void {
-    const timestamp = parseInt(line.slice(matchStr.length).trim());
-    if (isNaN(timestamp)) {
-        throw new Error("Timestamp not a number: \n" + line + '\n');
+function applyHeaderLineTags(value: string, header: InputV2Header): void {
+    header.tags = value.split(",").map(tag => tag.trim());
+}
+
+function applyHeaderAuthor(value: string, header: InputV2Header): void {
+    header.author = value.split(",").map(tag => tag.trim());
+}
+
+function applyHeaderLineTimestamp(value: string, header: InputV2Header): void {
+    let date: Date;
+    if (/^\s*\d+\s*$/.test(value)) {
+        date = new Date(parseInt(value));
+    } else {
+        date = new Date(value);
     }
 
-    header.timestamp = timestamp;
+    if (isNaN(date.getTime())) {
+        throw new Error("Timestamp not valid: \n" + value + '\n');
+    }
+
+    header.timestamp = date.getTime();
 }
 
 
