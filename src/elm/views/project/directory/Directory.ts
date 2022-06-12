@@ -6,7 +6,7 @@ import ContentMan from "../../../../components/contentMan/contentMan";
 import getLink from "../../../../utils/getLink";
 import IApp from "../../../../core/types/app/IApp";
 import IProjectInfoView from "../info/IProjectInfo";
-import openFrameView from "../../../../utils/view/openFrameView";
+import openInNewWindow from "../../../../utils/openInNewWindow";
 import openPopup from "../../../../core/utils/open/openPopup";
 import removeChildren from "../../../../utils/removeChildren";
 import siteConfig from "../../../../SiteConfig";
@@ -166,7 +166,7 @@ class ProjectDirectory extends View {
         if (match) {
             this.openProjectView(match);
         } else {
-            openFrameView(link);
+            openInNewWindow(link);
         }
     }
 

@@ -2,7 +2,7 @@ import css from "../projectCard.less";
 
 import BaseProjectCard from "../BaseProjectCard";
 import IApp from "../../../../core/types/app/IApp";
-import openFrameView from "../../../../utils/view/openFrameView";
+import openInNewWindow from "../../../../utils/openInNewWindow";
 import addZeroWidthSpacesBetweenCamelCaseWords from "../../../../utils/addZeroWidthSpacesBetweenCamelCaseWords";
 
 class ProjectLinkCard extends BaseProjectCard {
@@ -25,7 +25,7 @@ class ProjectLinkCard extends BaseProjectCard {
     }
 
     protected linkClickHandler(): void {
-        openFrameView(this.href);
+        openInNewWindow(this.href);
     }
 }
 

@@ -8,7 +8,7 @@ import IHTMLViewDocument from "./iHTMLViewDocument";
 import LinkHandlingOptions from "./types/linkHandlingOptions";
 import Widget from "../../core/widget/Widget";
 import htmlCollectionToArray from "../../utils/convertToArray";
-import openFrameView from "../../utils/view/openFrameView";
+import openInNewWindow from "../../utils/openInNewWindow";
 import openNoopener from "../../core/utils/open/openNoopener";
 import parseAppStateURL from "../../core/utils/parseAppStateURL";
 import removeChildren from "../../utils/removeChildren";
@@ -193,10 +193,8 @@ class HTMLViewDocument implements IHTMLViewDocument {
     private openLink(href: string): void {
         if (!this.linkHandlingOptions) { return; }
 
-        if (this.linkHandlingOptions.openFrameViewWithLinks) {
-            openFrameView(href);
-        } else if (this.linkHandlingOptions.dontLeavePage) {
-            openNoopener(href);
+        if (this.linkHandlingOptions.dontLeavePage) {
+            openInNewWindow(href);
         } else {
             location.assign(href);
         }
