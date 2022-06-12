@@ -5,14 +5,11 @@ import IApp from "../../../../core/types/app/IApp";
 import AppState from "../../../../core/types/AppState";
 import ContentMan from "../../../../components/contentMan/contentMan";
 import IProjectInfoView from "./IProjectInfo";
-import isProjectV1Card from "../../../../utils/isProjectCard";
-import V1Or2Project from "../../../../components/contentMan/V1Or2Project";
-import ProjectInfoV1 from "./InfoV1";
-import isV2Project from "../../../../utils/v2Project/isV2Project";
 import ProjectInfoV2 from "./InfoV2";
 import triggerTransitionIn from "../../../../core/utils/triggerTransitionIn";
 import SaveScroll from "../../../../components/viewPrivateData/saveScroll/SaveScroll";
 import siteResources from "../../../../core/siteResources";
+import { V2Project } from "../../../../types/project/v2/V2Types";
 
 /**
  * @viewmetadata
@@ -28,9 +25,9 @@ class ProjectInfoView extends View implements IProjectInfoView {
 
     private static readonly transitionInTime = 150;
 
-    private project?: V1Or2Project;
+    private project?: V2Project;
     private loadingPromise?: Promise<void>;
-    private widget?: ProjectInfoV1 | ProjectInfoV2;
+    private widget?: ProjectInfoV2;
 
     private projectYear?: number;
     private projectIndex?: number;
@@ -45,7 +42,7 @@ class ProjectInfoView extends View implements IProjectInfoView {
         }
     }
 
-    public setProject(project: V1Or2Project, year: number, index: number): void {
+    public setProject(project: V2Project, year: number, index: number): void {
         this.project = project;
         this.projectYear = year;
         this.projectIndex = index;
@@ -85,13 +82,7 @@ class ProjectInfoView extends View implements IProjectInfoView {
             throw new Error("Project not set");
         }
 
-        if (isProjectV1Card(this.project)) {
-            this.widget = new ProjectInfoV1(this.app, this.project);
-        } else if (isV2Project(this.project)) {
-            this.widget = new ProjectInfoV2(this.app, this.project);
-        } else {
-            throw new Error("Unsupported type");
-        }
+        this.widget = new ProjectInfoV2(this.app, this.project);
 
         this.viewComponents.push(
             this.saveScroll = new SaveScroll(this.widget, this.privateData)
@@ -130,7 +121,7 @@ class ProjectInfoView extends View implements IProjectInfoView {
         this.loadingPromise = undefined;
     }
 
-    private async getCard(year: string, index: number): Promise<V1Or2Project> {
+    private async getCard(year: string, index: number): Promise<V2Project> {
         const card = await ContentMan.getCardByYearAndIndex(year, index);
         return card;
     }

@@ -9,9 +9,9 @@ import Widget from "../../../core/widget/Widget";
 import ContentMan from "../../../components/contentMan/contentMan";
 import { Rect, newRect } from "../../../types/math/Rect";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
-import V1Or2Card from "../../../components/contentMan/V1Or2Card";
 import PositionableProjectCard from "./PositionableProjectCard";
 import ProjectCardInitData from "../ProjectCard/ProjectCardInitData";
+import { V2Project } from "../../../types/project/v2/V2Types";
 
 // todo: predict amount of projects to load based on user scroll speed
 
@@ -31,7 +31,7 @@ class ProjectsGrid extends Widget {
     private width: number;
     private height: number;
 
-    private cardGenerator: AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink>;
+    private cardGenerator: AsyncIterableIterator<IWithLocation<V2Project> | IProjectLink>;
 
     constructor(app: IApp, cardGenerator?: AsyncIterableIterator<ProjectCardInitData>) {
         super();

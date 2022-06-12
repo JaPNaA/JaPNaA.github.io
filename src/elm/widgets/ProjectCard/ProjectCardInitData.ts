@@ -1,6 +1,6 @@
 import IWithLocation from "../../../components/contentMan/IWithLocation";
-import V1Or2Card from "../../../components/contentMan/V1Or2Card";
+import { V2Project } from "../../../types/project/v2/V2Types";
 import ProjectLink from "./ProjectLink";
 
-type ProjectCardInitData = IWithLocation<V1Or2Card> | ProjectLink;
+type ProjectCardInitData = IWithLocation<V2Project> | ProjectLink;
 export default ProjectCardInitData;

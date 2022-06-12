@@ -3,20 +3,15 @@ import css from "./Search.less";
 import AppState from "../../../../core/types/AppState";
 import ContentMan from "../../../../components/contentMan/contentMan";
 import IApp from "../../../../core/types/app/IApp";
-import IV1InfoJSON from "../../../../types/project/v1/IV1InfoJSON";
 import IWithLocation from "../../../../components/contentMan/IWithLocation";
 import ProjectCardInitData from "../../../widgets/ProjectCard/ProjectCardInitData";
 import ProjectLink from "../../../widgets/ProjectCard/ProjectLink";
 import ProjectsGrid from "../../../widgets/ProjectsGrid/ProjectsGrid";
 import TfIdf from "../../../../components/tfidf/TfIdf";
-import V1Or2Card from "../../../../components/contentMan/V1Or2Card";
-import V1Or2Project from "../../../../components/contentMan/V1Or2Project";
 import View from "../../../../core/view/View";
-import isProjectV1Card from "../../../../utils/isProjectCard";
-import isV2ProjectListing from "../../../../utils/v2Project/isV2ProjectListing";
 import removeChildren from "../../../../utils/removeChildren";
 import siteConfig from "../../../../SiteConfig";
-import { V2ProjectListing } from "../../../../types/project/v2/V2Types";
+import { V2Project, V2ProjectListing } from "../../../../types/project/v2/V2Types";
 
 type SearchTfIdf = TfIdf<number | ProjectLink>;
 
@@ -169,10 +164,10 @@ class Search extends View {
 
             for (const result of results) {
                 if (typeof result === "number") {
-                    yield <IWithLocation<V1Or2Card>>{
+                    yield <IWithLocation<V2Project>>{
                         index: result,
                         year: year,
-                        project: data.data[result] as V1Or2Project
+                        project: data.data[result] as V2Project
                     }
                 } else {
                     yield result;
@@ -198,14 +193,10 @@ class Search extends View {
         return newTfidf;
     }
 
-    private createTfIdf(data: IV1InfoJSON | V2ProjectListing, links: ProjectLink[]): SearchTfIdf {
+    private createTfIdf(data: V2ProjectListing, links: ProjectLink[]): SearchTfIdf {
         const tfidf: SearchTfIdf = new TfIdf();
 
-        if (isV2ProjectListing(data)) {
-            this.addV2ListingDocuments(tfidf, data);
-        } else {
-            this.addV1ListingDocuments(tfidf, data);
-        }
+        this.addV2ListingDocuments(tfidf, data);
 
         for (const link of links) {
             tfidf.addDocument(link, [
@@ -239,22 +230,6 @@ class Search extends View {
             }
 
             tfidf.addDocument(i, fields);
-        }
-    }
-
-    private addV1ListingDocuments(tfidf: SearchTfIdf, listing: IV1InfoJSON): void {
-        for (let i = 0; i < listing.data.length; i++) {
-            const project = listing.data[i];
-            if (!isProjectV1Card(project)) { continue; }
-
-            tfidf.addDocument(i, [
-                [5, project.name],
-                [5, project.no.toString()],
-                [2, project.tags],
-                [1, project.author],
-                [1, project.content.description],
-                [1, project.content.link]
-            ]);
         }
     }
 }

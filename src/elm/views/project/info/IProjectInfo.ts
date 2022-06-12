@@ -1,8 +1,8 @@
 import View from "../../../../core/view/View";
-import V1Or2Card from "../../../../components/contentMan/V1Or2Card";
+import { V2Project } from "../../../../types/project/v2/V2Types";
 
 interface IProjectInfoView extends View {
-    setProject(project: V1Or2Card, year: number, index: number): void;
+    setProject(project: V2Project, year: number, index: number): void;
     transitionFadeIn(): Promise<void>;
 }
 

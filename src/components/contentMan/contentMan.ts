@@ -1,14 +1,9 @@
 import siteResources from "../../core/siteResources";
 import siteConfig from "../../SiteConfig";
 import IIndex from "../../types/project/IIndex";
-import IV1InfoJSON from "../../types/project/v1/IV1InfoJSON";
-import isProjectV1Card from "../../utils/isProjectCard";
 import IProjectLink from "./IProjectLink";
 import { V2ProjectListing, V2Project, V2ProjectBodyElement } from "../../types/project/v2/V2Types";
 import IWithLocation from "./IWithLocation";
-import isV2ProjectListing from "../../utils/v2Project/isV2ProjectListing";
-import V1Or2Card from "./V1Or2Card";
-import V1Or2Project from "./V1Or2Project";
 import resolveUrl from "../../utils/resolveUrl";
 
 type LinksIndexJSON = [number, string, string][];
@@ -22,7 +17,7 @@ class ContentMan {
 
     public static setup(): void { }
 
-    public static async getCardByNumber(no: number): Promise<V1Or2Card | null> {
+    public static async getCardByNumber(no: number): Promise<V2Project | null> {
         const index = await this.getProjectsIndex();
         const years = Object.keys(index.meta);
 
@@ -31,17 +26,9 @@ class ContentMan {
             if (no < range[0] || no > range[1]) { continue; }
             const list = await this.getFileForYear(year);
 
-            if (isV2ProjectListing(list)) {
-                for (const item of list.data) {
-                    if (item.head.no === no) {
-                        return item;
-                    }
-                }
-            } else {
-                for (const item of list.data) {
-                    if (isProjectV1Card(item) && item.no === no) {
-                        return item;
-                    }
+            for (const item of list.data) {
+                if (item.head.no === no) {
+                    return item;
                 }
             }
         }
@@ -49,7 +36,7 @@ class ContentMan {
         return null;
     }
 
-    public static async getCardByYearAndIndex(year: number | string, cardIndex: number): Promise<V1Or2Project> {
+    public static async getCardByYearAndIndex(year: number | string, cardIndex: number): Promise<V2Project> {
         const list = await this.getFileForYear(year);
         return list.data[cardIndex];
     }
@@ -62,7 +49,7 @@ class ContentMan {
         }
     }
 
-    public static async *cardAndLinkGeneratorOldestWithLocation(): AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink> {
+    public static async *cardAndLinkGeneratorOldestWithLocation(): AsyncIterableIterator<IWithLocation<V2Project> | IProjectLink> {
         const linksIndex = await this.getLinksIndex();
 
         for (const thingy of linksIndex) {
@@ -84,7 +71,7 @@ class ContentMan {
         }
     }
 
-    public static async *cardAndLinkGeneratorLatestWithLocation(): AsyncIterableIterator<IWithLocation<V1Or2Card> | IProjectLink> {
+    public static async *cardAndLinkGeneratorLatestWithLocation(): AsyncIterableIterator<IWithLocation<V2Project> | IProjectLink> {
         const linksIndex = await this.getLinksIndex();
 
         for (let i = linksIndex.length - 1; i >= 0; i--) {
@@ -124,24 +111,15 @@ class ContentMan {
         return arr;
     }
 
-    private static async createProjectsMap(year: number): Promise<Map<string, IWithLocation<V1Or2Card>>> {
-        const projectsMap = new Map<string, IWithLocation<V1Or2Card>>();
+    private static async createProjectsMap(year: number): Promise<Map<string, IWithLocation<V2Project>>> {
+        const projectsMap = new Map<string, IWithLocation<V2Project>>();
 
         try {
             const projects = await this.getFileForYear(year);
-            if (isV2ProjectListing(projects)) {
-                for (let i = 0; i < projects.data.length; i++) {
-                    const project = projects.data[i];
-                    if (project.head.link) {
-                        projectsMap.set(project.head.link, { project: project, index: i, year: year });
-                    }
-                }
-            } else {
-                for (let i = 0; i < projects.data.length; i++) {
-                    const project = projects.data[i];
-                    if (isProjectV1Card(project)) {
-                        projectsMap.set(project.content.link, { project: project, index: i, year: year });
-                    }
+            for (let i = 0; i < projects.data.length; i++) {
+                const project = projects.data[i];
+                if (project.head.link) {
+                    projectsMap.set(project.head.link, { project: project, index: i, year: year });
                 }
             }
         } catch (err) {
@@ -151,7 +129,7 @@ class ContentMan {
         return projectsMap;
     }
 
-    private static *yieldLinksOrProjectsIfExistsAndDeleteFromMap(links: string[][], projectsMap: Map<string, IWithLocation<V1Or2Card>>, thingyPath: string): IterableIterator<IWithLocation<V1Or2Card> | IProjectLink> {
+    private static *yieldLinksOrProjectsIfExistsAndDeleteFromMap(links: string[][], projectsMap: Map<string, IWithLocation<V2Project>>, thingyPath: string): IterableIterator<IWithLocation<V2Project> | IProjectLink> {
         for (const link of links) {
             const [name, href] = link;
             const key = thingyPath + href;
@@ -165,7 +143,7 @@ class ContentMan {
         }
     }
 
-    public static async *cardGeneratorOldestWithLocation(): AsyncIterableIterator<IWithLocation<V1Or2Project>> {
+    public static async *cardGeneratorOldestWithLocation(): AsyncIterableIterator<IWithLocation<V2Project>> {
         const index = await this.getProjectsIndex();
 
         for (let year = index.start; year <= index.end; year++) {
@@ -178,7 +156,7 @@ class ContentMan {
         }
     }
 
-    public static async *cardGeneratorLatestWithLocation(): AsyncIterableIterator<IWithLocation<V1Or2Project>> {
+    public static async *cardGeneratorLatestWithLocation(): AsyncIterableIterator<IWithLocation<V2Project>> {
         const index = await this.getProjectsIndex();
 
         for (let year = index.end; year >= index.start; year--) {
@@ -191,21 +169,21 @@ class ContentMan {
         }
     }
 
-    public static async *cardGeneratorOldest(): AsyncIterableIterator<V1Or2Project> {
+    public static async *cardGeneratorOldest(): AsyncIterableIterator<V2Project> {
         const gen = this.cardGeneratorOldestWithLocation();
         for await (const item of gen) {
             yield item.project;
         }
     }
 
-    public static async *cardGeneratorLatest(): AsyncIterableIterator<V1Or2Project> {
+    public static async *cardGeneratorLatest(): AsyncIterableIterator<V2Project> {
         const gen = this.cardGeneratorLatestWithLocation();
         for await (const item of gen) {
             yield item.project;
         }
     }
 
-    public static async getFileForYear(year: number | string): Promise<IV1InfoJSON | V2ProjectListing> {
+    public static async getFileForYear(year: number | string): Promise<V2ProjectListing> {
         const index = await this.getProjectsIndex();
         return new Promise((res, rej) =>
             siteResources.loadJSON(siteConfig.path.content + this.getPathForYear(index, year))

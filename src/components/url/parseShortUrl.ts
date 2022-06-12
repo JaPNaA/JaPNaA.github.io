@@ -1,7 +1,5 @@
 import siteConfig from "../../SiteConfig";
-import siteResources from "../../core/siteResources";
 import ContentMan from "../contentMan/contentMan";
-import isV2Project from "../../utils/v2Project/isV2Project";
 import getShortURLRedirectMap from "./getRedirectMap";
 
 export default async function parseShortUrl(short: string): Promise<string | undefined> {
@@ -24,12 +22,8 @@ async function projectByNumber(short: string): Promise<string> {
     const card = await ContentMan.getCardByNumber(no);
     if (!card) { throw new Error("Card doesn't exist"); }
 
-    if (isV2Project(card)) {
-        if (!card.head.link) { throw new Error("Card doesn't link to anything"); }
-        return card.head.link;
-    } else {
-        return card.content.link;
-    }
+    if (!card.head.link) { throw new Error("Card doesn't link to anything"); }
+    return card.head.link;
 }
 
 function projectByYearAndName(short: string): string {

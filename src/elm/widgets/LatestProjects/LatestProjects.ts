@@ -4,10 +4,8 @@ import commonCSS from "../../../../styles/common.less";
 import { V2Project } from "../../../types/project/v2/V2Types";
 import ContentMan from "../../../components/contentMan/contentMan";
 import IApp from "../../../core/types/app/IApp";
-import isV2Project from "../../../utils/v2Project/isV2Project";
 import IWithLocation from "../../../components/contentMan/IWithLocation";
 import LatestProjectCard from "./LatestProjectCard";
-import V1Or2Project from "../../../components/contentMan/V1Or2Project";
 import Widget from "../../../core/widget/Widget";
 import resolveUrl from "../../../utils/resolveUrl";
 
@@ -21,7 +19,7 @@ class LatestProjects extends Widget {
     private viewMoreElm: HTMLDivElement;
 
     private app: IApp;
-    private gen: AsyncIterableIterator<IWithLocation<V1Or2Project>>;
+    private gen: AsyncIterableIterator<IWithLocation<V2Project>>;
     private latestProjectCardCreated: boolean;
 
     constructor(app: IApp) {
@@ -82,20 +80,13 @@ class LatestProjects extends Widget {
     private async addNextLatestProject(): Promise<void> {
         const project = (await this.gen.next()).value;
 
-        if (isV2Project(project.project)) {
-            const card = new LatestProjectCard(this.app, project as IWithLocation<V2Project>);
-            card.setup();
-            card.appendTo(this.latestProjectsList);
+        const card = new LatestProjectCard(this.app, project as IWithLocation<V2Project>);
+        card.setup();
+        card.appendTo(this.latestProjectsList);
 
-            if (!this.latestProjectCardCreated) {
-                card.setAsLatest();
-                this.latestProjectCardCreated = true;
-            }
-        } else {
-            const elm = document.createElement("div");
-            elm.classList.add(css.error);
-            elm.innerText = "Unsupported project type. See this error? Please file a bug report!";
-            this.latestProjectsList.appendChild(elm);
+        if (!this.latestProjectCardCreated) {
+            card.setAsLatest();
+            this.latestProjectCardCreated = true;
         }
     }
 
