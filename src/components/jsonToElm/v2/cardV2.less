@@ -40,6 +40,13 @@
         padding: 2px;
         border-radius: 2px;
     }
+
+    pre {
+        background-color: $$background-color-darkened;
+        padding: 8px;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+    }
 }
 
 .image {
@@ -239,7 +246,7 @@
         transform: translateY(16px);
     }
 
-    & > div {
+    &>div {
         padding-left: @body-padding;
         padding-right: @body-padding;
     }
