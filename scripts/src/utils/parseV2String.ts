@@ -25,7 +25,7 @@ const headerLineMap: { [x: string]: (value: string, header: InputV2Header) => vo
         }
 
         if (isNaN(date.getTime())) {
-            throw new Error("Timestamp not valid: \n" + value + '\n');
+            throw new ParseError("Timestamp not valid: \n" + value + '\n');
         }
 
         header.timestamp = date.getTime();
@@ -54,18 +54,20 @@ marked.setOptions({
     gfm: true
 });
 
-export default function parseV2String(v2Str: string): V2Project[] {
+export function parseV2String(v2Str: string, defaultHeaders?: Partial<InputV2Header>): V2Project[] {
     const projectsStr = splitFileToProjects(v2Str);
     const projects: V2Project[] = [];
 
     for (const projectStr of projectsStr) {
-        projects.push(parseProjectStr(projectStr));
+        projects.push(parseProjectStr(projectStr, defaultHeaders));
     }
 
     return projects;
 }
 
-function parseProjectStr(projectStr: string): V2Project {
+export class ParseError extends Error { };
+
+function parseProjectStr(projectStr: string, defaultHeaders: Partial<InputV2Header> = {}): V2Project {
     const name = parseNameStr(projectStr);
     const { head, headEndIndex } = parseHeadStr(projectStr);
     const body = parseBodyStr(projectStr, headEndIndex, head.link);
@@ -73,15 +75,15 @@ function parseProjectStr(projectStr: string): V2Project {
     return {
         head: {
             name: name,
-            link: head.link,
+            link: head.link || defaultHeaders.link,
             no: -1, // the actual number to be assigned later
-            author: head.author,
-            background: head.background,
-            shortDescription: head.shortDescription,
-            tags: head.tags,
-            textColor: head.textColor,
-            timestamp: head.timestamp,
-            accentColor: head.accentColor
+            author: head.author || defaultHeaders.author,
+            background: head.background || defaultHeaders.background,
+            shortDescription: head.shortDescription || defaultHeaders.shortDescription,
+            tags: head.tags || defaultHeaders.tags,
+            textColor: head.textColor || defaultHeaders.textColor,
+            timestamp: head.timestamp, // head.timestamp always defined; default header has no effect
+            accentColor: head.accentColor || defaultHeaders.accentColor
         },
         body: body
     };
@@ -89,7 +91,7 @@ function parseProjectStr(projectStr: string): V2Project {
 
 function parseNameStr(fullStr: string): string {
     const match = fullStr.trimLeft().match(nameRegex);
-    if (!match || !match[1]) { throw new Error("Missing name"); }
+    if (!match || !match[1]) { throw new ParseError("Missing name"); }
     return match[1].trim();
 }
 
@@ -103,7 +105,7 @@ function parseHeadStr(fullStr: string): { head: InputV2Header, headEndIndex: num
         parseHeaderLine(line, header);
     }
 
-    if (!header.timestamp) { throw new Error("No timestamp provided"); }
+    if (!header.timestamp) { throw new ParseError("No timestamp provided"); }
 
     return { head: header, headEndIndex: headEndIndex };
 }
@@ -123,10 +125,10 @@ function parseHeaderLine(line: string, header: InputV2Header): void {
 
 function getHeadStr(fullStr: string): { headStr: string, headEndIndex: number } {
     const startToken = headerStartRegex.exec(fullStr);
-    if (!startToken) { throw new Error("No head"); }
+    if (!startToken) { throw new ParseError("No head"); }
     const startTokenEndIndex = startToken.index + startToken[0].length;
     const endToken = headerEndRegex.exec(fullStr.slice(startTokenEndIndex));
-    if (!endToken) { throw new Error("No head"); }
+    if (!endToken) { throw new ParseError("No head"); }
 
     return {
         headStr: fullStr.substr(startTokenEndIndex, endToken.index),
@@ -141,7 +143,7 @@ function splitFileToProjects(v2Str: string): string[] {
         splits.push(match.index);
     }
 
-    if (!splits.length) { throw new Error("No headers found"); }
+    if (!splits.length) { throw new ParseError("No headers found"); }
 
     const projectStrs: string[] = [];
     for (let i = 0; i < splits.length; i++) {
@@ -182,7 +184,7 @@ function parseCustomTag(match: RegExpExecArray, projectLink?: string): V2Project
     if (parser) {
         return parser(args, projectLink);
     } else {
-        throw new Error("Invalid tag " + tagName);
+        throw new ParseError("Invalid tag " + tagName);
     }
 }
 
@@ -190,7 +192,7 @@ function parseCustomTagImage(argsString: string): V2ProjectBodyElement {
     const args = parseArgs(argsString);
 
     const src = args.getAndDelete("src");
-    if (!src || src === true) { throw new Error("Image without src"); }
+    if (!src || src === true) { throw new ParseError("Image without src"); }
 
     let caption = args.getAndDelete("--");
     if (caption === true) {
@@ -212,7 +214,7 @@ function parseCustomTagImage(argsString: string): V2ProjectBodyElement {
 }
 
 function parseCustomTagViewProject(args: string, projectLink?: string): V2ProjectBodyElement {
-    if (!projectLink) { throw new Error("No link to project"); }
+    if (!projectLink) { throw new ParseError("No link to project"); }
     return {
         type: "view-project",
         href: projectLink
@@ -220,10 +222,10 @@ function parseCustomTagViewProject(args: string, projectLink?: string): V2Projec
 }
 
 function parseCustomTagViewSource(args: string, projectLink?: string): V2ProjectBodyElement {
-    if (!projectLink) { throw new Error("No link to project"); }
+    if (!projectLink) { throw new ParseError("No link to project"); }
     const repoMatcher = /\/?([^\/]+)/;
     const repoMatch = projectLink.match(repoMatcher);
-    if (!repoMatch) { throw new Error("Don't know how to handle that link"); }
+    if (!repoMatch) { throw new ParseError("Don't know how to handle that link"); }
     const repo = repoMatch[1];
     const pathInRepo = projectLink.slice(repoMatch[0].length);
 
@@ -295,7 +297,7 @@ function parseArgs(argsString: string): MapWithGetAndDelete<string, string | tru
 function parseArg(arg: string): [string, string | true] {
     const argRegex = /^(.+?)(="(.+)"|=(.+)|"(.+)")?$/;
     const match = arg.match(argRegex);
-    if (!match) { throw new Error("Invalid arg"); }
+    if (!match) { throw new ParseError("Invalid arg"); }
     return [match[1], match[3] || match[4] || match[5] || true];
 }
 

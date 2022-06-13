@@ -3,7 +3,7 @@ import * as path from "path";
 import ContentParser from "./ContentParser";
 import IFiles from "./types/IFiles";
 import IndexJSON from "./IndexJSON";
-import parseV2String from "./utils/parseV2String";
+import { parseV2String } from "./utils/parseV2String";
 import { V2Project, V2ProjectListing } from "../../src/types/project/v2/V2Types";
 import SitemapJSON from "./SitemapJSON";
 
@@ -23,6 +23,12 @@ class V2Files implements IFiles {
         this.sortProjects();
         this.addProjectsToSitemap();
         this.addYearEntriesIntoIndex();
+    }
+
+    public addExternalProjects(projects: V2Project[]) {
+        for (const project of projects) {
+            this.projectsList.push(project);
+        }
     }
 
     public async writeOut(): Promise<void> {
