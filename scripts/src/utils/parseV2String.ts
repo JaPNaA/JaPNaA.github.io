@@ -3,26 +3,44 @@ import marked from "marked";
 import MapWithGetAndDelete from "../utils/MapWithGetAndDelete";
 
 const projectSplitRegex = /(^|\n)#[^#].+\n/g;
-const commaSplitRegex = /\s*,\s*/g;
 const commaSplitUnlessInBracketsRegex = /\s*,\s*(?![^\(\)]*\))/g;
 const headerStartRegex = /(^|\n)#.+\n*(<!)?---+/;
 const headerEndRegex = /---+/;
 
 const nameRegex = /^#(.+)\n/;
-const linkRegex = /(^|\n)#.+\n(.*)\n/;
 
-const headerLineMap: Map<string, (value: string, header: InputV2Header) => void> = new Map([
-    ["tags", applyHeaderLineTags],
-    ["author", applyHeaderAuthor],
-    ["shortDesc", applyHeaderLineShortDescription],
-    ["timestamp", applyHeaderLineTimestamp],
-    ["backgroundCSS", applyHeaderLineBackground],
-    ["color", applyHeaderLineColor],
-    ["accent", applyHeaderLineAccent],
-    ["link", applyHeaderLinkLine]
-]);
-const headerTagsRegex = /\[.+?\]/g;
-const headerByTagRegex = /^by\s+/;
+const headerLineMap: { [x: string]: (value: string, header: InputV2Header) => void } = {
+    tags: (value, header) => header.tags = value.split(",").map(tag => tag.trim()),
+    author: (value, header) => header.author = value.split(",").map(tag => tag.trim()),
+    shortDesc: (value, header) => header.shortDescription = value,
+    textColor: (value, header) => header.textColor = value,
+    accent: (value, header) => header.accentColor = value,
+    link: (value, header) => header.link = value,
+    timestamp: (value: string, header: InputV2Header) => {
+        let date: Date;
+        if (/^\s*\d+\s*$/.test(value)) {
+            date = new Date(parseInt(value));
+        } else {
+            date = new Date(value);
+        }
+
+        if (isNaN(date.getTime())) {
+            throw new Error("Timestamp not valid: \n" + value + '\n');
+        }
+
+        header.timestamp = date.getTime();
+    },
+    backgroundCSS: (value: string, header: InputV2Header) => {
+        const background = value.split(commaSplitUnlessInBracketsRegex);
+        if (header.background) {
+            for (const item in background) {
+                header.background.push(item);
+            }
+        } else {
+            header.background = background;
+        }
+    }
+};
 
 const customTagRegex = /<!([\w-]+)\s?(.*?)>/g;
 const customTagMap: Map<string, (args: string, projectLink?: string) => V2ProjectBodyElement> = new Map([
@@ -75,15 +93,6 @@ function parseNameStr(fullStr: string): string {
     return match[1].trim();
 }
 
-function parseLinkStr(fullStr: string): string | undefined {
-    const match = fullStr.trimLeft().match(linkRegex);
-    if (!match || !match[2] || headerEndRegex.test(match[2])) {
-        warn("No link for project");
-        return;
-    }
-    return match[2];
-}
-
 function parseHeadStr(fullStr: string): { head: InputV2Header, headEndIndex: number } {
     const { headStr, headEndIndex } = getHeadStr(fullStr);
     const lines = headStr.split("\n");
@@ -104,62 +113,13 @@ function parseHeaderLine(line: string, header: InputV2Header): void {
     const key = line.slice(0, colonIndex);
     const value = line.slice(colonIndex + 1);
 
-    const applier = headerLineMap.get(key);
+    const applier = headerLineMap[key];
     if (applier) {
         applier(value.trim(), header);
     } else {
         warn("No matching header applier for:\n" + line + '\n');
     }
 }
-
-function applyHeaderLineBackground(value: string, header: InputV2Header): void {
-    const background = value.split(commaSplitUnlessInBracketsRegex);
-    if (header.background) {
-        header.background = header.background.concat(background);
-    } else {
-        header.background = background;
-    }
-}
-
-function applyHeaderLineColor(value: string, header: InputV2Header): void {
-    header.textColor = value;
-}
-
-function applyHeaderLineAccent(value: string, header: InputV2Header): void {
-    header.accentColor = value;
-}
-
-function applyHeaderLinkLine(value: string, header: InputV2Header): void {
-    header.link = value;
-}
-
-function applyHeaderLineShortDescription(value: string, header: InputV2Header): void {
-    header.shortDescription = value;
-}
-
-function applyHeaderLineTags(value: string, header: InputV2Header): void {
-    header.tags = value.split(",").map(tag => tag.trim());
-}
-
-function applyHeaderAuthor(value: string, header: InputV2Header): void {
-    header.author = value.split(",").map(tag => tag.trim());
-}
-
-function applyHeaderLineTimestamp(value: string, header: InputV2Header): void {
-    let date: Date;
-    if (/^\s*\d+\s*$/.test(value)) {
-        date = new Date(parseInt(value));
-    } else {
-        date = new Date(value);
-    }
-
-    if (isNaN(date.getTime())) {
-        throw new Error("Timestamp not valid: \n" + value + '\n');
-    }
-
-    header.timestamp = date.getTime();
-}
-
 
 function getHeadStr(fullStr: string): { headStr: string, headEndIndex: number } {
     const startToken = headerStartRegex.exec(fullStr);
