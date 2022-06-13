@@ -5,7 +5,7 @@ import MapWithGetAndDelete from "../utils/MapWithGetAndDelete";
 const projectSplitRegex = /(^|\n)#[^#].+\n/g;
 const commaSplitRegex = /\s*,\s*/g;
 const commaSplitUnlessInBracketsRegex = /\s*,\s*(?![^\(\)]*\))/g;
-const headerStartRegex = /(^|\n)#.+\n.*\n*---+/;
+const headerStartRegex = /(^|\n)#.+\n*(<!)?---+/;
 const headerEndRegex = /---+/;
 
 const nameRegex = /^#(.+)\n/;
