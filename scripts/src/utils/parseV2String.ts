@@ -92,7 +92,10 @@ function parseProjectStr(projectStr: string, defaultHeaders: Partial<InputV2Head
 function parseNameStr(fullStr: string): string {
     const match = fullStr.trimLeft().match(nameRegex);
     if (!match || !match[1]) { throw new ParseError("Missing name"); }
-    return match[1].trim();
+    return match[1]
+        // remove backslash (unless backslash proceeds)
+        .replaceAll(/\\(?!\\)/g, "")
+        .trim();
 }
 
 function parseHeadStr(fullStr: string): { head: InputV2Header, headEndIndex: number } {
