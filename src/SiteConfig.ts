@@ -101,7 +101,7 @@ class SiteConfig {
             }
         } else if (location.hostname !== 'localhost') {
             // if hosted somewhere else, (staging url)
-            this.path.thingy = "https://japnaa.github.io/";
+            this.path.thingy = location.origin + "/";
         }
 
         this.developmentMode = Boolean(match);

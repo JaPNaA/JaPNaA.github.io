@@ -1,4 +1,4 @@
-# JaPNaA.github.io
+# JaPNaA.dev
 
 JaP is kewl, and you should too. <sup>what does that mean<sup>idk just go with it</sup></sup>
 

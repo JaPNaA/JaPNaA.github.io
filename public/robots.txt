@@ -1,4 +1,4 @@
-Sitemap: https://japnaa.github.io/sitemap.xml
+Sitemap: https://gh.japnaa.dev/sitemap.xml
 User-agent: *
 Disallow: /imageview?*
 Disallow: /frameview?*

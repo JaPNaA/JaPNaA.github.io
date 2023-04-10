@@ -88,7 +88,7 @@ module.exports = [{
             generateSitemap: {
                 outPath: "build/mainSitemap.xml",
                 thingyPath: "../../Thingy",
-                siteUrl: "https://japnaa.github.io/"
+                siteUrl: "https://gh.japnaa.dev/"
             }
         }),
         new webpack.optimize.MinChunkSizePlugin({

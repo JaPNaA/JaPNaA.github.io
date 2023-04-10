@@ -10,8 +10,8 @@ export default class ParseAppStateURLTest extends TestRunner {
         for (const host of [
             location.protocol + "//" + location.host + "/",
             "http://localhost:8080/",
-            "https://japnaa.github.io/",
-            "https://japnaa.github.io/not/at/root/"
+            "https://gh.japnaa.dev/",
+            "https://gh.japnaa.dev/not/at/root/"
         ]) {
             this.testUrlWithHost(host);
         }
@@ -61,10 +61,10 @@ export default class ParseAppStateURLTest extends TestRunner {
 
         this.nextAssertTests = "url with statedata with slashes and hashes" + hostMessage;
         this.assertIterableObjectEquals(
-            parseAppStateURL(host + "frameview?https://japnaa.github.io/overview#jeepsacar"),
+            parseAppStateURL(host + "frameview?https://gh.japnaa.dev/overview#jeepsacar"),
             {
                 viewPath: "frameview",
-                stateData: "https://japnaa.github.io/overview#jeepsacar",
+                stateData: "https://gh.japnaa.dev/overview#jeepsacar",
                 directURL: undefined,
                 id: undefined
             }
