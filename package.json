@@ -13,8 +13,8 @@
     "serve": "node . serve",
     "clean": "node . clean",
     "scripts": "node . runscripts",
-    "deploy-staging": "./scripts/deploy-staging.sh",
-    "deploy": "./scripts/deploy.sh"
+    "deploy-staging": "bash ./scripts/deploy-staging.sh",
+    "deploy": "bash ./scripts/deploy.sh"
   },
   "repository": {
     "type": "git",
