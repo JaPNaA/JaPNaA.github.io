@@ -11,7 +11,7 @@ const pluginName = 'JaPNaA_github_io_Plugin';
 /**
  * @typedef {import("webpack")} Webpack
  * @typedef {import("webpack").Compiler} Webpack.Compiler
- * @typedef {import("webpack").compilation.Compilation} Webpack.Compilation
+ * @typedef {import("webpack").Compilation} Webpack.Compilation
  * @typedef {import("webpack/lib/node/NodeWatchFileSystem")} Webpack.Node.NodeWatchFileSystem
  * @typedef {import("./Component")} Component
  */
@@ -66,9 +66,9 @@ class Plugin {
     /**
      * Initalizes with the inital files
      * @param {Webpack.Compiler} compiler
-     * @returns {Promise<void[]>}
+     * @returns {Promise<void>}
      */
-    _init(compiler) {
+    async _init(compiler) {
         if (this._initalized) { return; }
         this._initalized = true;
 
@@ -80,15 +80,15 @@ class Plugin {
             }
         }
 
-        return Promise.all(proms);
+        await Promise.all(proms);
     }
 
     /**
      * Called after Webpack finishes compiling
      * @param {Webpack.Compilation} compilation
-     * @returns {Promise<void[]>}
+     * @returns {Promise<void>}
      */
-    _afterEmitHandler(compilation) {
+    async _afterEmitHandler(compilation) {
         /** @type {Promise[]} */
         const proms = [];
 
@@ -99,14 +99,14 @@ class Plugin {
             }
         }
 
-        return Promise.all(proms);
+        await Promise.all(proms);
     }
 
     /**
      * Called when Webpack detects a file change
      * @param {Webpack.Compiler} compilation 
      */
-    _watchRunHandler(compilation) {
+    async _watchRunHandler(compilation) {
         this._init(compilation);
 
         const changedFiles = this._getChangedFiles(compilation);
@@ -119,7 +119,7 @@ class Plugin {
             }
         }
 
-        return Promise.all(proms);
+        await Promise.all(proms);
     }
 
     /**
@@ -130,6 +130,7 @@ class Plugin {
         /** @type {Webpack.Node.NodeWatchFileSystem} */
         // @ts-ignore
         const watchFileSystem = compiler.watchFileSystem;
+        if (!watchFileSystem.watcher.mtimes) { return []; }
         return Object.keys(watchFileSystem.watcher.mtimes)
             .filter(watchfile =>
                 this._prevTimestamps[watchfile] || this._startTime <

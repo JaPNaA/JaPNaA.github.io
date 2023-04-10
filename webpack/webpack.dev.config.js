@@ -27,12 +27,16 @@ const testConfig = {
             exclude: /node_modules/
         }, {
             test: /\.less$/,
-            loaders: ['style-loader', {
-                loader: 'css-loader',
-                options: {
-                    modules: true
-                }
-            }, 'less-loader']
+            loader: 'style-loader'
+        }, {
+            test: /\.less$/,
+            loader: 'css-loader',
+            options: {
+                modules: true
+            }
+        }, {
+            test: /\.less$/,
+            loader: 'less-loader'
         }]
     },
     resolve: {

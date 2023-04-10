@@ -1,14 +1,13 @@
 import AppState from "../types/AppState";
-import url from "url";
 import AppStateBuilder from "./AppStateBuilder";
 import siteConfig from "../../SiteConfig";
 
-export default function parseAppStateURL(href: string | url.UrlWithStringQuery): AppState | undefined {
+export default function parseAppStateURL(href: string | URL): AppState | undefined {
     let cleanURL;
     const builder = new AppStateBuilder();
 
     if (typeof href === "string") {
-        cleanURL = url.parse(href);
+        cleanURL = new URL(href);
     } else {
         cleanURL = href;
     }

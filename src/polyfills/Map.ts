@@ -5,13 +5,12 @@ export default function apply() {
 
 class MapPolyfill<K, V> implements Map<K, V> {
     public size: number;
-    public [Symbol.toStringTag]: string;
+    public [Symbol.toStringTag]: string = "Map";
     private mapEntries: [K, V][];
 
     constructor(entries?: ReadonlyArray<readonly [K, V]>) {
         this.size = 0;
         this.mapEntries = [];
-        this[Symbol.toStringTag] = "Map";
 
         if (entries) {
             for (const entry of entries) {

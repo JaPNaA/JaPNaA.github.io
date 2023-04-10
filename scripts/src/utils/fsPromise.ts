@@ -40,7 +40,7 @@ export function stat(path: string): Promise<fs.Stats> {
     return promisifyReadLike(path, fs.stat)
 }
 
-export function readFile(path: string): Promise<fs.BinaryData> {
+export function readFile(path: string): Promise<Buffer> {
     return promisifyReadLike(path, fs.readFile);
 }
 

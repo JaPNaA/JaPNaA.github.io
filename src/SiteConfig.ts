@@ -8,8 +8,8 @@ import isHandheld from "./utils/isClient/isHandheld";
 import isIE from "./utils/isClient/isIE";
 import isIOS from "./utils/isClient/isIOS";
 import isMobile from "./utils/isClient/isMobile";
-import { resolve } from "url";
 import getBasePath from "./utils/getBasePath";
+import resolveUrlNode from "./utils/resolveUrlNode";
 
 class SiteConfig {
     public readonly title: string = "JaPNaA";
@@ -148,7 +148,7 @@ class SiteConfig {
         if (obj.notRelative === true) { return; }
         for (const key of keys) {
             if (typeof obj[key] === "string") {
-                obj[key] = resolve(base, obj[key]);
+                obj[key] = resolveUrlNode(base, obj[key]);
             } else if (typeof obj[key] === "object") {
                 this.insertBaseUrl(base, obj[key]);
             }

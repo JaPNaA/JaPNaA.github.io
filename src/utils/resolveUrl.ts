@@ -1,11 +1,11 @@
 import isUrlAbsolute from "./isUrlAbsolute";
 import siteConfig from "../SiteConfig";
-import url from 'url';
+import resolveUrlNode from "./resolveUrlNode";
 
 export default function resolveUrl(urlStr: string, base?: string): string {
     if (isUrlAbsolute(urlStr)) {
         return urlStr;
     } else {
-        return url.resolve(base || siteConfig.path.base, urlStr);
+        return resolveUrlNode(base || siteConfig.path.base, urlStr);
     }
 }

@@ -3,7 +3,7 @@ import deepEquals from "./deepEquals";
 
 type IterableObject = { [x: string]: any };
 
-export function isIterableObjectEqual<T>(a: T, b: T): boolean {
+export function isIterableObjectEqual<T extends object>(a: T, b: T): boolean {
     const keysA = Object.keys(a).sort();
     const keysB = Object.keys(b).sort();
 
@@ -23,7 +23,7 @@ export function isIterableObjectEqual<T>(a: T, b: T): boolean {
     return true;
 }
 
-export function isIterableObjectEqualDeep<T>(a: T, b: T): boolean {
+export function isIterableObjectEqualDeep<T extends object>(a: T, b: T): boolean {
     if (a === b) { return true; }
 
     const keysA = Object.keys(a).sort();

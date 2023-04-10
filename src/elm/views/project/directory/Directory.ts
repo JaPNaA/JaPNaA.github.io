@@ -11,10 +11,10 @@ import openPopup from "../../../../core/utils/open/openPopup";
 import removeChildren from "../../../../utils/removeChildren";
 import siteConfig from "../../../../SiteConfig";
 import siteResources from "../../../../core/siteResources";
-import url from "url";
 import View from "../../../../core/view/View";
 import resolveUrl from "../../../../utils/resolveUrl";
 import { V2Project } from "../../../../types/project/v2/V2Types";
+import resolveUrlNode from "../../../../utils/resolveUrlNode";
 
 type LinkMatch = {
     year: number,
@@ -106,8 +106,8 @@ class ProjectDirectory extends View {
     }
 
     private cleanPath(): string {
-        const urlParsed = url.parse(this.contentHref);
-        let path = urlParsed.path;
+        const urlParsed = new URL(this.contentHref);
+        let path = urlParsed.pathname;
 
         if (path) {
             if (path.startsWith("/")) {
@@ -143,9 +143,9 @@ class ProjectDirectory extends View {
     }
 
     private navigate(link: string): boolean {
-        const linkParsed = url.parse(link);
+        const linkParsed = new URL(link);
         const isSameHost = linkParsed.hostname === location.hostname;
-        const depth = this.getPathDepth(linkParsed.path);
+        const depth = this.getPathDepth(linkParsed.pathname);
 
         if (isSameHost) {
             if (depth <= 1) {
@@ -221,7 +221,7 @@ class ProjectDirectory extends View {
             const hrefAttrib = anchor.getAttribute("href");
 
             if (hrefAttrib) {
-                const href = url.resolve(this.contentHref, hrefAttrib);
+                const href = resolveUrlNode(this.contentHref, hrefAttrib);
                 anchor.href = href;
                 this.mapLinkToProject(href)
                     .then(e => { if (e) { anchor.classList.add(css.hasProjectInfo); } });
@@ -233,7 +233,7 @@ class ProjectDirectory extends View {
      * @returns sucessful?
      */
     private mapLinkToProject(href: string): Promise<boolean> {
-        const path = url.parse(href).path;
+        const path = new URL(href).pathname;
         const depth = this.getPathDepth(path);
         const prom = new Promise<boolean>(res => {
             if (depth === 2) {
@@ -261,7 +261,7 @@ class ProjectDirectory extends View {
         for (let i = 0; i < data.length; i++) {
             const entry = data[i];
             if (entry.head.link) {
-                const entryLink = url.resolve(siteConfig.path.thingy, entry.head.link);
+                const entryLink = resolveUrlNode(siteConfig.path.thingy, entry.head.link);
                 if (entryLink === link) {
                     return {
                         year: parseInt(year),

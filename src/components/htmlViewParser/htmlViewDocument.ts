@@ -1,7 +1,5 @@
 import css from "./htmlViewDocument.less";
 
-import url from "url";
-
 import EmbededApp from "../../core/app/EmbededApp";
 import IApp from "../../core/types/app/IApp";
 import IHTMLViewDocument from "./iHTMLViewDocument";
@@ -166,7 +164,7 @@ class HTMLViewDocument implements IHTMLViewDocument {
 
         e.preventDefault();
         const href = anchor.href;
-        const parsed = url.parse(href);
+        const parsed = new URL(href);
 
         if (parsed.host === location.host) {
             const appState = parseAppStateURL(parsed);

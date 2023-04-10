@@ -49,11 +49,6 @@ const customTagMap: Map<string, (args: string, projectLink?: string) => V2Projec
     ["view-source", parseCustomTagViewSource]
 ]);
 
-marked.setOptions({
-    headerIds: false,
-    gfm: true
-});
-
 export function parseV2String(v2Str: string, defaultHeaders?: Partial<InputV2Header>): V2Project[] {
     const projectsStr = splitFileToProjects(v2Str);
     const projects: V2Project[] = [];
@@ -90,11 +85,11 @@ function parseProjectStr(projectStr: string, defaultHeaders: Partial<InputV2Head
 }
 
 function parseNameStr(fullStr: string): string {
-    const match = fullStr.trimLeft().match(nameRegex);
+    const match = fullStr.trimStart().match(nameRegex);
     if (!match || !match[1]) { throw new ParseError("Missing name"); }
     return match[1]
         // remove backslash (unless backslash proceeds)
-        .replaceAll(/\\(?!\\)/g, "")
+        .replace(/\\(?!\\)/g, "")
         .trim();
 }
 
@@ -263,7 +258,10 @@ function parseBodyMarkdown(arr: (V2ProjectBodyElement | string)[]): V2ProjectBod
 }
 
 function parseMarkdownString(str: string): V2ProjectBodyElement | null {
-    const parsed = marked.parse(str);
+    const parsed = marked.marked(str, {
+        headerIds: false,
+        gfm: true
+    });
     if (parsed) {
         return {
             type: "markdown",

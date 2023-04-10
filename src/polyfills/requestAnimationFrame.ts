@@ -1,5 +1,6 @@
 export default function requestAnimationFrame() {
     window.requestAnimationFrame =
+        // @ts-ignore
         window.webkitRequestAnimationFrame ||
         // @ts-ignore
         window.mozRequestAnimationFrame ||
@@ -13,6 +14,7 @@ export default function requestAnimationFrame() {
         };
     
     window.cancelAnimationFrame =
+        // @ts-ignore
         window.webkitCancelAnimationFrame ||
         // @ts-ignore
         window.mozCancelAnimationFrame ||

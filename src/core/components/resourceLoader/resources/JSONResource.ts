@@ -30,7 +30,7 @@ class JSONResource extends Resource<any> {
             try {
                 this.data = JSON.parse(req.responseText);
             } catch (err) {
-                this.onErrorHandler(err);
+                this.onErrorHandler(err as any);
                 return;
             }
 

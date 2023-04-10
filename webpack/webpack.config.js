@@ -2,33 +2,31 @@ const path = require("path");
 const webpack = require("webpack");
 const TerserJSPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const CSSMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const Plugin = require("./plugin/plugin");
 
-const lessLoader = {
+const lessLoaders = [{
     test: /\.less$/,
-    loaders: [
-        {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-                hmr: process.env.NODE_ENV === 'development',
-            },
-        }, {
-            loader: 'css-loader',
-            options: {
-                modules: {
-                    mode: 'local',
-                    localIdentName: '[local]__[hash:base64:5][name]'
-                },
-                sourceMap: true
-            }
+    loader: MiniCssExtractPlugin.loader
+}, {
+    test: /\.less$/,
+    loader: 'css-loader',
+    options: {
+        modules: {
+            mode: 'local',
+            localIdentName: '[local]__[hash:base64:5][name]'
         },
+        sourceMap: true
+    }
+}, {
+    test: /\.less$/,
+    use: [
         'less-loader',
         path.resolve(__dirname, "./loaders/stylesheetVarMacro"),
         path.resolve(__dirname, "./loaders/stylesheetDoubleDefineMacro"),
         path.resolve(__dirname, "./loaders/stylesheetPrefixMacro")
     ]
-};
+}]
 
 const promisePolyfillConfig = require("./webpack.polyfill.promise.js");
 
@@ -45,14 +43,14 @@ module.exports = [{
         rules: [
             {
                 test: /\.tsx?$/,
-                loaders: [
+                use: [
                     "ts-loader",
                     path.resolve(__dirname, "./loaders/routeMacro"),
                     path.resolve(__dirname, "./loaders/stripConsoleLogs")
                 ],
                 exclude: /node_modules/
             },
-            lessLoader
+            ...lessLoaders
         ]
     },
     resolve: {
@@ -89,7 +87,7 @@ module.exports = [{
             },
             generateSitemap: {
                 outPath: "build/mainSitemap.xml",
-                thingyPath: "../../../Thingy",
+                thingyPath: "../../Thingy",
                 siteUrl: "https://japnaa.github.io/"
             }
         }),
@@ -101,7 +99,7 @@ module.exports = [{
         })
     ],
     optimization: {
-        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+        minimizer: [new TerserJSPlugin({}), new CSSMinimizerPlugin({})],
     },
 
     mode: "production",
@@ -115,7 +113,7 @@ module.exports = [{
         publicPath: "/bundles/"
     },
     module: {
-        rules: [lessLoader]
+        rules: lessLoaders
     },
     resolve: {
         extensions: ['.less']
@@ -127,7 +125,7 @@ module.exports = [{
         })
     ],
     optimization: {
-        minimizer: [new OptimizeCSSAssetsPlugin({})],
+        minimizer: [new CSSMinimizerPlugin({})],
     },
 
     mode: "production",

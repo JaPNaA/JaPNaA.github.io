@@ -5,7 +5,7 @@ abstract class Test {
     public abstract name: string
     constructor() { }
     public abstract setup(): void;
-    public abstract async run(): Promise<void>;
+    public abstract run(): Promise<void>;
     public abstract destory(): void;
     public abstract getResult(): TestResult;
 }
@@ -93,7 +93,7 @@ export abstract class TestRunner extends Test {
             await this.runTests();
             this.destory();
         } catch (err) {
-            this.logError(err);
+            this.logError(err as any);
         }
     }
 
@@ -141,9 +141,13 @@ export abstract class TestRunner extends Test {
         }
     }
 
-    protected assertIterableObjectEquals<T>(a: T, b: T, aName_?: string, bName_?: string) {
+    protected assertIterableObjectEquals<T extends object>(a: T | undefined, b: T | undefined, aName_?: string, bName_?: string) {
         const aName = aName_ || "value";
         const bName = bName_ || stringify(b);
+        if (a === undefined || b === undefined) {
+            this.failAssertion(aName + " or " + bName + " is undefined when expecting an object");
+            return;
+        }
         if (isIterableObjectEqual(a, b)) {
             this.passAssertion(aName + " is equal to " + bName + ", " + bName);
         } else {

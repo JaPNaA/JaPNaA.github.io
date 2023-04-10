@@ -5,7 +5,7 @@ import { ThingyProjectReadmeFinder } from "./ThingyReadmeFinder";
 
 class ContentParser {
     public static readonly inDirectory = "./public/assets/content/src";
-    public static readonly thingyDirectory = "../../Thingy";
+    public static readonly thingyDirectory = "../../";
 
     public static readonly outDirectory = "./build/assets/content";
     public static readonly outExtension = ".json";

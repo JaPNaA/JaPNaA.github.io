@@ -27,22 +27,19 @@
   },
   "homepage": "https://github.com/JaPNaA/JaPNaA.github.io#readme",
   "dependencies": {
-    "@types/node": "^11.15.39",
-    "css-loader": "^3.6.0",
-    "less": "^3.12.2",
-    "less-loader": "^4.1.0",
-    "promise-polyfill": "^8.2.0",
-    "style-loader": "^0.23.1",
-    "ts-loader": "^5.4.5",
-    "typescript": "^3.9.7",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "css-loader": "^6.7.3",
+    "css-minimizer-webpack-plugin": "^5.0.0",
+    "http-server": "^14.1.1",
+    "less-loader": "^11.1.0",
+    "marked": "^4.3.0",
+    "mini-css-extract-plugin": "^2.7.5",
+    "promise-polyfill": "^8.3.0",
+    "style-loader": "^3.3.2",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.78.0"
   },
   "devDependencies": {
-    "@types/marked": "^0.6.5",
-    "http-server": "^0.12.3",
-    "marked": "^0.7.0",
-    "mini-css-extract-plugin": "^0.8.2",
-    "optimize-css-assets-webpack-plugin": "^5.0.4"
+    "@types/marked": "^4.0.8",
+    "@types/node": "^18.15.11"
   }
 }

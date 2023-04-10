@@ -78,7 +78,7 @@ class ResourceLoader {
 
     public async nextDone(): Promise<void> {
         if (!this.isDone()) {
-            await new Promise((res) => this.doneEventOnceHandlers.add(() => res()));
+            await new Promise<void>((res) => this.doneEventOnceHandlers.add(() => res()));
         }
     }
 
@@ -106,7 +106,7 @@ class ResourceLoader {
         return this.loadResource<JSONResource>(path, JSONResource);
     }
 
-    public loadXML(path: string, type?: SupportedType): XMLResource {
+    public loadXML(path: string, type?: DOMParserSupportedType): XMLResource {
         return this.loadResource<XMLResource>(path, XMLResource, type);
     }
 
@@ -122,7 +122,7 @@ class ResourceLoader {
         return this.promisify(this.loadResource<JSONResource>(path, JSONResource));
     }
 
-    public loadXMLPromise(path: string, type?: SupportedType): Promise<typeof XMLResource.prototype.data> {
+    public loadXMLPromise(path: string, type?: DOMParserSupportedType): Promise<typeof XMLResource.prototype.data> {
         return this.promisify(this.loadResource<XMLResource>(path, XMLResource, type));
     }
 

@@ -5,9 +5,9 @@ class XMLResource extends Resource<Document> {
     public path: string;
     public data!: Document;
 
-    private type: SupportedType;
+    private type: DOMParserSupportedType;
 
-    constructor(hooks: ResourceLoaderHooks, path: string, type?: SupportedType) {
+    constructor(hooks: ResourceLoaderHooks, path: string, type?: DOMParserSupportedType) {
         super(hooks);
         this.path = path;
         this.type = type || "text/xml";
@@ -34,7 +34,7 @@ class XMLResource extends Resource<Document> {
             try {
                 this.data = parser.parseFromString(req.responseText, this.type);
             } catch (err) {
-                this.onErrorHandler(err);
+                this.onErrorHandler(err as Error);
             }
 
             this.onLoadHandler();

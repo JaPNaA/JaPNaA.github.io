@@ -75,9 +75,9 @@ function startWebpack(config, mode) {
         if (err) {
             console.log(err);
         } else {
-            console.log(stats.toString({
+            console.log(stats ? stats.toString({
                 colors: true
-            }));
+            }) : err);
         }
 
         if (watch) {
@@ -88,13 +88,13 @@ function startWebpack(config, mode) {
                     console.error(err);
                     return;
                 }
-                console.log(stats.toString({
+                console.log(stats ? stats.toString({
                     all: false,
                     modules: true,
                     errors: true,
                     warnings: true,
                     colors: true
-                }));
+                }) : err);
             });
         }
     });
@@ -144,7 +144,7 @@ function startHttpServers() {
         root: path.resolve(__dirname, "./build")
     });
     const server2 = hs.createServer({
-        root: path.resolve(__dirname, "../../Thingy"),
+        root: path.resolve(__dirname, "../"),
         // @ts-ignore
         cors: "*"
     });
