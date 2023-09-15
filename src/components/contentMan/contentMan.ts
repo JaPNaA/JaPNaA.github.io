@@ -185,8 +185,10 @@ class ContentMan {
 
     public static async getFileForYear(year: number | string): Promise<V2ProjectListing> {
         const index = await this.getProjectsIndex();
+        const yearPath = this.getPathForYear(index, year);
+        if (!yearPath) { return { formatVersion: '2', data: [] }; }
         return new Promise((res, rej) =>
-            siteResources.loadJSON(siteConfig.path.content + this.getPathForYear(index, year))
+            siteResources.loadJSON(siteConfig.path.content + yearPath)
                 .onLoad(e => res(e.data))
                 .onError(() => rej(new Error("Failed to load file for year " + year)))
         );
@@ -230,8 +232,8 @@ class ContentMan {
         );
     }
 
-    private static getPathForYear(index: IIndex, year: number | string): string {
-        return index.meta[year][2];
+    private static getPathForYear(index: IIndex, year: number | string): string | undefined {
+        return index.meta[year]?.[2];
     }
 
     private static linkToProjectLink(thingyPath: string, link: string[]): IProjectLink {
