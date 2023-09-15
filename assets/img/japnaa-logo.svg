@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="523.14697"
+   height="119.467"
+   viewBox="0 0 138.41597 31.608979"
+   version="1.1"
+   id="svg17050"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="japnaa-logo.svg">
+  <defs
+     id="defs17044" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="272.8078"
+     inkscape:cy="109.33322"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1205"
+     inkscape:window-height="728"
+     inkscape:window-x="314"
+     inkscape:window-y="224"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata17047">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-265.39101)">
+    <g
+       aria-label="JaPNaA"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Share Tech Mono';-inkscape-font-specification:'Share Tech Mono';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       id="text17054">
+      <path
+         d="m 12.869333,289.32356 q 0,3.83822 -2.122311,5.77991 Q 8.6698667,297 4.7413334,297 H 0 v -3.43182 h 5.1928889 q 1.6707556,0 2.7093334,-0.99342 Q 8.9408,291.58133 8.9408,290.18151 V 268.77778 H 1.6707556 v -3.38667 H 12.869333 Z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.15555573px;font-family:'Share Tech Mono';-inkscape-font-specification:'Share Tech Mono';stroke-width:0.26458332"
+         id="path9" />
+      <path
+         d="m 37.527089,297 q -0.587022,0 -1.309511,-0.36124 -0.677333,-0.36125 -1.174044,-0.99343 Q 34.004956,297 32.289045,297 h -4.018844 q -3.431823,0 -5.012267,-1.35467 -1.535289,-1.39982 -1.535289,-4.74133 v -0.90311 q 0,-6.99911 6.592711,-6.99911 h 5.599289 V 280.744 q 0,-1.39982 -0.857956,-2.16747 -0.857955,-0.76764 -2.528711,-0.76764 h -6.999111 v -3.38667 h 6.547556 q 3.928533,0 5.779911,1.71591 1.896533,1.71591 1.896533,5.50898 v 10.83733 q 0,0.67734 0.496711,1.03858 0.541867,0.31609 1.761067,0.31609 V 297 Z m -5.6896,-3.38667 q 1.354667,0 1.715912,-0.63217 0.361244,-0.63218 0.361244,-1.6256 v -4.96712 h -5.644444 q -1.174045,0 -1.941689,0.76765 -0.767645,0.76764 -0.767645,1.94169 v 2.25778 q 0,1.17404 0.541867,1.71591 0.541867,0.54186 1.715911,0.54186 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.15555573px;font-family:'Share Tech Mono';-inkscape-font-specification:'Share Tech Mono';stroke-width:0.26458332"
+         id="path11" />
+      <path
+         d="m 63.404046,277.58311 q 0,3.6576 -1.941689,5.41867 -1.941689,1.71591 -5.734756,1.71591 H 51.031423 V 297 H 47.10289 v -31.60889 h 8.5344 q 3.838222,0 5.779911,1.71591 1.986845,1.67076 1.986845,5.32836 z m -3.928534,-5.55413 q 0,-1.71591 -0.8128,-2.48356 -0.767644,-0.76764 -2.483555,-0.76764 h -5.147734 v 12.55324 h 5.147734 q 1.715911,0 2.483555,-0.76764 0.8128,-0.8128 0.8128,-2.52871 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.15555573px;font-family:'Share Tech Mono';-inkscape-font-specification:'Share Tech Mono';stroke-width:0.26458332"
+         id="path13" />
+      <path
+         d="m 74.605446,297 h -3.6576 v -31.60889 h 6.412089 l 7.134578,28.26738 v -28.26738 h 3.6576 V 297 h -6.457245 l -7.089422,-28.26738 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.15555573px;font-family:'Share Tech Mono';-inkscape-font-specification:'Share Tech Mono';stroke-width:0.26458332"
+         id="path15" />
+      <path
+         d="m 110.55209,297 q -0.58702,0 -1.30951,-0.36124 -0.67733,-0.36125 -1.17404,-0.99343 Q 107.02996,297 105.31405,297 h -4.01885 q -3.43182,0 -5.012265,-1.35467 -1.535289,-1.39982 -1.535289,-4.74133 v -0.90311 q 0,-6.99911 6.592714,-6.99911 h 5.59929 V 280.744 q 0,-1.39982 -0.85796,-2.16747 -0.85795,-0.76764 -2.52871,-0.76764 h -6.999111 v -3.38667 h 6.547551 q 3.92854,0 5.77992,1.71591 1.89653,1.71591 1.89653,5.50898 v 10.83733 q 0,0.67734 0.49671,1.03858 0.54187,0.31609 1.76107,0.31609 V 297 Z m -5.6896,-3.38667 q 1.35467,0 1.71591,-0.63217 0.36125,-0.63218 0.36125,-1.6256 v -4.96712 h -5.64445 q -1.17404,0 -1.941687,0.76765 -0.767644,0.76764 -0.767644,1.94169 v 2.25778 q 0,1.17404 0.541866,1.71591 0.541867,0.54186 1.715915,0.54186 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.15555573px;font-family:'Share Tech Mono';-inkscape-font-specification:'Share Tech Mono';stroke-width:0.26458332"
+         id="path17" />
+      <path
+         d="M 123.8758,289.00747 122.11474,297 h -4.01885 l 7.63129,-31.60889 h 5.19289 L 138.41589,297 h -4.01884 l -1.71591,-7.99253 z m 8.08285,-3.38667 -3.70276,-17.24942 -3.6576,17.24942 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45.15555573px;font-family:'Share Tech Mono';-inkscape-font-specification:'Share Tech Mono';stroke-width:0.26458332"
+         id="path19" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Redirecting</title>
+
+    <style>
+        body {
+            opacity: 1;
+            animation: 10s ease 0s fade-in-delayed forwards normal;
+            background-color: rgb(92, 92, 92);
+        }
+
+        @keyframes fade-in-delayed {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1> Redirecting </h1>
+    Not redirecting? Make sure JavaScript is enabled. <br>
+    If it is, something may be broken. <br>
+    Please report a bug and include <br>
+    <code> 404 noredirection </code>
+
+    <script>
+        location.replace("/?u=" + encodeURIComponent(location.href) + "&s=" + encodeURIComponent(history.state) + "&fromredirect=1");
+    </script>
+</body>
+
+</html>

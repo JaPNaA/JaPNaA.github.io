@@ -1,0 +1,5 @@
+Sitemap: https://gh.japnaa.dev/sitemap.xml
+User-agent: *
+Disallow: /imageview?*
+Disallow: /frameview?*
+Disallow: /search?*
