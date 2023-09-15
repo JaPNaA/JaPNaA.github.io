@@ -96,11 +96,15 @@ class V2Files implements IFiles {
         const filePath = path.join(dir, filename);
         const file = (await fsPromise.readFile(filePath)).toString();
 
-        const projects = parseV2String(file);
-
-        for (const project of projects) {
-            this.projectsList.push(project);
+        try {
+            const projects = parseV2String(file);
+            for (const project of projects) {
+                this.projectsList.push(project);
+            }
+        } catch (err) {
+            console.error("An error occured when pharsing V2 file '" + filePath + "'.", err);
         }
+
     }
 
     private sortProjectsIntoYearProjectMap(): void {

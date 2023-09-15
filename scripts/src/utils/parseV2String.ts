@@ -123,10 +123,10 @@ function parseHeaderLine(line: string, header: InputV2Header): void {
 
 function getHeadStr(fullStr: string): { headStr: string, headEndIndex: number } {
     const startToken = headerStartRegex.exec(fullStr);
-    if (!startToken) { throw new ParseError("No head"); }
+    if (!startToken) { throw new ParseError("No head (Couldn't find start token)"); }
     const startTokenEndIndex = startToken.index + startToken[0].length;
     const endToken = headerEndRegex.exec(fullStr.slice(startTokenEndIndex));
-    if (!endToken) { throw new ParseError("No head"); }
+    if (!endToken) { throw new ParseError("No head (Couldn't find end token)"); }
 
     return {
         headStr: fullStr.substr(startTokenEndIndex, endToken.index),
