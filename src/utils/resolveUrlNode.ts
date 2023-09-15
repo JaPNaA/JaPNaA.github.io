@@ -1,5 +1,5 @@
 export default function resolveUrlNode(from: string, to: string) {
-    const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
+    const resolvedUrl = new URL(to, new URL(from, 'resolve:/'));
     if (resolvedUrl.protocol === 'resolve:') {
         // `from` is a relative URL.
         const { pathname, search, hash } = resolvedUrl;
